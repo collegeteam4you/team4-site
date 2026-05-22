@@ -7,7 +7,7 @@
     { "src": "/", "dest": "/index.html" },
     { "src": "/program/sales-mastery", "dest": "/index.html" },
     { "src": "/program/negotiation-power", "dest": "/index.html" },
-    { "src": "/program/nlp-sales", "dest": "/index.html" },
+        { "src": "/program/nlp-in-sales", "dest": "/index.html" },
     { "src": "/program/digital-marketing", "dest": "/index.html" },
     { "src": "/program/outsource-sales-marketing", "dest": "/index.html" },
     { "src": "/program/brand-sales-video", "dest": "/index.html" },
