@@ -1,9 +1,10 @@
 {
   "cleanUrls": true,
   "trailingSlash": false,
-  "rewrites": [
-    { "source": "/program/:path*", "destination": "/index.html" },
-    { "source": "/winspace", "destination": "/index.html" },
-    { "source": "/book", "destination": "/index.html" }
+  "routes": [
+    { "src": "/program/(.*)", "dest": "/index.html" },
+    { "src": "/winspace", "dest": "/index.html" },
+    { "src": "/book", "dest": "/index.html" },
+    { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
