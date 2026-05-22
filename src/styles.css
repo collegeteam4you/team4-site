@@ -3189,3 +3189,8 @@ button.site-cta:hover,
     letter-spacing: 0.14em !important;
   }
 }
+.logo-text{
+  font-size:28px !important;
+  font-weight:800 !important;
+  color:#ffffff !important;
+}

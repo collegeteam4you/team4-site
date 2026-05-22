@@ -1042,7 +1042,7 @@ function Header({ lang, setLang }) {
           'span',
           { className: 'leading-tight' },
           h('span', { className: 'block text-sm font-extrabold uppercase tracking-[0.22em]' }, ''),
-          h('span', { className: 'block text-xs text-white/50' }, 'Team4 Sales College')
+          h('span', { className: 'block text-xs font-extrabold text-white/70' }, 'Team4 Sales College')
         )
       ),
       h(
