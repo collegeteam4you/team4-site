@@ -1,29 +1,9 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "*.html",
-      "use": "@vercel/static"
-    }
-  ],
-  "routes": [
-    { "src": "/", "dest": "/index.html" },
-
-    { "src": "/program/sales-mastery", "dest": "/index.html" },
-    { "src": "/program/negotiation-power", "dest": "/index.html" },
-    { "src": "/program/nlp-sales", "dest": "/index.html" },
-    { "src": "/program/nlp-in-sales", "dest": "/index.html" },
-    { "src": "/program/digital-marketing", "dest": "/index.html" },
-    { "src": "/program/outsource-sales-marketing", "dest": "/index.html" },
-    { "src": "/program/brand-sales-video", "dest": "/index.html" },
-    { "src": "/program/brand-sales-video-production", "dest": "/index.html" },
-
-    { "src": "/winspace", "dest": "/index.html" },
-    { "src": "/book", "dest": "/index.html" },
-
-    { "src": "/admin", "dest": "/admin.html" },
-    { "src": "/privacy", "dest": "/privacy.html" },
-    { "src": "/refund", "dest": "/refund.html" },
-    { "src": "/terms", "dest": "/terms.html" }
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "rewrites": [
+    { "source": "/program/:path*", "destination": "/index.html" },
+    { "source": "/winspace", "destination": "/index.html" },
+    { "source": "/book", "destination": "/index.html" }
   ]
 }
