@@ -1,14 +1,5 @@
 {
   "cleanUrls": true,
-  "trailingSlash": false,
-  "rewrites": [
-    { "source": "/program/:path*", "destination": "/index.html" },
-    { "source": "/winspace", "destination": "/index.html" },
-    { "source": "/book", "destination": "/index.html" }
-  ]
-}
-{
-  "cleanUrls": true,
   "rewrites": [
     { "source": "/program/:path*", "destination": "/index.html" },
     { "source": "/:path*", "destination": "/index.html" }
