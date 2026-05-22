@@ -1,13 +1,5 @@
 {
-  "name": "lasha-team4-brand-site",
+  "name": "team4-site",
   "version": "1.0.0",
-  "private": true,
-  "description": "Modern luxury personal brand website for Lasha Khurtsidze and Team4 Sales College.",
-  "scripts": {
-    "dev": "node server.js"
-  },
-  "dependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
-  }
+  "private": true
 }
