@@ -13,7 +13,7 @@ let copy = {
     heroKicker: 'LASHA KHURTSIDZE / TEAM4 SALES COLLEGE',
     heroTitle: 'Sales Is Not Talent — It Is Psychology.',
     heroSubtitle: 'Sales • Negotiation • NLP • Digital Marketing',
-    heroText: 'Performance-luxury sales education, negotiation strategy, and personal brand growth for leaders who want sharper influence, faster decisions, and measurable commercial results.',
+    heroText: 'If your team works hard but sales still aren’t growing —the problem isn’t the product, it’s the communication.Book a free consultation and discover where you’re losing sales.',
     book: 'Book Consultation',
     openDoor: 'GO TO WINSPACE',
     resumeTitle: 'Short Resume',
