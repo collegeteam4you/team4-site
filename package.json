@@ -1,5 +1,5 @@
 {
-  "name": "team4-site",
-  "version": "1.0.0",
-  "private": true
+  "scripts": {
+    "build": "mkdir -p dist && cp -r index.html admin.html terms.html privacy.html refund.html assets src vercel.json dist/"
+  }
 }
