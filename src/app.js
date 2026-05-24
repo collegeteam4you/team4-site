@@ -1081,6 +1081,10 @@ function HeroResume({ lang }) {
 }
 
 function Header({ lang, setLang }) {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
+
+  const closeMobileMenu = () => setIsMobileMenuOpen(false);
+
   return h(
     'header',
     { className: 'fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-black/65 backdrop-blur-xl' },
@@ -1112,11 +1116,50 @@ function Header({ lang, setLang }) {
         'div',
         { className: 'hidden items-center gap-7 lg:flex' },
         navItems.map(([id, eng, geo]) =>
-          h('a', { key: id, href: sectionHref(id), className: 'text-xs font-bold uppercase tracking-[0.22em] text-white/60 transition hover:text-white' }, lang === 'GEO' ? geo : eng)
+          h(
+            'a',
+            {
+              key: id,
+              href: sectionHref(id),
+              className: 'text-xs font-bold uppercase tracking-[0.22em] text-white/60 transition hover:text-white',
+            },
+            lang === 'GEO' ? geo : eng
+          )
         )
       ),
-      h('div', { className: 'flex items-center gap-3' }, h(LanguageSwitcher, { lang, setLang }))
-    )
+      h(
+        'div',
+        { className: 'flex items-center gap-3' },
+        h(
+          'button',
+          {
+            type: 'button',
+            className: 'mobile-menu-toggle',
+            onClick: () => setIsMobileMenuOpen((current) => !current),
+            'aria-expanded': isMobileMenuOpen,
+            'aria-label': lang === 'GEO' ? 'მენიუს გახსნა' : 'Open menu',
+          },
+          'MENU'
+        ),
+        h(LanguageSwitcher, { lang, setLang })
+      )
+    ),
+    isMobileMenuOpen &&
+      h(
+        'div',
+        { className: 'mobile-header-menu' },
+        navItems.map(([id, eng, geo]) =>
+          h(
+            'a',
+            {
+              key: id,
+              href: sectionHref(id),
+              onClick: closeMobileMenu,
+            },
+            lang === 'GEO' ? geo : eng
+          )
+        )
+      )
   );
 }
 
