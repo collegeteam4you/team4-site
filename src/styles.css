@@ -3337,3 +3337,123 @@ button.site-cta:hover,
     font-size: 16px !important;
   }
 }
+/* Polished mobile header dropdown. */
+@media (max-width: 768px) {
+  header {
+    overflow: visible !important;
+  }
+
+  header nav {
+    overflow: visible !important;
+  }
+
+  header nav > div:nth-child(2) {
+    display: none !important;
+  }
+
+  header nav > div:last-child {
+    flex: 0 0 auto !important;
+    gap: 8px !important;
+  }
+
+  .header-brand {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    max-width: calc(100vw - 210px) !important;
+  }
+
+  .header-logo-shell {
+    width: 64px !important;
+    height: 50px !important;
+    flex-basis: 64px !important;
+  }
+
+  .header-brand > span:last-child > span:last-child {
+    max-width: 118px !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  header nav > div:last-child > div {
+    padding: 3px !important;
+  }
+
+  header nav > div:last-child > div button {
+    min-height: 34px !important;
+    padding: 0 9px !important;
+    font-size: 10px !important;
+    letter-spacing: 0.12em !important;
+  }
+
+  .mobile-menu-toggle {
+    flex: 0 0 auto !important;
+    min-width: 58px !important;
+    min-height: 38px !important;
+    padding: 0 10px !important;
+    font-size: 10px !important;
+    letter-spacing: 0.12em !important;
+  }
+
+  .mobile-header-menu {
+    position: fixed !important;
+    top: 94px !important;
+    left: 14px !important;
+    right: 14px !important;
+    z-index: 2147483000 !important;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+    max-height: calc(100dvh - 120px) !important;
+    overflow-y: auto !important;
+    border: 1px solid rgba(255, 255, 255, 0.14) !important;
+    border-radius: 16px !important;
+    background: linear-gradient(180deg, rgba(8, 8, 10, 0.98), rgba(3, 3, 5, 0.98)) !important;
+    padding: 12px !important;
+    box-shadow: 0 26px 80px rgba(0, 0, 0, 0.62) !important;
+    backdrop-filter: blur(20px) !important;
+  }
+
+  .mobile-header-menu a {
+    display: flex !important;
+    min-height: 48px !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 12px !important;
+    background: rgba(255, 255, 255, 0.055) !important;
+    padding: 0 15px !important;
+    color: rgba(255, 255, 255, 0.9) !important;
+    font-size: 14px !important;
+    font-weight: 900 !important;
+    letter-spacing: 0.04em !important;
+    line-height: 1.25 !important;
+    text-decoration: none !important;
+    text-transform: none !important;
+  }
+
+  .mobile-header-menu a::after {
+    content: "->" !important;
+    margin-left: 12px !important;
+    color: #e10600 !important;
+    font-size: 13px !important;
+    font-weight: 900 !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .header-brand > span:last-child > span:last-child {
+    max-width: 96px !important;
+    font-size: 12px !important;
+  }
+
+  .mobile-menu-toggle {
+    min-width: 52px !important;
+    padding: 0 8px !important;
+    letter-spacing: 0.08em !important;
+  }
+
+  header nav > div:last-child > div button {
+    padding: 0 7px !important;
+  }
+}
