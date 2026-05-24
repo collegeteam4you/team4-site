@@ -171,7 +171,7 @@ let buttonLinks = {
   commercialProjects: 'https://www.youtube.com/watch?v=hajmhs-cEq0&list=PLvcv-qMu_USis3A_DL5-aoGZgDDr9gCJk',
 };
 let assetUrls = {
-  team4Logo: '/assets/team4-logo-transparent.png',
+  team4Logo: '/assets/team4-logo-hero.webp',
   heroImage: '/assets/lasha-hero-training-room.jpg',
   winspaceLogo: '/assets/winspace-logo.webp',
 };
@@ -438,7 +438,7 @@ let programs = [
     buttonGeo: 'შეთავაზების ნახვა',
     buttonEng: 'View Offer',
     image: '/assets/outsource-sales-marketing-cover.webp',
-    modalImage: '/assets/team4-logo-transparent.png',
+    modalImage: '/assets/team4-logo-hero.webp',
     modalImageMode: 'logo',
     syllabusTitleGeo: 'აუთსორს გაყიდვები და მარკეტინგი — სილაბუსი',
     syllabusTitleEng: 'Outsource Sales & Marketing — Syllabus',
