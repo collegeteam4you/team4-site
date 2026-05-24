@@ -3194,3 +3194,146 @@ button.site-cta:hover,
   font-weight:800 !important;
   color:#ffffff !important;
 }
+/* Mobile safety pass: keeps the hero readable without changing desktop layout. */
+@media (max-width: 768px) {
+  header nav {
+    min-height: 86px !important;
+    padding: 12px 16px !important;
+    gap: 12px !important;
+    overflow: hidden !important;
+  }
+
+  header nav > div:nth-child(2) {
+    display: none !important;
+  }
+
+  .header-brand {
+    min-width: 0 !important;
+    flex: 1 1 auto !important;
+    gap: 10px !important;
+  }
+
+  .header-logo-shell {
+    width: 74px !important;
+    height: 54px !important;
+    flex: 0 0 74px !important;
+    padding: 5px !important;
+  }
+
+  .header-brand > span:last-child {
+    min-width: 0 !important;
+  }
+
+  .header-brand > span:last-child > span:last-child {
+    color: rgba(255, 255, 255, 0.82) !important;
+    font-size: 13px !important;
+    font-weight: 900 !important;
+    line-height: 1.15 !important;
+    white-space: normal !important;
+  }
+
+  .hero-video-container {
+    min-height: auto !important;
+    padding: 104px 0 52px !important;
+  }
+
+  .hero-overlay {
+    padding: 34px 18px 46px !important;
+  }
+
+  .hero-container {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .hero-left {
+    width: 100% !important;
+    max-width: 100% !important;
+    text-align: center !important;
+  }
+
+  .hero-top-text {
+    max-width: 100% !important;
+    font-size: 12px !important;
+    line-height: 1.55 !important;
+    letter-spacing: 0.3em !important;
+    text-align: center !important;
+  }
+
+  .hero-video-container .hero-title,
+  .hero-video-container .main-title,
+  .hero-video-container h1,
+  .hero-title-ka {
+    max-width: 100% !important;
+    margin: 32px auto 0 !important;
+    font-size: clamp(40px, 13vw, 58px) !important;
+    line-height: 1.08 !important;
+    text-align: center !important;
+    letter-spacing: 0 !important;
+  }
+
+  .hero-title-ka span,
+  .hero-title span {
+    display: block !important;
+  }
+
+  .hero-left > p.mt-7 {
+    max-width: 94% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    text-align: center !important;
+  }
+
+  .hero-left > p.mt-7.text-lg.font-semibold,
+  .hero-title-en {
+    font-size: 16px !important;
+    line-height: 1.75 !important;
+    letter-spacing: 0.18em !important;
+  }
+
+  .hero-left > p.mt-7.text-lg.leading-8 {
+    font-size: 17px !important;
+    line-height: 1.75 !important;
+  }
+
+  .hero-cta-row {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+    margin-top: 28px !important;
+  }
+
+  .hero-cta-button {
+    width: 100% !important;
+    min-height: 54px !important;
+    padding: 14px 18px !important;
+    font-size: 12px !important;
+    letter-spacing: 0.14em !important;
+  }
+
+  .hero-right {
+    max-width: 100% !important;
+    margin-top: 28px !important;
+  }
+
+  .messenger-floating-btn,
+  .whatsapp-floating-btn,
+  .whatsapp-chat-button,
+  .floating-whatsapp {
+    display: none !important;
+  }
+}
+
+@media (max-width: 420px) {
+  .hero-video-container .hero-title,
+  .hero-video-container .main-title,
+  .hero-video-container h1,
+  .hero-title-ka {
+    font-size: clamp(36px, 12vw, 50px) !important;
+  }
+
+  .hero-left > p.mt-7.text-lg.leading-8 {
+    font-size: 16px !important;
+  }
+}
