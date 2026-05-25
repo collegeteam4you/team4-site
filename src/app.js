@@ -1191,7 +1191,6 @@ function Hero({ lang }) {
         h(
           'div',
           { className: 'hero-left' },
-          h('p', { className: 'hero-top-text' }, lang === 'GEO' ? 'ლაშა ხურციძე / Team4 Sales College' : t.heroKicker),
           h(
             'h1',
             { className: 'hero-title hero-title-ka main-title' },
