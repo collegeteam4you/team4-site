@@ -2988,6 +2988,11 @@ header nav button[aria-pressed="true"] {
   box-shadow: 0 0 24px rgba(225, 6, 0, 0.35) !important;
 }
 
+.mobile-menu-toggle,
+.mobile-header-menu {
+  display: none !important;
+}
+
 @media (max-width: 992px) {
   .hero-video-container {
     padding: 110px 18px 44px !important;
@@ -3387,6 +3392,9 @@ button.site-cta:hover,
   }
 
   .mobile-menu-toggle {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
     flex: 0 0 auto !important;
     min-width: 58px !important;
     min-height: 38px !important;
