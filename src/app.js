@@ -10,7 +10,6 @@ let navItems = [
 
 let copy = {
   ENG: {
-    heroKicker: 'LASHA KHURTSIDZE / TEAM4 SALES COLLEGE',
     heroTitle: 'Sales Is Not Talent — It Is Psychology.',
     heroSubtitle: 'Sales • Negotiation • NLP • Digital Marketing',
     heroText: 'If your team works hard, but sales still are not growing —\nthe problem is not the product, it is communication.\n\nBook a free consultation and see where you are losing sales.',
@@ -81,7 +80,6 @@ let copy = {
     errorMessage: 'Message could not be sent. Check EmailJS configuration.',
   },
   GEO: {
-    heroKicker: 'ლაშა ხურციძე / თიმ ფორი გაყიდვების კოლეჯი',
     heroTitle: 'გაყიდვები ტალანტი არ არის — ეს ფსიქოლოგიაა.',
     heroSubtitle: 'გაყიდვები • მოლაპარაკება • NLP • ციფრული მარკეტინგი',
     heroText:
