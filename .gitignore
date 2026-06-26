@@ -1,4 +1,6 @@
 .data/
+source-docs/
+work-book-contact-sheet.jpg
 server.out.log
 server.err.log
 *.mojibake-backup

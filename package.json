@@ -1,5 +1,10 @@
 {
   "scripts": {
+    "start": "node server.js",
     "build": "mkdir -p dist && cp -r index.html admin.html terms.html privacy.html refund.html assets src vercel.json dist/"
+  },
+  "dependencies": {
+    "@vercel/blob": "^1.1.1",
+    "@vercel/postgres": "^0.10.0"
   }
 }
