@@ -1,4 +1,5 @@
 .data/
+dist/
 source-docs/
 work-book-contact-sheet.jpg
 server.out.log
