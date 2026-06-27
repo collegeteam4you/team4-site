@@ -1,8 +1,8 @@
+server.js
+src/
 .data/
-dist/
 source-docs/
 work-book-contact-sheet.jpg
 server.out.log
 server.err.log
-*.mojibake-backup
 *.zip
