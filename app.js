@@ -1,1 +1,0 @@
-// Vercel-safe placeholder. The live application bundle is served from /assets/team4-app.js.
