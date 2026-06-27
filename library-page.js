@@ -1,690 +1,300 @@
-const ADMIN_CONTENT_KEY = 'team4AdminContent';
-const TESTIMONIALS_KEY = 'team4Testimonials';
-const ADMIN_DEFAULT_USERNAME = 'TEAM4ADMIN';
-const ADMIN_EMAIL = 'collegeteam4you@gmail.com';
+(function () {
+  const { createElement: h } = React;
 
-const defaultContent = {
-  navItems: [
-    ['about', 'WHY TEAM4', 'რატომ თიმ ფორი'],
-    ['book', 'I Am The Answer', '„მე ვარ პასუხი“'],
-    ['programs', 'PROGRAMS', 'პროგრამები'],
-    ['winspace', 'WinSpace', 'ვინსფეისი'],
-    ['testimonials', 'Testimonials', 'შეფასებები'],
-  ],
-  copy: {
-    ENG: {
-      heroKicker: 'LASHA KHURTSIDZE / TEAM4 SALES COLLEGE',
-      heroSubtitle: 'Sales • Negotiation • NLP • Digital Marketing',
-      aboutTitle: 'Team4',
-      contactMe: 'SEND',
-    },
-    GEO: {
-      heroKicker: 'ლაშა ხურციძე / თიმ ფორი გაყიდვების კოლეჯი',
-      heroSubtitle: 'გაყიდვები • მოლაპარაკება • NLP • ციფრული მარკეტინგი',
-      aboutTitle: 'თიმ ფორი',
-      contactMe: 'გაგზავნა',
-    },
-  },
-  contactInfo: {
-    phone: '+995 577 208 606',
-    email: 'collegeteam4you@gmail.com',
-  },
-  socialLinks: [
-    ['Facebook', '@team4', 'https://www.facebook.com/profile.php?id=61571797572892', 'facebook'],
-    ['TikTok', 'collegeteam4you', 'https://www.tiktok.com/@collegeteam4you?lang=en', 'tiktok'],
-    ['Instagram', '__team.4', 'https://www.instagram.com/__team.4/', 'instagram'],
-    ['LinkedIn', 'Team4 - თიმ ფორი', 'https://www.linkedin.com/company/117234753/admin/dashboard/', 'linkedin'],
-  ],
-  footerLinks: [
-    { GEO: 'მომსახურების პირობები', ENG: 'Terms of Service', href: '/terms' },
-    { GEO: 'კონფიდენციალურობა', ENG: 'Privacy Policy', href: '/privacy' },
-    { GEO: 'თანხის დაბრუნება', ENG: 'Refund Policy', href: '/refund' },
-  ],
-  heroCardTitles: {
-    ENG: ['Professional Sales Manager', 'Coach', 'Sales Strategist'],
-    GEO: ['პროფესიონალი გაყიდვების მენეჯერი', 'ქოუჩი', 'გაყიდვების სტრატეგი'],
-  },
-  bookGalleryImages: [
-    './assets/book-gallery-01.webp',
-    './assets/book-gallery-02.webp',
-    './assets/book-gallery-03.webp',
-    './assets/book-gallery-04.webp',
-    './assets/book-gallery-05.webp',
-  ],
-  buttonLinks: {
-    winspace: 'https://www.youtube.com/@janamagalashvili',
-    commercialProjects: 'https://www.youtube.com/watch?v=hajmhs-cEq0&list=PLvcv-qMu_USis3A_DL5-aoGZgDDr9gCJk',
-    whatsapp: 'https://wa.me/995577208606',
-  },
-  assetUrls: {
-    team4Logo: './assets/team4-logo-hero.webp',
-    heroImage: './assets/lasha-hero-personal.webp',
-    winspaceLogo: './assets/winspace-logo.webp',
-  },
-  programs: [],
-};
+  function LibraryLogin({ onLogin }) {
+    const [firstName, setFirstName] = React.useState('');
+    const [lastName, setLastName] = React.useState('');
+    const [email, setEmail] = React.useState('');
+    const [phone, setPhone] = React.useState('');
+    const [message, setMessage] = React.useState('');
 
-const defaultTestimonials = [
-  {
-    id: 'default-1',
-    name: 'Nino G.',
-    quoteGeo: '“Team4-მა შეცვალა ის, როგორ ვესაუბრებით კლიენტებს.”',
-    quoteEng: '"Team4 changed the way our team speaks with clients."',
-    roleGeo: 'ბიზნესის მფლობელი',
-    roleEng: 'Business Owner',
-  },
-  {
-    id: 'default-2',
-    name: 'Irakli M.',
-    quoteGeo: '“მოლაპარაკების ტრენინგმა ერთი კონტრაქტით ამოიღო საკუთარი ღირებულება.”',
-    quoteEng: '"The negotiation training paid for itself in one contract."',
-    roleGeo: 'კომერციული მენეჯერი',
-    roleEng: 'Commercial Manager',
-  },
-  {
-    id: 'default-3',
-    name: 'Mariam K.',
-    quoteGeo: '“ლაშას მოაქვს სიცხადე, ენერგია და რეალური სისტემა.”',
-    quoteEng: '"Lasha brings clarity, energy, and a real system."',
-    roleGeo: 'გაყიდვების ლიდი',
-    roleEng: 'Sales Lead',
-  },
-];
-
-const root = document.getElementById('admin-root');
-
-const passwordMessage = 'Password must be at least 8 characters and include a number and special symbol.';
-
-const isStrongPassword = (password) => password.length >= 8 && /\d/.test(password) && /[^A-Za-z0-9]/.test(password);
-
-const showStatus = (node, message, isError = false) => {
-  node.textContent = message;
-  node.classList.toggle('admin-error', isError);
-  node.style.display = 'block';
-};
-
-const apiRequest = async (path, body) => {
-  const response = await fetch(path, {
-    method: body ? 'POST' : 'GET',
-    headers: body ? { 'Content-Type': 'application/json' } : undefined,
-    credentials: 'same-origin',
-    body: body ? JSON.stringify(body) : undefined,
-  });
-  const data = await response.json().catch(() => ({}));
-  if (!response.ok || data.ok === false) {
-    throw new Error(data.message || `Request failed with status ${response.status}`);
-  }
-  return data;
-};
-
-const checkSession = async () => {
-  const data = await apiRequest('/api/admin/session');
-  return Boolean(data.authenticated);
-};
-
-const loadContent = () => {
-  try {
-    return JSON.parse(localStorage.getItem(ADMIN_CONTENT_KEY)) || defaultContent;
-  } catch {
-    return defaultContent;
-  }
-};
-
-const saveContent = (content) => {
-  localStorage.setItem(ADMIN_CONTENT_KEY, JSON.stringify(content));
-};
-
-const pretty = (value) => JSON.stringify(value, null, 2);
-
-const normalizeTestimonial = (item, index = 0) => {
-  if (!item || typeof item !== 'object') return null;
-  const name = String(item.name || '').trim();
-  const quoteGeo = String(item.quoteGeo || item.quote || '').trim();
-  const quoteEng = String(item.quoteEng || item.quote || quoteGeo).trim();
-  const roleGeo = String(item.roleGeo || item.role || '').trim();
-  const roleEng = String(item.roleEng || item.role || roleGeo).trim();
-  if (!name || !quoteGeo || !quoteEng) return null;
-  return {
-    id: String(item.id || `comment-${Date.now()}-${index}`),
-    name,
-    quoteGeo,
-    quoteEng,
-    roleGeo,
-    roleEng,
-  };
-};
-
-const loadTestimonials = () => {
-  try {
-    const raw = localStorage.getItem(TESTIMONIALS_KEY);
-    if (raw === null) return defaultTestimonials;
-    const value = JSON.parse(raw);
-    const normalized = Array.isArray(value) ? value.map(normalizeTestimonial).filter(Boolean) : [];
-    return normalized;
-  } catch {
-    return defaultTestimonials;
-  }
-};
-
-const saveTestimonials = (items) => {
-  localStorage.setItem(TESTIMONIALS_KEY, JSON.stringify(items));
-};
-
-const el = (tag, attrs = {}, children = []) => {
-  const node = document.createElement(tag);
-  Object.entries(attrs).forEach(([key, value]) => {
-    if (key === 'className') node.className = value;
-    else if (key === 'text') node.textContent = value;
-    else if (key.startsWith('on')) node.addEventListener(key.slice(2).toLowerCase(), value);
-    else node.setAttribute(key, value);
-  });
-  children.forEach((child) => node.append(child));
-  return node;
-};
-
-const renderForgotPassword = () => {
-  root.innerHTML = '';
-  const status = el('p', { className: 'admin-status', text: '' });
-  status.style.display = 'none';
-
-  const codeInput = el('input', { className: 'admin-input', placeholder: '6-digit verification code', inputmode: 'numeric', maxlength: '6' });
-  const newPassword = el('input', { className: 'admin-input', placeholder: 'New password', type: 'password', autocomplete: 'new-password' });
-  const confirmPassword = el('input', { className: 'admin-input', placeholder: 'Confirm new password', type: 'password', autocomplete: 'new-password' });
-  const sendCodeButton = el('button', { className: 'admin-btn admin-btn-dark', type: 'button', text: 'Send Code' });
-  const resetButton = el('button', { className: 'admin-btn admin-btn-red', type: 'submit', text: 'Reset Password' });
-
-  sendCodeButton.addEventListener('click', async () => {
-    try {
-      sendCodeButton.disabled = true;
-      sendCodeButton.textContent = 'Sending...';
-      const result = await apiRequest('/api/admin/request-reset', {});
-      showStatus(status, result.message || `Verification code sent to ${ADMIN_EMAIL}.`);
-    } catch (error) {
-      console.error('Admin reset EmailJS error:', error);
-      showStatus(status, `Could not send reset code: ${error?.text || error?.message || 'EmailJS failed.'}`, true);
-    } finally {
-      sendCodeButton.disabled = false;
-      sendCodeButton.textContent = 'Send Code';
-    }
-  });
-
-  const form = el('form', { className: 'admin-form' }, [
-    el('p', { className: 'admin-kicker', text: 'Team4 Admin' }),
-    el('h1', { className: 'admin-title', text: 'Forgot Password' }),
-    el('p', { className: 'admin-muted', text: `A 6-digit verification code will be sent to ${ADMIN_EMAIL}.` }),
-    sendCodeButton,
-    codeInput,
-    newPassword,
-    confirmPassword,
-    resetButton,
-    el('button', { className: 'admin-btn admin-btn-dark', type: 'button', text: 'Back To Login', onClick: renderLogin }),
-    status,
-  ]);
-
-  form.addEventListener('submit', async (event) => {
-    event.preventDefault();
-    try {
-      if (!isStrongPassword(newPassword.value)) {
-        showStatus(status, passwordMessage, true);
+    const submit = (event) => {
+      event.preventDefault();
+      const result = window.Team4Library.login({ firstName, lastName, email, phone });
+      if (!result.ok) {
+        setMessage(result.message);
         return;
       }
-      if (newPassword.value !== confirmPassword.value) {
-        showStatus(status, 'Passwords do not match.', true);
-        return;
+      setMessage('');
+      onLogin(result.user);
+    };
+
+    return h(
+      'form',
+      { className: 'library-login-panel', onSubmit: submit },
+      h('p', { className: 'library-kicker' }, 'Team4 Library'),
+      h('h1', { className: 'library-title' }, 'Login / Register'),
+      h('p', { className: 'library-muted' }, 'წიგნის სანახავად შედი ან დარეგისტრირდი ელფოსტით. დამტკიცებული გადახდის შემდეგ წიგნი გამოჩნდება გვერდზე „ჩემი წიგნები“.'),
+      h(
+        'div',
+        { className: 'library-two' },
+        h('input', { className: 'library-input', value: firstName, placeholder: 'სახელი', onChange: (event) => setFirstName(event.target.value), autoComplete: 'given-name', required: true }),
+        h('input', { className: 'library-input', value: lastName, placeholder: 'გვარი', onChange: (event) => setLastName(event.target.value), autoComplete: 'family-name', required: true })
+      ),
+      h('input', { className: 'library-input', value: email, placeholder: 'ელფოსტა', type: 'email', onChange: (event) => setEmail(event.target.value), autoComplete: 'email', required: true }),
+      h('input', { className: 'library-input', value: phone, placeholder: 'ტელეფონი', type: 'tel', onChange: (event) => setPhone(event.target.value), autoComplete: 'tel', required: true }),
+      h('button', { className: 'library-action library-action-primary', type: 'submit' }, 'შესვლა / რეგისტრაცია'),
+      message && h('p', { className: 'library-error' }, message)
+    );
+  }
+
+  function OrderPanel({ user, orders, onChanged }) {
+    const [form, setForm] = React.useState({
+      firstName: user?.firstName || '',
+      lastName: user?.lastName || '',
+      email: user?.email || '',
+      phone: user?.phone || '',
+    });
+    const [createdOrder, setCreatedOrder] = React.useState(null);
+    const [bankDetails, setBankDetails] = React.useState(null);
+    const [receiptFile, setReceiptFile] = React.useState(null);
+    const [status, setStatus] = React.useState(null);
+    const [isSubmitting, setIsSubmitting] = React.useState(false);
+    const activeOrder = createdOrder || orders.find((order) => order.status !== 'Approved') || null;
+
+    const updateField = (key, value) => setForm((current) => ({ ...current, [key]: value }));
+
+    const submitOrder = async (event) => {
+      event.preventDefault();
+      setIsSubmitting(true);
+      setStatus(null);
+      try {
+        const result = await window.Team4Library.createManualOrder(form);
+        setCreatedOrder(result.order);
+        setBankDetails(result.bankDetails);
+        setStatus({ type: 'success', text: 'შეკვეთა შეიქმნა. გადარიცხვისას დანიშნულებაში მიუთითე გადახდის კოდი.' });
+        onChanged();
+      } catch (error) {
+        setStatus({ type: 'error', text: error.message || 'შეკვეთა ვერ შეიქმნა.' });
+      } finally {
+        setIsSubmitting(false);
       }
-      const result = await apiRequest('/api/admin/reset-password', {
-        code: codeInput.value.trim(),
-        newPassword: newPassword.value,
-      });
-      showStatus(status, result.message || 'Password changed. You can log in now.');
-      setTimeout(renderLogin, 900);
-    } catch (error) {
-      showStatus(status, `Could not reset password: ${error.message}`, true);
-    }
-  });
+    };
 
-  root.append(el('div', { className: 'admin-login' }, [el('section', { className: 'admin-card admin-login-card' }, [form])]));
-};
+    const uploadReceipt = async (event) => {
+      event.preventDefault();
+      if (!activeOrder?.paymentCode) return;
+      setIsSubmitting(true);
+      setStatus(null);
+      try {
+        await window.Team4Library.uploadReceipt(activeOrder.paymentCode, receiptFile);
+        setReceiptFile(null);
+        setStatus({ type: 'success', text: 'ქვითარი აიტვირთა. ადმინისტრატორი გადახდას შეამოწმებს და დაგიდასტურებთ.' });
+        onChanged();
+      } catch (error) {
+        setStatus({ type: 'error', text: error.message || 'ქვითარი ვერ აიტვირთა.' });
+      } finally {
+        setIsSubmitting(false);
+      }
+    };
 
-const renderLogin = () => {
-  root.innerHTML = '';
-  const status = el('p', { className: 'admin-status admin-error', text: '' });
-  status.style.display = 'none';
-
-  const username = el('input', { className: 'admin-input', placeholder: 'Username', autocomplete: 'username' });
-  username.value = ADMIN_DEFAULT_USERNAME;
-  const password = el('input', { className: 'admin-input', placeholder: 'Password', type: 'password', autocomplete: 'current-password' });
-  const form = el('form', { className: 'admin-form' }, [
-    el('p', { className: 'admin-kicker', text: 'Team4 Admin' }),
-    el('h1', { className: 'admin-title', text: 'Login' }),
-    el('p', { className: 'admin-muted', text: 'Edit website content locally before deployment.' }),
-    username,
-    password,
-    el('button', { className: 'admin-btn admin-btn-red', type: 'submit', text: 'Login' }),
-    el('button', { className: 'admin-btn admin-btn-dark', type: 'button', text: 'Forgot Password', onClick: renderForgotPassword }),
-    status,
-  ]);
-
-  form.addEventListener('submit', async (event) => {
-    event.preventDefault();
-    try {
-      await apiRequest('/api/admin/login', {
-        username: username.value.trim(),
-        password: password.value,
-      });
-      renderDashboard();
-      return;
-    } catch (error) {
-      status.textContent = error.message || 'Invalid username or password.';
-      status.style.display = 'block';
-    }
-  });
-
-  root.append(el('div', { className: 'admin-login' }, [el('section', { className: 'admin-card admin-login-card' }, [form])]));
-};
-
-const jsonField = (label, key, value) => {
-  const textarea = el('textarea', { className: 'admin-textarea', id: key });
-  textarea.value = pretty(value);
-  return el('label', { className: 'admin-label' }, [document.createTextNode(label), textarea]);
-};
-
-const collapsibleJsonField = (field) => {
-  const label = field.firstChild?.textContent || 'Editable Section';
-  return el('details', { className: 'admin-card admin-section admin-details' }, [
-    el('summary', { className: 'admin-details-summary' }, [
-      el('span', { text: label }),
-      el('small', { text: 'Open / edit / save JSON' }),
-    ]),
-    field,
-  ]);
-};
-
-const renderTestimonialsManager = () => {
-  const wrap = el('details', { className: 'admin-card admin-section admin-details admin-comments-section', open: 'open' });
-  const status = el('p', { className: 'admin-status', text: '' });
-  status.style.display = 'none';
-  const list = el('div', { className: 'admin-comments-list' });
-  let editingId = null;
-
-  const nameInput = el('input', { className: 'admin-input', placeholder: 'Name' });
-  const roleGeoInput = el('input', { className: 'admin-input', placeholder: 'Position / Company GEO' });
-  const roleEngInput = el('input', { className: 'admin-input', placeholder: 'Position / Company ENG' });
-  const quoteGeoInput = el('textarea', { className: 'admin-textarea admin-textarea-small', placeholder: 'Comment GEO' });
-  const quoteEngInput = el('textarea', { className: 'admin-textarea admin-textarea-small', placeholder: 'Comment ENG' });
-
-  const showMessage = (message, isError = false) => {
-    showStatus(status, message, isError);
-  };
-
-  const clearForm = () => {
-    editingId = null;
-    nameInput.value = '';
-    roleGeoInput.value = '';
-    roleEngInput.value = '';
-    quoteGeoInput.value = '';
-    quoteEngInput.value = '';
-  };
-
-  const fillForm = (item) => {
-    editingId = item.id;
-    nameInput.value = item.name || '';
-    roleGeoInput.value = item.roleGeo || '';
-    roleEngInput.value = item.roleEng || '';
-    quoteGeoInput.value = item.quoteGeo || '';
-    quoteEngInput.value = item.quoteEng || '';
-    nameInput.focus();
-  };
-
-  const draw = () => {
-    const items = loadTestimonials();
-    list.innerHTML = '';
-    if (!items.length) {
-      list.append(el('p', { className: 'admin-muted', text: 'No visitor comments saved yet.' }));
-      return;
-    }
-
-    items.forEach((item, index) => {
-      const editButton = el('button', {
-        className: 'admin-btn admin-btn-dark admin-btn-small',
-        type: 'button',
-        text: 'Edit',
-      });
-      editButton.addEventListener('click', () => {
-        fillForm(item);
-        showMessage(`Editing comment ${index + 1}. Save when ready.`);
-      });
-
-      const deleteButton = el('button', {
-        className: 'admin-btn admin-btn-danger admin-btn-small',
-        type: 'button',
-        text: 'Delete',
-      });
-      deleteButton.addEventListener('click', () => {
-        if (!window.confirm(`Delete comment from ${item.name || 'this visitor'}?`)) return;
-        const nextItems = loadTestimonials().filter((current) => current.id !== item.id);
-        saveTestimonials(nextItems);
-        draw();
-        showMessage('Comment deleted. Refresh the website preview to see changes.');
-      });
-
-      list.append(
-        el('article', { className: 'admin-comment-item' }, [
-          el('div', { className: 'admin-comment-copy' }, [
-            el('strong', { text: `${index + 1}. ${item.name || 'Unnamed'}` }),
-            el('span', { text: `${item.roleGeo || 'No GEO role'} / ${item.roleEng || 'No ENG role'}` }),
-            el('p', { text: item.quoteGeo || 'No GEO comment text' }),
-            el('p', { text: item.quoteEng || 'No ENG comment text' }),
-          ]),
-          el('div', { className: 'admin-comment-actions' }, [
-            editButton,
-            deleteButton,
-          ]),
-        ])
-      );
-    });
-  };
-
-  const saveCommentButton = el('button', { className: 'admin-btn admin-btn-red', type: 'button', text: 'Save Comment' });
-  saveCommentButton.addEventListener('click', () => {
-    const nextItem = normalizeTestimonial({
-      id: editingId || `admin-${Date.now()}`,
-      name: nameInput.value,
-      roleGeo: roleGeoInput.value,
-      roleEng: roleEngInput.value,
-      quoteGeo: quoteGeoInput.value,
-      quoteEng: quoteEngInput.value,
-    });
-    if (!nextItem) {
-      showMessage('Name, GEO comment and ENG comment are required.', true);
-      return;
-    }
-    const items = loadTestimonials();
-    const nextItems = editingId
-      ? items.map((item) => (item.id === editingId ? nextItem : item))
-      : [nextItem, ...items];
-    saveTestimonials(nextItems);
-    clearForm();
-    draw();
-    showMessage('Comment saved. Refresh the website preview to see changes.');
-  });
-
-  const newButton = el('button', { className: 'admin-btn admin-btn-dark', type: 'button', text: 'New Comment' });
-  newButton.addEventListener('click', () => {
-    clearForm();
-    showMessage('Ready to add a new comment.');
-  });
-
-  const refreshButton = el('button', { className: 'admin-btn admin-btn-dark', type: 'button', text: 'Refresh Comments' });
-  refreshButton.addEventListener('click', () => {
-    draw();
-    showMessage('Comment list refreshed.');
-  });
-
-  const deleteAllButton = el('button', { className: 'admin-btn admin-btn-danger', type: 'button', text: 'Delete All Comments' });
-  deleteAllButton.addEventListener('click', () => {
-    if (!window.confirm('Delete all visitor comments?')) return;
-    saveTestimonials([]);
-    draw();
-    showMessage('All visitor comments deleted. Refresh the website preview to see changes.');
-  });
-
-  const resetDefaultsButton = el('button', { className: 'admin-btn admin-btn-dark', type: 'button', text: 'Restore Default Comments' });
-  resetDefaultsButton.addEventListener('click', () => {
-    if (!window.confirm('Restore the original default comments? Current custom comments will be replaced.')) return;
-    saveTestimonials(defaultTestimonials);
-    clearForm();
-    draw();
-    showMessage('Default comments restored.');
-  });
-
-  wrap.append(
-    el('summary', { className: 'admin-details-summary' }, [
-      el('span', { text: 'Comments / Testimonials Manager' }),
-      el('small', { text: 'Add, edit, delete, restore' }),
-    ]),
-    el('p', { className: 'admin-muted', text: 'Manage every public testimonial/comment here. GEO and ENG fields are saved separately, and the public site can display 100+ comments.' }),
-    el('div', { className: 'admin-comment-editor' }, [
-      nameInput,
-      el('div', { className: 'admin-two' }, [roleGeoInput, roleEngInput]),
-      el('div', { className: 'admin-two' }, [quoteGeoInput, quoteEngInput]),
-      el('div', { className: 'admin-button-row' }, [saveCommentButton, newButton]),
-    ]),
-    el('div', { className: 'admin-button-row' }, [refreshButton, resetDefaultsButton, deleteAllButton]),
-    status,
-    list
-  );
-  draw();
-  return wrap;
-};
-
-const renderPurchasesManager = () => {
-  const wrap = el('section', { className: 'admin-card admin-section admin-purchases-section' });
-  const status = el('p', { className: 'admin-status', text: '' });
-  status.style.display = 'none';
-  const tbody = el('tbody');
-
-  const showMessage = (message, isError = false) => showStatus(status, message, isError);
-
-  const drawRows = (orders = []) => {
-    tbody.innerHTML = '';
-    if (!orders.length) {
-      tbody.append(el('tr', {}, [el('td', { colspan: '11', text: 'No manual payment orders yet.' })]));
-      return;
-    }
-
-    orders.forEach((order) => {
-      const approveButton = el('button', { className: 'admin-btn admin-btn-red admin-btn-small', type: 'button', text: 'Approve' });
-      const rejectButton = el('button', { className: 'admin-btn admin-btn-danger admin-btn-small', type: 'button', text: 'Reject' });
-
-      approveButton.disabled = order.status === 'Approved';
-      rejectButton.disabled = order.status === 'Rejected';
-
-      approveButton.addEventListener('click', async () => {
-        if (!window.confirm(`Approve order ${order.paymentCode}?`)) return;
-        try {
-          await apiRequest('/api/admin/orders/approve', { orderCode: order.paymentCode });
-          showMessage(`Order ${order.paymentCode} approved.`);
-          await loadOrders();
-        } catch (error) {
-          showMessage(error.message || 'Could not approve order.', true);
-        }
-      });
-
-      rejectButton.addEventListener('click', async () => {
-        const reason = window.prompt(`Reject reason for ${order.paymentCode}:`, order.rejectReason || '');
-        if (reason === null) return;
-        try {
-          await apiRequest('/api/admin/orders/reject', { orderCode: order.paymentCode, reason });
-          showMessage(`Order ${order.paymentCode} rejected.`);
-          await loadOrders();
-        } catch (error) {
-          showMessage(error.message || 'Could not reject order.', true);
-        }
-      });
-
-      const receiptCell = order.receiptUrl
-        ? el('a', { href: order.receiptUrl, target: '_blank', rel: 'noopener', text: 'Open receipt' })
-        : document.createTextNode('-');
-
-      tbody.append(
-        el('tr', {}, [
-          el('td', { text: order.orderNumber || '-' }),
-          el('td', { text: order.firstName || '-' }),
-          el('td', { text: order.lastName || '-' }),
-          el('td', { text: order.email || '-' }),
-          el('td', { text: order.phone || '-' }),
-          el('td', { text: `${order.amount || '14.90'} ${order.currency || 'GEL'}` }),
-          el('td', { text: order.paymentCode || '-' }),
-          el('td', {}, [receiptCell]),
-          el('td', { text: order.status || '-' }),
-          el('td', { text: order.createdAt ? new Date(order.createdAt).toLocaleString() : '-' }),
-          el('td', {}, [el('div', { className: 'admin-order-actions' }, [approveButton, rejectButton])]),
-        ])
-      );
-    });
-  };
-
-  async function loadOrders() {
-    try {
-      showMessage('Loading orders...');
-      const result = await apiRequest('/api/admin/orders');
-      drawRows(result.orders || []);
-      status.style.display = 'none';
-    } catch (error) {
-      drawRows([]);
-      showMessage(error.message || 'Could not load orders.', true);
-    }
+    return h(
+      'section',
+      { className: 'library-order-panel' },
+      h('p', { className: 'library-kicker' }, 'Manual Payment'),
+      h('h2', null, 'შეიძინე 14.90 ლარად'),
+      h('p', { className: 'library-muted' }, 'შეკვეთის შემდეგ გამოჩნდება საბანკო რეკვიზიტები და უნიკალური გადახდის კოდი. ქვითრის ატვირთვის შემდეგ შეკვეთა Pending სტატუსით გადავა ადმინისტრატორთან.'),
+      activeOrder &&
+        h(
+          'div',
+          { className: 'library-order-status' },
+          h('strong', null, `${activeOrder.paymentCode} / ${activeOrder.status}`),
+          activeOrder.rejectReason && h('span', null, activeOrder.rejectReason)
+        ),
+      !activeOrder &&
+        h(
+          'form',
+          { className: 'library-order-form', onSubmit: submitOrder },
+          h('div', { className: 'library-two' },
+            h('input', { className: 'library-input', required: true, placeholder: 'სახელი', value: form.firstName, onChange: (event) => updateField('firstName', event.target.value) }),
+            h('input', { className: 'library-input', required: true, placeholder: 'გვარი', value: form.lastName, onChange: (event) => updateField('lastName', event.target.value) })
+          ),
+          h('input', { className: 'library-input', required: true, type: 'email', placeholder: 'ელფოსტა', value: form.email, onChange: (event) => updateField('email', event.target.value) }),
+          h('input', { className: 'library-input', required: true, type: 'tel', placeholder: 'ტელეფონი', value: form.phone, onChange: (event) => updateField('phone', event.target.value) }),
+          h('button', { className: 'library-action library-action-primary', disabled: isSubmitting, type: 'submit' }, isSubmitting ? 'იგზავნება...' : 'შეიძინე 14.90 ლარად')
+        ),
+      (bankDetails || activeOrder) &&
+        h(
+          'div',
+          { className: 'library-bank-details' },
+          h('p', null, h('strong', null, 'მიმღები: '), bankDetails?.receiver || 'ლაშა ხურციძე'),
+          h('p', null, h('strong', null, 'ანგარიში: '), bankDetails?.account || 'GE12BG0000000536600132'),
+          h('p', null, h('strong', null, 'თანხა: '), '14.90 ლარი'),
+          h('p', null, h('strong', null, 'დანიშნულება: '), bankDetails?.purpose || activeOrder?.paymentCode)
+        ),
+      activeOrder &&
+        h(
+          'form',
+          { className: 'library-order-form', onSubmit: uploadReceipt },
+          h('label', { className: 'library-file-label' }, 'ქვითრის ატვირთვა', h('input', { type: 'file', accept: 'image/png,image/jpeg,image/webp,application/pdf', onChange: (event) => setReceiptFile(event.target.files?.[0] || null), required: true })),
+          h('button', { className: 'library-action library-action-primary', disabled: isSubmitting, type: 'submit' }, isSubmitting ? 'იტვირთება...' : 'ქვითრის გაგზავნა')
+        ),
+      status && h('p', { className: status.type === 'error' ? 'library-error' : 'library-success' }, status.text)
+    );
   }
 
-  wrap.append(
-    el('h2', { className: 'admin-section-title', text: 'Manual Payment Orders' }),
-    el('p', {
-      className: 'admin-muted',
-      text: 'Approve or reject uploaded bank transfer receipts. Approved orders unlock the online book in the customer cabinet.',
-    }),
-    status,
-    el('button', { className: 'admin-btn admin-btn-dark admin-btn-small', type: 'button', text: 'Refresh Orders', onClick: loadOrders }),
-    el('div', { className: 'admin-table-scroll' }, [
-      el('table', { className: 'admin-table' }, [
-        el('thead', {}, [
-          el('tr', {}, [
-            el('th', { text: 'Order #' }),
-            el('th', { text: 'First Name' }),
-            el('th', { text: 'Last Name' }),
-            el('th', { text: 'Email' }),
-            el('th', { text: 'Phone' }),
-            el('th', { text: 'Amount' }),
-            el('th', { text: 'Payment Code' }),
-            el('th', { text: 'Receipt' }),
-            el('th', { text: 'Status' }),
-            el('th', { text: 'Created At' }),
-            el('th', { text: 'Actions' }),
-          ]),
-        ]),
-        tbody,
-      ]),
-    ])
-  );
+  function ProtectedReader({ user, item }) {
+    const readerBlocks = Array.isArray(item.blocks) && item.blocks.length ? item.blocks : null;
+    const readerBody = item.body || '';
+    const watermark = user?.email || '';
+    const chapters = (readerBlocks || [])
+      .map((block, index) => (block.type === 'heading' ? { text: block.text, index } : null))
+      .filter(Boolean);
+    const [progress, setProgress] = React.useState(() => window.Team4Library.getProgress(user?.email, item.id).percent || 0);
 
-  loadOrders();
-  return wrap;
-};
+    React.useEffect(() => {
+      const stop = (event) => {
+        event.preventDefault();
+        return false;
+      };
+      const stopKeys = (event) => {
+        const key = String(event.key || '').toLowerCase();
+        if ((event.ctrlKey || event.metaKey) && ['c', 'p', 's'].includes(key)) event.preventDefault();
+      };
+      document.addEventListener('copy', stop);
+      document.addEventListener('cut', stop);
+      document.addEventListener('selectstart', stop);
+      document.addEventListener('contextmenu', stop);
+      document.addEventListener('keydown', stopKeys);
+      return () => {
+        document.removeEventListener('copy', stop);
+        document.removeEventListener('cut', stop);
+        document.removeEventListener('selectstart', stop);
+        document.removeEventListener('contextmenu', stop);
+        document.removeEventListener('keydown', stopKeys);
+      };
+    }, []);
 
-const renderDashboard = () => {
-  root.innerHTML = '';
-  const content = loadContent();
-  const status = el('p', { className: 'admin-status', text: '' });
-  status.style.display = 'none';
-  const passwordStatus = el('p', { className: 'admin-status', text: '' });
-  passwordStatus.style.display = 'none';
+    React.useEffect(() => {
+      const saved = window.Team4Library.getProgress(user?.email, item.id);
+      const restore = window.setTimeout(() => {
+        if (saved.scrollY > 0) window.scrollTo({ top: saved.scrollY, behavior: 'auto' });
+      }, 120);
+      const updateProgress = () => {
+        const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+        const nextPercent = Math.min(100, Math.max(0, Math.round((window.scrollY / maxScroll) * 100)));
+        setProgress(nextPercent);
+        window.Team4Library.setProgress(user?.email, item.id, { percent: nextPercent, scrollY: window.scrollY });
+      };
+      updateProgress();
+      window.addEventListener('scroll', updateProgress, { passive: true });
+      return () => {
+        window.clearTimeout(restore);
+        window.removeEventListener('scroll', updateProgress);
+      };
+    }, [item.id, user?.email]);
 
-  const currentPassword = el('input', { className: 'admin-input', placeholder: 'Current password', type: 'password', autocomplete: 'current-password' });
-  const newPassword = el('input', { className: 'admin-input', placeholder: 'New password', type: 'password', autocomplete: 'new-password' });
-  const confirmPassword = el('input', { className: 'admin-input', placeholder: 'Confirm new password', type: 'password', autocomplete: 'new-password' });
+    const jumpToBlock = (index) => {
+      const node = document.getElementById(`book-block-${index}`);
+      if (node) node.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
 
-  const fields = [
-    jsonField('Header menu GEO/ENG', 'navItems', content.navItems || []),
-    jsonField('Hero, About, Footer, Buttons GEO/ENG Copy', 'copy', content.copy || {}),
-    jsonField('Programs / Service Cards / Syllabuses / Images', 'programs', content.programs || []),
-    jsonField('Contact Info', 'contactInfo', content.contactInfo || {}),
-    jsonField('Social Links', 'socialLinks', content.socialLinks || []),
-    jsonField('Footer Policy Links', 'footerLinks', content.footerLinks || []),
-    jsonField('Button Links / CTA URLs / WhatsApp Number', 'buttonLinks', content.buttonLinks || {}),
-    jsonField('Images / Logo URLs', 'assetUrls', content.assetUrls || {}),
-    jsonField('Hero Image Titles GEO/ENG', 'heroCardTitles', content.heroCardTitles || {}),
-    jsonField('Book Gallery / Image URLs', 'bookGalleryImages', content.bookGalleryImages || []),
-  ];
-
-  const save = () => {
-    try {
-      const nextContent = fields.reduce((acc, field) => {
-        const textarea = field.querySelector('textarea');
-        acc[textarea.id] = JSON.parse(textarea.value);
-        return acc;
-      }, {});
-      saveContent(nextContent);
-      status.classList.remove('admin-error');
-      status.textContent = 'Saved. Refresh the website preview to see changes.';
-      status.style.display = 'block';
-    } catch (error) {
-      status.classList.add('admin-error');
-      status.textContent = `Could not save: ${error.message}`;
-      status.style.display = 'block';
-    }
-  };
-
-  const reset = () => {
-    localStorage.removeItem(ADMIN_CONTENT_KEY);
-    renderDashboard();
-  };
-
-  const logout = async () => {
-    await apiRequest('/api/admin/logout', {});
-    renderLogin();
-  };
-
-  const changePasswordForm = el('form', { className: 'admin-form admin-password-form' }, [
-    el('h2', { className: 'admin-section-title', text: 'Change Password' }),
-    el('p', { className: 'admin-muted', text: 'Minimum 8 characters. Use at least one number and one special symbol.' }),
-    el('div', { className: 'admin-two' }, [currentPassword, newPassword]),
-    confirmPassword,
-    el('button', { className: 'admin-btn admin-btn-red', type: 'submit', text: 'Change Password' }),
-    passwordStatus,
-  ]);
-
-  changePasswordForm.addEventListener('submit', async (event) => {
-    event.preventDefault();
-    if (!isStrongPassword(newPassword.value)) {
-      showStatus(passwordStatus, passwordMessage, true);
-      return;
-    }
-    if (newPassword.value !== confirmPassword.value) {
-      showStatus(passwordStatus, 'Passwords do not match.', true);
-      return;
-    }
-    try {
-      const result = await apiRequest('/api/admin/change-password', {
-        currentPassword: currentPassword.value,
-        newPassword: newPassword.value,
-      });
-      currentPassword.value = '';
-      newPassword.value = '';
-      confirmPassword.value = '';
-      showStatus(passwordStatus, result.message || 'Password changed successfully. Please log in again.');
-      setTimeout(renderLogin, 900);
-    } catch (error) {
-      showStatus(passwordStatus, error.message || 'Could not change password.', true);
-    }
-  });
-
-  root.append(
-    el('div', { className: 'admin-shell' }, [
-      el('p', { className: 'admin-kicker', text: 'Team4 Sales College' }),
-      el('h1', { className: 'admin-title', text: 'Admin Dashboard' }),
-      el('p', {
-        className: 'admin-muted',
-        text: 'Edit JSON fields, save, then preview the website. GEO and ENG content are separate inside the copy/program objects.',
-      }),
-      el('div', { className: 'admin-button-row' }, [
-        el('button', { className: 'admin-btn admin-btn-red', type: 'button', text: 'Save', onClick: save }),
-        el('button', { className: 'admin-btn admin-btn-dark', type: 'button', text: 'Preview Website', onClick: () => window.open('/index.html', '_blank') }),
-        el('button', { className: 'admin-btn admin-btn-dark', type: 'button', text: 'Reset Local Edits', onClick: reset }),
-        el('button', { className: 'admin-btn admin-btn-dark', type: 'button', text: 'Logout', onClick: logout }),
-      ]),
-      status,
-      el('section', { className: 'admin-card admin-section admin-password-card' }, [changePasswordForm]),
-      renderPurchasesManager(),
-      renderTestimonialsManager(),
-      el('div', { className: 'admin-grid' }, fields.map(collapsibleJsonField)),
-    ])
-  );
-};
-
-(async () => {
-  if (await checkSession()) {
-    renderDashboard();
-  } else {
-    renderLogin();
+    return h(
+      'section',
+      { className: 'library-reader-shell' },
+      h(
+        'aside',
+        { className: 'library-books-panel' },
+        h('p', { className: 'library-kicker' }, 'ჩემი წიგნები'),
+        h('article', { className: 'library-book-card' }, h('img', { src: item.cover, alt: item.title, className: 'library-book-cover', loading: 'lazy' }), h('div', null, h('h2', null, item.title), h('p', null, item.description)), h('span', { className: 'library-status is-open' }, 'წვდომა აქტიურია')),
+        h('div', { className: 'library-progress' }, h('span', null, `წაკითხულია ${progress}%`), h('div', null, h('i', { style: { width: `${progress}%` } }))),
+        chapters.length > 0 &&
+          h('nav', { className: 'library-chapters' }, h('strong', null, 'თავები'), chapters.map((chapter) => h('button', { key: `chapter-${chapter.index}`, type: 'button', onClick: () => jumpToBlock(chapter.index) }, chapter.text)))
+      ),
+      h(
+        'article',
+        { className: 'library-reader is-protected', style: { '--reader-watermark': `"${watermark}"` } },
+        h('h1', { className: 'library-title' }, item.title),
+        h(
+          'div',
+          { className: 'library-book-body' },
+          readerBlocks
+            ? readerBlocks.map((block, index) =>
+                block.type === 'image'
+                  ? h('figure', { key: `book-image-${index}`, id: `book-block-${index}`, className: 'library-book-figure' }, h('img', { src: block.src, alt: block.alt || item.title, loading: 'lazy' }))
+                  : block.type === 'heading'
+                    ? h('h2', { key: `book-heading-${index}`, id: `book-block-${index}`, className: 'library-book-heading' }, block.text)
+                    : h('p', { key: `book-paragraph-${index}`, id: `book-block-${index}` }, block.text)
+              )
+            : readerBody.split('\n\n').map((paragraph, index) => h('p', { key: `book-paragraph-${index}` }, paragraph))
+        )
+      )
+    );
   }
+
+  function LibraryPage({ lang, setLang, Header, Footer }) {
+    const catalogItem = window.Team4Library.catalog[0];
+    const [user, setUser] = React.useState(() => window.Team4Library.getUser());
+    const [orders, setOrders] = React.useState([]);
+    const [entitlements, setEntitlements] = React.useState([]);
+    const [isLoading, setIsLoading] = React.useState(false);
+    const [refreshKey, setRefreshKey] = React.useState(0);
+    const hasAccess = window.Team4Library.hasAccessFromEntitlements(catalogItem.id, entitlements);
+
+    React.useEffect(() => {
+      if (!user) return undefined;
+      let active = true;
+      setIsLoading(true);
+      Promise.all([window.Team4Library.fetchUserOrders(user.email), window.Team4Library.fetchEntitlements(user.email)])
+        .then(([orderResult, entitlementResult]) => {
+          if (!active) return;
+          setOrders(orderResult.orders || []);
+          setEntitlements(entitlementResult.items || []);
+        })
+        .catch(() => {
+          if (!active) return;
+          setOrders([]);
+          setEntitlements([]);
+        })
+        .finally(() => {
+          if (active) setIsLoading(false);
+        });
+      return () => {
+        active = false;
+      };
+    }, [user, refreshKey]);
+
+    const logout = () => {
+      window.Team4Library.logout();
+      setUser(null);
+      setOrders([]);
+      setEntitlements([]);
+    };
+
+    return h(
+      React.Fragment,
+      null,
+      h('div', { className: 'luxury-light-field', 'aria-hidden': 'true' }),
+      h(Header, { lang, setLang }),
+      h(
+        'main',
+        { className: 'library-page' },
+        user
+          ? h(
+              React.Fragment,
+              null,
+              h('div', { className: 'library-userbar' }, h('span', null, `${user.name} / ${user.email}`), h('button', { type: 'button', onClick: logout }, 'გასვლა')),
+              isLoading && h('p', { className: 'library-loading' }, 'იტვირთება...'),
+              hasAccess
+                ? h(ProtectedReader, { user, item: catalogItem })
+                : h(
+                    'section',
+                    { className: 'library-cabinet-shell' },
+                    h(
+                      'div',
+                      { className: 'library-books-panel' },
+                      h('p', { className: 'library-kicker' }, 'ჩემი წიგნები'),
+                      h('article', { className: 'library-book-card' }, h('img', { src: catalogItem.cover, alt: catalogItem.title, className: 'library-book-cover', loading: 'lazy' }), h('div', null, h('h2', null, catalogItem.title), h('p', null, 'Approved სტატუსის შემდეგ წიგნი აქ გაიხსნება.'))),
+                      orders.length ? h('div', { className: 'library-order-list' }, orders.map((order) => h('p', { key: order.paymentCode }, `${order.paymentCode} / ${order.status}`))) : h('p', { className: 'library-muted' }, 'ჯერ დადასტურებული წიგნი არ გაქვს.')
+                    ),
+                    h(OrderPanel, { user, orders, onChanged: () => setRefreshKey((value) => value + 1) })
+                  )
+            )
+          : h(LibraryLogin, { onLogin: setUser })
+      ),
+      h(Footer, { lang })
+    );
+  }
+
+  window.Team4ManualLibraryPage = LibraryPage;
 })();
