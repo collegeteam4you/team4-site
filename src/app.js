@@ -1009,6 +1009,20 @@ async function sendContactWithEmailJsBrowser(contactFormData) {
   );
 }
 
+async function sendContact(contactFormData) {
+  const response = await fetch('/api/contact/send', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'same-origin',
+    body: JSON.stringify(contactFormData),
+  });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok || data.ok === false) {
+    throw new Error(data.message || `Request failed with status ${response.status}`);
+  }
+  return data;
+}
+
 async function handleContactSubmit(event, lang, setFormStatus, setIsSubmitting) {
   event.preventDefault();
   const t = copy[lang];
@@ -1037,7 +1051,12 @@ async function handleContactSubmit(event, lang, setFormStatus, setIsSubmitting) 
       message,
     };
 
-    await sendContactWithEmailJsBrowser(contactFormData);
+    try {
+      await sendContact(contactFormData);
+    } catch (backendError) {
+      if (window.location.protocol !== 'file:') throw backendError;
+      await sendContactWithEmailJsBrowser(contactFormData);
+    }
 
     if (formElement) {
       formElement.reset();
@@ -1328,7 +1347,7 @@ function BookGallery({ lang }) {
         h(
           'a',
             {
-              href: '#contact',
+              href: '/library',
               className: 'site-cta book-purchase-button group mt-6 inline-flex min-h-14 items-center justify-center gap-3 px-10 py-5 text-sm font-black uppercase tracking-[0.26em] text-white transition duration-300',
             },
           t.purchaseButton,
@@ -1859,12 +1878,196 @@ function Footer({ lang }) {
   );
 }
 
+function LibraryLogin({ onLogin }) {
+  const [name, setName] = React.useState('');
+  const [email, setEmail] = React.useState('');
+  const [message, setMessage] = React.useState('');
+
+  const submit = (event) => {
+    event.preventDefault();
+    const result = window.Team4Library.login({ name, email });
+    if (!result.ok) {
+      setMessage(result.message);
+      return;
+    }
+    setMessage('');
+    onLogin(result.user);
+  };
+
+  return h(
+    'form',
+    { className: 'library-login-panel', onSubmit: submit },
+    h('p', { className: 'library-kicker' }, 'Team4 Library'),
+    h('h1', { className: 'library-title' }, 'ჩემი წიგნები'),
+    h('p', { className: 'library-muted' }, window.Team4Library.lockedMessage),
+    h('input', {
+      className: 'library-input',
+      value: name,
+      placeholder: 'სახელი',
+      onChange: (event) => setName(event.target.value),
+      autoComplete: 'name',
+    }),
+    h('input', {
+      className: 'library-input',
+      value: email,
+      placeholder: 'ელფოსტა',
+      type: 'email',
+      onChange: (event) => setEmail(event.target.value),
+      autoComplete: 'email',
+      required: true,
+    }),
+    h('button', { className: 'library-action library-action-primary', type: 'submit' }, 'შესვლა'),
+    message && h('p', { className: 'library-error' }, message)
+  );
+}
+
+function ProtectedReader({ user, item, hasAccess, onGrantAccess }) {
+  const readerBlocks = Array.isArray(item.blocks) && item.blocks.length ? item.blocks : null;
+  const readerBody =
+    item.body ||
+    (Array.isArray(item.chapters)
+      ? item.chapters
+          .map((entry) => entry.body)
+          .filter(Boolean)
+          .join('\n\n')
+      : '');
+  const watermark = `${user?.name || ''} ${user?.email || ''}`.trim();
+
+  React.useEffect(() => {
+    if (!hasAccess) return undefined;
+
+    const stop = (event) => {
+      event.preventDefault();
+      return false;
+    };
+
+    const stopKeys = (event) => {
+      const key = String(event.key || '').toLowerCase();
+      if ((event.ctrlKey || event.metaKey) && ['c', 'p', 's'].includes(key)) {
+        event.preventDefault();
+      }
+    };
+
+    document.addEventListener('copy', stop);
+    document.addEventListener('cut', stop);
+    document.addEventListener('contextmenu', stop);
+    document.addEventListener('keydown', stopKeys);
+    return () => {
+      document.removeEventListener('copy', stop);
+      document.removeEventListener('cut', stop);
+      document.removeEventListener('contextmenu', stop);
+      document.removeEventListener('keydown', stopKeys);
+    };
+  }, [hasAccess]);
+
+  return h(
+    'section',
+    { className: 'library-reader-shell' },
+    h(
+      'aside',
+      { className: 'library-books-panel' },
+      h('p', { className: 'library-kicker' }, 'ჩემი წიგნები'),
+      h(
+        'article',
+        { className: 'library-book-card' },
+        h('img', { src: item.cover, alt: item.title, className: 'library-book-cover', loading: 'lazy' }),
+        h('div', null, h('h2', null, item.title), h('p', null, item.description)),
+        h('span', { className: hasAccess ? 'library-status is-open' : 'library-status' }, hasAccess ? 'წვდომა აქტიურია' : 'დახურულია')
+      ),
+      !hasAccess &&
+        h(
+          'button',
+          { className: 'library-action library-action-primary', type: 'button', onClick: onGrantAccess },
+          'Demo: გადახდა დასრულდა'
+        )
+    ),
+    h(
+      'article',
+      {
+        className: `library-reader ${hasAccess ? 'is-protected' : 'is-locked'}`,
+        style: hasAccess ? { '--reader-watermark': `"${watermark}"` } : undefined,
+      },
+      h('h1', { className: 'library-title' }, item.title),
+      hasAccess
+        ? h(
+            'div',
+            { className: 'library-book-body' },
+            readerBlocks
+              ? readerBlocks.map((block, index) =>
+                  block.type === 'image'
+                    ? h(
+                        'figure',
+                        { key: `book-image-${index}`, className: 'library-book-figure' },
+                        h('img', { src: block.src, alt: block.alt || item.title, loading: 'lazy' })
+                      )
+                    : block.type === 'heading'
+                      ? h('h2', { key: `book-heading-${index}`, className: 'library-book-heading' }, block.text)
+                    : h('p', { key: `book-paragraph-${index}` }, block.text)
+                )
+              : readerBody.split('\n\n').map((paragraph, index) => h('p', { key: `book-paragraph-${index}` }, paragraph))
+          )
+        : h('div', { className: 'library-lock-message' }, window.Team4Library.lockedMessage)
+    )
+  );
+}
+
+function LibraryPage({ lang, setLang }) {
+  const catalogItem = window.Team4Library.catalog[0];
+  const [user, setUser] = React.useState(() => window.Team4Library.getUser());
+  const [accessVersion, setAccessVersion] = React.useState(0);
+  const hasAccess = window.Team4Library.hasAccess(catalogItem.id, user);
+
+  const grantAccess = () => {
+    window.Team4Library.grantDemoPurchase(user, catalogItem.id);
+    setAccessVersion((value) => value + 1);
+  };
+
+  const logout = () => {
+    window.Team4Library.logout();
+    setUser(null);
+  };
+
+  return h(
+    React.Fragment,
+    null,
+    h('div', { className: 'luxury-light-field', 'aria-hidden': 'true' }),
+    h(Header, { lang, setLang }),
+    h(
+      'main',
+      { className: 'library-page', key: accessVersion },
+      user
+        ? h(
+            React.Fragment,
+            null,
+            h(
+              'div',
+              { className: 'library-userbar' },
+              h('span', null, `${user.name} / ${user.email}`),
+              h('button', { type: 'button', onClick: logout }, 'გასვლა')
+            ),
+            h(ProtectedReader, { user, item: catalogItem, hasAccess, onGrantAccess: grantAccess })
+          )
+        : h(LibraryLogin, { onLogin: setUser })
+    ),
+    h(Footer, { lang })
+  );
+}
+
 function App() {
   const [lang, setLang] = React.useState(() => localStorage.getItem('team4Lang') || 'GEO');
   const isProgramPage = window.location.pathname.startsWith('/program/');
+  const isLibraryPage = window.location.pathname.startsWith('/library');
 
   if (isProgramPage) {
     return h(ProgramDetailPage, { lang, setLang });
+  }
+
+  if (isLibraryPage && window.Team4ManualLibraryPage) {
+    return h(window.Team4ManualLibraryPage, { lang, setLang, Header, Footer });
+  }
+
+  if (isLibraryPage) {
+    return h(LibraryPage, { lang, setLang });
   }
 
   return h(React.Fragment, null, h('div', { className: 'luxury-light-field', 'aria-hidden': 'true' }), h(Header, { lang, setLang }), h('main', null, h(Hero, { lang }), h(About, { lang }), h(Courses, { lang }), h(BookGallery, { lang }), h(Programs, { lang }), h(WinSpaceSection, { lang }), h(Testimonials, { lang }), h(Contact, { lang })), h(Footer, { lang }));
