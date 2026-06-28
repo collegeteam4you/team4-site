@@ -3612,11 +3612,12 @@ button.site-cta:hover,
 }
 
 .library-reader-shell {
-  width: min(1460px, calc(100vw - 40px));
+  width: min(1280px, calc(100vw - 40px));
   display: grid;
-  grid-template-columns: 330px minmax(0, 1fr);
+  grid-template-columns: 300px minmax(0, 920px);
   gap: 28px;
   align-items: start;
+  justify-content: center;
 }
 
 .library-books-panel {
@@ -3772,13 +3773,22 @@ button.site-cta:hover,
 
 .library-reader {
   position: relative;
+  justify-self: center;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 920px;
   min-height: 620px;
   overflow: hidden;
   border: 1px solid rgba(12, 12, 14, 0.12);
   background: #fbfaf6;
-  padding: clamp(34px, 4vw, 72px) clamp(36px, 5vw, 82px);
+  padding: clamp(36px, 4vw, 66px) clamp(34px, 4.2vw, 72px);
   color: #171717;
   box-shadow: 0 30px 90px rgba(0, 0, 0, 0.34);
+}
+
+.library-reader,
+.library-reader * {
+  box-sizing: border-box;
 }
 
 .library-reader.is-protected {
@@ -3807,13 +3817,16 @@ button.site-cta:hover,
   z-index: 1;
   margin-top: 34px;
   width: 100%;
-  max-width: 820px;
+  max-width: 700px;
+  min-width: 0;
   margin-left: auto;
   margin-right: auto;
   color: #202020;
-  font-size: clamp(16px, 1.18vw, 18px);
-  line-height: 1.88;
-  overflow-wrap: break-word;
+  font-size: clamp(15.5px, 1.08vw, 17px);
+  line-height: 1.9;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  white-space: normal;
 }
 
 .library-book-body {
@@ -3824,18 +3837,26 @@ button.site-cta:hover,
 
 .library-book-body p {
   margin: 0;
+  max-width: 100%;
+  min-width: 0;
   overflow-wrap: anywhere;
+  word-break: break-word;
+  white-space: normal;
 }
 
 .library-book-heading {
   margin: 36px auto 6px;
   width: 100%;
-  max-width: 820px;
+  max-width: 700px;
+  min-width: 0;
   color: #050505;
   font-family: "Playfair Display", Georgia, serif;
   font-size: clamp(24px, 2vw, 31px);
   font-weight: 900;
   line-height: 1.18;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  white-space: normal;
 }
 
 .library-book-heading:first-child {
@@ -3845,7 +3866,7 @@ button.site-cta:hover,
 .library-book-figure {
   margin: 26px auto;
   width: 100%;
-  max-width: 820px;
+  max-width: 700px;
 }
 
 .library-book-figure img {
