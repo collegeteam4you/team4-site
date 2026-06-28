@@ -3913,3 +3913,73 @@ body .library-book-body {
     line-height: 1.62 !important;
   }
 }
+/* Mobile book reader fix */
+@media (max-width: 860px) {
+  html,
+  body {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  .library-page {
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+    overflow-x: hidden !important;
+  }
+
+  .library-reader-shell,
+  .library-cabinet-shell {
+    width: 100% !important;
+    max-width: 100% !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 16px !important;
+    overflow-x: hidden !important;
+  }
+
+  .library-reader {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    min-height: auto !important;
+    overflow: hidden !important;
+    padding: 24px 14px !important;
+  }
+
+  .library-reader .library-title {
+    max-width: 100% !important;
+    font-size: 30px !important;
+    line-height: 1.08 !important;
+    overflow-wrap: anywhere !important;
+    word-break: break-word !important;
+  }
+
+  .library-book-heading,
+  .library-book-body,
+  .library-lock-message,
+  .library-book-body p {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    overflow-wrap: anywhere !important;
+    word-break: break-word !important;
+    white-space: normal !important;
+  }
+
+  .library-book-body,
+  .library-book-body p,
+  .library-lock-message {
+    font-size: 13px !important;
+    line-height: 1.65 !important;
+  }
+
+  .library-book-heading {
+    font-size: 17px !important;
+    line-height: 1.28 !important;
+  }
+
+  .library-book-figure,
+  .library-book-figure img {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
