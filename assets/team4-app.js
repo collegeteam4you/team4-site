@@ -1758,6 +1758,10 @@ function Contact({ lang }) {
         const text = programText(program, lang);
         return { value: text.title, label: text.title };
       }),
+      {
+        value: lang === 'GEO' ? 'კონსულტაციის დაჯავშვნა' : 'Book Consultation',
+        label: lang === 'GEO' ? 'კონსულტაციის დაჯავშვნა' : 'Book Consultation',
+      },
       { value: 'purchase', label: lang === 'GEO' ? 'წიგნის შეძენა' : 'Book Purchase' },
     ],
     [lang]
