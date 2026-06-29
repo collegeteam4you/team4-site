@@ -2,7 +2,7 @@ const { createElement: h } = React;
 
 let navItems = [
   ['about', 'WHY TEAM4', 'რატომ თიმ ფორი'],
-  ['book', 'I Am The Answer', '„მე ვარ პასუხი“'],
+ ['book', 'Books', 'წიგნები']
   ['programs', 'PROGRAMS', 'პროგრამები'],
   ['winspace', 'WinSpace', 'ვინსფეისი'],
   ['testimonials', 'Testimonials', 'შეფასებები'],
