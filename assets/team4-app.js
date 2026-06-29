@@ -2,7 +2,7 @@ const { createElement: h } = React;
 
 let navItems = [
   ['about', 'WHY TEAM4', 'რატომ თიმ ფორი'],
-['book', 'Books', 'წიგნები'],
+  ['book', 'Books', 'წიგნები'],
   ['programs', 'PROGRAMS', 'პროგრამები'],
   ['winspace', 'WinSpace', 'ვინსფეისი'],
   ['testimonials', 'Testimonials', 'შეფასებები'],
@@ -552,7 +552,10 @@ const programModalCtaHref = (program) =>
 
 const programPageHref = (program) => `/program/${program.id}`;
 const programPageUrl = (program) => `${window.location.origin}${programPageHref(program)}`;
-const sectionHref = (id) => (window.location.pathname.startsWith('/program/') ? `/index.html#${id}` : `#${id}`);
+const sectionHref = (id) => {
+  if (id === 'book') return '/library';
+  return window.location.pathname.startsWith('/program/') ? `/index.html#${id}` : `#${id}`;
+};
 
 function openProgramPage(program) {
   const url = programPageUrl(program);
@@ -772,10 +775,10 @@ const applyAdminContent = () => {
 
 applyAdminContent();
 
-navItems = navItems.map((item) => (item[0] === 'courses' ? ['book', 'I Am The Answer', '„მე ვარ პასუხი“'] : item));
+navItems = navItems.map((item) => (item[0] === 'courses' ? ['book', 'Books', 'წიგნები'] : item));
 if (!navItems.some(([id]) => id === 'book')) {
   const aboutIndex = navItems.findIndex(([id]) => id === 'about');
-  navItems.splice(aboutIndex >= 0 ? aboutIndex + 1 : 1, 0, ['book', 'I Am The Answer', '„მე ვარ პასუხი“']);
+  navItems.splice(aboutIndex >= 0 ? aboutIndex + 1 : 1, 0, ['book', 'Books', 'წიგნები']);
 }
 
 function Button({ children, href, variant = 'primary', className = '' }) {
