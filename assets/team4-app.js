@@ -2,7 +2,7 @@ const { createElement: h } = React;
 
 let navItems = [
   ['about', 'WHY TEAM4', 'რატომ თიმ ფორი'],
-  ['book', 'I Am The Answer', '„მე ვარ პასუხი“'],
+  ['book', 'Books', 'წიგნები'],
   ['programs', 'PROGRAMS', 'პროგრამები'],
   ['winspace', 'WinSpace', 'ვინსფეისი'],
   ['testimonials', 'Testimonials', 'შეფასებები'],
@@ -552,7 +552,10 @@ const programModalCtaHref = (program) =>
 
 const programPageHref = (program) => `/program/${program.id}`;
 const programPageUrl = (program) => `${window.location.origin}${programPageHref(program)}`;
-const sectionHref = (id) => (window.location.pathname.startsWith('/program/') ? `/index.html#${id}` : `#${id}`);
+const sectionHref = (id) => {
+  if (id === 'book') return '/library';
+  return window.location.pathname.startsWith('/program/') ? `/index.html#${id}` : `#${id}`;
+};
 
 function openProgramPage(program) {
   const url = programPageUrl(program);
@@ -772,10 +775,10 @@ const applyAdminContent = () => {
 
 applyAdminContent();
 
-navItems = navItems.map((item) => (item[0] === 'courses' ? ['book', 'I Am The Answer', '„მე ვარ პასუხი“'] : item));
+navItems = navItems.map((item) => (item[0] === 'courses' ? ['book', 'Books', 'წიგნები'] : item));
 if (!navItems.some(([id]) => id === 'book')) {
   const aboutIndex = navItems.findIndex(([id]) => id === 'about');
-  navItems.splice(aboutIndex >= 0 ? aboutIndex + 1 : 1, 0, ['book', 'I Am The Answer', '„მე ვარ პასუხი“']);
+  navItems.splice(aboutIndex >= 0 ? aboutIndex + 1 : 1, 0, ['book', 'Books', 'წიგნები']);
 }
 
 function Button({ children, href, variant = 'primary', className = '' }) {
@@ -1755,6 +1758,10 @@ function Contact({ lang }) {
         const text = programText(program, lang);
         return { value: text.title, label: text.title };
       }),
+      {
+        value: lang === 'GEO' ? 'კონსულტაციის დაჯავშვნა' : 'Book Consultation',
+        label: lang === 'GEO' ? 'კონსულტაციის დაჯავშვნა' : 'Book Consultation',
+      },
       { value: 'purchase', label: lang === 'GEO' ? 'წიგნის შეძენა' : 'Book Purchase' },
     ],
     [lang]
@@ -2070,7 +2077,7 @@ function App() {
     return h(LibraryPage, { lang, setLang });
   }
 
-  return h(React.Fragment, null, h('div', { className: 'luxury-light-field', 'aria-hidden': 'true' }), h(Header, { lang, setLang }), h('main', null, h(Hero, { lang }), h(About, { lang }), h(Courses, { lang }), h(BookGallery, { lang }), h(Programs, { lang }), h(WinSpaceSection, { lang }), h(Testimonials, { lang }), h(Contact, { lang })), h(Footer, { lang }));
+  return h(React.Fragment, null, h('div', { className: 'luxury-light-field', 'aria-hidden': 'true' }), h(Header, { lang, setLang }), h('main', null, h(Hero, { lang }), h(About, { lang }), h(Courses, { lang }), h(Programs, { lang }), h(WinSpaceSection, { lang }), h(Testimonials, { lang }), h(Contact, { lang })), h(Footer, { lang }));
 }
 
 ReactDOM.createRoot(document.getElementById('root')).render(h(App));
