@@ -1230,7 +1230,7 @@ function Hero({ lang }) {
             { className: 'hero-cta-row mt-10 flex flex-col gap-4 sm:flex-row' },
             h(Button, { href: '#contact' }, t.book),
             h(Button, { href: '#winspace' }, t.openDoor),
-            h(Button, { href: '#book' }, t.resumeBookCta)
+            h(Button, { href: '/library' }, t.resumeBookCta)
           ),
           h(HeroResume, { lang })
         ),
