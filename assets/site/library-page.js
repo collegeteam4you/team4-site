@@ -239,7 +239,7 @@
             null,
             h('h2', null, item.title),
             h('p', null, item.description || 'დაცული ონლაინ წიგნი Team4-ის მკითხველებისთვის.'),
-            h('p', { className: 'library-muted' }, 'ბიბლიოთეკა ღიაა სანახავად. შეძენის ან კითხვის გასაგრძელებლად გაიარე რეგისტრაცია.')
+            h('p', { className: 'library-muted' }, 'ბიბლიოთეკა ღიაა სანახავად. შეძენის გასაგრძელებლად დააჭირე ღილაკს.')
           )
         )
       ),
@@ -248,9 +248,8 @@
         { className: 'library-order-panel' },
         h('p', { className: 'library-kicker' }, 'Team4 Library'),
         h('h2', null, 'შეიძინე 14.90 ლარად'),
-        h('p', { className: 'library-muted' }, 'ჯერ ნახავ ბიბლიოთეკას, შემდეგ გაივლი რეგისტრაციას და შეძლებ შეკვეთის გაგზავნას.'),
-        h('button', { className: 'library-action library-action-primary', type: 'button', onClick: onRequestLogin }, 'შეიძინე 14.90 ლარად'),
-        h('button', { className: 'library-action', type: 'button', onClick: onRequestLogin }, 'შესვლა / რეგისტრაცია')
+        h('p', { className: 'library-muted' }, 'ღილაკზე დაჭერის შემდეგ გაიხსნება მოკლე ფორმა და შეძლებ შეკვეთის გაგზავნას.'),
+        h('button', { className: 'library-action library-action-primary', type: 'button', onClick: onRequestLogin }, 'შეიძინე 14.90 ლარად')
       )
     );
   }
