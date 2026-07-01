@@ -222,6 +222,38 @@
     );
   }
 
+  function PublicLibraryGate({ item, onRequestLogin }) {
+    return h(
+      'section',
+      { className: 'library-cabinet-shell' },
+      h(
+        'div',
+        { className: 'library-books-panel' },
+        h('p', { className: 'library-kicker' }, 'წიგნები'),
+        h(
+          'article',
+          { className: 'library-book-card' },
+          h('img', { src: item.cover, alt: item.title, className: 'library-book-cover', loading: 'lazy' }),
+          h(
+            'div',
+            null,
+            h('h2', null, item.title),
+            h('p', null, item.description || 'დაცული ონლაინ წიგნი Team4-ის მკითხველებისთვის.'),
+            h('p', { className: 'library-muted' }, 'ბიბლიოთეკა ღიაა სანახავად. შეძენის გასაგრძელებლად დააჭირე ღილაკს.')
+          )
+        )
+      ),
+      h(
+        'div',
+        { className: 'library-order-panel' },
+        h('p', { className: 'library-kicker' }, 'Team4 Library'),
+        h('h2', null, 'შეიძინე 14.90 ლარად'),
+        h('p', { className: 'library-muted' }, 'ღილაკზე დაჭერის შემდეგ გაიხსნება მოკლე ფორმა და შეძლებ შეკვეთის გაგზავნას.'),
+        h('button', { className: 'library-action library-action-primary', type: 'button', onClick: onRequestLogin }, 'შეიძინე 14.90 ლარად')
+      )
+    );
+  }
+
   function LibraryPage({ lang, setLang, Header, Footer }) {
     const catalogItem = window.Team4Library.catalog[0];
     const [user, setUser] = React.useState(() => window.Team4Library.getUser());
@@ -229,6 +261,7 @@
     const [entitlements, setEntitlements] = React.useState([]);
     const [isLoading, setIsLoading] = React.useState(false);
     const [refreshKey, setRefreshKey] = React.useState(0);
+    const [showLogin, setShowLogin] = React.useState(false);
     const hasAccess = window.Team4Library.hasAccessFromEntitlements(catalogItem.id, entitlements);
 
     React.useEffect(() => {
@@ -261,6 +294,19 @@
       setEntitlements([]);
     };
 
+    const completeLogin = (nextUser) => {
+      setShowLogin(false);
+      setUser(nextUser);
+    };
+
+    const requestLogin = () => {
+      setShowLogin(true);
+      window.setTimeout(() => {
+        const loginNode = document.getElementById('library-login');
+        if (loginNode) loginNode.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 80);
+    };
+
     return h(
       React.Fragment,
       null,
@@ -290,7 +336,12 @@
                     h(OrderPanel, { user, orders, onChanged: () => setRefreshKey((value) => value + 1) })
                   )
             )
-          : h(LibraryLogin, { onLogin: setUser })
+          : h(
+              React.Fragment,
+              null,
+              h(PublicLibraryGate, { item: catalogItem, onRequestLogin: requestLogin }),
+              showLogin && h('div', { id: 'library-login' }, h(LibraryLogin, { onLogin: completeLogin }))
+            )
       ),
       h(Footer, { lang })
     );
