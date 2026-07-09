@@ -542,8 +542,8 @@ const programModalCta = (program, lang) =>
 
 const programModalCtaClass = (program) =>
   program.id === 'brand-sales-video-production'
-    ? 'site-cta mt-8 inline-flex min-h-11 w-fit max-w-full cursor-pointer items-center justify-center gap-3 bg-luxuryRed px-5 py-2.5 text-center text-xs font-black tracking-[0.12em] text-white shadow-glowRed transition duration-500 hover:bg-[#ff1e18] sm:text-[13px]'
-    : 'site-cta mt-8 inline-flex min-h-12 w-fit cursor-pointer items-center justify-center gap-3 bg-luxuryRed px-6 py-3 text-sm font-black uppercase tracking-[0.2em] text-white shadow-glowRed transition duration-500 hover:bg-[#ff1e18]';
+    ? `site-cta cta-${program.id} mt-8 inline-flex min-h-11 w-fit max-w-full cursor-pointer items-center justify-center gap-3 bg-luxuryRed px-5 py-2.5 text-center text-xs font-black`
+    : `site-cta cta-${program.id} mt-8 inline-flex min-h-12 w-fit cursor-pointer items-center justify-center gap-3 bg-luxuryRed px-6 py-3 text-sm font-black uppercase tracking-[0.2em]`;
 
 const programModalCtaHref = (program) =>
   program.id === 'brand-sales-video-production'
