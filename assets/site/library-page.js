@@ -114,14 +114,35 @@
           h('button', { className: 'library-action library-action-primary', disabled: isSubmitting, type: 'submit' }, isSubmitting ? 'იგზავნება...' : 'შეიძინე 14.90 ლარად')
         ),
       (bankDetails || activeOrder) &&
-        h(
-          'div',
-          { className: 'library-bank-details' },
-          h('p', null, h('strong', null, 'მიმღები: '), bankDetails?.receiver || 'ლაშა ხურციძე'),
-          h('p', null, h('strong', null, 'ანგარიში: '), bankDetails?.account || 'GE12BG0000000536600132'),
-          h('p', null, h('strong', null, 'თანხა: '), '14.90 ლარი'),
-          h('p', null, h('strong', null, 'დანიშნულება: '), bankDetails?.purpose || activeOrder?.paymentCode)
-        ),
+       h(
+  'div',
+  { className: 'library-bank-details' },
+
+  h('p', null,
+    h('strong', null, 'მიმღები: '),
+    bankDetails?.receiver || 'ლაშა ხურციძე'
+  ),
+
+  h('p', null,
+    h('strong', null, 'საქართველოს ბანკი: '),
+    bankDetails?.bogAccount || 'GE12BG0000000536600132'
+  ),
+
+  h('p', null,
+    h('strong', null, 'TBC ბანკი: '),
+    bankDetails?.tbcAccount || 'აქ ჩაწერე TBC IBAN'
+  ),
+
+  h('p', null,
+    h('strong', null, 'თანხა: '),
+    '14.90 ლარი'
+  ),
+
+  h('p', null,
+    h('strong', null, 'დანიშნულება: '),
+    bankDetails?.purpose || activeOrder?.paymentCode
+  )
+),
       activeOrder &&
         h(
           'form',
