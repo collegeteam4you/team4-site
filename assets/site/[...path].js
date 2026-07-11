@@ -9,6 +9,7 @@ const sessionSecret = process.env.SESSION_SECRET || 'team4-local-session-secret-
 const bookPriceGel = Number(process.env.BOOK_PRICE_GEL || 14.9);
 const manualPaymentReceiver = process.env.MANUAL_PAYMENT_RECEIVER || 'ლაშა ხურციძე';
 const manualPaymentAccount = process.env.MANUAL_PAYMENT_ACCOUNT || 'GE12BG0000000536600132';
+const manualPaymentTbcAccount = process.env.MANUAL_PAYMENT_TBC_ACCOUNT || 'GE96TB7044645064300059';
 
 const sendJson = (res, status, data, extraHeaders = {}) => {
   Object.entries({
