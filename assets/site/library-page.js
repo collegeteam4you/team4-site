@@ -130,7 +130,7 @@
 
   h('p', null,
     h('strong', null, 'TBC ბანკი: '),
-    bankDetails?.tbcAccount || 'აქ ჩაწერე TBC IBAN'
+    bankDetails?.tbcAccount || 'GE96TB7044645064300059'
   ),
 
   h('p', null,
