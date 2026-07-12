@@ -2089,15 +2089,16 @@ function App() {
       'aria-hidden': 'true',
     }),
     h(Header, { lang, setLang }),
-    h(
-      'main',
-      null,
-      h(Hero, { lang }),
-      h(About, { lang }),
-      h(Programs, { lang }),
-      h(TestimonialSection, { lang }),
-      h(Contact, { lang })
-    ),
+h(
+  'main',
+  null,
+  h(Hero, { lang }),
+  h(About, { lang }),
+  h(Programs, { lang }),
+  h(WinSpaceSection, { lang }),
+  h(Testimonials, { lang }),
+  h(Contact, { lang })
+),
     h(Footer, { lang })
   );
 }
