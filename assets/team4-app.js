@@ -1170,7 +1170,7 @@ function Header({ lang, setLang }) {
             'a',
             {
               key: id,
-              href: sectionHref(id),
+              href: id === 'book' ? '/library' : sectionHref(id),
               onClick: closeMobileMenu,
             },
             lang === 'GEO' ? geo : eng
