@@ -1137,7 +1137,7 @@ function Header({ lang, setLang }) {
             'a',
             {
               key: id,
-              href: sectionHref(id),
+              href: id === 'book' ? '/library' : sectionHref(id),
               className: 'text-xs font-bold uppercase tracking-[0.22em] text-white/60 transition hover:text-white',
             },
             lang === 'GEO' ? geo : eng
