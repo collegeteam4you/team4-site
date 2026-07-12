@@ -359,11 +359,25 @@ const handleAdminApi = async (req, res, pathname) => {
 const handleManualPaymentApi = async (req, res, pathname) => {
   if (pathname === '/api/manual-payment/orders' && req.method === 'POST') {
     await ensureSchema();
-    const body = req.body || {};
-    const firstName = String(body.firstName || '').trim();
+const body = req.body || {};
+
+const requestedItemId = String(
+  body.itemId || 'i-am-the-answer'
+).trim();
+
+const product = PRODUCTS[requestedItemId];
+
+const firstName = String(body.firstName || '').trim();
     const lastName = String(body.lastName || '').trim();
     const email = normalizeEmail(body.email);
     const phone = String(body.phone || '').trim();
+    if (!product) {
+  sendJson(res, 400, {
+    ok: false,
+    message: 'Selected product is invalid.',
+  });
+  return;
+}
     if (!firstName || !lastName || !email || !email.includes('@') || !phone) {
       sendJson(res, 400, { ok: false, message: 'Please fill in first name, last name, email, and phone.' });
       return;
