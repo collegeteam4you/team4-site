@@ -70,8 +70,6 @@
   ...form,
   itemId: item.id,
 });
-  itemId: item.id,
-});
         setCreatedOrder(result.order);
         setBankDetails(result.bankDetails);
         setStatus({ type: 'success', text: 'შეკვეთა შეიქმნა. გადარიცხვისას დანიშნულებაში მიუთითე გადახდის კოდი.' });
@@ -140,7 +138,9 @@
           'div',
           { className: 'library-bank-details' },
           h('p', null, h('strong', null, 'მიმღები: '), bankDetails?.receiver || 'ლაშა ხურციძე'),
-          h('p', null, h('strong', null, 'ანგარიში: '), bankDetails?.account || 'GE12BG0000000536600132'),
+          h('p', null, h('strong', null, 'საქართველოს ბანკი: '), bankDetails?.bogAccount || 'GE12BG0000000536600132'),
+
+h('p', null, h('strong', null, 'TBC ბანკი: '), bankDetails?.tbcAccount || 'GE96TB7044645064300059'),
           h(
   'p',
   null,
