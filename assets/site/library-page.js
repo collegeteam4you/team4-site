@@ -70,6 +70,8 @@
   ...form,
   itemId: item.id,
 });
+  itemId: item.id,
+});
         setCreatedOrder(result.order);
         setBankDetails(result.bankDetails);
         setStatus({ type: 'success', text: 'შეკვეთა შეიქმნა. გადარიცხვისას დანიშნულებაში მიუთითე გადახდის კოდი.' });
