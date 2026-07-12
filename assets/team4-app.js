@@ -2070,7 +2070,6 @@ function App() {
     return h(LibraryPage, { lang, setLang });
   }
 
-  return h(React.Fragment, null, h('div', { className: 'luxury-light-field', 'aria-hidden': 'true' }), h(Header, { lang, setLang }), h('main', null, h(Hero, { lang }), h(About, { lang }), h(Courses, { lang }), h(BookGallery, { lang }), h(Programs, { lang }), h(WinSpaceSection, { lang }), h(Testimonials, { lang }), h(Contact, { lang })), h(Footer, { lang }));
 }
 
 ReactDOM.createRoot(document.getElementById('root')).render(h(App));
