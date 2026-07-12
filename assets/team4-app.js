@@ -2095,7 +2095,6 @@ function App() {
       h(Hero, { lang }),
       h(About, { lang }),
       h(Programs, { lang }),
-      h(WinSpace, { lang }),
       h(TestimonialSection, { lang }),
       h(Contact, { lang })
     ),
