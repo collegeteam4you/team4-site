@@ -2054,22 +2054,6 @@ function LibraryPage({ lang, setLang }) {
 }
 
 function App() {
-  const [lang, setLang] = React.useState(() => localStorage.getItem('team4Lang') || 'GEO');
-  const isProgramPage = window.location.pathname.startsWith('/program/');
-  const isLibraryPage = window.location.pathname.startsWith('/library');
-
-  if (isProgramPage) {
-    return h(ProgramDetailPage, { lang, setLang });
-  }
-
-  if (isLibraryPage && window.Team4ManualLibraryPage) {
-    return h(window.Team4ManualLibraryPage, { lang, setLang, Header, Footer });
-  }
-
-  if (isLibraryPage) {
-    return h(LibraryPage, { lang, setLang });
-  }
-function App() {
   const [lang, setLang] = React.useState(
     () => localStorage.getItem('team4Lang') || 'GEO'
   );
@@ -2117,7 +2101,6 @@ function App() {
     ),
     h(Footer, { lang })
   );
-}
 }
 
 ReactDOM.createRoot(document.getElementById('root')).render(h(App));
