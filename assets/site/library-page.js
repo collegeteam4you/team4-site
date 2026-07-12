@@ -38,7 +38,7 @@
     );
   }
 
-  function OrderPanel({ user, orders, onChanged }) {
+  function OrderPanel({ user, orders, item, onChanged }) {
     const [form, setForm] = React.useState({
       firstName: user?.firstName || '',
       lastName: user?.lastName || '',
@@ -50,7 +50,14 @@
     const [receiptFile, setReceiptFile] = React.useState(null);
     const [status, setStatus] = React.useState(null);
     const [isSubmitting, setIsSubmitting] = React.useState(false);
-    const activeOrder = createdOrder || orders.find((order) => order.status !== 'Approved') || null;
+    const activeOrder =
+  createdOrder ||
+  orders.find(
+    (order) =>
+      order.itemId === item?.id &&
+      order.status !== 'Approved'
+  ) ||
+  null;
 
     const updateField = (key, value) => setForm((current) => ({ ...current, [key]: value }));
 
@@ -59,7 +66,10 @@
       setIsSubmitting(true);
       setStatus(null);
       try {
-        const result = await window.Team4Library.createManualOrder(form);
+        const result = await window.Team4Library.createManualOrder({
+  ...form,
+  itemId: item.id,
+});
         setCreatedOrder(result.order);
         setBankDetails(result.bankDetails);
         setStatus({ type: 'success', text: 'შეკვეთა შეიქმნა. გადარიცხვისას დანიშნულებაში მიუთითე გადახდის კოდი.' });
@@ -92,7 +102,7 @@
       'section',
       { className: 'library-order-panel' },
       h('p', { className: 'library-kicker' }, 'Manual Payment'),
-      h('h2', null, 'შეიძინე 14.90 ლარად'),
+      h('h2', null, `${item.title} — ${item.price.toFixed(2)} ლარი`),
       h('p', { className: 'library-muted' }, 'შეკვეთის შემდეგ გამოჩნდება საბანკო რეკვიზიტები და უნიკალური გადახდის კოდი. ქვითრის ატვირთვის შემდეგ შეკვეთა Pending სტატუსით გადავა ადმინისტრატორთან.'),
       activeOrder &&
         h(
@@ -111,7 +121,17 @@
           ),
           h('input', { className: 'library-input', required: true, type: 'email', placeholder: 'ელფოსტა', value: form.email, onChange: (event) => updateField('email', event.target.value) }),
           h('input', { className: 'library-input', required: true, type: 'tel', placeholder: 'ტელეფონი', value: form.phone, onChange: (event) => updateField('phone', event.target.value) }),
-          h('button', { className: 'library-action library-action-primary', disabled: isSubmitting, type: 'submit' }, isSubmitting ? 'იგზავნება...' : 'შეიძინე 14.90 ლარად')
+          h(
+  'button',
+  {
+    className: 'library-action library-action-primary',
+    disabled: isSubmitting,
+    type: 'submit',
+  },
+  isSubmitting
+    ? 'იგზავნება...'
+    : `შეიძინე ${item.price.toFixed(2)} ლარად`
+)
         ),
       (bankDetails || activeOrder) &&
         h(
@@ -119,7 +139,12 @@
           { className: 'library-bank-details' },
           h('p', null, h('strong', null, 'მიმღები: '), bankDetails?.receiver || 'ლაშა ხურციძე'),
           h('p', null, h('strong', null, 'ანგარიში: '), bankDetails?.account || 'GE12BG0000000536600132'),
-          h('p', null, h('strong', null, 'თანხა: '), '14.90 ლარი'),
+          h(
+  'p',
+  null,
+  h('strong', null, 'თანხა: '),
+  `${bankDetails?.amount || item.price} ლარი`
+),
           h('p', null, h('strong', null, 'დანიშნულება: '), bankDetails?.purpose || activeOrder?.paymentCode)
         ),
       activeOrder &&
