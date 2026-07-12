@@ -389,10 +389,21 @@ const firstName = String(body.firstName || '').trim();
         id, order_number, payment_code, first_name, last_name, email, phone, amount,
         currency, item_id, item_title, item_type, status
       )
-      VALUES (
-        ${id}, ${paymentCode}, ${paymentCode}, ${firstName}, ${lastName}, ${email}, ${phone}, ${bookPriceGel},
-        'GEL', 'i-am-the-answer', 'მე ვარ პასუხი', 'book', 'Pending'
-      )
+VALUES (
+  ${id},
+  ${paymentCode},
+  ${paymentCode},
+  ${firstName},
+  ${lastName},
+  ${email},
+  ${phone},
+  ${product.amount},
+  'GEL',
+  ${product.id},
+  ${product.title},
+  ${product.type},
+  'Pending'
+)
       RETURNING *
     `;
     sendJson(res, 200, {
