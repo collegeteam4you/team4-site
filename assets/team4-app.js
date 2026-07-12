@@ -737,13 +737,13 @@ const deepMerge = (base, override) => {
     return override === undefined ? base : override;
   }
 
-  return Object.keys(override).reduce(
-    (merged, key) => ({
-      ...merged,
-      [key]: deepMerge(base[key], override[key]),
-    }),
-    { ...base }
-  );
+return Object.keys(override).reduce(
+  (merged, key) => ({
+    ...merged,
+    [key]: deepMerge(base[key], override[key]),
+  }),
+  { ...base }
+);
 };
 
 const applyAdminContent = () => {
