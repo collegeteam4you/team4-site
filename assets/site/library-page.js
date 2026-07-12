@@ -251,6 +251,7 @@ h('p', null, h('strong', null, 'TBC ბანკი: '), bankDetails?.tbcAccount
 
   function LibraryPage({ lang, setLang, Header, Footer }) {
     const catalogItem = window.Team4Library.catalog[0];
+    const catalog = window.Team4Library.catalog;
     const [user, setUser] = React.useState(() => window.Team4Library.getUser());
     const [orders, setOrders] = React.useState([]);
     const [entitlements, setEntitlements] = React.useState([]);
