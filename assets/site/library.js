@@ -6,19 +6,42 @@
 
   const bookContent = window.Team4BookContent || {};
 
-  const catalog = [
-    {
-      id: 'i-am-the-answer',
-      type: 'book',
-      title: bookContent.title || 'მე ვარ პასუხი',
-      titleEng: 'I Am The Answer',
-      description: bookContent.description || 'დაცული ონლაინ წიგნი Team4-ის მყიდველებისთვის.',
-      cover: bookContent.cover || '/assets/book-gallery-01.webp',
-      price: 14.9,
-      blocks: bookContent.blocks || [],
-      body: '',
-    },
-  ];
+const catalog = [
+  {
+    id: 'i-am-the-answer',
+    type: 'book',
+    title: bookContent.title || 'მე ვარ პასუხი',
+    titleEng: 'I Am The Answer',
+    description: bookContent.description || 'დაცული ონლაინ წიგნი Team4-ის მყიდველებისთვის.',
+    cover: bookContent.cover || '/assets/book-gallery-01.webp',
+    price: 14.9,
+    blocks: bookContent.blocks || [],
+    body: '',
+  },
+  {
+    id: 'why-others-get-rich',
+    type: 'book',
+    title: 'რატომ მდიდრდებიან სხვები',
+    titleEng: 'Why Others Get Rich',
+    description: 'ელექტრონული წიგნი ფინანსურ აზროვნებასა და სიმდიდრის შექმნაზე.',
+    cover: '/assets/why-others-get-rich-cover.webp',
+    price: 14.9,
+    blocks: [],
+    body: '',
+  },
+  {
+    id: 'book-bundle',
+    type: 'bundle',
+    title: '🎁 ორივე წიგნი ერთად',
+    titleEng: 'Book Bundle',
+    description: 'მე ვარ პასუხი + რატომ მდიდრდებიან სხვები',
+    cover: '/assets/book-bundle-cover.webp',
+    price: 24.9,
+    itemIds: ['i-am-the-answer', 'why-others-get-rich'],
+    blocks: [],
+    body: '',
+  },
+];
 
   const readJson = (key, fallback) => {
     try {
