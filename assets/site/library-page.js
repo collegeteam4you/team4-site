@@ -249,84 +249,217 @@ h('p', null, h('strong', null, 'TBC ბანკი: '), bankDetails?.tbcAccount
     );
   }
 
-  function LibraryPage({ lang, setLang, Header, Footer }) {
-    const catalogItem = window.Team4Library.catalog[0];
-    const catalog = window.Team4Library.catalog;
-    const [user, setUser] = React.useState(() => window.Team4Library.getUser());
-    const [orders, setOrders] = React.useState([]);
-    const [entitlements, setEntitlements] = React.useState([]);
-    const [isLoading, setIsLoading] = React.useState(false);
-    const [refreshKey, setRefreshKey] = React.useState(0);
-    const hasAccess = (itemId) =>
-  window.Team4Library.hasAccessFromEntitlements(
-    itemId,
-    entitlements
-  );
+ function LibraryPage({ lang, setLang, Header, Footer }) {
+  const catalog = window.Team4Library.catalog;
+  const bookItems = catalog.filter((item) => item.type === 'book');
+  const [selectedItemId, setSelectedItemId] = React.useState(catalog[0]?.id || '');
+  const [user, setUser] = React.useState(() => window.Team4Library.getUser());
+  const [orders, setOrders] = React.useState([]);
+  const [entitlements, setEntitlements] = React.useState([]);
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [refreshKey, setRefreshKey] = React.useState(0);
 
-    React.useEffect(() => {
-      if (!user) return undefined;
-      let active = true;
-      setIsLoading(true);
-      Promise.all([window.Team4Library.fetchUserOrders(user.email), window.Team4Library.fetchEntitlements(user.email)])
-        .then(([orderResult, entitlementResult]) => {
-          if (!active) return;
-          setOrders(orderResult.orders || []);
-          setEntitlements(entitlementResult.items || []);
-        })
-        .catch(() => {
-          if (!active) return;
-          setOrders([]);
-          setEntitlements([]);
-        })
-        .finally(() => {
-          if (active) setIsLoading(false);
-        });
-      return () => {
-        active = false;
-      };
-    }, [user, refreshKey]);
+  const selectedItem =
+    catalog.find((item) => item.id === selectedItemId) ||
+    catalog[0];
 
-    const logout = () => {
-      window.Team4Library.logout();
-      setUser(null);
-      setOrders([]);
-      setEntitlements([]);
-    };
-
-    return h(
-      React.Fragment,
-      null,
-      h('div', { className: 'luxury-light-field', 'aria-hidden': 'true' }),
-      h(Header, { lang, setLang }),
-      h(
-        'main',
-        { className: 'library-page' },
-        user
-          ? h(
-              React.Fragment,
-              null,
-              h('div', { className: 'library-userbar' }, h('span', null, `${user.name} / ${user.email}`), h('button', { type: 'button', onClick: logout }, 'გასვლა')),
-              isLoading && h('p', { className: 'library-loading' }, 'იტვირთება...'),
-              hasAccess
-                ? h(ProtectedReader, { user, item: catalogItem })
-                : h(
-                    'section',
-                    { className: 'library-cabinet-shell' },
-                    h(
-                      'div',
-                      { className: 'library-books-panel' },
-                      h('p', { className: 'library-kicker' }, 'ჩემი წიგნები'),
-                      h('article', { className: 'library-book-card' }, h('img', { src: catalogItem.cover, alt: catalogItem.title, className: 'library-book-cover', loading: 'lazy' }), h('div', null, h('h2', null, catalogItem.title), h('p', null, 'Approved სტატუსის შემდეგ წიგნი აქ გაიხსნება.'))),
-                      orders.length ? h('div', { className: 'library-order-list' }, orders.map((order) => h('p', { key: order.paymentCode }, `${order.paymentCode} / ${order.status}`))) : h('p', { className: 'library-muted' }, 'ჯერ დადასტურებული წიგნი არ გაქვს.')
-                    ),
-                    h(OrderPanel, { user, orders, onChanged: () => setRefreshKey((value) => value + 1) })
-                  )
-            )
-          : h(LibraryLogin, { onLogin: setUser })
-      ),
-      h(Footer, { lang })
+  const hasAccess = (itemId) =>
+    window.Team4Library.hasAccessFromEntitlements(
+      itemId,
+      entitlements
     );
-  }
 
+  const selectedBookHasAccess =
+    selectedItem?.type === 'book' &&
+    hasAccess(selectedItem.id);
+
+  React.useEffect(() => {
+    if (!user) return undefined;
+
+    let active = true;
+    setIsLoading(true);
+
+    Promise.all([
+      window.Team4Library.fetchUserOrders(user.email),
+      window.Team4Library.fetchEntitlements(user.email),
+    ])
+      .then(([orderResult, entitlementResult]) => {
+        if (!active) return;
+        setOrders(orderResult.orders || []);
+        setEntitlements(entitlementResult.items || []);
+      })
+      .catch(() => {
+        if (!active) return;
+        setOrders([]);
+        setEntitlements([]);
+      })
+      .finally(() => {
+        if (active) setIsLoading(false);
+      });
+
+    return () => {
+      active = false;
+    };
+  }, [user, refreshKey]);
+
+  const logout = () => {
+    window.Team4Library.logout();
+    setUser(null);
+    setOrders([]);
+    setEntitlements([]);
+  };
+
+  return h(
+    React.Fragment,
+    null,
+    h('div', {
+      className: 'luxury-light-field',
+      'aria-hidden': 'true',
+    }),
+    h(Header, { lang, setLang }),
+    h(
+      'main',
+      { className: 'library-page' },
+      user
+        ? h(
+            React.Fragment,
+            null,
+
+            h(
+              'div',
+              { className: 'library-userbar' },
+              h('span', null, `${user.name} / ${user.email}`),
+              h(
+                'button',
+                {
+                  type: 'button',
+                  onClick: logout,
+                },
+                'გასვლა'
+              )
+            ),
+
+            isLoading &&
+              h(
+                'p',
+                { className: 'library-loading' },
+                'იტვირთება...'
+              ),
+
+            selectedBookHasAccess
+              ? h(ProtectedReader, {
+                  user,
+                  item: selectedItem,
+                })
+              : h(
+                  'section',
+                  { className: 'library-cabinet-shell' },
+
+                  h(
+                    'div',
+                    { className: 'library-books-panel' },
+
+                    h(
+                      'p',
+                      { className: 'library-kicker' },
+                      'წიგნები და პაკეტები'
+                    ),
+
+                    catalog.map((item) => {
+                      const itemHasAccess =
+                        item.type === 'book' &&
+                        hasAccess(item.id);
+
+                      return h(
+                        'article',
+                        {
+                          key: item.id,
+                          className: 'library-book-card',
+                        },
+
+                        h('img', {
+                          src: item.cover,
+                          alt: item.title,
+                          className: 'library-book-cover',
+                          loading: 'lazy',
+                        }),
+
+                        h(
+                          'div',
+                          null,
+                          h('h2', null, item.title),
+                          h('p', null, item.description),
+                          h(
+                            'strong',
+                            null,
+                            `${item.price.toFixed(2)} ლარი`
+                          )
+                        ),
+
+                        itemHasAccess
+                          ? h(
+                              'button',
+                              {
+                                type: 'button',
+                                className:
+                                  'library-action library-action-primary',
+                                onClick: () =>
+                                  setSelectedItemId(item.id),
+                              },
+                              'წაკითხვა'
+                            )
+                          : h(
+                              'button',
+                              {
+                                type: 'button',
+                                className:
+                                  selectedItemId === item.id
+                                    ? 'library-action library-action-primary'
+                                    : 'library-action',
+                                onClick: () =>
+                                  setSelectedItemId(item.id),
+                              },
+                              selectedItemId === item.id
+                                ? 'არჩეულია'
+                                : 'არჩევა'
+                            )
+                      );
+                    }),
+
+                    orders.length
+                      ? h(
+                          'div',
+                          { className: 'library-order-list' },
+                          orders.map((order) =>
+                            h(
+                              'p',
+                              { key: order.paymentCode },
+                              `${order.itemTitle} — ${order.paymentCode} / ${order.status}`
+                            )
+                          )
+                        )
+                      : h(
+                          'p',
+                          { className: 'library-muted' },
+                          'ჯერ შეკვეთა არ გაქვს.'
+                        )
+                  ),
+
+                  selectedItem &&
+                    !selectedBookHasAccess &&
+                    h(OrderPanel, {
+                      user,
+                      orders,
+                      item: selectedItem,
+                      onChanged: () =>
+                        setRefreshKey((value) => value + 1),
+                    })
+                )
+          )
+        : h(LibraryLogin, { onLogin: setUser })
+    ),
+    h(Footer, { lang })
+  );
+}
   window.Team4ManualLibraryPage = LibraryPage;
 })();
