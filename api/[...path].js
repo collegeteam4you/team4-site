@@ -486,16 +486,44 @@ const handleEntitlements = async (req, res) => {
     WHERE email = ${email} AND status = 'Approved'
     ORDER BY approved_at DESC NULLS LAST, updated_at DESC
   `;
-  sendJson(res, 200, {
-    ok: true,
-    items: result.rows.map((row) => ({
+  const items = result.rows.flatMap((row) => {
+  const approvedAt =
+    row.approved_at || row.updated_at || row.created_at;
+
+  if (row.item_id === 'book-bundle') {
+    return [
+      {
+        itemId: 'i-am-the-answer',
+        itemTitle: 'მე ვარ პასუხი',
+        itemType: 'book',
+        status: row.status,
+        approvedAt,
+      },
+      {
+        itemId: 'why-others-get-rich',
+        itemTitle: 'რატომ მდიდრდებიან სხვები',
+        itemType: 'book',
+        status: row.status,
+        approvedAt,
+      },
+    ];
+  }
+
+  return [
+    {
       itemId: row.item_id,
       itemTitle: row.item_title,
       itemType: row.item_type,
       status: row.status,
-      approvedAt: row.approved_at || row.updated_at || row.created_at,
-    })),
-  });
+      approvedAt,
+    },
+  ];
+});
+
+sendJson(res, 200, {
+  ok: true,
+  items,
+});
 };
 
 module.exports = async function handler(req, res) {
