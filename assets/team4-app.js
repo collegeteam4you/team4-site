@@ -2069,7 +2069,55 @@ function App() {
   if (isLibraryPage) {
     return h(LibraryPage, { lang, setLang });
   }
+function App() {
+  const [lang, setLang] = React.useState(
+    () => localStorage.getItem('team4Lang') || 'GEO'
+  );
 
+  const isProgramPage =
+    window.location.pathname.startsWith('/program/');
+
+  const isLibraryPage =
+    window.location.pathname.startsWith('/library');
+
+  if (isProgramPage) {
+    return h(ProgramDetailPage, { lang, setLang });
+  }
+
+  if (isLibraryPage && window.Team4ManualLibraryPage) {
+    return h(window.Team4ManualLibraryPage, {
+      lang,
+      setLang,
+      Header,
+      Footer,
+    });
+  }
+
+  if (isLibraryPage) {
+    return h(LibraryPage, { lang, setLang });
+  }
+
+  return h(
+    React.Fragment,
+    null,
+    h('div', {
+      className: 'luxury-light-field',
+      'aria-hidden': 'true',
+    }),
+    h(Header, { lang, setLang }),
+    h(
+      'main',
+      null,
+      h(Hero, { lang }),
+      h(About, { lang }),
+      h(Programs, { lang }),
+      h(WinSpace, { lang }),
+      h(TestimonialSection, { lang }),
+      h(Contact, { lang })
+    ),
+    h(Footer, { lang })
+  );
+}
 }
 
 ReactDOM.createRoot(document.getElementById('root')).render(h(App));
