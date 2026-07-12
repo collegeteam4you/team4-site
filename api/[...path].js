@@ -409,13 +409,14 @@ VALUES (
     sendJson(res, 200, {
       ok: true,
       order: rowToOrder(result.rows[0]),
-      bankDetails: {
-        receiver: manualPaymentReceiver,
-        account: manualPaymentAccount,
-        amount: bookPriceGel,
-        currency: 'GEL',
-        purpose: paymentCode,
-      },
+bankDetails: {
+  receiver: manualPaymentReceiver,
+  bogAccount: manualPaymentAccount,
+  tbcAccount: manualPaymentTbcAccount,
+  amount: product.amount,
+  currency: 'GEL',
+  purpose: paymentCode,
+},
     });
     return;
   }
