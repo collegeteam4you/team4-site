@@ -7,9 +7,39 @@ const adminPassword = process.env.ADMIN_PASSWORD || '123456789ns@';
 const adminEmail = process.env.ADMIN_EMAIL || 'collegeteam4you@gmail.com';
 const sessionSecret = process.env.SESSION_SECRET || 'team4-local-session-secret-change-me';
 const bookPriceGel = Number(process.env.BOOK_PRICE_GEL || 14.9);
-const manualPaymentReceiver = process.env.MANUAL_PAYMENT_RECEIVER || 'ლაშა ხურციძე';
-const manualPaymentAccount = process.env.MANUAL_PAYMENT_ACCOUNT || 'GE12BG0000000536600132';
 
+const PRODUCTS = {
+  'i-am-the-answer': {
+    id: 'i-am-the-answer',
+    title: 'მე ვარ პასუხი',
+    type: 'book',
+    amount: 14.9,
+  },
+
+  'why-others-get-rich': {
+    id: 'why-others-get-rich',
+    title: 'რატომ მდიდრდებიან სხვები',
+    type: 'book',
+    amount: 14.9,
+  },
+
+  'book-bundle': {
+    id: 'book-bundle',
+    title: 'ორივე წიგნი ერთად',
+    type: 'bundle',
+    amount: 24.9,
+    itemIds: ['i-am-the-answer', 'why-others-get-rich'],
+  },
+};
+
+const manualPaymentReceiver =
+  process.env.MANUAL_PAYMENT_RECEIVER || 'ლაშა ხურციძე';
+
+const manualPaymentAccount =
+  process.env.MANUAL_PAYMENT_ACCOUNT || 'GE12BG0000000536600132';
+
+const manualPaymentTbcAccount =
+  process.env.MANUAL_PAYMENT_TBC_ACCOUNT || 'GE96TB7044645064300059';
 const sendJson = (res, status, data, extraHeaders = {}) => {
   Object.entries({
     'Content-Type': 'application/json; charset=utf-8',
