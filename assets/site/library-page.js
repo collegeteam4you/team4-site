@@ -257,7 +257,11 @@ h('p', null, h('strong', null, 'TBC ბანკი: '), bankDetails?.tbcAccount
     const [entitlements, setEntitlements] = React.useState([]);
     const [isLoading, setIsLoading] = React.useState(false);
     const [refreshKey, setRefreshKey] = React.useState(0);
-    const hasAccess = window.Team4Library.hasAccessFromEntitlements(catalogItem.id, entitlements);
+    const hasAccess = (itemId) =>
+  window.Team4Library.hasAccessFromEntitlements(
+    itemId,
+    entitlements
+  );
 
     React.useEffect(() => {
       if (!user) return undefined;
