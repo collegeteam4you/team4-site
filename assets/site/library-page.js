@@ -409,20 +409,17 @@ h('p', null, h('strong', null, 'TBC ბანკი: '), bankDetails?.tbcAccount
                               'წაკითხვა'
                             )
                           : h(
-                              'button',
-                              {
-                                type: 'button',
-                                className:
-                                  selectedItemId === item.id
-                                    ? 'library-action library-action-primary'
-                                    : 'library-action',
-                                onClick: () =>
-                                  setSelectedItemId(item.id),
-                              },
-                              selectedItemId === item.id
-                                ? 'არჩეულია'
-                                : 'არჩევა'
-                            )
+  'button',
+  {
+    type: 'button',
+    className:
+      selectedItemId === item.id
+        ? 'library-action library-action-primary'
+        : 'library-action',
+    onClick: () => setSelectedItemId(item.id),
+  },
+  'შეძენა'
+)
                       );
                     }),
 
