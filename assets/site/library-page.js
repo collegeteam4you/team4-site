@@ -259,9 +259,9 @@ h('p', null, h('strong', null, 'TBC ბანკი: '), bankDetails?.tbcAccount
   const [isLoading, setIsLoading] = React.useState(false);
   const [refreshKey, setRefreshKey] = React.useState(0);
 
-  const selectedItem =
-    catalog.find((item) => item.id === selectedItemId) ||
-    catalog[0];
+const selectedItem =
+  catalog.find((item) => item.id === selectedItemId) ||
+  null;
 
   const hasAccess = (itemId) =>
     window.Team4Library.hasAccessFromEntitlements(
