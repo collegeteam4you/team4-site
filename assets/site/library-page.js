@@ -346,11 +346,24 @@ const selectedItem =
                 'იტვირთება...'
               ),
 
-            selectedBookHasAccess
-              ? h(ProtectedReader, {
-                  user,
-                  item: selectedItem,
-                })
+selectedBookHasAccess
+  ? h(
+      React.Fragment,
+      null,
+      h(
+        'button',
+        {
+          type: 'button',
+          className: 'library-action',
+          onClick: () => setSelectedItemId(''),
+        },
+        '← ყველა წიგნი'
+      ),
+      h(ProtectedReader, {
+        user,
+        item: selectedItem,
+      })
+    )
               : h(
                   'section',
                   { className: 'library-cabinet-shell' },
