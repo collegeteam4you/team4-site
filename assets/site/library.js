@@ -33,7 +33,7 @@
 {
   id: 'book-bundle',
   type: 'bundle',
-  title: '🎁 ორივე წიგნი ერთად',
+  title: ' ორივე წიგნი ერთად',
   titleEng: 'Both Books Bundle',
   description: 'მე ვარ პასუხი + რატომ მდიდრდებიან სხვები',
   cover: '/assets/book-bundle-cover.webp',
