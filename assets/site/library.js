@@ -25,7 +25,7 @@
   title: 'რატომ მდიდრდებიან სხვები',
   titleEng: 'Why Others Get Rich',
   description: 'დაცული ონლაინ წიგნი Team4-ის მყიდველებისთვის.',
-  cover: '/assets/why-others-get-rich-cover.webp',
+  cover: '/assets/ყდა.jpg',
   price: 14.9,
   blocks: [],
   body: '',
