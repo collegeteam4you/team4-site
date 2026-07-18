@@ -22,13 +22,21 @@
   {
   id: 'why-others-get-rich',
   type: 'book',
-  title: 'რატომ მდიდრდებიან სხვები',
+  title:
+    window.Team4WhyOthersGetRichContent?.title ||
+    'რატომ მდიდრდებიან სხვები',
   titleEng: 'Why Others Get Rich',
-  description: 'დაცული ონლაინ წიგნი Team4-ის მყიდველებისთვის.',
-  cover: '/assets/ყდა.jpg',
+  description:
+    window.Team4WhyOthersGetRichContent?.description ||
+    'დაცული ონლაინ წიგნი Team4-ის მყიდველებისთვის.',
+  cover:
+    window.Team4WhyOthersGetRichContent?.cover ||
+    '/assets/ყდა.jpg',
   price: 14.9,
-  blocks: [],
-  body: '',
+  blocks:
+    window.Team4WhyOthersGetRichContent?.blocks || [],
+  body:
+    window.Team4WhyOthersGetRichContent?.body || '',
 },
 {
   id: 'book-bundle',
