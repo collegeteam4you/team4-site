@@ -3685,6 +3685,27 @@ button.site-cta:hover,
 
 .library-book-cover {
   width: 100%;
+  height: 450px;
+  object-fit: contain;
+  object-position: center;
+  background: #050508;
+  display: block;
+}
+.library-book-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.library-book-card > div {
+  flex: 1;
+}
+@media (max-width: 768px) {
+  .library-book-cover {
+    height: 360px;
+  }
+}
+  width: 100%;
   aspect-ratio: 4 / 3;
   object-fit: cover;
 }
