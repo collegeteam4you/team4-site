@@ -263,11 +263,33 @@ const selectedItem =
   catalog.find((item) => item.id === selectedItemId) ||
   null;
 
-  const hasAccess = (itemId) =>
-    window.Team4Library.hasAccessFromEntitlements(
-      itemId,
-      entitlements
+  const hasApprovedOrder = (itemId) =>
+  orders.some((order) => {
+    const isApproved =
+      String(order.status || '').toLowerCase() === 'approved';
+
+    if (!isApproved) return false;
+
+    // ცალკე შეძენილი წიგნი
+    if (order.itemId === itemId) return true;
+
+    // პაკეტის შეძენისას ორივე წიგნის გახსნა
+    const orderedItem = catalog.find(
+      (catalogItem) => catalogItem.id === order.itemId
     );
+
+    return (
+      orderedItem?.type === 'bundle' &&
+      Array.isArray(orderedItem.itemIds) &&
+      orderedItem.itemIds.includes(itemId)
+    );
+  });
+
+const hasAccess = (itemId) =>
+  window.Team4Library.hasAccessFromEntitlements(
+    itemId,
+    entitlements
+  ) || hasApprovedOrder(itemId);
 
   const selectedBookHasAccess =
     selectedItem?.type === 'book' &&
