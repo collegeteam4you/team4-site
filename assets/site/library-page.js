@@ -429,7 +429,20 @@ selectedBookHasAccess
       selectedItemId === item.id
         ? 'library-action library-action-primary'
         : 'library-action',
-    onClick: () => setSelectedItemId(item.id),
+    onClick: () => {
+  setSelectedItemId(item.id);
+
+  setTimeout(() => {
+    const panel = document.querySelector('.library-order-panel');
+
+    if (panel) {
+      panel.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    }
+  }, 150);
+},
   },
   'შეძენა'
 )
