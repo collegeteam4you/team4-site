@@ -5,10 +5,6 @@ window.Team4WhyOthersGetRichContent = {
   "blocks": [
     {
       "type": "heading",
-      "text": "რატომ მდიდრდებიან სხვები"
-    },
-    {
-      "type": "heading",
       "text": "წინასიტყვაობა"
     },
     {
