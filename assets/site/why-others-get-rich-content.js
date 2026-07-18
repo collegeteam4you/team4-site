@@ -8,14 +8,6 @@ window.Team4WhyOthersGetRichContent = {
       "text": "რატომ მდიდრდებიან სხვები"
     },
     {
-      "type": "paragraph",
-      "text": "თბილისი"
-    },
-    {
-      "type": "paragraph",
-      "text": "ლაშა ხურციძე"
-    },
-    {
       "type": "heading",
       "text": "წინასიტყვაობა"
     },
