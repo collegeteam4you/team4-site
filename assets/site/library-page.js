@@ -258,6 +258,7 @@ h('p', null, h('strong', null, 'TBC ბანკი: '), bankDetails?.tbcAccount
   const [entitlements, setEntitlements] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(false);
   const [refreshKey, setRefreshKey] = React.useState(0);
+   const [showLogin, setShowLogin] = React.useState(false);
 
 const selectedItem =
   catalog.find((item) => item.id === selectedItemId) ||
@@ -501,7 +502,108 @@ selectedBookHasAccess
                     })
                 )
           )
-        : h(LibraryLogin, { onLogin: setUser })
+        : h(
+    React.Fragment,
+    null,
+
+    h(
+      'section',
+      { className: 'library-cabinet-shell' },
+
+      h(
+        'div',
+        { className: 'library-books-panel' },
+
+        h(
+          'p',
+          { className: 'library-kicker' },
+          'წიგნები და პაკეტები'
+        ),
+
+        catalog.map((item) =>
+          h(
+            'article',
+            {
+              key: item.id,
+              className: 'library-book-card',
+            },
+
+            h('img', {
+              src: item.cover,
+              alt: item.title,
+              className: 'library-book-cover',
+              loading: 'lazy',
+            }),
+
+            h(
+              'div',
+              null,
+              h('h2', null, item.title),
+              h('p', null, item.description),
+              h(
+                'strong',
+                null,
+                `${item.price.toFixed(2)} ლარი`
+              )
+            ),
+
+            h(
+              'button',
+              {
+                type: 'button',
+                className:
+                  selectedItemId === item.id
+                    ? 'library-action library-action-primary'
+                    : 'library-action',
+
+                onClick: () => {
+                  setSelectedItemId(item.id);
+                  setShowLogin(true);
+
+                  setTimeout(() => {
+                    const loginPanel =
+                      document.querySelector(
+                        '.library-login-panel'
+                      );
+
+                    if (loginPanel) {
+                      loginPanel.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center',
+                      });
+                    }
+                  }, 150);
+                },
+              },
+              'შეძენა'
+            )
+          )
+        )
+      )
+    ),
+
+    showLogin &&
+      h(LibraryLogin, {
+        onLogin: (loggedUser) => {
+          setUser(loggedUser);
+          setShowLogin(false);
+
+          setTimeout(() => {
+            const orderPanel =
+              document.querySelector(
+                '.library-order-panel'
+              );
+
+            if (orderPanel) {
+              orderPanel.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start',
+              });
+            }
+          }, 250);
+        },
+      })
+  )
     ),
     h(Footer, { lang })
   );
