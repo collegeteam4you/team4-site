@@ -6541,7 +6541,7 @@ window.Team4WhyOthersGetRichContent = {
     },
     {
       "type": "paragraph",
-      "text": "თუ იტყვი:"
+      "text": "თუ იტყვი?"
     },
     {
       "type": "heading",
