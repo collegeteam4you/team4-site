@@ -4219,3 +4219,31 @@ body .library-book-body {
           0 0 0 12px rgba(239, 27, 19, 0);
     }
 }
+/* Team4 Coach click fix */
+
+#team4CoachButton {
+  position: fixed !important;
+  z-index: 2147483646 !important;
+  pointer-events: auto !important;
+}
+
+#team4CoachWindow {
+  position: fixed !important;
+  z-index: 2147483647 !important;
+  pointer-events: auto !important;
+}
+
+#team4CoachWindow *,
+#team4CoachContent,
+#team4CoachContent button,
+#startCoachTest,
+#team4CoachClose {
+  pointer-events: auto !important;
+}
+
+#team4CoachContent button,
+#startCoachTest,
+#team4CoachClose {
+  position: relative;
+  z-index: 2;
+}
