@@ -9,13 +9,15 @@ document.addEventListener("DOMContentLoaded", function () {
     return;
   }
 
+  windowBox.style.display = "none";
+
   content.innerHTML = `
-    <p style="margin-bottom: 15px;">
+    <p style="margin-bottom: 12px; font-weight: 700;">
       გამარჯობა 👋 მე ვარ Team4 Coach.
     </p>
 
     <p style="margin-bottom: 15px;">
-      დაგეხმარები შეაფასო შენი გაყიდვების დონე და იპოვო განვითარების მიმართულება.
+      დაგეხმარები შეაფასო შენი გაყიდვების დონე.
     </p>
 
     <button
@@ -36,8 +38,6 @@ document.addEventListener("DOMContentLoaded", function () {
     </button>
   `;
 
-  windowBox.style.display = "none";
-
   button.addEventListener("click", function () {
     windowBox.style.display = "block";
   });
@@ -45,78 +45,34 @@ document.addEventListener("DOMContentLoaded", function () {
   closeButton.addEventListener("click", function () {
     windowBox.style.display = "none";
   });
-  const startButton = document.getElementById("startCoachTest");
 
-if (startButton) {
-  startButton.addEventListener("click", function () {
-    content.innerHTML = `
-      <p style="margin-bottom: 15px; font-weight: 700;">
-        პირველი კითხვა:
-      </p>
+  content.addEventListener("click", function (event) {
+    if (event.target.id === "startCoachTest") {
+      content.innerHTML = `
+        <p style="margin-bottom: 10px; font-weight: 700;">
+          პირველი კითხვა
+        </p>
 
-      <p style="margin-bottom: 15px;">
-        რამდენი ხანია გაყიდვებში მუშაობ?
-      </p>
+        <p style="margin-bottom: 15px;">
+          რამდენი ხანია გაყიდვებში მუშაობ?
+        </p>
 
-      <button
-        type="button"
-        style="
-          width: 100%;
-          padding: 12px;
-          margin-bottom: 8px;
-          border: 1px solid #ddd;
-          border-radius: 10px;
-          background: white;
-          cursor: pointer;
-        "
-      >
-        ჯერ არ მიმუშავია
-      </button>
+        <button type="button" class="coach-answer">
+          ჯერ არ მიმუშავია
+        </button>
 
-      <button
-        type="button"
-        style="
-          width: 100%;
-          padding: 12px;
-          margin-bottom: 8px;
-          border: 1px solid #ddd;
-          border-radius: 10px;
-          background: white;
-          cursor: pointer;
-        "
-      >
-        1 წლამდე
-      </button>
+        <button type="button" class="coach-answer">
+          1 წლამდე
+        </button>
 
-      <button
-        type="button"
-        style="
-          width: 100%;
-          padding: 12px;
-          margin-bottom: 8px;
-          border: 1px solid #ddd;
-          border-radius: 10px;
-          background: white;
-          cursor: pointer;
-        "
-      >
-        1–3 წელი
-      </button>
+        <button type="button" class="coach-answer">
+          1–3 წელი
+        </button>
 
-      <button
-        type="button"
-        style="
-          width: 100%;
-          padding: 12px;
-          border: 1px solid #ddd;
-          border-radius: 10px;
-          background: white;
-          cursor: pointer;
-        "
-      >
-        3 წელზე მეტი
-      </button>
-    `;
+        <button type="button" class="coach-answer">
+          3 წელზე მეტი
+        </button>
+      `;
+    }
   });
-}
 });
