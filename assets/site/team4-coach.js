@@ -25,18 +25,9 @@ document.addEventListener("DOMContentLoaded", function () {
       question:
         "საუბრის დასაწყისში როგორ იგებ, რეალურად რა სჭირდება კლიენტს?",
       answers: [
-        {
-          text: "პირდაპირ პროდუქტს ვთავაზობ",
-          score: 0
-        },
-        {
-          text: "ერთ-ორ ზოგად კითხვას ვსვამ",
-          score: 1
-        },
-        {
-          text: "ვაზუსტებ მიზანსა და მოლოდინს",
-          score: 2
-        },
+        { text: "პირდაპირ პროდუქტს ვთავაზობ", score: 0 },
+        { text: "ერთ-ორ ზოგად კითხვას ვსვამ", score: 1 },
+        { text: "ვაზუსტებ მიზანსა და მოლოდინს", score: 2 },
         {
           text:
             "სისტემურად ვიკვლევ მიზანს, მიზეზსა და გადაწყვეტილების კრიტერიუმებს",
@@ -50,18 +41,9 @@ document.addEventListener("DOMContentLoaded", function () {
       question:
         "რამდენად ხშირად ეძებ კლიენტის რეალურ ტკივილს და პრობლემის მიზეზს?",
       answers: [
-        {
-          text: "თითქმის არასდროს",
-          score: 0
-        },
-        {
-          text: "მხოლოდ მაშინ, როცა თავად ამბობს",
-          score: 1
-        },
-        {
-          text: "ხშირად ვაზუსტებ პრობლემას",
-          score: 2
-        },
+        { text: "თითქმის არასდროს", score: 0 },
+        { text: "მხოლოდ მაშინ, როცა თავად ამბობს", score: 1 },
+        { text: "ხშირად ვაზუსტებ პრობლემას", score: 2 },
         {
           text:
             "ყოველთვის ვარკვევ ტკივილს, გავლენასა და სასურველ შედეგს",
@@ -75,14 +57,8 @@ document.addEventListener("DOMContentLoaded", function () {
       question:
         "შეთავაზებამდე რამდენად კარგად ადგენ, ვინ და როგორ იღებს საბოლოო გადაწყვეტილებას?",
       answers: [
-        {
-          text: "ამას არ ვაზუსტებ",
-          score: 0
-        },
-        {
-          text: "ზოგჯერ ვეკითხები",
-          score: 1
-        },
+        { text: "ამას არ ვაზუსტებ", score: 0 },
+        { text: "ზოგჯერ ვეკითხები", score: 1 },
         {
           text: "უმეტესად ვიცი გადაწყვეტილების მიმღები",
           score: 2
@@ -104,10 +80,7 @@ document.addEventListener("DOMContentLoaded", function () {
           text: "პროდუქტის მახასიათებლების ჩამოთვლაზე",
           score: 0
         },
-        {
-          text: "ფასსა და ფასდაკლებაზე",
-          score: 1
-        },
+        { text: "ფასსა და ფასდაკლებაზე", score: 1 },
         {
           text: "კლიენტისთვის მისაღებ სარგებელზე",
           score: 2
@@ -130,8 +103,7 @@ document.addEventListener("DOMContentLoaded", function () {
           score: 0
         },
         {
-          text:
-            "ვცდილობ ფასის დაცვას, მაგრამ ხშირად მიჭირს",
+          text: "ვცდილობ ფასის დაცვას, მაგრამ ხშირად მიჭირს",
           score: 1
         },
         {
@@ -151,13 +123,9 @@ document.addEventListener("DOMContentLoaded", function () {
       question:
         "რამდენად მკაფიოდ შეგიძლია აუხსნა კლიენტს, რატომ უნდა აირჩიოს შენი შეთავაზება?",
       answers: [
+        { text: "ძირითადად ფასით ვარწმუნებ", score: 0 },
         {
-          text: "ძირითადად ფასით ვარწმუნებ",
-          score: 0
-        },
-        {
-          text:
-            "ვყვები პროდუქტის ზოგად უპირატესობებს",
+          text: "ვყვები პროდუქტის ზოგად უპირატესობებს",
           score: 1
         },
         {
@@ -177,17 +145,10 @@ document.addEventListener("DOMContentLoaded", function () {
       question:
         "რამდენად თავდაჯერებულად სთხოვ კლიენტს გადაწყვეტილების მიღებას?",
       answers: [
+        { text: "იშვიათად ვთხოვ პირდაპირ", score: 0 },
+        { text: "ზოგჯერ ვცდილობ", score: 1 },
         {
-          text: "იშვიათად ვთხოვ პირდაპირ",
-          score: 0
-        },
-        {
-          text: "ზოგჯერ ვცდილობ",
-          score: 1
-        },
-        {
-          text:
-            "უმეტეს შემთხვევაში ვთავაზობ კონკრეტულ ნაბიჯს",
+          text: "უმეტეს შემთხვევაში ვთავაზობ კონკრეტულ ნაბიჯს",
           score: 2
         },
         {
@@ -203,18 +164,13 @@ document.addEventListener("DOMContentLoaded", function () {
       question:
         "რას აკეთებ, როცა კლიენტი ამბობს: „დავფიქრდები“?",
       answers: [
+        { text: "ვემშვიდობები და ველოდები", score: 0 },
         {
-          text: "ვემშვიდობები და ველოდები",
-          score: 0
-        },
-        {
-          text:
-            "ვთხოვ, მოგვიანებით დამიკავშირდეს",
+          text: "ვთხოვ, მოგვიანებით დამიკავშირდეს",
           score: 1
         },
         {
-          text:
-            "ვაზუსტებ, კონკრეტულად რაზე უნდა დაფიქრდეს",
+          text: "ვაზუსტებ, კონკრეტულად რაზე უნდა დაფიქრდეს",
           score: 2
         },
         {
@@ -231,18 +187,15 @@ document.addEventListener("DOMContentLoaded", function () {
         "რამდენად ხშირად ასრულებ შეხვედრას კონკრეტული შეთანხმებით?",
       answers: [
         {
-          text:
-            "ხშირად შეთანხმების გარეშე სრულდება",
+          text: "ხშირად შეთანხმების გარეშე სრულდება",
           score: 0
         },
         {
-          text:
-            "ზოგჯერ ვთანხმდებით შემდეგ ნაბიჯზე",
+          text: "ზოგჯერ ვთანხმდებით შემდეგ ნაბიჯზე",
           score: 1
         },
         {
-          text:
-            "უმეტესად მაქვს კონკრეტული შეთანხმება",
+          text: "უმეტესად მაქვს კონკრეტული შეთანხმება",
           score: 2
         },
         {
@@ -259,19 +212,14 @@ document.addEventListener("DOMContentLoaded", function () {
         "რამდენად სტაბილურია ახალი ლიდების მოძიების შენი სისტემა?",
       answers: [
         {
-          text:
-            "შემთხვევით ლიდებზე ვარ დამოკიდებული",
+          text: "შემთხვევით ლიდებზე ვარ დამოკიდებული",
           score: 0
         },
         {
-          text:
-            "ზოგჯერ თავად ვეძებ ახალ კლიენტებს",
+          text: "ზოგჯერ თავად ვეძებ ახალ კლიენტებს",
           score: 1
         },
-        {
-          text: "რამდენიმე მოქმედი წყარო მაქვს",
-          score: 2
-        },
+        { text: "რამდენიმე მოქმედი წყარო მაქვს", score: 2 },
         {
           text:
             "მაქვს სტაბილური, გაზომვადი და მრავალარხიანი სისტემა",
@@ -285,18 +233,9 @@ document.addEventListener("DOMContentLoaded", function () {
       question:
         "რამდენჯერ აკეთებ Follow-up-ს, თუ კლიენტი პირველივე საუბარში არ ყიდულობს?",
       answers: [
-        {
-          text: "აღარ ვუკავშირდები",
-          score: 0
-        },
-        {
-          text: "ერთხელ",
-          score: 1
-        },
-        {
-          text: "2–3-ჯერ",
-          score: 2
-        },
+        { text: "აღარ ვუკავშირდები", score: 0 },
+        { text: "ერთხელ", score: 1 },
+        { text: "2–3-ჯერ", score: 2 },
         {
           text:
             "წინასწარ დაგეგმილი სცენარით, შედეგამდე ან მკაფიო უარამდე",
@@ -310,17 +249,10 @@ document.addEventListener("DOMContentLoaded", function () {
       question:
         "რამდენად სისტემურად ითხოვ რეკომენდაციებს კმაყოფილი კლიენტებისგან?",
       answers: [
+        { text: "არასდროს", score: 0 },
+        { text: "იშვიათად", score: 1 },
         {
-          text: "არასდროს",
-          score: 0
-        },
-        {
-          text: "იშვიათად",
-          score: 1
-        },
-        {
-          text:
-            "ზოგჯერ, წარმატებული გაყიდვის შემდეგ",
+          text: "ზოგჯერ, წარმატებული გაყიდვის შემდეგ",
           score: 2
         },
         {
@@ -337,17 +269,12 @@ document.addEventListener("DOMContentLoaded", function () {
         "როგორ მართავ კლიენტებისა და გარიგებების ინფორმაციას?",
       answers: [
         {
-          text:
-            "არ ვიწერ ან მხოლოდ მეხსიერებას ვეყრდნობი",
+          text: "არ ვიწერ ან მხოლოდ მეხსიერებას ვეყრდნობი",
           score: 0
         },
+        { text: "ტელეფონში ან ჩანაწერებში", score: 1 },
         {
-          text: "ტელეფონში ან ჩანაწერებში",
-          score: 1
-        },
-        {
-          text:
-            "ცხრილში ან მარტივ სისტემაში",
+          text: "ცხრილში ან მარტივ სისტემაში",
           score: 2
         },
         {
@@ -363,19 +290,12 @@ document.addEventListener("DOMContentLoaded", function () {
       question:
         "რამდენად ხშირად აანალიზებ გაყიდვების ძირითად მაჩვენებლებს?",
       answers: [
+        { text: "არ ვაანალიზებ", score: 0 },
         {
-          text: "არ ვაანალიზებ",
-          score: 0
-        },
-        {
-          text:
-            "მხოლოდ მაშინ, როცა შედეგი ცუდია",
+          text: "მხოლოდ მაშინ, როცა შედეგი ცუდია",
           score: 1
         },
-        {
-          text: "ყოველთვიურად",
-          score: 2
-        },
+        { text: "ყოველთვიურად", score: 2 },
         {
           text:
             "ყოველკვირეულად ვზომავ ლიდებს, კონვერსიასა და დაკარგვის მიზეზებს",
@@ -389,18 +309,9 @@ document.addEventListener("DOMContentLoaded", function () {
       question:
         "რამდენად ხშირად ასრულებ გაყიდვების გეგმას?",
       answers: [
-        {
-          text: "თითქმის არასდროს",
-          score: 0
-        },
-        {
-          text: "ზოგჯერ",
-          score: 1
-        },
-        {
-          text: "უმეტეს შემთხვევაში",
-          score: 2
-        },
+        { text: "თითქმის არასდროს", score: 0 },
+        { text: "ზოგჯერ", score: 1 },
+        { text: "უმეტეს შემთხვევაში", score: 2 },
         {
           text:
             "თითქმის ყოველთვის და ზუსტად ვიცი, რის ხარჯზე",
@@ -493,17 +404,88 @@ document.addEventListener("DOMContentLoaded", function () {
   const content =
     document.getElementById("team4CoachContent");
 
-  if (
-    !button ||
-    !windowBox ||
-    !closeButton ||
-    !content
-  ) {
+  if (!button || !windowBox || !closeButton || !content) {
     console.error(
       "Team4 Coach-ის ელემენტები ვერ მოიძებნა"
     );
     return;
   }
+
+  const coachWindowStyle =
+    document.createElement("style");
+
+  coachWindowStyle.textContent = `
+    #team4CoachWindow {
+      position: fixed !important;
+      right: 28px !important;
+      bottom: 90px !important;
+      width: 360px !important;
+      max-width: calc(100vw - 30px) !important;
+      max-height: calc(100vh - 120px) !important;
+      overflow: hidden !important;
+      box-sizing: border-box !important;
+      background: #ffffff !important;
+      border-radius: 20px !important;
+      box-shadow: 0 18px 60px rgba(0, 0, 0, 0.24) !important;
+      z-index: 999999 !important;
+    }
+
+    #team4CoachContent {
+      max-height: calc(100vh - 185px) !important;
+      overflow-y: auto !important;
+      overflow-x: hidden !important;
+      padding-right: 5px !important;
+      box-sizing: border-box !important;
+      overscroll-behavior: contain !important;
+      scrollbar-width: thin;
+      scrollbar-color: #bdbdbd transparent;
+    }
+
+    #team4CoachContent::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    #team4CoachContent::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    #team4CoachContent::-webkit-scrollbar-thumb {
+      background: #bdbdbd;
+      border-radius: 20px;
+    }
+
+    #team4CoachContent::-webkit-scrollbar-thumb:hover {
+      background: #929292;
+    }
+
+    @media (max-width: 600px) {
+      #team4CoachWindow {
+        right: 12px !important;
+        bottom: 78px !important;
+        width: calc(100vw - 24px) !important;
+        max-width: calc(100vw - 24px) !important;
+        max-height: calc(100vh - 100px) !important;
+        border-radius: 16px !important;
+      }
+
+      #team4CoachContent {
+        max-height: calc(100vh - 165px) !important;
+      }
+    }
+
+    @media (max-height: 700px) {
+      #team4CoachWindow {
+        bottom: 72px !important;
+        max-height: calc(100vh - 90px) !important;
+      }
+
+      #team4CoachContent {
+        max-height: calc(100vh - 150px) !important;
+      }
+    }
+  `;
+
+  document.head.appendChild(coachWindowStyle);
 
   windowBox.style.display = "none";
 
@@ -558,6 +540,10 @@ document.addEventListener("DOMContentLoaded", function () {
     return percentages;
   }
 
+  function scrollCoachToTop() {
+    content.scrollTop = 0;
+  }
+
   function showStartScreen() {
     content.innerHTML = `
       <p
@@ -608,6 +594,8 @@ document.addEventListener("DOMContentLoaded", function () {
         შეფასების დაწყება
       </button>
     `;
+
+    scrollCoachToTop();
   }
 
   function showQuestion() {
@@ -667,9 +655,7 @@ document.addEventListener("DOMContentLoaded", function () {
         "
       >
         <span>
-          კითხვა
-          ${coachState.currentQuestion + 1}
-          /
+          კითხვა ${coachState.currentQuestion + 1} /
           ${questions.length}
         </span>
 
@@ -710,6 +696,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
       ${answerButtons}
     `;
+
+    scrollCoachToTop();
   }
 
   function prepareResult() {
@@ -926,6 +914,8 @@ document.addEventListener("DOMContentLoaded", function () {
         შეავსე ყველა ველი სწორად
       </p>
     `;
+
+    scrollCoachToTop();
   }
 
   function makeSkillBarsHTML(
@@ -1333,6 +1323,8 @@ document.addEventListener("DOMContentLoaded", function () {
         შეფასების თავიდან გავლა
       </button>
     `;
+
+    scrollCoachToTop();
   }
 
   function showDemoRecommendation(
@@ -1415,6 +1407,13 @@ document.addEventListener("DOMContentLoaded", function () {
         </button>
       </div>
     `;
+
+    setTimeout(function () {
+      resultBox.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest"
+      });
+    }, 50);
   }
 
   function goToContactForm() {
@@ -1450,6 +1449,7 @@ document.addEventListener("DOMContentLoaded", function () {
     "click",
     function () {
       windowBox.style.display = "block";
+      scrollCoachToTop();
     }
   );
 
