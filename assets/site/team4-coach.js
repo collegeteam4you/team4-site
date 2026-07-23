@@ -1,4 +1,9 @@
 document.addEventListener("DOMContentLoaded", function () {
+    const coachState = {
+    currentQuestion: 0,
+    score: 0,
+    answers: []
+  };
   const button = document.getElementById("team4CoachButton");
   const windowBox = document.getElementById("team4CoachWindow");
   const closeButton = document.getElementById("team4CoachClose");
