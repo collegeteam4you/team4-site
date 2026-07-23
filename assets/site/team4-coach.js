@@ -4,6 +4,26 @@ document.addEventListener("DOMContentLoaded", function () {
     score: 0,
     answers: []
   };
+    const questions = [
+  {
+    question: "რამდენი ხანია გაყიდვებში მუშაობ?",
+    answers: [
+      { text: "ჯერ არ მიმუშავია", score: 1 },
+      { text: "1 წლამდე", score: 2 },
+      { text: "1–3 წელი", score: 3 },
+      { text: "3 წელზე მეტი", score: 4 }
+    ]
+  },
+  {
+    question: "რა არის შენთვის ყველაზე რთული გაყიდვებში?",
+    answers: [
+      { text: "კლიენტის დაინტერესება", score: 1 },
+      { text: "ფასზე წინააღმდეგობის გადალახვა", score: 2 },
+      { text: "გარიგების დახურვა", score: 3 },
+      { text: "სტაბილურად ლიდების მოძიება", score: 4 }
+    ]
+  }
+];
   const button = document.getElementById("team4CoachButton");
   const windowBox = document.getElementById("team4CoachWindow");
   const closeButton = document.getElementById("team4CoachClose");
