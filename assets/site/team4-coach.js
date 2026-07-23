@@ -2,7 +2,9 @@ document.addEventListener("DOMContentLoaded", function () {
   const coachState = {
     currentQuestion: 0,
     score: 0,
-    answers: []
+    answers: [],
+    resultTitle: "",
+    resultDescription: ""
   };
 
   const questions = [
@@ -38,6 +40,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
   windowBox.style.display = "none";
 
+  function resetCoach() {
+    coachState.currentQuestion = 0;
+    coachState.score = 0;
+    coachState.answers = [];
+    coachState.resultTitle = "";
+    coachState.resultDescription = "";
+  }
+
   function showStartScreen() {
     content.innerHTML = `
       <p style="margin-bottom: 12px; font-weight: 700;">
@@ -71,7 +81,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const currentQuestion = questions[coachState.currentQuestion];
 
     if (!currentQuestion) {
-      showResult();
+      prepareResult();
+      showContactForm();
       return;
     }
 
@@ -114,35 +125,128 @@ document.addEventListener("DOMContentLoaded", function () {
     `;
   }
 
-  function showResult() {
-    let title = "";
-    let description = "";
-
+  function prepareResult() {
     if (coachState.score <= 3) {
-      title = "დამწყები დონე";
-      description =
+      coachState.resultTitle = "დამწყები დონე";
+      coachState.resultDescription =
         "შენთვის მნიშვნელოვანია გაყიდვების საფუძვლების, კლიენტთან კომუნიკაციისა და სწორი კითხვების დასმის განვითარება.";
     } else if (coachState.score <= 6) {
-      title = "განვითარებადი დონე";
-      description =
-        "შენ უკვე გაქვს გარკვეული გამოცდილება, თუმცა შედეგის გასაზრდელად საჭიროა წინააღმდეგობებთან მუშაობისა და დახურვის ტექნიკების გაძლიერება.";
+      coachState.resultTitle = "განვითარებადი დონე";
+      coachState.resultDescription =
+        "შენ უკვე გაქვს გარკვეული გამოცდილება, თუმცა შედეგის გასაზრდელად საჭიროა წინააღმდეგობებთან მუშაობისა და გარიგების დახურვის ტექნიკების გაძლიერება.";
     } else {
-      title = "გამოცდილი დონე";
-      description =
+      coachState.resultTitle = "გამოცდილი დონე";
+      coachState.resultDescription =
         "შენ გაქვს კარგი საფუძველი. შემდეგი ეტაპია სისტემური ლიდების გენერაცია, მაღალი კონვერსია და გაყიდვების სტაბილური ზრდა.";
     }
+  }
 
+  function showContactForm() {
+    content.innerHTML = `
+      <p style="margin-bottom: 8px; font-size: 13px; color: #777777;">
+        შენი შედეგი მზად არის
+      </p>
+
+      <p style="margin-bottom: 10px; font-size: 20px; font-weight: 800;">
+        მიიღე სრული ანალიზი
+      </p>
+
+      <p style="margin-bottom: 15px; line-height: 1.5;">
+        შეავსე ინფორმაცია და ნახე შენი გაყიდვების შეფასება, ძლიერი მხარეები და რეკომენდაცია.
+      </p>
+
+      <input
+        id="coachName"
+        type="text"
+        placeholder="სახელი"
+        autocomplete="name"
+        style="
+          width: 100%;
+          padding: 12px;
+          margin-bottom: 10px;
+          border: 1px solid #dddddd;
+          border-radius: 10px;
+          box-sizing: border-box;
+        "
+      >
+
+      <input
+        id="coachPhone"
+        type="tel"
+        placeholder="ტელეფონის ნომერი"
+        autocomplete="tel"
+        style="
+          width: 100%;
+          padding: 12px;
+          margin-bottom: 10px;
+          border: 1px solid #dddddd;
+          border-radius: 10px;
+          box-sizing: border-box;
+        "
+      >
+
+      <input
+        id="coachEmail"
+        type="email"
+        placeholder="ელფოსტა"
+        autocomplete="email"
+        style="
+          width: 100%;
+          padding: 12px;
+          margin-bottom: 12px;
+          border: 1px solid #dddddd;
+          border-radius: 10px;
+          box-sizing: border-box;
+        "
+      >
+
+      <button
+        id="showCoachResult"
+        type="button"
+        style="
+          width: 100%;
+          padding: 13px;
+          border: none;
+          border-radius: 10px;
+          background: #ef1b13;
+          color: white;
+          font-weight: 700;
+          cursor: pointer;
+        "
+      >
+        შედეგის მიღება
+      </button>
+
+      <p
+        id="coachFormError"
+        style="
+          display: none;
+          margin-top: 10px;
+          color: #ef1b13;
+          font-size: 13px;
+        "
+      >
+        შეავსე ყველა ველი სწორად
+      </p>
+    `;
+  }
+
+  function showFinalResult(name) {
     content.innerHTML = `
       <p style="margin-bottom: 8px; font-size: 13px; color: #777777;">
         შეფასება დასრულებულია
       </p>
 
-      <p style="margin-bottom: 10px; font-size: 20px; font-weight: 800;">
-        ${title}
+      <p style="margin-bottom: 6px; font-weight: 700;">
+        ${name}, შენი შედეგია:
+      </p>
+
+      <p style="margin-bottom: 10px; font-size: 21px; font-weight: 800;">
+        ${coachState.resultTitle}
       </p>
 
       <p style="margin-bottom: 15px; line-height: 1.5;">
-        ${description}
+        ${coachState.resultDescription}
       </p>
 
       <p style="margin-bottom: 15px; font-weight: 700;">
@@ -166,8 +270,6 @@ document.addEventListener("DOMContentLoaded", function () {
         თავიდან დაწყება
       </button>
     `;
-
-    console.log("Team4 Coach პასუხები:", coachState.answers);
   }
 
   showStartScreen();
@@ -182,10 +284,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   content.addEventListener("click", function (event) {
     if (event.target.id === "startCoachTest") {
-      coachState.currentQuestion = 0;
-      coachState.score = 0;
-      coachState.answers = [];
-
+      resetCoach();
       showQuestion();
       return;
     }
@@ -208,16 +307,44 @@ document.addEventListener("DOMContentLoaded", function () {
       });
 
       coachState.currentQuestion += 1;
-
       showQuestion();
       return;
     }
 
-    if (event.target.id === "restartCoachTest") {
-      coachState.currentQuestion = 0;
-      coachState.score = 0;
-      coachState.answers = [];
+    if (event.target.id === "showCoachResult") {
+      const nameInput = document.getElementById("coachName");
+      const phoneInput = document.getElementById("coachPhone");
+      const emailInput = document.getElementById("coachEmail");
+      const errorMessage = document.getElementById("coachFormError");
 
+      const name = nameInput.value.trim();
+      const phone = phoneInput.value.trim();
+      const email = emailInput.value.trim();
+
+      const emailIsValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+      if (!name || !phone || !email || !emailIsValid) {
+        errorMessage.style.display = "block";
+        return;
+      }
+
+      errorMessage.style.display = "none";
+
+      console.log("Team4 Coach ლიდი:", {
+        name: name,
+        phone: phone,
+        email: email,
+        score: coachState.score,
+        result: coachState.resultTitle,
+        answers: coachState.answers
+      });
+
+      showFinalResult(name);
+      return;
+    }
+
+    if (event.target.id === "restartCoachTest") {
+      resetCoach();
       showQuestion();
     }
   });
