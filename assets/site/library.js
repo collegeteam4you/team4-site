@@ -6,9 +6,8 @@
 
   const bookContent = window.Team4BookContent || {};
 
-  const urlParams = new URLSearchParams(window.location.search);
-  const activeOffer = urlParams.get('offer');
-  const hasCoachOffer = activeOffer === 'coach10';
+  const hasCoachOffer =
+    localStorage.getItem('team4CoachCompleted') === 'true';
 
   const catalog = [
     {
@@ -53,7 +52,7 @@
     {
       id: 'book-bundle',
       type: 'bundle',
-      title: ' ორივე წიგნი ერთად',
+      title: 'ორივე წიგნი ერთად',
       titleEng: 'Both Books Bundle',
       description: 'მე ვარ პასუხი + რატომ მდიდრდებიან სხვები',
       cover: '/assets/bundle.jpg',
@@ -138,6 +137,7 @@
     phone,
   }) => {
     const normalizedEmail = normalizeEmail(email);
+
     const cleanFirstName = String(
       firstName || name || ''
     ).trim();
@@ -369,8 +369,6 @@
     getProgress,
     setProgress,
     hasAccessFromEntitlements,
-
-    activeOffer,
     hasCoachOffer,
 
     lockedMessage:
