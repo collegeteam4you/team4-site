@@ -4247,3 +4247,97 @@ body .library-book-body {
   position: relative;
   z-index: 2;
 }
+.team4-coach-button {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 99999;
+
+  border: none;
+  border-radius: 999px;
+  background: #e10600;
+  padding: 14px 20px;
+
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 800;
+
+  cursor: pointer;
+  box-shadow: 0 12px 35px rgba(225, 6, 0, 0.38);
+}
+
+.team4-coach-window {
+  position: fixed;
+  right: 20px;
+  bottom: 85px;
+  z-index: 99999;
+
+  display: none;
+  width: 340px;
+  max-width: calc(100vw - 40px);
+
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 16px;
+  background: #ffffff;
+
+  color: #111111;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+}
+
+.team4-coach-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+
+  background: #111111;
+  padding: 16px;
+
+  color: #ffffff;
+}
+
+.team4-coach-header strong {
+  display: block;
+  font-size: 16px;
+}
+
+.team4-coach-header small {
+  display: block;
+  margin-top: 3px;
+
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 11px;
+}
+
+.team4-coach-close {
+  border: none;
+  background: transparent;
+
+  color: #ffffff;
+  font-size: 26px;
+  line-height: 1;
+
+  cursor: pointer;
+}
+
+.team4-coach-content {
+  padding: 18px;
+}
+
+.coach-answer {
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+
+  border: 1px solid #dddddd;
+  border-radius: 10px;
+  background: #f5f5f5;
+  padding: 12px;
+
+  color: #111111;
+  font-weight: 700;
+  text-align: left;
+
+  cursor: pointer;
+}
