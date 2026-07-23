@@ -3,27 +3,122 @@ document.addEventListener("DOMContentLoaded", function () {
     currentQuestion: 0,
     score: 0,
     answers: [],
+    categoryScores: {},
     resultTitle: "",
-    resultDescription: ""
+    resultDescription: "",
+    strongestCategory: "",
+    weakestCategory: ""
   };
 
   const questions = [
     {
+      category: "experience",
+      categoryName: "გამოცდილება",
       question: "რამდენი ხანია გაყიდვებში მუშაობ?",
       answers: [
-        { text: "ჯერ არ მიმუშავია", score: 1 },
-        { text: "1 წლამდე", score: 2 },
-        { text: "1–3 წელი", score: 3 },
-        { text: "3 წელზე მეტი", score: 4 }
+        { text: "ჯერ არ მიმუშავია", score: 0 },
+        { text: "1 წლამდე", score: 1 },
+        { text: "1–3 წელი", score: 2 },
+        { text: "3 წელზე მეტი", score: 3 }
       ]
     },
     {
-      question: "რა არის შენთვის ყველაზე რთული გაყიდვებში?",
+      category: "results",
+      categoryName: "შედეგები",
+      question: "რამდენად ხშირად ასრულებ გაყიდვების გეგმას?",
       answers: [
-        { text: "კლიენტის დაინტერესება", score: 1 },
-        { text: "ფასზე წინააღმდეგობის გადალახვა", score: 2 },
-        { text: "გარიგების დახურვა", score: 3 },
-        { text: "სტაბილურად ლიდების მოძიება", score: 4 }
+        { text: "თითქმის არასდროს", score: 0 },
+        { text: "ზოგჯერ", score: 1 },
+        { text: "უმეტეს შემთხვევაში", score: 2 },
+        { text: "თითქმის ყოველთვის", score: 3 }
+      ]
+    },
+    {
+      category: "communication",
+      categoryName: "კომუნიკაცია",
+      question: "რამდენად მარტივად ახერხებ კლიენტის დაინტერესებას?",
+      answers: [
+        { text: "ძალიან მიჭირს", score: 0 },
+        { text: "ხშირად მიჭირს", score: 1 },
+        { text: "უმეტესად გამომდის", score: 2 },
+        { text: "ძალიან კარგად გამომდის", score: 3 }
+      ]
+    },
+    {
+      category: "discovery",
+      categoryName: "საჭიროების გამოვლენა",
+      question: "რამდენად ხშირად უსვამ კლიენტს კითხვებს მისი რეალური საჭიროების გასაგებად?",
+      answers: [
+        { text: "თითქმის არასდროს", score: 0 },
+        { text: "ზოგჯერ", score: 1 },
+        { text: "ხშირად", score: 2 },
+        { text: "ყოველთვის სისტემურად", score: 3 }
+      ]
+    },
+    {
+      category: "objections",
+      categoryName: "წინააღმდეგობების დამუშავება",
+      question: "როგორ უმკლავდები ფასზე წინააღმდეგობას?",
+      answers: [
+        { text: "ხშირად ვიბნევი ან ფასდაკლებას ვთავაზობ", score: 0 },
+        { text: "ზოგჯერ გამომდის პასუხის გაცემა", score: 1 },
+        { text: "უმეტესად ღირებულებით ვამუშავებ", score: 2 },
+        { text: "სისტემურად ვმართავ და იშვიათად ვკარგავ კლიენტს", score: 3 }
+      ]
+    },
+    {
+      category: "followup",
+      categoryName: "Follow-up",
+      question: "რამდენჯერ აკეთებ Follow-up-ს კლიენტთან, თუ პირველივე საუბარში არ ყიდულობს?",
+      answers: [
+        { text: "აღარ ვუკავშირდები", score: 0 },
+        { text: "ერთხელ", score: 1 },
+        { text: "2–3-ჯერ", score: 2 },
+        { text: "სისტემურად, შედეგამდე", score: 3 }
+      ]
+    },
+    {
+      category: "closing",
+      categoryName: "გარიგების დახურვა",
+      question: "რამდენად თავდაჯერებულად ითხოვ გარიგების დახურვას?",
+      answers: [
+        { text: "იშვიათად ვთხოვ პირდაპირ", score: 0 },
+        { text: "ზოგჯერ ვცდილობ", score: 1 },
+        { text: "უმეტეს შემთხვევაში ვთხოვ", score: 2 },
+        { text: "ყოველთვის სწორი მომენტის შერჩევით", score: 3 }
+      ]
+    },
+    {
+      category: "leads",
+      categoryName: "ლიდების გენერაცია",
+      question: "გაქვს თუ არა ლიდების მოძიების სტაბილური სისტემა?",
+      answers: [
+        { text: "არა, შემთხვევით ლიდებზე ვარ დამოკიდებული", score: 0 },
+        { text: "ზოგჯერ ვეძებ ახალ ლიდებს", score: 1 },
+        { text: "რამდენიმე წყარო მაქვს", score: 2 },
+        { text: "მაქვს სტაბილური და გაზომვადი სისტემა", score: 3 }
+      ]
+    },
+    {
+      category: "crm",
+      categoryName: "კლიენტების მართვა",
+      question: "როგორ მართავ კლიენტებისა და გარიგებების ინფორმაციას?",
+      answers: [
+        { text: "არ ვიწერ", score: 0 },
+        { text: "ჩანაწერებში ან ტელეფონში", score: 1 },
+        { text: "ცხრილში ან მარტივ სისტემაში", score: 2 },
+        { text: "CRM-ში და ყველა ეტაპს ვაკონტროლებ", score: 3 }
+      ]
+    },
+    {
+      category: "analysis",
+      categoryName: "ანალიზი",
+      question: "რამდენად ხშირად აანალიზებ საკუთარ გაყიდვების შედეგებს?",
+      answers: [
+        { text: "არასდროს", score: 0 },
+        { text: "იშვიათად", score: 1 },
+        { text: "ყოველთვიურად", score: 2 },
+        { text: "ყოველკვირეულად და გადაწყვეტილებებსაც ვცვლი", score: 3 }
       ]
     }
   ];
@@ -44,8 +139,11 @@ document.addEventListener("DOMContentLoaded", function () {
     coachState.currentQuestion = 0;
     coachState.score = 0;
     coachState.answers = [];
+    coachState.categoryScores = {};
     coachState.resultTitle = "";
     coachState.resultDescription = "";
+    coachState.strongestCategory = "";
+    coachState.weakestCategory = "";
   }
 
   function showStartScreen() {
@@ -54,8 +152,8 @@ document.addEventListener("DOMContentLoaded", function () {
         გამარჯობა 👋 მე ვარ Team4 Coach.
       </p>
 
-      <p style="margin-bottom: 15px;">
-        დაგეხმარები შეაფასო შენი გაყიდვების დონე.
+      <p style="margin-bottom: 15px; line-height: 1.5;">
+        უპასუხე 10 კითხვას და მიიღე შენი გაყიდვების უნარების პერსონალური შეფასება.
       </p>
 
       <button
@@ -85,6 +183,10 @@ document.addEventListener("DOMContentLoaded", function () {
       showContactForm();
       return;
     }
+
+    const progress = Math.round(
+      ((coachState.currentQuestion + 1) / questions.length) * 100
+    );
 
     const answerButtons = currentQuestion.answers
       .map(function (answer, index) {
@@ -117,7 +219,27 @@ document.addEventListener("DOMContentLoaded", function () {
         კითხვა ${coachState.currentQuestion + 1} / ${questions.length}
       </p>
 
-      <p style="margin-bottom: 15px; font-weight: 700;">
+      <div
+        style="
+          width: 100%;
+          height: 6px;
+          margin-bottom: 16px;
+          border-radius: 10px;
+          background: #eeeeee;
+          overflow: hidden;
+        "
+      >
+        <div
+          style="
+            width: ${progress}%;
+            height: 100%;
+            background: #ef1b13;
+            transition: width 0.3s ease;
+          "
+        ></div>
+      </div>
+
+      <p style="margin-bottom: 15px; font-weight: 700; line-height: 1.45;">
         ${currentQuestion.question}
       </p>
 
@@ -126,18 +248,37 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function prepareResult() {
-    if (coachState.score <= 3) {
-      coachState.resultTitle = "დამწყები დონე";
+    const maximumScore = questions.length * 3;
+    const percentage = Math.round((coachState.score / maximumScore) * 100);
+
+    if (percentage <= 30) {
+      coachState.resultTitle = "საწყისი დონე";
       coachState.resultDescription =
-        "შენთვის მნიშვნელოვანია გაყიდვების საფუძვლების, კლიენტთან კომუნიკაციისა და სწორი კითხვების დასმის განვითარება.";
-    } else if (coachState.score <= 6) {
+        "შენ ახლა გაყიდვების საფუძვლების ჩამოყალიბების ეტაპზე ხარ. შედეგის გასაზრდელად საჭიროა კომუნიკაციის, საჭიროების გამოვლენის, Follow-up-ისა და გარიგების დახურვის სისტემური განვითარება.";
+    } else if (percentage <= 55) {
       coachState.resultTitle = "განვითარებადი დონე";
       coachState.resultDescription =
-        "შენ უკვე გაქვს გარკვეული გამოცდილება, თუმცა შედეგის გასაზრდელად საჭიროა წინააღმდეგობებთან მუშაობისა და გარიგების დახურვის ტექნიკების გაძლიერება.";
-    } else {
-      coachState.resultTitle = "გამოცდილი დონე";
+        "შენ უკვე გაქვს გარკვეული პრაქტიკული უნარები, თუმცა შედეგები ჯერ არ არის სტაბილური. მთავარი ამოცანაა სუსტი მიმართულებების გაძლიერება და გაყიდვების პროცესის სისტემაში მოქცევა.";
+    } else if (percentage <= 80) {
+      coachState.resultTitle = "ძლიერი დონე";
       coachState.resultDescription =
-        "შენ გაქვს კარგი საფუძველი. შემდეგი ეტაპია სისტემური ლიდების გენერაცია, მაღალი კონვერსია და გაყიდვების სტაბილური ზრდა.";
+        "შენ გაქვს გაყიდვების კარგი საფუძველი და ბევრ მიმართულებაში ეფექტურად მუშაობ. შემდეგი ეტაპია შედეგების გაზომვა, სტაბილური ლიდების სისტემა და კონვერსიის ზრდა.";
+    } else {
+      coachState.resultTitle = "პროფესიონალური დონე";
+      coachState.resultDescription =
+        "შენ გაყიდვების პროცესს თავდაჯერებულად და სისტემურად მართავ. განვითარების შემდეგი ეტაპია პროცესების მასშტაბირება, მაღალი ღირებულების გარიგებები და გუნდის შედეგების მართვა.";
+    }
+
+    const sortedCategories = Object.entries(coachState.categoryScores).sort(
+      function (firstCategory, secondCategory) {
+        return secondCategory[1].score - firstCategory[1].score;
+      }
+    );
+
+    if (sortedCategories.length > 0) {
+      coachState.strongestCategory = sortedCategories[0][1].name;
+      coachState.weakestCategory =
+        sortedCategories[sortedCategories.length - 1][1].name;
     }
   }
 
@@ -152,7 +293,7 @@ document.addEventListener("DOMContentLoaded", function () {
       </p>
 
       <p style="margin-bottom: 15px; line-height: 1.5;">
-        შეავსე ინფორმაცია და ნახე შენი გაყიდვების შეფასება, ძლიერი მხარეები და რეკომენდაცია.
+        შეავსე ინფორმაცია და ნახე შენი დონე, ძლიერი მიმართულება და მთავარი გასაუმჯობესებელი უნარი.
       </p>
 
       <input
@@ -232,6 +373,9 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function showFinalResult(name) {
+    const maximumScore = questions.length * 3;
+    const percentage = Math.round((coachState.score / maximumScore) * 100);
+
     content.innerHTML = `
       <p style="margin-bottom: 8px; font-size: 13px; color: #777777;">
         შეფასება დასრულებულია
@@ -245,13 +389,60 @@ document.addEventListener("DOMContentLoaded", function () {
         ${coachState.resultTitle}
       </p>
 
-      <p style="margin-bottom: 15px; line-height: 1.5;">
+      <p style="margin-bottom: 14px; line-height: 1.5;">
         ${coachState.resultDescription}
       </p>
 
-      <p style="margin-bottom: 15px; font-weight: 700;">
-        შენი ქულა: ${coachState.score}
-      </p>
+      <div
+        style="
+          padding: 12px;
+          margin-bottom: 10px;
+          border-radius: 10px;
+          background: #f5f5f5;
+        "
+      >
+        <p style="margin: 0 0 6px; font-weight: 700;">
+          შენი შედეგი: ${coachState.score} / ${maximumScore}
+        </p>
+
+        <p style="margin: 0;">
+          შეფასება: ${percentage}%
+        </p>
+      </div>
+
+      <div
+        style="
+          padding: 12px;
+          margin-bottom: 10px;
+          border-radius: 10px;
+          background: #f5f5f5;
+        "
+      >
+        <p style="margin: 0 0 5px; font-weight: 700;">
+          ძლიერი მიმართულება
+        </p>
+
+        <p style="margin: 0;">
+          ${coachState.strongestCategory}
+        </p>
+      </div>
+
+      <div
+        style="
+          padding: 12px;
+          margin-bottom: 15px;
+          border-radius: 10px;
+          background: #fff0ef;
+        "
+      >
+        <p style="margin: 0 0 5px; font-weight: 700;">
+          მთავარი გასაუმჯობესებელი მიმართულება
+        </p>
+
+        <p style="margin: 0;">
+          ${coachState.weakestCategory}
+        </p>
+      </div>
 
       <button
         id="restartCoachTest"
@@ -300,7 +491,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
       coachState.score += selectedAnswer.score;
 
+      if (!coachState.categoryScores[currentQuestion.category]) {
+        coachState.categoryScores[currentQuestion.category] = {
+          name: currentQuestion.categoryName,
+          score: 0
+        };
+      }
+
+      coachState.categoryScores[currentQuestion.category].score +=
+        selectedAnswer.score;
+
       coachState.answers.push({
+        category: currentQuestion.categoryName,
         question: currentQuestion.question,
         answer: selectedAnswer.text,
         score: selectedAnswer.score
@@ -336,6 +538,8 @@ document.addEventListener("DOMContentLoaded", function () {
         email: email,
         score: coachState.score,
         result: coachState.resultTitle,
+        strongestCategory: coachState.strongestCategory,
+        weakestCategory: coachState.weakestCategory,
         answers: coachState.answers
       });
 
