@@ -1307,62 +1307,81 @@ margin-top: 10px;
 
 <div
 style="
-margin-bottom: 12px;
-padding: 14px;
-border: 1px solid #ffd3d0;
-border-radius: 12px;
-background: linear-gradient(180deg, #fff7f6 0%, #ffffff 100%);
+margin:18px auto 14px;
+max-width:280px;
+padding:18px;
+background:#ffffff;
+border:1px solid #ececec;
+border-radius:18px;
+box-shadow:0 10px 30px rgba(0,0,0,.08);
+text-align:center;
 "
 >
-<p
-style="
-margin: 0 0 5px;
-font-size: 11px;
-font-weight: 900;
-color: #ef1b13;
-text-transform: uppercase;
-letter-spacing: 0.5px;
-"
->
-🎁 მხოლოდ ტესტის მონაწილეებისთვის
-</p>
 
-<p
+<div
 style="
-margin: 0 0 5px;
-font-size: 17px;
-font-weight: 900;
-line-height: 1.35;
-color: #171717;
+font-size:11px;
+font-weight:900;
+color:#ef1b13;
+letter-spacing:.7px;
+text-transform:uppercase;
+margin-bottom:10px;
+"
+>
+🎁 სპეციალური შეთავაზება
+</div>
+
+<img
+src="/assets/ყდა.jpg"
+alt="რატომ მდიდრდებიან სხვები"
+style="
+width:140px;
+display:block;
+margin:0 auto 14px;
+border-radius:10px;
+box-shadow:0 8px 18px rgba(0,0,0,.18);
+"
+/>
+
+<div
+style="
+font-size:18px;
+font-weight:900;
+line-height:1.35;
+color:#171717;
+margin-bottom:8px;
 "
 >
 რატომ მდიდრდებიან სხვები?
-</p>
+</div>
 
 <p
 style="
-margin: 0 0 10px;
-font-size: 13px;
-line-height: 1.5;
-color: #555555;
+margin:0 0 15px;
+font-size:13px;
+line-height:1.55;
+color:#666;
 "
 >
-შენ დაასრულე Team4 Coach-ის შეფასება, ამიტომ წიგნის ონლაინ ვერსია სპეციალურ ფასად შეგიძლია შეიძინო.
+შენ წარმატებით დაასრულე Team4 Coach-ის შეფასება.
+ამიტომ წიგნის ონლაინ ვერსიას მიიღებ სპეციალურ ფასად.
 </p>
 
 <div
 style="
-display: flex;
-align-items: center;
-gap: 9px;
-margin-bottom: 11px;
+display:flex;
+justify-content:center;
+align-items:center;
+gap:10px;
+margin-bottom:16px;
 "
 >
+
 <span
 style="
-font-size: 23px;
-font-weight: 900;
-color: #171717;
+font-size:30px;
+font-weight:900;
+color:#171717;
 "
 >
 10 ₾
@@ -1370,46 +1389,15 @@ color: #171717;
 
 <span
 style="
-font-size: 14px;
-color: #888888;
-text-decoration: line-through;
+font-size:15px;
+color:#999;
+text-decoration:line-through;
 "
 >
 14.90 ₾
 </span>
+
 </div>
-
-<button
-id="coachBookOfferButton"
-type="button"
-style="
-width: 100%;
-padding: 13px;
-border: none;
-border-radius: 10px;
-background: #ef1b13;
-color: white;
-font-size: 14px;
-font-weight: 900;
-cursor: pointer;
-"
->
-წიგნის ონლაინ ვერსიის შეძენა — 10 ₾
-</button>
-
-<p
-style="
-margin: 8px 0 0;
-font-size: 11px;
-line-height: 1.4;
-color: #777777;
-text-align: center;
-"
->
-შეთავაზება მოქმედებს ამ მოწყობილობაზე
-</p>
-</div>
-
 <button
 id="restartCoachTest"
 type="button"
