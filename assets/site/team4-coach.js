@@ -1305,6 +1305,110 @@ document.addEventListener("DOMContentLoaded", function () {
         ></div>
       </div>
 
+      <div
+        style="
+          margin-bottom: 12px;
+          padding: 14px;
+          border: 1px solid #ffd3d0;
+          border-radius: 12px;
+          background: linear-gradient(180deg, #fff7f6 0%, #ffffff 100%);
+        "
+      >
+        <p
+          style="
+            margin: 0 0 5px;
+            font-size: 11px;
+            font-weight: 900;
+            color: #ef1b13;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+          "
+        >
+          🎁 მხოლოდ ტესტის მონაწილეებისთვის
+        </p>
+
+        <p
+          style="
+            margin: 0 0 5px;
+            font-size: 17px;
+            font-weight: 900;
+            line-height: 1.35;
+            color: #171717;
+          "
+        >
+          რატომ მდიდრდებიან სხვები?
+        </p>
+
+        <p
+          style="
+            margin: 0 0 10px;
+            font-size: 13px;
+            line-height: 1.5;
+            color: #555555;
+          "
+        >
+          შენ დაასრულე Team4 Coach-ის შეფასება, ამიტომ წიგნის ონლაინ ვერსია სპეციალურ ფასად შეგიძლია შეიძინო.
+        </p>
+
+        <div
+          style="
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            margin-bottom: 11px;
+          "
+        >
+          <span
+            style="
+              font-size: 23px;
+              font-weight: 900;
+              color: #171717;
+            "
+          >
+            10 ₾
+          </span>
+
+          <span
+            style="
+              font-size: 14px;
+              color: #888888;
+              text-decoration: line-through;
+            "
+          >
+            14.90 ₾
+          </span>
+        </div>
+
+        <button
+          id="coachBookOfferButton"
+          type="button"
+          style="
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 10px;
+            background: #ef1b13;
+            color: white;
+            font-size: 14px;
+            font-weight: 900;
+            cursor: pointer;
+          "
+        >
+          წიგნის ონლაინ ვერსიის შეძენა — 10 ₾
+        </button>
+
+        <p
+          style="
+            margin: 8px 0 0;
+            font-size: 11px;
+            line-height: 1.4;
+            color: #777777;
+            text-align: center;
+          "
+        >
+          შეთავაზება მოქმედებს ამ მოწყობილობაზე
+        </p>
+      </div>
       <button
         id="restartCoachTest"
         type="button"
