@@ -1798,7 +1798,7 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
       }
 
-      if (
+           if (
         event.target.id ===
         "coachConsultationButton"
       ) {
@@ -1808,8 +1808,32 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if (
         event.target.id ===
+        "coachBookOfferButton"
+      ) {
+        localStorage.setItem(
+          "team4CoachCompleted",
+          "true"
+        );
+
+        localStorage.setItem(
+          "team4CoachCompletedAt",
+          new Date().toISOString()
+        );
+
+        window.location.href =
+          "/library#why-others-get-rich";
+
+        return;
+      }
+
+      if (
+        event.target.id ===
         "restartCoachTest"
       ) {
+        resetCoach();
+        showQuestion();
+        return;
+      }
         resetCoach();
         showQuestion();
       }
