@@ -1834,9 +1834,71 @@ document.addEventListener("DOMContentLoaded", function () {
         showQuestion();
         return;
       }
+              errorMessage.style.display =
+          "none";
+
+        showDemoRecommendation(
+          selectedValue
+        );
+
+        console.log(
+          "არჩეული განვითარების მიმართულება:",
+          {
+            name:
+              coachState.contact.name,
+            phone:
+              coachState.contact.phone,
+            email:
+              coachState.contact.email,
+            improvementChoice:
+              demoRecommendations[
+                selectedValue
+              ].title
+          }
+        );
+
+        return;
+      }
+
+      if (
+        event.target.id ===
+        "coachConsultationButton"
+      ) {
+        goToContactForm();
+        return;
+      }
+
+      if (
+        event.target.id ===
+        "coachBookOfferButton"
+      ) {
+        localStorage.setItem(
+          "team4CoachCompleted",
+          "true"
+        );
+
+        localStorage.setItem(
+          "team4CoachCompletedAt",
+          new Date().toISOString()
+        );
+
+        window.location.href =
+          "/library#why-others-get-rich";
+
+        return;
+      }
+
+      if (
+        event.target.id ===
+        "restartCoachTest"
+      ) {
         resetCoach();
         showQuestion();
+        return;
       }
+    }
+  );
+});
     }
   );
 });
