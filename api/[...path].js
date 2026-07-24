@@ -7,9 +7,39 @@ const adminPassword = process.env.ADMIN_PASSWORD || '123456789ns@';
 const adminEmail = process.env.ADMIN_EMAIL || 'collegeteam4you@gmail.com';
 const sessionSecret = process.env.SESSION_SECRET || 'team4-local-session-secret-change-me';
 const bookPriceGel = Number(process.env.BOOK_PRICE_GEL || 14.9);
-const manualPaymentReceiver = process.env.MANUAL_PAYMENT_RECEIVER || 'ლაშა ხურციძე';
-const manualPaymentAccount = process.env.MANUAL_PAYMENT_ACCOUNT || 'GE12BG0000000536600132';
 
+const PRODUCTS = {
+  'i-am-the-answer': {
+    id: 'i-am-the-answer',
+    title: 'მე ვარ პასუხი',
+    type: 'book',
+    amount: 14.9,
+  },
+
+  'why-others-get-rich': {
+    id: 'why-others-get-rich',
+    title: 'რატომ მდიდრდებიან სხვები',
+    type: 'book',
+    amount: 14.9,
+  },
+
+  'book-bundle': {
+    id: 'book-bundle',
+    title: 'ორივე წიგნი ერთად',
+    type: 'bundle',
+    amount: 24.9,
+    itemIds: ['i-am-the-answer', 'why-others-get-rich'],
+  },
+};
+
+const manualPaymentReceiver =
+  process.env.MANUAL_PAYMENT_RECEIVER || 'ლაშა ხურციძე';
+
+const manualPaymentAccount =
+  process.env.MANUAL_PAYMENT_ACCOUNT || 'GE12BG0000000536600132';
+
+const manualPaymentTbcAccount =
+  process.env.MANUAL_PAYMENT_TBC_ACCOUNT || 'GE96TB7044645064300059';
 const sendJson = (res, status, data, extraHeaders = {}) => {
   Object.entries({
     'Content-Type': 'application/json; charset=utf-8',
@@ -329,11 +359,25 @@ const handleAdminApi = async (req, res, pathname) => {
 const handleManualPaymentApi = async (req, res, pathname) => {
   if (pathname === '/api/manual-payment/orders' && req.method === 'POST') {
     await ensureSchema();
-    const body = req.body || {};
-    const firstName = String(body.firstName || '').trim();
+const body = req.body || {};
+
+const requestedItemId = String(
+  body.itemId || 'i-am-the-answer'
+).trim();
+
+const product = PRODUCTS[requestedItemId];
+
+const firstName = String(body.firstName || '').trim();
     const lastName = String(body.lastName || '').trim();
     const email = normalizeEmail(body.email);
     const phone = String(body.phone || '').trim();
+    if (!product) {
+  sendJson(res, 400, {
+    ok: false,
+    message: 'Selected product is invalid.',
+  });
+  return;
+}
     if (!firstName || !lastName || !email || !email.includes('@') || !phone) {
       sendJson(res, 400, { ok: false, message: 'Please fill in first name, last name, email, and phone.' });
       return;
@@ -345,22 +389,34 @@ const handleManualPaymentApi = async (req, res, pathname) => {
         id, order_number, payment_code, first_name, last_name, email, phone, amount,
         currency, item_id, item_title, item_type, status
       )
-      VALUES (
-        ${id}, ${paymentCode}, ${paymentCode}, ${firstName}, ${lastName}, ${email}, ${phone}, ${bookPriceGel},
-        'GEL', 'i-am-the-answer', 'მე ვარ პასუხი', 'book', 'Pending'
-      )
+VALUES (
+  ${id},
+  ${paymentCode},
+  ${paymentCode},
+  ${firstName},
+  ${lastName},
+  ${email},
+  ${phone},
+  ${product.amount},
+  'GEL',
+  ${product.id},
+  ${product.title},
+  ${product.type},
+  'Pending'
+)
       RETURNING *
     `;
     sendJson(res, 200, {
       ok: true,
       order: rowToOrder(result.rows[0]),
-      bankDetails: {
-        receiver: manualPaymentReceiver,
-        account: manualPaymentAccount,
-        amount: bookPriceGel,
-        currency: 'GEL',
-        purpose: paymentCode,
-      },
+bankDetails: {
+  receiver: manualPaymentReceiver,
+  bogAccount: manualPaymentAccount,
+  tbcAccount: manualPaymentTbcAccount,
+  amount: product.amount,
+  currency: 'GEL',
+  purpose: paymentCode,
+},
     });
     return;
   }
@@ -430,16 +486,44 @@ const handleEntitlements = async (req, res) => {
     WHERE email = ${email} AND status = 'Approved'
     ORDER BY approved_at DESC NULLS LAST, updated_at DESC
   `;
-  sendJson(res, 200, {
-    ok: true,
-    items: result.rows.map((row) => ({
+  const items = result.rows.flatMap((row) => {
+  const approvedAt =
+    row.approved_at || row.updated_at || row.created_at;
+
+  if (row.item_id === 'book-bundle') {
+    return [
+      {
+        itemId: 'i-am-the-answer',
+        itemTitle: 'მე ვარ პასუხი',
+        itemType: 'book',
+        status: row.status,
+        approvedAt,
+      },
+      {
+        itemId: 'why-others-get-rich',
+        itemTitle: 'რატომ მდიდრდებიან სხვები',
+        itemType: 'book',
+        status: row.status,
+        approvedAt,
+      },
+    ];
+  }
+
+  return [
+    {
       itemId: row.item_id,
       itemTitle: row.item_title,
       itemType: row.item_type,
       status: row.status,
-      approvedAt: row.approved_at || row.updated_at || row.created_at,
-    })),
-  });
+      approvedAt,
+    },
+  ];
+});
+
+sendJson(res, 200, {
+  ok: true,
+  items,
+});
 };
 
 module.exports = async function handler(req, res) {

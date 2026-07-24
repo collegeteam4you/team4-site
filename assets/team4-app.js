@@ -2,7 +2,7 @@ const { createElement: h } = React;
 
 let navItems = [
   ['about', 'WHY TEAM4', 'რატომ თიმ ფორი'],
-  ['book', 'Books', 'წიგნები'],
+ ['book', 'Books', 'წიგნები'],
   ['programs', 'PROGRAMS', 'პროგრამები'],
   ['winspace', 'WinSpace', 'ვინსფეისი'],
   ['testimonials', 'Testimonials', 'შეფასებები'],
@@ -10,16 +10,16 @@ let navItems = [
 
 let copy = {
   ENG: {
-    heroTitle: 'Sales Is Not Talent — It Is Psychology.',
+    heroTitle: 'Sales Is Not Talent - It Is Psychology.',
     heroSubtitle: 'Sales • Negotiation • NLP • Digital Marketing',
-    heroText: 'If your team works hard, but sales still are not growing —\nthe problem is not the product, it is communication.\n\nBook a free consultation and see where you are losing sales.',
+    heroText: 'If your team works hard, but sales still are not growing -\nthe problem is not the product, it is communication.\n\nBook a free consultation and see where you are losing sales.',
     book: 'Book Consultation',
     openDoor: 'GO TO WINSPACE',
     resumeTitle: 'Short Resume',
     resumeText: [
-      'Lasha Khurtsidze is a Commercial Director, Sales Strategist, Negotiation Expert, Author, and Founder of Team4 — Sales College & Training Center. With 15+ years of experience across the automotive industry, insurance, construction, hospitality, retail, and business development, he has built his career through real sales, negotiations, leadership, and team development.',
+      'Lasha Khurtsidze is a Commercial Director, Sales Strategist, Negotiation Expert, Author, and Founder of Team4 - Sales College & Training Center. With 15+ years of experience across the automotive industry, insurance, construction, hospitality, retail, and business development, he has built his career through real sales, negotiations, leadership, and team development.',
       'He started his career in direct sales and gradually moved into strategic and managerial roles, gaining deep insight into customer psychology, communication, influence, and business growth mechanisms. Over the years, he has managed sales departments, developed branches, worked with international partners, and created growth-oriented strategies in competitive markets.',
-      'Lasha is also the author of “I Am The Answer” — a motivational and psychological work based on real experience, sales, leadership, faith, struggle, personal transformation, and the philosophy of success.',
+      'Lasha is also the author of “I Am The Answer” - a motivational and psychological work based on real experience, sales, leadership, faith, struggle, personal transformation, and the philosophy of success.',
       'Team4 was created not as a traditional training center, but as a space where sales, communication, negotiations, and influence are taught through real practice, not theory alone.',
     ],
     readMore: 'Read more',
@@ -31,7 +31,7 @@ let copy = {
       'Team4 is not just another training center. It was built on real sales, negotiations, mistakes, pressure, and hands-on business experience. Our goal is not simply to hand people certificates — our goal is to transform the way they communicate, sell, negotiate, and think.',
       'We work with entrepreneurs, sales teams, managers, and companies that want real results, stronger communication, and highly effective teams. Through modern sales psychology, NLP techniques, negotiation strategies, and practical experience, we help people turn communication into influence and influence into business growth.',
       'What makes Team4 different is its practice-based learning approach. Every program is built around real business cases, customer psychology, objection handling, leadership, emotional intelligence, and strategic communication.',
-      'Our philosophy is simple:\nSales is not manipulation — sales is understanding people.',
+      'Our philosophy is simple:\nSales is not manipulation - sales is understanding people.',
     ],
     servicesKicker: 'Services',
     servicesTitle: 'Premium Growth Systems',
@@ -39,9 +39,9 @@ let copy = {
     coursesKicker: 'I Am The Answer',
     coursesTitle: 'I Am The Answer',
     coursesText: 'A motivational and psychological work based on real-life experience, sales, leadership, faith, struggle, personal transformation, and the philosophy of success. The book reflects the idea that success is not built only on skills — it is shaped by mindset, discipline, communication, and inner strength.',
-    bookGalleryTitle: 'Book — “I Am Answer”',
+    bookGalleryTitle: 'Book - “I Am Answer”',
     bookGallerySubtitle: 'Real experience, psychology, sales, struggle, and personal transformation.',
-    purchaseSubtitle: 'Get the book — ‘I Am The Answer’',
+    purchaseSubtitle: 'Get the book - ‘I Am The Answer’',
     purchaseButton: 'Purchase',
     programsKicker: 'Services',
     programsTitle: 'Services',
@@ -88,9 +88,9 @@ let copy = {
     openDoor: 'გადადით WINSPACE-ზე',
     resumeTitle: 'მოკლე რეზიუმე',
     resumeText: [
-      'ლაშა ხურციძე არის კომერციული დირექტორი, გაყიდვების სტრატეგი, მოლაპარაკებების ექსპერტი, ავტორი და Team4 — Sales College & Training Center-ის დამფუძნებელი. 15+ წლიანი გამოცდილებით ავტოინდუსტრიაში, დაზღვევაში, მშენებლობაში, ჰოსპიტალითი სფეროში, რითეილში და ბიზნეს განვითარების მიმართულებით, მან საკუთარი კარიერა რეალურ გაყიდვებზე, მოლაპარაკებებზე, ლიდერობასა და გუნდების განვითარებაზე ააგო.',
+      'ლაშა ხურციძე არის კომერციული დირექტორი, გაყიდვების სტრატეგი, მოლაპარაკებების ექსპერტი, ავტორი და Team4 - Sales College & Training Center-ის დამფუძნებელი. 15+ წლიანი გამოცდილებით ავტოინდუსტრიაში, დაზღვევაში, მშენებლობაში, ჰოსპიტალითი სფეროში, რითეილში და ბიზნეს განვითარების მიმართულებით, მან საკუთარი კარიერა რეალურ გაყიდვებზე, მოლაპარაკებებზე, ლიდერობასა და გუნდების განვითარებაზე ააგო.',
       'კარიერა დაიწყო პირდაპირი გაყიდვებიდან და ეტაპობრივად მივიდა სტრატეგიულ და მენეჯერულ პოზიციებამდე, რამაც მისცა შესაძლებლობა სიღრმისეულად შეესწავლა მომხმარებლის ფსიქოლოგია, კომუნიკაცია, გავლენა და ბიზნეს ზრდის მექანიზმები. წლების განმავლობაში მართავდა გაყიდვების დეპარტამენტებს, ავითარებდა ფილიალებს, მუშაობდა საერთაშორისო პარტნიორებთან და ქმნიდა ზრდაზე ორიენტირებულ სტრატეგიებს კონკურენტულ ბაზარზე.',
-      'ლაშა ხურციძე ასევე არის წიგნის „მე ვარ პასუხი“ ავტორი — მოტივაციური და ფსიქოლოგიური ნაშრომის, რომელიც დაფუძნებულია რეალურ გამოცდილებაზე, გაყიდვებზე, ლიდერობაზე, რწმენაზე, ბრძოლაზე, პიროვნულ ტრანსფორმაციასა და წარმატების ფილოსოფიაზე.',
+      'ლაშა ხურციძე ასევე არის წიგნის „მე ვარ პასუხი“ ავტორი - მოტივაციური და ფსიქოლოგიური ნაშრომის, რომელიც დაფუძნებულია რეალურ გამოცდილებაზე, გაყიდვებზე, ლიდერობაზე, რწმენაზე, ბრძოლაზე, პიროვნულ ტრანსფორმაციასა და წარმატების ფილოსოფიაზე.',
       'Team4 შეიქმნა არა როგორც ჩვეულებრივი ტრენინგ ცენტრი, არამედ როგორც სივრცე, სადაც გაყიდვები, კომუნიკაცია, მოლაპარაკებები და გავლენა ისწავლება რეალური პრაქტიკიდან და არა მხოლოდ თეორიიდან.',
     ],
     readMore: 'გაიგე მეტი',
@@ -102,7 +102,7 @@ let copy = {
       'თიმ ფორი არ არის უბრალოდ ჩვეულებრივი ტრენინგ ცენტრი. ის შეიქმნა რეალური გაყიდვების, მოლაპარაკებების, შეცდომების, ზეწოლისა და ბიზნეს გამოცდილების საფუძველზე. ჩვენი მიზანი არ არის ადამიანებს უბრალოდ სერთიფიკატი მივცეთ — ჩვენი მიზანია შევუცვალოთ მათ კომუნიკაციის, გაყიდვების, მოლაპარაკებებისა და აზროვნების დონე.',
       'ჩვენ ვმუშაობთ მეწარმეებთან, გაყიდვების გუნდებთან, მენეჯერებთან და კომპანიებთან, რომლებსაც სურთ რეალური შედეგები, ძლიერი კომუნიკაცია და მაღალი ეფექტურობის მქონე გუნდის შექმნა. თანამედროვე გაყიდვების ფსიქოლოგიის, NLP ტექნიკების, მოლაპარაკებების სტრატეგიებისა და პრაქტიკული გამოცდილების საშუალებით, ადამიანებს ვეხმარებით კომუნიკაცია გავლენად, ხოლო გავლენა ბიზნეს ზრდად აქციონ.',
       'თიმ ფორი-ის მთავარი განსხვავება პრაქტიკაზე დაფუძნებული სწავლებაა. თითოეული პროგრამა აგებულია რეალურ ბიზნეს ქეისებზე, მომხმარებლის ფსიქოლოგიაზე, objection handling-ზე, ლიდერობაზე, ემოციურ ინტელექტსა და სტრატეგიულ კომუნიკაციაზე.',
-      'ჩვენი ფილოსოფია მარტივია:\nგაყიდვები მანიპულაცია არ არის — გაყიდვები ადამიანების გაგებაა.',
+      'ჩვენი ფილოსოფია მარტივია:\nგაყიდვები მანიპულაცია არ არის - გაყიდვები ადამიანების გაგებაა.',
     ],
     servicesKicker: 'სერვისები',
     servicesTitle: 'პრემიუმ ზრდის სისტემები',
@@ -110,9 +110,9 @@ let copy = {
     coursesKicker: '„მე ვარ პასუხი“',
     coursesTitle: '„მე ვარ პასუხი“',
     coursesText: 'მოტივაციური და ფსიქოლოგიური ნაშრომი, რომელიც დაფუძნებულია რეალურ გამოცდილებაზე, გაყიდვებზე, ლიდერობაზე, რწმენაზე, ბრძოლაზე, პიროვნულ ტრანსფორმაციასა და წარმატების ფილოსოფიაზე. წიგნი ასახავს იდეას, რომ წარმატება მხოლოდ უნარებზე არ დგას — მას ქმნის აზროვნება, დისციპლინა, კომუნიკაცია და შინაგანი სიმტკიცე.',
-    bookGalleryTitle: 'წიგნი — „მე ვარ პასუხი“',
+    bookGalleryTitle: 'წიგნი - „მე ვარ პასუხი“',
     bookGallerySubtitle: 'მოტივაციური და ფსიქოლოგიური ნაშრომი, რომელიც დაფუძნებულია რეალურ გამოცდილებაზე, გაყიდვებზე, ლიდერობაზე, რწმენაზე, ბრძოლაზე, პიროვნულ ტრანსფორმაციასა და წარმატების ფილოსოფიაზე. წიგნი ასახავს იდეას, რომ წარმატება მხოლოდ უნარებზე არ დგას — მას ქმნის აზროვნება, დისციპლინა, კომუნიკაცია და შინაგანი სიმტკიცე.',
-    purchaseSubtitle: 'შეიძინე წიგნი — „მე ვარ პასუხი“',
+    purchaseSubtitle: 'შეიძინე წიგნი - „მე ვარ პასუხი“',
     purchaseButton: 'შეძენა',
     programsKicker: 'სერვისები',
     programsTitle: 'სერვისები',
@@ -208,7 +208,7 @@ let heroCardTitles = {
     'პროექტ-მენეჯერი',
     'ბიზნეს-კონსულტანტი',
     'მოქმედი სტარტაპერი',
-    'წიგნის ავტორი — „მე ვარ პასუხი“',
+    'წიგნის ავტორი - „მე ვარ პასუხი“',
   ],
 };
 
@@ -232,7 +232,7 @@ let programs = [
     image: '/assets/sales-mastery-cover.webp',
     modalImage: '/assets/art-of-sales-modal-portrait.webp',
     syllabusTitleGeo: 'გაყიდვების ხელოვნება — სილაბუსი',
-    syllabusTitleEng: 'Art of Sales — Syllabus',
+    syllabusTitleEng: 'Art of Sales - Syllabus',
     syllabusGeo: [
       'გაყიდვების საფუძვლები',
       'გაყიდვების ტიპები',
@@ -257,9 +257,9 @@ let programs = [
       'ჯო ჯერარდის გაყიდვების სტილი',
       'ელმო ლევისის გაყიდვების ტრადიციული მიდგომა',
       'ჯორდან ბელფორდის გაყიდვების მოდელი',
-      'დევიდ სენდლერის გაყიდვების მოდელი — წყალქვეშა ნავი',
+      'დევიდ სენდლერის გაყიდვების მოდელი - წყალქვეშა ნავი',
       'უარებზე მუშაობა',
-      'საბოლოო ნეიტრალიზაცია — „დასკვნითი ბიძგი“',
+      'საბოლოო ნეიტრალიზაცია - „დასკვნითი ბიძგი“',
       'ტესტური გამოცდა',
     ],
     syllabusEng: [
@@ -286,9 +286,9 @@ let programs = [
       'Joe Girard’s sales style',
       'Elmo Lewis’s traditional sales approach',
       'Jordan Belfort’s sales model',
-      'David Sandler’s sales model — Submarine',
+      'David Sandler’s sales model - Submarine',
       'Working with objections',
-      'Final neutralization — “The closing push”',
+      'Final neutralization - “The closing push”',
       'Test exam',
     ],
     tone: 'red',
@@ -303,8 +303,8 @@ let programs = [
     buttonEng: 'View Syllabus',
     image: '/assets/negotiation-power-cover.webp',
     modalImage: '/assets/art-of-sales-modal-portrait.webp',
-    syllabusTitleGeo: 'მოლაპარაკებების ძალა — სილაბუსი',
-    syllabusTitleEng: 'Power of Negotiation — Syllabus',
+    syllabusTitleGeo: 'მოლაპარაკებების ძალა - სილაბუსი',
+    syllabusTitleEng: 'Power of Negotiation - Syllabus',
     syllabusGeo: [
       'მოლაპარაკების არსი',
       'ძლიერი ინსტრუმენტი',
@@ -359,8 +359,8 @@ let programs = [
     buttonEng: 'View Syllabus',
     image: '/assets/nlp-sales-cover.webp',
     modalImage: '/assets/art-of-sales-modal-portrait.webp',
-    syllabusTitleGeo: 'NLP გაყიდვებში — სილაბუსი',
-    syllabusTitleEng: 'NLP In Sales — Syllabus',
+    syllabusTitleGeo: 'NLP გაყიდვებში - სილაბუსი',
+    syllabusTitleEng: 'NLP In Sales - Syllabus',
     syllabusGeo: [
       'NLP-ის ძირითადი პრინციპები',
       'სუბიექტური რეალობისა და აღქმის გავლენა კომუნიკაციაზე',
@@ -395,11 +395,11 @@ let programs = [
     buttonEng: 'View Syllabus',
     image: '/assets/digital-marketing-cover.webp',
     modalImage: '/assets/digital-marketing-modal-portrait.webp',
-    syllabusTitleGeo: 'ციფრული მარკეტინგი — სილაბუსი',
-    syllabusTitleEng: 'Digital Marketing — Syllabus',
+    syllabusTitleGeo: 'ციფრული მარკეტინგი - სილაბუსი',
+    syllabusTitleEng: 'Digital Marketing - Syllabus',
     syllabusGeo: [
       'ციფრული მარკეტინგის საფუძვლები',
-      'ბაზრის კვლევა და აუდიტორია — Targeting, Personas',
+      'ბაზრის კვლევა და აუდიტორია - Targeting, Personas',
       'SMM — Facebook / Instagram / TikTok',
       'Content Marketing',
       'SEO საფუძვლები',
@@ -740,13 +740,13 @@ const deepMerge = (base, override) => {
     return override === undefined ? base : override;
   }
 
-  return Object.keys(override).reduce(
-    (merged, key) => ({
-      ...merged,
-      [key]: deepMerge(base[key], override[key]),
-    }),
-    { ...base }
-  );
+return Object.keys(override).reduce(
+  (merged, key) => ({
+    ...merged,
+    [key]: deepMerge(base[key], override[key]),
+  }),
+  { ...base }
+);
 };
 
 const applyAdminContent = () => {
@@ -1140,7 +1140,7 @@ function Header({ lang, setLang }) {
             'a',
             {
               key: id,
-              href: sectionHref(id),
+              href: id === 'book' ? '/library' : sectionHref(id),
               className: 'text-xs font-bold uppercase tracking-[0.22em] text-white/60 transition hover:text-white',
             },
             lang === 'GEO' ? geo : eng
@@ -1173,7 +1173,7 @@ function Header({ lang, setLang }) {
             'a',
             {
               key: id,
-              href: sectionHref(id),
+              href: id === 'book' ? '/library' : sectionHref(id),
               onClick: closeMobileMenu,
             },
             lang === 'GEO' ? geo : eng
@@ -2061,23 +2061,53 @@ function LibraryPage({ lang, setLang }) {
 }
 
 function App() {
-  const [lang, setLang] = React.useState(() => localStorage.getItem('team4Lang') || 'GEO');
-  const isProgramPage = window.location.pathname.startsWith('/program/');
-  const isLibraryPage = window.location.pathname.startsWith('/library');
+  const [lang, setLang] = React.useState(
+    () => localStorage.getItem('team4Lang') || 'GEO'
+  );
+
+  const isProgramPage =
+    window.location.pathname.startsWith('/program/');
+
+  const isLibraryPage =
+    window.location.pathname.startsWith('/library');
 
   if (isProgramPage) {
     return h(ProgramDetailPage, { lang, setLang });
   }
 
   if (isLibraryPage && window.Team4ManualLibraryPage) {
-    return h(window.Team4ManualLibraryPage, { lang, setLang, Header, Footer });
+    return h(window.Team4ManualLibraryPage, {
+      lang,
+      setLang,
+      Header,
+      Footer,
+    });
   }
 
   if (isLibraryPage) {
     return h(LibraryPage, { lang, setLang });
   }
 
-  return h(React.Fragment, null, h('div', { className: 'luxury-light-field', 'aria-hidden': 'true' }), h(Header, { lang, setLang }), h('main', null, h(Hero, { lang }), h(About, { lang }), h(Courses, { lang }), h(Programs, { lang }), h(WinSpaceSection, { lang }), h(Testimonials, { lang }), h(Contact, { lang })), h(Footer, { lang }));
+  return h(
+    React.Fragment,
+    null,
+    h('div', {
+      className: 'luxury-light-field',
+      'aria-hidden': 'true',
+    }),
+    h(Header, { lang, setLang }),
+h(
+  'main',
+  null,
+  h(Hero, { lang }),
+  h(About, { lang }),
+  h(Programs, { lang }),
+  h(WinSpaceSection, { lang }),
+  h(Testimonials, { lang }),
+  h(Contact, { lang })
+),
+    h(Footer, { lang })
+  );
 }
 
 ReactDOM.createRoot(document.getElementById('root')).render(h(App));

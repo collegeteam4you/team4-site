@@ -38,7 +38,7 @@
     );
   }
 
-  function OrderPanel({ user, orders, onChanged }) {
+  function OrderPanel({ user, orders, item, onChanged }) {
     const [form, setForm] = React.useState({
       firstName: user?.firstName || '',
       lastName: user?.lastName || '',
@@ -50,7 +50,14 @@
     const [receiptFile, setReceiptFile] = React.useState(null);
     const [status, setStatus] = React.useState(null);
     const [isSubmitting, setIsSubmitting] = React.useState(false);
-    const activeOrder = createdOrder || orders.find((order) => order.status !== 'Approved') || null;
+    const activeOrder =
+  createdOrder ||
+  orders.find(
+    (order) =>
+      order.itemId === item?.id &&
+      order.status !== 'Approved'
+  ) ||
+  null;
 
     const updateField = (key, value) => setForm((current) => ({ ...current, [key]: value }));
 
@@ -59,7 +66,10 @@
       setIsSubmitting(true);
       setStatus(null);
       try {
-        const result = await window.Team4Library.createManualOrder(form);
+        const result = await window.Team4Library.createManualOrder({
+  ...form,
+  itemId: item.id,
+});
         setCreatedOrder(result.order);
         setBankDetails(result.bankDetails);
         setStatus({ type: 'success', text: 'შეკვეთა შეიქმნა. გადარიცხვისას დანიშნულებაში მიუთითე გადახდის კოდი.' });
@@ -92,7 +102,7 @@
       'section',
       { className: 'library-order-panel' },
       h('p', { className: 'library-kicker' }, 'Manual Payment'),
-      h('h2', null, 'შეიძინე 14.90 ლარად'),
+      h('h2', null, `${item.title} — ${item.price.toFixed(2)} ლარი`),
       h('p', { className: 'library-muted' }, 'შეკვეთის შემდეგ გამოჩნდება საბანკო რეკვიზიტები და უნიკალური გადახდის კოდი. ქვითრის ატვირთვის შემდეგ შეკვეთა Pending სტატუსით გადავა ადმინისტრატორთან.'),
       activeOrder &&
         h(
@@ -111,38 +121,34 @@
           ),
           h('input', { className: 'library-input', required: true, type: 'email', placeholder: 'ელფოსტა', value: form.email, onChange: (event) => updateField('email', event.target.value) }),
           h('input', { className: 'library-input', required: true, type: 'tel', placeholder: 'ტელეფონი', value: form.phone, onChange: (event) => updateField('phone', event.target.value) }),
-          h('button', { className: 'library-action library-action-primary', disabled: isSubmitting, type: 'submit' }, isSubmitting ? 'იგზავნება...' : 'შეიძინე 14.90 ლარად')
+          h(
+  'button',
+  {
+    className: 'library-action library-action-primary',
+    disabled: isSubmitting,
+    type: 'submit',
+  },
+  isSubmitting
+    ? 'იგზავნება...'
+    : `შეიძინე ${item.price.toFixed(2)} ლარად`
+)
         ),
       (bankDetails || activeOrder) &&
-       h(
-  'div',
-  { className: 'library-bank-details' },
+        h(
+          'div',
+          { className: 'library-bank-details' },
+          h('p', null, h('strong', null, 'მიმღები: '), bankDetails?.receiver || 'ლაშა ხურციძე'),
+          h('p', null, h('strong', null, 'საქართველოს ბანკი: '), bankDetails?.bogAccount || 'GE12BG0000000536600132'),
 
-  h('p', null,
-    h('strong', null, 'მიმღები: '),
-    bankDetails?.receiver || 'ლაშა ხურციძე'
-  ),
-
-  h('p', null,
-    h('strong', null, 'საქართველოს ბანკი: '),
-    bankDetails?.bogAccount || 'GE12BG0000000536600132'
-  ),
-
-  h('p', null,
-    h('strong', null, 'TBC ბანკი: '),
-    bankDetails?.tbcAccount || 'GE96TB7044645064300059'
-  ),
-
-  h('p', null,
-    h('strong', null, 'თანხა: '),
-    '14.90 ლარი'
-  ),
-
-  h('p', null,
-    h('strong', null, 'დანიშნულება: '),
-    bankDetails?.purpose || activeOrder?.paymentCode
-  )
+h('p', null, h('strong', null, 'TBC ბანკი: '), bankDetails?.tbcAccount || 'GE96TB7044645064300059'),
+          h(
+  'p',
+  null,
+  h('strong', null, 'თანხა: '),
+  `${bankDetails?.amount || item.price} ლარი`
 ),
+          h('p', null, h('strong', null, 'დანიშნულება: '), bankDetails?.purpose || activeOrder?.paymentCode)
+        ),
       activeOrder &&
         h(
           'form',
@@ -243,130 +249,364 @@
     );
   }
 
-  function PublicLibraryGate({ item, onRequestLogin }) {
-    return h(
+ function LibraryPage({ lang, setLang, Header, Footer }) {
+  const catalog = window.Team4Library.catalog;
+  const bookItems = catalog.filter((item) => item.type === 'book');
+  const [selectedItemId, setSelectedItemId] = React.useState('');
+  const [user, setUser] = React.useState(() => window.Team4Library.getUser());
+  const [orders, setOrders] = React.useState([]);
+  const [entitlements, setEntitlements] = React.useState([]);
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [refreshKey, setRefreshKey] = React.useState(0);
+   const [showLogin, setShowLogin] = React.useState(false);
+
+const selectedItem =
+  catalog.find((item) => item.id === selectedItemId) ||
+  null;
+
+  const hasApprovedOrder = (itemId) =>
+  orders.some((order) => {
+    const isApproved =
+      String(order.status || '').toLowerCase() === 'approved';
+
+    if (!isApproved) return false;
+
+    // ცალკე შეძენილი წიგნი
+    if (order.itemId === itemId) return true;
+
+    // პაკეტის შეძენისას ორივე წიგნის გახსნა
+    const orderedItem = catalog.find(
+      (catalogItem) => catalogItem.id === order.itemId
+    );
+
+    return (
+      orderedItem?.type === 'bundle' &&
+      Array.isArray(orderedItem.itemIds) &&
+      orderedItem.itemIds.includes(itemId)
+    );
+  });
+
+const hasAccess = (itemId) =>
+  window.Team4Library.hasAccessFromEntitlements(
+    itemId,
+    entitlements
+  ) || hasApprovedOrder(itemId);
+
+  const selectedBookHasAccess =
+    selectedItem?.type === 'book' &&
+    hasAccess(selectedItem.id);
+
+  React.useEffect(() => {
+    if (!user) return undefined;
+
+    let active = true;
+    setIsLoading(true);
+
+    Promise.all([
+      window.Team4Library.fetchUserOrders(user.email),
+      window.Team4Library.fetchEntitlements(user.email),
+    ])
+      .then(([orderResult, entitlementResult]) => {
+        if (!active) return;
+        setOrders(orderResult.orders || []);
+        setEntitlements(entitlementResult.items || []);
+      })
+      .catch(() => {
+        if (!active) return;
+        setOrders([]);
+        setEntitlements([]);
+      })
+      .finally(() => {
+        if (active) setIsLoading(false);
+      });
+
+    return () => {
+      active = false;
+    };
+  }, [user, refreshKey]);
+
+  const logout = () => {
+    window.Team4Library.logout();
+    setUser(null);
+    setOrders([]);
+    setEntitlements([]);
+  };
+
+  return h(
+    React.Fragment,
+    null,
+    h('div', {
+      className: 'luxury-light-field',
+      'aria-hidden': 'true',
+    }),
+    h(Header, { lang, setLang }),
+    h(
+      'main',
+      { className: 'library-page' },
+      user
+        ? h(
+            React.Fragment,
+            null,
+
+            h(
+              'div',
+              { className: 'library-userbar' },
+              h('span', null, `${user.name} / ${user.email}`),
+              h(
+                'button',
+                {
+                  type: 'button',
+                  onClick: logout,
+                },
+                'გასვლა'
+              )
+            ),
+
+            isLoading &&
+              h(
+                'p',
+                { className: 'library-loading' },
+                'იტვირთება...'
+              ),
+
+selectedBookHasAccess
+  ? h(
+      React.Fragment,
+      null,
+      h(
+        'button',
+        {
+          type: 'button',
+          className: 'library-action',
+          onClick: () => setSelectedItemId(''),
+        },
+        '← ყველა წიგნი'
+      ),
+      h(ProtectedReader, {
+        user,
+        item: selectedItem,
+      })
+    )
+              : h(
+                  'section',
+                  { className: 'library-cabinet-shell' },
+
+                  h(
+                    'div',
+                    { className: 'library-books-panel' },
+
+                    h(
+                      'p',
+                      { className: 'library-kicker' },
+                      'წიგნები და პაკეტები'
+                    ),
+
+                    catalog.map((item) => {
+                      const itemHasAccess =
+                        item.type === 'book' &&
+                        hasAccess(item.id);
+
+                      return h(
+                        'article',
+                        {
+                          key: item.id,
+                          className: 'library-book-card',
+                        },
+
+                        h('img', {
+                          src: item.cover,
+                          alt: item.title,
+                          className: 'library-book-cover',
+                          loading: 'lazy',
+                        }),
+
+                        h(
+                          'div',
+                          null,
+                          h('h2', null, item.title),
+                          h('p', null, item.description),
+                          h(
+                            'strong',
+                            null,
+                            `${item.price.toFixed(2)} ლარი`
+                          )
+                        ),
+
+                        itemHasAccess
+                          ? h(
+                              'button',
+                              {
+                                type: 'button',
+                                className:
+                                  'library-action library-action-primary',
+                                onClick: () =>
+                                  setSelectedItemId(item.id),
+                              },
+                              'წაკითხვა'
+                            )
+                          : h(
+  'button',
+  {
+    type: 'button',
+    className:
+      selectedItemId === item.id
+        ? 'library-action library-action-primary'
+        : 'library-action',
+    onClick: () => {
+  setSelectedItemId(item.id);
+
+  setTimeout(() => {
+    const panel = document.querySelector('.library-order-panel');
+
+    if (panel) {
+      panel.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    }
+  }, 150);
+},
+  },
+  'შეძენა'
+)
+                      );
+                    }),
+
+                    orders.length
+                      ? h(
+                          'div',
+                          { className: 'library-order-list' },
+                          orders.map((order) =>
+                            h(
+                              'p',
+                              { key: order.paymentCode },
+                              `${order.itemTitle} — ${order.paymentCode} / ${order.status}`
+                            )
+                          )
+                        )
+                      : h(
+                          'p',
+                          { className: 'library-muted' },
+                          'ჯერ შეკვეთა არ გაქვს.'
+                        )
+                  ),
+
+                  selectedItem &&
+                    !selectedBookHasAccess &&
+                    h(OrderPanel, {
+                      user,
+                      orders,
+                      item: selectedItem,
+                      onChanged: () =>
+                        setRefreshKey((value) => value + 1),
+                    })
+                )
+          )
+        : h(
+    React.Fragment,
+    null,
+
+    h(
       'section',
       { className: 'library-cabinet-shell' },
+
       h(
         'div',
         { className: 'library-books-panel' },
-        h('p', { className: 'library-kicker' }, 'წიგნები'),
+
         h(
-          'article',
-          { className: 'library-book-card' },
-          h('img', { src: item.cover, alt: item.title, className: 'library-book-cover', loading: 'lazy' }),
+          'p',
+          { className: 'library-kicker' },
+          'წიგნები და პაკეტები'
+        ),
+
+        catalog.map((item) =>
           h(
-            'div',
-            null,
-            h('h2', null, item.title),
-            h('p', null, item.description || 'დაცული ონლაინ წიგნი Team4-ის მკითხველებისთვის.'),
-            h('p', { className: 'library-muted' }, 'ბიბლიოთეკა ღიაა სანახავად. შეძენის გასაგრძელებლად დააჭირე ღილაკს.')
+            'article',
+            {
+              key: item.id,
+              className: 'library-book-card',
+            },
+
+            h('img', {
+              src: item.cover,
+              alt: item.title,
+              className: 'library-book-cover',
+              loading: 'lazy',
+            }),
+
+            h(
+              'div',
+              null,
+              h('h2', null, item.title),
+              h('p', null, item.description),
+              h(
+                'strong',
+                null,
+                `${item.price.toFixed(2)} ლარი`
+              )
+            ),
+
+            h(
+              'button',
+              {
+                type: 'button',
+                className:
+                  selectedItemId === item.id
+                    ? 'library-action library-action-primary'
+                    : 'library-action',
+
+                onClick: () => {
+                  setSelectedItemId(item.id);
+                  setShowLogin(true);
+
+                  setTimeout(() => {
+                    const loginPanel =
+                      document.querySelector(
+                        '.library-login-panel'
+                      );
+
+                    if (loginPanel) {
+                      loginPanel.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center',
+                      });
+                    }
+                  }, 150);
+                },
+              },
+              'შეძენა'
+            )
           )
         )
-      ),
-      h(
-        'div',
-        { className: 'library-order-panel' },
-        h('p', { className: 'library-kicker' }, 'Team4 Library'),
-        h('h2', null, 'შეიძინე 14.90 ლარად'),
-        h('p', { className: 'library-muted' }, 'ღილაკზე დაჭერის შემდეგ გაიხსნება მოკლე ფორმა და შეძლებ შეკვეთის გაგზავნას.'),
-        h('button', { className: 'library-action library-action-primary', type: 'button', onClick: onRequestLogin }, 'შეიძინე 14.90 ლარად')
       )
-    );
-  }
+    ),
 
-  function LibraryPage({ lang, setLang, Header, Footer }) {
-    const catalogItem = window.Team4Library.catalog[0];
-    const [user, setUser] = React.useState(() => window.Team4Library.getUser());
-    const [orders, setOrders] = React.useState([]);
-    const [entitlements, setEntitlements] = React.useState([]);
-    const [isLoading, setIsLoading] = React.useState(false);
-    const [refreshKey, setRefreshKey] = React.useState(0);
-    const [showLogin, setShowLogin] = React.useState(false);
-    const hasAccess = window.Team4Library.hasAccessFromEntitlements(catalogItem.id, entitlements);
+    showLogin &&
+      h(LibraryLogin, {
+        onLogin: (loggedUser) => {
+          setUser(loggedUser);
+          setShowLogin(false);
 
-    React.useEffect(() => {
-      if (!user) return undefined;
-      let active = true;
-      setIsLoading(true);
-      Promise.all([window.Team4Library.fetchUserOrders(user.email), window.Team4Library.fetchEntitlements(user.email)])
-        .then(([orderResult, entitlementResult]) => {
-          if (!active) return;
-          setOrders(orderResult.orders || []);
-          setEntitlements(entitlementResult.items || []);
-        })
-        .catch(() => {
-          if (!active) return;
-          setOrders([]);
-          setEntitlements([]);
-        })
-        .finally(() => {
-          if (active) setIsLoading(false);
-        });
-      return () => {
-        active = false;
-      };
-    }, [user, refreshKey]);
+          setTimeout(() => {
+            const orderPanel =
+              document.querySelector(
+                '.library-order-panel'
+              );
 
-    const logout = () => {
-      window.Team4Library.logout();
-      setUser(null);
-      setOrders([]);
-      setEntitlements([]);
-    };
-
-    const completeLogin = (nextUser) => {
-      setShowLogin(false);
-      setUser(nextUser);
-    };
-
-    const requestLogin = () => {
-      setShowLogin(true);
-      window.setTimeout(() => {
-        const loginNode = document.getElementById('library-login');
-        if (loginNode) loginNode.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 80);
-    };
-
-    return h(
-      React.Fragment,
-      null,
-      h('div', { className: 'luxury-light-field', 'aria-hidden': 'true' }),
-      h(Header, { lang, setLang }),
-      h(
-        'main',
-        { className: 'library-page' },
-        user
-          ? h(
-              React.Fragment,
-              null,
-              h('div', { className: 'library-userbar' }, h('span', null, `${user.name} / ${user.email}`), h('button', { type: 'button', onClick: logout }, 'გასვლა')),
-              isLoading && h('p', { className: 'library-loading' }, 'იტვირთება...'),
-              hasAccess
-                ? h(ProtectedReader, { user, item: catalogItem })
-                : h(
-                    'section',
-                    { className: 'library-cabinet-shell' },
-                    h(
-                      'div',
-                      { className: 'library-books-panel' },
-                      h('p', { className: 'library-kicker' }, 'ჩემი წიგნები'),
-                      h('article', { className: 'library-book-card' }, h('img', { src: catalogItem.cover, alt: catalogItem.title, className: 'library-book-cover', loading: 'lazy' }), h('div', null, h('h2', null, catalogItem.title), h('p', null, 'Approved სტატუსის შემდეგ წიგნი აქ გაიხსნება.'))),
-                      orders.length ? h('div', { className: 'library-order-list' }, orders.map((order) => h('p', { key: order.paymentCode }, `${order.paymentCode} / ${order.status}`))) : h('p', { className: 'library-muted' }, 'ჯერ დადასტურებული წიგნი არ გაქვს.')
-                    ),
-                    h(OrderPanel, { user, orders, onChanged: () => setRefreshKey((value) => value + 1) })
-                  )
-            )
-          : h(
-              React.Fragment,
-              null,
-              h(PublicLibraryGate, { item: catalogItem, onRequestLogin: requestLogin }),
-              showLogin && h('div', { id: 'library-login' }, h(LibraryLogin, { onLogin: completeLogin }))
-            )
-      ),
-      h(Footer, { lang })
-    );
-  }
-
+            if (orderPanel) {
+              orderPanel.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start',
+              });
+            }
+          }, 250);
+        },
+      })
+  )
+    ),
+    h(Footer, { lang })
+  );
+}
   window.Team4ManualLibraryPage = LibraryPage;
 })();
