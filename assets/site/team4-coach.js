@@ -1399,6 +1399,38 @@ text-decoration:line-through;
 
 </div>
 <button
+id="coachBookOfferButton"
+type="button"
+style="
+display:block;
+width:100%;
+box-sizing:border-box;
+padding:14px;
+margin-bottom:12px;
+border:none;
+border-radius:12px;
+background:#ef1b13;
+color:#ffffff;
+font-size:15px;
+font-weight:900;
+cursor:pointer;
+"
+>
+📘 შეიძინე 10 ₾-ად
+</button>
+
+<div
+style="
+margin-top:8px;
+margin-bottom:14px;
+font-size:11px;
+color:#888;
+text-align:center;
+"
+>
+შეთავაზება მოქმედებს მხოლოდ Team4 Coach-ის მონაწილეებისთვის.
+</div>
+<button
 id="restartCoachTest"
 type="button"
 style="
