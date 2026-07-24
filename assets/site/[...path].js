@@ -9,6 +9,7 @@ const sessionSecret = process.env.SESSION_SECRET || 'team4-local-session-secret-
 const bookPriceGel = Number(process.env.BOOK_PRICE_GEL || 14.9);
 const manualPaymentReceiver = process.env.MANUAL_PAYMENT_RECEIVER || 'ლაშა ხურციძე';
 const manualPaymentAccount = process.env.MANUAL_PAYMENT_ACCOUNT || 'GE12BG0000000536600132';
+const manualPaymentTbcAccount = process.env.MANUAL_PAYMENT_TBC_ACCOUNT || 'GE96TB7044645064300059';
 
 const sendJson = (res, status, data, extraHeaders = {}) => {
   Object.entries({
@@ -354,13 +355,14 @@ const handleManualPaymentApi = async (req, res, pathname) => {
     sendJson(res, 200, {
       ok: true,
       order: rowToOrder(result.rows[0]),
-      bankDetails: {
-        receiver: manualPaymentReceiver,
-        account: manualPaymentAccount,
-        amount: bookPriceGel,
-        currency: 'GEL',
-        purpose: paymentCode,
-      },
+bankDetails: {
+  receiver: manualPaymentReceiver,
+  bogAccount: manualPaymentAccount,
+  tbcAccount: manualPaymentTbcAccount,
+  amount: bookPriceGel,
+  currency: 'GEL',
+  purpose: paymentCode,
+},
     });
     return;
   }

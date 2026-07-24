@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "start": "node server.js",
+    "build": "node tools/build-static.js && node tools/apply-env.js"
+  },
+  "dependencies": {
+    "@vercel/blob": "^1.1.1",
+    "@vercel/postgres": "^0.10.0"
+  }
+}

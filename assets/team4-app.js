@@ -542,8 +542,8 @@ const programModalCta = (program, lang) =>
 
 const programModalCtaClass = (program) =>
   program.id === 'brand-sales-video-production'
-    ? 'site-cta mt-8 inline-flex min-h-11 w-fit max-w-full cursor-pointer items-center justify-center gap-3 bg-luxuryRed px-5 py-2.5 text-center text-xs font-black tracking-[0.12em] text-white shadow-glowRed transition duration-500 hover:bg-[#ff1e18] sm:text-[13px]'
-    : 'site-cta mt-8 inline-flex min-h-12 w-fit cursor-pointer items-center justify-center gap-3 bg-luxuryRed px-6 py-3 text-sm font-black uppercase tracking-[0.2em] text-white shadow-glowRed transition duration-500 hover:bg-[#ff1e18]';
+    ? `site-cta cta-${program.id} mt-8 inline-flex min-h-11 w-fit max-w-full cursor-pointer items-center justify-center gap-3 bg-luxuryRed px-5 py-2.5 text-center text-xs font-black`
+    : `site-cta cta-${program.id} mt-8 inline-flex min-h-12 w-fit cursor-pointer items-center justify-center gap-3 bg-luxuryRed px-6 py-3 text-sm font-black uppercase tracking-[0.2em]`;
 
 const programModalCtaHref = (program) =>
   program.id === 'brand-sales-video-production'
@@ -552,7 +552,10 @@ const programModalCtaHref = (program) =>
 
 const programPageHref = (program) => `/program/${program.id}`;
 const programPageUrl = (program) => `${window.location.origin}${programPageHref(program)}`;
-const sectionHref = (id) => (window.location.pathname.startsWith('/program/') ? `/index.html#${id}` : `#${id}`);
+const sectionHref = (id) => {
+  if (id === 'book') return '/library';
+  return window.location.pathname.startsWith('/program/') ? `/index.html#${id}` : `#${id}`;
+};
 
 function openProgramPage(program) {
   const url = programPageUrl(program);
@@ -772,10 +775,10 @@ const applyAdminContent = () => {
 
 applyAdminContent();
 
-navItems = navItems.map((item) => (item[0] === 'courses' ? ['book', 'I Am The Answer', '„მე ვარ პასუხი“'] : item));
+navItems = navItems.map((item) => (item[0] === 'courses' ? ['book', 'Books', 'წიგნები'] : item));
 if (!navItems.some(([id]) => id === 'book')) {
   const aboutIndex = navItems.findIndex(([id]) => id === 'about');
-  navItems.splice(aboutIndex >= 0 ? aboutIndex + 1 : 1, 0, ['book', 'I Am The Answer', '„მე ვარ პასუხი“']);
+  navItems.splice(aboutIndex >= 0 ? aboutIndex + 1 : 1, 0, ['book', 'Books', 'წიგნები']);
 }
 
 function Button({ children, href, variant = 'primary', className = '' }) {
@@ -1227,7 +1230,7 @@ function Hero({ lang }) {
             { className: 'hero-cta-row mt-10 flex flex-col gap-4 sm:flex-row' },
             h(Button, { href: '#contact' }, t.book),
             h(Button, { href: '#winspace' }, t.openDoor),
-            h(Button, { href: '#book' }, t.resumeBookCta)
+            h(Button, { href: '/library' }, t.resumeBookCta)
           ),
           h(HeroResume, { lang })
         ),
@@ -1755,6 +1758,10 @@ function Contact({ lang }) {
         const text = programText(program, lang);
         return { value: text.title, label: text.title };
       }),
+      {
+        value: lang === 'GEO' ? 'კონსულტაციის დაჯავშვნა' : 'Book Consultation',
+        label: lang === 'GEO' ? 'კონსულტაციის დაჯავშვნა' : 'Book Consultation',
+      },
       { value: 'purchase', label: lang === 'GEO' ? 'წიგნის შეძენა' : 'Book Purchase' },
     ],
     [lang]
