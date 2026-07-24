@@ -1722,6 +1722,25 @@ document.addEventListener("DOMContentLoaded", function () {
           }
         );
 
+                localStorage.setItem(
+          "team4CoachCompleted",
+          "true"
+        );
+
+        localStorage.setItem(
+          "team4CoachCompletedAt",
+          new Date().toISOString()
+        );
+
+        localStorage.setItem(
+          "team4CoachCustomer",
+          JSON.stringify({
+            name: name,
+            phone: phone,
+            email: email
+          })
+        );
+
         showFinalResult(name);
         return;
       }
