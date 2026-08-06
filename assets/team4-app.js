@@ -2265,17 +2265,18 @@ function Team4LabPage({ lang, setLang }) {
                 item.icon
               ),
 
-              h(
-                'h2',
-                {
-                  style: {
-                    margin: '0 0 8px',
-                    fontSize: 'clamp(16px, 1.5vw, 17px)',
-                    fontWeight: '900',
-                  },
-                },
-                item.title
-              ),
+             h(
+  'h2',
+  {
+    style: {
+      margin: '0 0 8px',
+      fontSize: '14px',
+      lineHeight: '1.25',
+      fontWeight: '900',
+    },
+  },
+  item.title
+),
 
               h(
                 'p',
