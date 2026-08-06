@@ -2252,8 +2252,6 @@ function Team4LabPage({ lang, setLang }) {
     })
   );
 }
-  const isProgramPage =
-    window.location.pathname.startsWith('/program/');
 
 const isProgramPage =
   window.location.pathname.startsWith('/program/');
