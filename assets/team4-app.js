@@ -2270,7 +2270,7 @@ function Team4LabPage({ lang, setLang }) {
                 {
                   style: {
                     margin: '0 0 8px',
-      fontSize: 'clamp(16px, 1.5vw, 20px)',
+                    fontSize: 'clamp(16px, 1.5vw, 17px)',
                     fontWeight: '900',
                   },
                 },
