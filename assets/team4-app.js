@@ -2080,21 +2080,40 @@ function App() {
   const isProgramPage =
     window.location.pathname.startsWith('/program/');
 
-  const isLibraryPage =
-    window.location.pathname.startsWith('/library');
+const isProgramPage =
+  window.location.pathname.startsWith('/program/');
 
-  if (isProgramPage) {
-    return h(ProgramDetailPage, { lang, setLang });
-  }
+const isLibraryPage =
+  window.location.pathname.startsWith('/library');
 
-  if (isLibraryPage && window.Team4ManualLibraryPage) {
-    return h(window.Team4ManualLibraryPage, {
-      lang,
-      setLang,
-      Header,
-      Footer,
-    });
-  }
+const isTeam4LabPage =
+  window.location.pathname.startsWith('/team4-lab');
+
+if (isProgramPage) {
+  return h(ProgramDetailPage, {
+    lang,
+    setLang,
+  });
+}
+
+if (
+  isLibraryPage &&
+  window.Team4ManualLibraryPage
+) {
+  return h(window.Team4ManualLibraryPage, {
+    lang,
+    setLang,
+    Header,
+    Footer,
+  });
+}
+
+if (isTeam4LabPage) {
+  return h(Team4LabPage, {
+    lang,
+    setLang,
+  });
+}
 
   if (isLibraryPage) {
     return h(LibraryPage, { lang, setLang });
