@@ -2077,6 +2077,56 @@ function App() {
     () => localStorage.getItem('team4Lang') || 'GEO'
   );
 function Team4LabPage({ lang, setLang }) {
+  const labCopy = {
+    GEO: {
+      badge: 'TEAM4 გაყიდვების ინტელექტი',
+      title: 'Team4 Lab',
+      subtitle:
+        'გაყიდვების პრაქტიკული ლაბორატორია რეალური ქეისებით, დედუქციის ტესტებით, სიმულაციებითა და ყოველდღიური მისიებით.',
+
+      missionsTitle: 'მისიები',
+      missionsText:
+        'გაიარე ეტაპობრივი პრაქტიკული სავარჯიშოები.',
+
+      deductionTitle: 'დედუქციის ტესტები',
+      deductionText:
+        'გამოიცანი კლიენტის რეალური მოტივი და აზროვნება.',
+
+      simulationsTitle: 'სიმულაციები',
+      simulationsText:
+        'ივარჯიშე რეალურ გაყიდვების დიალოგებში.',
+
+      progressTitle: 'პროგრესი',
+      progressText:
+        'შეაგროვე ქულები და გაზარდე შენი დონე.',
+    },
+
+    ENG: {
+      badge: 'TEAM4 SALES INTELLIGENCE',
+      title: 'Team4 Lab',
+      subtitle:
+        'A practical sales laboratory with real cases, deduction tests, simulations, and daily missions.',
+
+      missionsTitle: 'Missions',
+      missionsText:
+        'Complete step-by-step practical sales exercises.',
+
+      deductionTitle: 'Deduction Tests',
+      deductionText:
+        'Identify the client’s real motive and way of thinking.',
+
+      simulationsTitle: 'Simulations',
+      simulationsText:
+        'Practice through realistic sales conversations.',
+
+      progressTitle: 'Progress',
+      progressText:
+        'Earn points and improve your sales level.',
+    },
+  };
+
+  const t = labCopy[lang] || labCopy.GEO;
+
   return h(
     React.Fragment,
     null,
