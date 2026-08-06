@@ -2218,26 +2218,26 @@ function Team4LabPage({ lang, setLang }) {
           },
 
           [
-            {
-              icon: '🎯',
-              title: 'მისიები',
-              text: 'გაიარე ეტაპობრივი პრაქტიკული სავარჯიშოები.',
-            },
-            {
-              icon: '🧠',
-              title: 'დედუქციის ტესტები',
-              text: 'გაშიფრე კლიენტის რეალური მოტივი და აზროვნება.',
-            },
-            {
-              icon: '💬',
-              title: 'სიმულაციები',
-              text: 'ივარჯიშე რეალურ გაყიდვების დიალოგებში.',
-            },
-            {
-              icon: '🏆',
-              title: 'პროგრესი',
-              text: 'შეაგროვე ქულები და გაზარდე შენი დონე.',
-            },
+  {
+    icon: '🎯',
+    title: t.missionsTitle,
+    text: t.missionsText,
+  },
+  {
+    icon: '🧠',
+    title: t.deductionTitle,
+    text: t.deductionText,
+  },
+  {
+    icon: '💬',
+    title: t.simulationsTitle,
+    text: t.simulationsText,
+  },
+  {
+    icon: '🏆',
+    title: t.progressTitle,
+    text: t.progressText,
+  },
           ].map(function (item) {
             return h(
               'article',
