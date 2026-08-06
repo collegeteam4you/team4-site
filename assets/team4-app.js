@@ -1139,11 +1139,17 @@ function Header({ lang, setLang }) {
         navItems.map(([id, eng, geo]) =>
           h(
             'a',
-            {
-              key: id,
-              href: id === 'book' ? '/library' : sectionHref(id),
-              className: 'text-xs font-bold uppercase tracking-[0.22em] text-white/60 transition hover:text-white',
-            },
+{
+  key: id,
+  href:
+    id === 'book'
+      ? '/library'
+      : id === 'lab'
+        ? '/team4-lab'
+        : sectionHref(id),
+  className:
+    'text-xs font-bold uppercase tracking-[0.22em] text-white/60 transition hover:text-white',
+},
             lang === 'GEO' ? geo : eng
           )
         )
