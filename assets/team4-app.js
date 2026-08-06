@@ -2203,9 +2203,7 @@ function Team4LabPage({ lang, setLang }) {
               lineHeight: '1.65',
             },
           },
-          lang === 'GEO'
-            ? 'გაყიდვების პრაქტიკული ლაბორატორია — რეალური ქეისები, დედუქციის ტესტები, სიმულაციები და ყოველდღიური მისიები.'
-            : 'A practical sales laboratory with real cases, deduction tests, simulations, and daily missions.'
+          t.subtitle
         ),
 
         h(
