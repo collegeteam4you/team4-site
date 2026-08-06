@@ -1178,11 +1178,16 @@ function Header({ lang, setLang }) {
         navItems.map(([id, eng, geo]) =>
           h(
             'a',
-            {
-              key: id,
-              href: id === 'book' ? '/library' : sectionHref(id),
-              onClick: closeMobileMenu,
-            },
+{
+  key: id,
+  href:
+    id === 'book'
+      ? '/library'
+      : id === 'lab'
+        ? '/team4-lab'
+        : sectionHref(id),
+  onClick: closeMobileMenu,
+},
             lang === 'GEO' ? geo : eng
           )
         )
