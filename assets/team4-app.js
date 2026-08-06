@@ -2,8 +2,9 @@ const { createElement: h } = React;
 
 let navItems = [
   ['about', 'WHY TEAM4', 'რატომ თიმ ფორი'],
- ['book', 'Books', 'წიგნები'],
+  ['book', 'Books', 'წიგნები'],
   ['programs', 'PROGRAMS', 'პროგრამები'],
+  ['lab', 'TEAM4 LAB', 'Team4 Lab'],
   ['winspace', 'WinSpace', 'ვინსფეისი'],
   ['testimonials', 'Testimonials', 'შეფასებები'],
 ];
