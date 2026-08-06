@@ -2175,7 +2175,7 @@ function Team4LabPage({ lang, setLang }) {
               textTransform: 'uppercase',
             },
           },
-          'Team4 Sales Intelligence'
+          t.badge
         ),
 
         h(
