@@ -2076,7 +2076,182 @@ function App() {
   const [lang, setLang] = React.useState(
     () => localStorage.getItem('team4Lang') || 'GEO'
   );
+function Team4LabPage({ lang, setLang }) {
+  return h(
+    React.Fragment,
+    null,
 
+    h('div', {
+      className: 'luxury-light-field',
+      'aria-hidden': 'true',
+    }),
+
+    h(Header, {
+      lang,
+      setLang,
+    }),
+
+    h(
+      'main',
+      {
+        style: {
+          minHeight: '100vh',
+          padding: '150px 24px 80px',
+          background:
+            'radial-gradient(circle at 20% 20%, rgba(239,27,19,0.18), transparent 35%), radial-gradient(circle at 80% 30%, rgba(29,92,255,0.18), transparent 35%), #030305',
+          color: '#ffffff',
+        },
+      },
+
+      h(
+        'section',
+        {
+          style: {
+            width: '100%',
+            maxWidth: '1180px',
+            margin: '0 auto',
+          },
+        },
+
+        h(
+          'p',
+          {
+            style: {
+              margin: '0 0 12px',
+              color: '#ef1b13',
+              fontSize: '13px',
+              fontWeight: '900',
+              letterSpacing: '0.18em',
+              textTransform: 'uppercase',
+            },
+          },
+          'Team4 Sales Intelligence'
+        ),
+
+        h(
+          'h1',
+          {
+            style: {
+              margin: '0 0 18px',
+              maxWidth: '760px',
+              fontSize: 'clamp(42px, 7vw, 88px)',
+              lineHeight: '0.98',
+              fontWeight: '900',
+            },
+          },
+          'Team4 Lab'
+        ),
+
+        h(
+          'p',
+          {
+            style: {
+              maxWidth: '720px',
+              margin: '0 0 34px',
+              color: 'rgba(255,255,255,0.72)',
+              fontSize: '18px',
+              lineHeight: '1.65',
+            },
+          },
+          lang === 'GEO'
+            ? 'გაყიდვების პრაქტიკული ლაბორატორია — რეალური ქეისები, დედუქციის ტესტები, სიმულაციები და ყოველდღიური მისიები.'
+            : 'A practical sales laboratory with real cases, deduction tests, simulations, and daily missions.'
+        ),
+
+        h(
+          'div',
+          {
+            style: {
+              display: 'grid',
+              gridTemplateColumns:
+                'repeat(auto-fit, minmax(230px, 1fr))',
+              gap: '18px',
+            },
+          },
+
+          [
+            {
+              icon: '🎯',
+              title: 'მისიები',
+              text: 'გაიარე ეტაპობრივი პრაქტიკული სავარჯიშოები.',
+            },
+            {
+              icon: '🧠',
+              title: 'დედუქციის ტესტები',
+              text: 'გაშიფრე კლიენტის რეალური მოტივი და აზროვნება.',
+            },
+            {
+              icon: '💬',
+              title: 'სიმულაციები',
+              text: 'ივარჯიშე რეალურ გაყიდვების დიალოგებში.',
+            },
+            {
+              icon: '🏆',
+              title: 'პროგრესი',
+              text: 'შეაგროვე ქულები და გაზარდე შენი დონე.',
+            },
+          ].map(function (item) {
+            return h(
+              'article',
+              {
+                key: item.title,
+                style: {
+                  padding: '24px',
+                  border:
+                    '1px solid rgba(255,255,255,0.10)',
+                  borderRadius: '18px',
+                  background:
+                    'rgba(255,255,255,0.05)',
+                  backdropFilter: 'blur(10px)',
+                },
+              },
+
+              h(
+                'div',
+                {
+                  style: {
+                    marginBottom: '15px',
+                    fontSize: '30px',
+                  },
+                },
+                item.icon
+              ),
+
+              h(
+                'h2',
+                {
+                  style: {
+                    margin: '0 0 8px',
+                    fontSize: '20px',
+                    fontWeight: '900',
+                  },
+                },
+                item.title
+              ),
+
+              h(
+                'p',
+                {
+                  style: {
+                    margin: 0,
+                    color:
+                      'rgba(255,255,255,0.65)',
+                    lineHeight: '1.55',
+                  },
+                },
+                item.text
+              )
+            );
+          })
+        )
+      )
+    ),
+
+    h(Footer, {
+      lang,
+    })
+  );
+}
   const isProgramPage =
     window.location.pathname.startsWith('/program/');
 
