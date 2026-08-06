@@ -2189,7 +2189,7 @@ function Team4LabPage({ lang, setLang }) {
               fontWeight: '900',
             },
           },
-          'Team4 Lab'
+          t.title
         ),
 
         h(
