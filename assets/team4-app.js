@@ -2820,6 +2820,12 @@ if (
     Footer,
   });
 }
+  if (isTeam4MissionOnePage) {
+  return h(Team4MissionOnePage, {
+    lang,
+    setLang,
+  });
+}
 if (isTeam4MissionsPage) {
   return h(Team4MissionsPage, {
     lang,
