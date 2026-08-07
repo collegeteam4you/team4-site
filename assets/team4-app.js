@@ -2481,7 +2481,7 @@ h(
           fontWeight: '900',
         },
       },
-      '0 / 500 XP'
+      totalXp + ' / 500 XP'
     )
   ),
 
