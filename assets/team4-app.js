@@ -2218,11 +2218,12 @@ function Team4LabPage({ lang, setLang }) {
           },
 
           [
-  {
-    icon: '🎯',
-    title: t.missionsTitle,
-    text: t.missionsText,
-  },
+ {
+  icon: '🎯',
+  title: t.missionsTitle,
+  text: t.missionsText,
+  href: '/team4-lab/missions',
+},
   {
     icon: '🧠',
     title: t.deductionTitle,
@@ -2238,21 +2239,61 @@ function Team4LabPage({ lang, setLang }) {
     title: t.progressTitle,
     text: t.progressText,
   },
-          ].map(function (item) {
-            return h(
-              'article',
-              {
-                key: item.title,
-                style: {
-                  padding: '24px',
-                  border:
-                    '1px solid rgba(255,255,255,0.10)',
-                  borderRadius: '18px',
-                  background:
-                    'rgba(255,255,255,0.05)',
-                  backdropFilter: 'blur(10px)',
-                },
-              },
+ ].map(function (item) {
+  return h(
+    'article',
+    {
+      key: item.title,
+
+      onClick: function () {
+        if (item.href) {
+          window.location.href = item.href;
+        }
+      },
+
+      onMouseEnter: function (event) {
+        if (!item.href) return;
+
+        event.currentTarget.style.transform =
+          'translateY(-6px)';
+
+        event.currentTarget.style.borderColor =
+          'rgba(239,27,19,0.65)';
+
+        event.currentTarget.style.boxShadow =
+          '0 18px 45px rgba(239,27,19,0.16)';
+      },
+
+      onMouseLeave: function (event) {
+        if (!item.href) return;
+
+        event.currentTarget.style.transform =
+          'translateY(0)';
+
+        event.currentTarget.style.borderColor =
+          'rgba(255,255,255,0.10)';
+
+        event.currentTarget.style.boxShadow =
+          'none';
+      },
+
+      style: {
+        padding: '24px',
+        border:
+          '1px solid rgba(255,255,255,0.10)',
+        borderRadius: '18px',
+        background:
+          'rgba(255,255,255,0.05)',
+        backdropFilter: 'blur(10px)',
+
+        cursor: item.href
+          ? 'pointer'
+          : 'default',
+
+        transition:
+          'transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease',
+      },
+    },
 
               h(
                 'div',
