@@ -2856,7 +2856,7 @@ function Team4MissionOnePage({ lang, setLang }) {
 
           question: 'What do you say?',
 
-          next: 'Next Step →',
+          next: 'Back to Missions →',
 
           insightUnlocked: 'INSIGHT UNLOCKED',
           insight:
