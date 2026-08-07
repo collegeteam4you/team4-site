@@ -2954,17 +2954,20 @@ function chooseAnswer(answer) {
   setFeedback(answer.feedback);
 
   // მიმდინარე XP
+  const alreadyCompleted =
+  localStorage.getItem('team4Mission1Completed') === 'true';
+
+if (!alreadyCompleted) {
   const currentXp =
     Number(localStorage.getItem('team4LabXp')) || 0;
 
-  // ახალი XP
   const newXp = currentXp + answer.xp;
 
-  // ვინახავთ XP-ს
   localStorage.setItem(
     'team4LabXp',
     String(newXp)
   );
+}
 
   // Mission 01 შესრულებულია
   localStorage.setItem(
