@@ -2339,11 +2339,107 @@ h(
       )
     ),
 
+h(Footer, {
+  lang,
+})
+);
+}
+
+
+// ==========================================
+// TEAM4 MISSIONS PAGE
+// ==========================================
+
+function Team4MissionsPage({ lang, setLang }) {
+
+  return h(
+    React.Fragment,
+    null,
+
+    h('div', {
+      className: 'luxury-light-field',
+      'aria-hidden': 'true',
+    }),
+
+    h(Header, {
+      lang,
+      setLang,
+    }),
+
+    h(
+      'main',
+      {
+        style: {
+          minHeight: '100vh',
+          padding: '150px 24px 80px',
+          background:
+            'radial-gradient(circle at 20% 20%, rgba(239,27,19,0.18), transparent 35%), #030305',
+          color: '#ffffff',
+        },
+      },
+
+      h(
+        'section',
+        {
+          style: {
+            maxWidth: '1180px',
+            margin: '0 auto',
+          },
+        },
+
+        h(
+          'p',
+          {
+            style: {
+              color: '#ef1b13',
+              fontSize: '12px',
+              fontWeight: '900',
+              letterSpacing: '0.18em',
+            },
+          },
+          'TEAM4 LAB / MISSIONS'
+        ),
+
+        h(
+          'h1',
+          {
+            style: {
+              margin: '15px 0',
+              fontSize: 'clamp(40px, 6vw, 72px)',
+              fontWeight: '900',
+            },
+          },
+          lang === 'GEO'
+            ? 'მისიები'
+            : 'Missions'
+        ),
+
+        h(
+          'p',
+          {
+            style: {
+              color: 'rgba(255,255,255,0.65)',
+              fontSize: '16px',
+            },
+          },
+          lang === 'GEO'
+            ? 'აქ დაიწყება შენი გაყიდვების კარიერა.'
+            : 'Your sales career starts here.'
+        )
+
+      )
+    ),
+
     h(Footer, {
       lang,
     })
   );
 }
+
+
+// ამის შემდეგ უკვე შენი არსებული კოდი
+const isProgramPage =
+  window.location.pathname.startsWith('/program/');
 
 const isProgramPage =
   window.location.pathname.startsWith('/program/');
