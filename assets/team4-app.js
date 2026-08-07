@@ -2351,7 +2351,13 @@ h(Footer, {
 // ==========================================
 
 function Team4MissionsPage({ lang, setLang }) {
+  
+const [totalXp, setTotalXp] = React.useState(
+  () => Number(localStorage.getItem('team4LabXp')) || 0
+);
 
+const mission1Completed =
+  localStorage.getItem('team4Mission1Completed') === 'true';
   return h(
     React.Fragment,
     null,
