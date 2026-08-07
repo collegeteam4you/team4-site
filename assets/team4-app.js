@@ -2076,6 +2076,221 @@ function App() {
   const [lang, setLang] = React.useState(
     () => localStorage.getItem('team4Lang') || 'GEO'
   );
+  function Team4RegisterPage({ lang, setLang }) {
+  const isGeo = lang === 'GEO';
+
+  const handleRegister = function (event) {
+    event.preventDefault();
+
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+
+    const user = {
+      name: formData.get('name'),
+      email: formData.get('email'),
+      createdAt: new Date().toISOString(),
+      xp: 0,
+      balance: 0,
+    };
+
+    localStorage.setItem(
+      'team4LabUser',
+      JSON.stringify(user)
+    );
+
+    window.location.href = '/team4-lab/avatar';
+  };
+
+  return h(
+    React.Fragment,
+    null,
+
+    h('div', {
+      className: 'luxury-light-field',
+      'aria-hidden': 'true',
+    }),
+
+    h(Header, {
+      lang,
+      setLang,
+    }),
+
+    h(
+      'main',
+      {
+        style: {
+          minHeight: '100vh',
+          padding: '150px 24px 80px',
+          background:
+            'radial-gradient(circle at 20% 20%, rgba(239,27,19,0.18), transparent 35%), radial-gradient(circle at 80% 30%, rgba(29,92,255,0.18), transparent 35%), #030305',
+          color: '#ffffff',
+        },
+      },
+
+      h(
+        'section',
+        {
+          style: {
+            width: '100%',
+            maxWidth: '520px',
+            margin: '0 auto',
+          },
+        },
+
+        h(
+          'p',
+          {
+            style: {
+              margin: '0 0 12px',
+              color: '#ef1b13',
+              fontSize: '13px',
+              fontWeight: '900',
+              letterSpacing: '0.18em',
+            },
+          },
+          'TEAM4 LAB'
+        ),
+
+        h(
+          'h1',
+          {
+            style: {
+              margin: '0 0 12px',
+              fontSize: '42px',
+              fontWeight: '900',
+              lineHeight: '1.1',
+            },
+          },
+          isGeo
+            ? 'შექმენი შენი პროფილი'
+            : 'Create your profile'
+        ),
+
+        h(
+          'p',
+          {
+            style: {
+              margin: '0 0 30px',
+              color: 'rgba(255,255,255,0.65)',
+              fontSize: '15px',
+              lineHeight: '1.6',
+            },
+          },
+          isGeo
+            ? 'შექმენი Team4 Lab პროფილი და დაიწყე გაყიდვების თამაში.'
+            : 'Create your Team4 Lab profile and start your sales journey.'
+        ),
+
+        h(
+          'form',
+          {
+            onSubmit: handleRegister,
+
+            style: {
+              padding: '28px',
+              border: '1px solid rgba(255,255,255,0.12)',
+              borderRadius: '22px',
+              background: 'rgba(255,255,255,0.05)',
+            },
+          },
+
+          h(
+            'label',
+            {
+              style: {
+                display: 'block',
+                marginBottom: '8px',
+                fontSize: '13px',
+                fontWeight: '800',
+              },
+            },
+            isGeo ? 'სახელი' : 'Name'
+          ),
+
+          h('input', {
+            type: 'text',
+            name: 'name',
+            required: true,
+            placeholder: isGeo
+              ? 'შენი სახელი'
+              : 'Your name',
+
+            style: {
+              width: '100%',
+              padding: '15px',
+              marginBottom: '20px',
+              borderRadius: '12px',
+              border: '1px solid rgba(255,255,255,0.15)',
+              background: 'rgba(0,0,0,0.35)',
+              color: '#ffffff',
+              outline: 'none',
+              boxSizing: 'border-box',
+            },
+          }),
+
+          h(
+            'label',
+            {
+              style: {
+                display: 'block',
+                marginBottom: '8px',
+                fontSize: '13px',
+                fontWeight: '800',
+              },
+            },
+            'Email'
+          ),
+
+          h('input', {
+            type: 'email',
+            name: 'email',
+            required: true,
+            placeholder: 'example@email.com',
+
+            style: {
+              width: '100%',
+              padding: '15px',
+              marginBottom: '24px',
+              borderRadius: '12px',
+              border: '1px solid rgba(255,255,255,0.15)',
+              background: 'rgba(0,0,0,0.35)',
+              color: '#ffffff',
+              outline: 'none',
+              boxSizing: 'border-box',
+            },
+          }),
+
+          h(
+            'button',
+            {
+              type: 'submit',
+
+              style: {
+                width: '100%',
+                padding: '16px 20px',
+                border: '0',
+                borderRadius: '12px',
+                background: '#ef1b13',
+                color: '#ffffff',
+                fontSize: '14px',
+                fontWeight: '900',
+                cursor: 'pointer',
+              },
+            },
+
+            isGeo
+              ? 'რეგისტრაცია და ავატარის შექმნა →'
+              : 'Register & Create Avatar →'
+          )
+        )
+      )
+    ),
+
+    h(Footer, {
+      lang,
+    })
+  );
+}
 function Team4LabPage({ lang, setLang }) {
   const labCopy = {
     GEO: {
