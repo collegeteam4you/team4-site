@@ -2265,31 +2265,29 @@ function Team4LabPage({ lang, setLang }) {
                 item.icon
               ),
 
-             h(
+h(
   'h2',
   {
+    className: 'team4-lab-card-title',
     style: {
       margin: '0 0 8px',
-      fontSize: '14px',
-      lineHeight: '1.25',
       fontWeight: '900',
     },
   },
   item.title
 ),
 
-              h(
-                'p',
-                {
-                  style: {
-                    margin: 0,
-                    color:
-                      'rgba(255,255,255,0.65)',
-                    lineHeight: '1.55',
-                  },
-                },
-                item.text
-              )
+h(
+  'p',
+  {
+    className: 'team4-lab-card-text',
+    style: {
+      margin: 0,
+      color: 'rgba(255,255,255,0.65)',
+    },
+  },
+  item.text
+)
             );
           })
         )
