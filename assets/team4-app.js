@@ -3498,13 +3498,10 @@ if (!alreadyCompleted) {
               {
                 type: 'button',
 
-                onClick: function () {
-                  alert(
-                    lang === 'GEO'
-                      ? 'შემდეგ ეტაპს ახლა ავაწყობთ.'
-                      : 'We will build the next stage next.'
-                  );
-                },
+ onClick: function () {
+  window.location.href =
+    '/team4-lab/missions';
+},
 
                 style: {
                   padding: '12px 18px',
