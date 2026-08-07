@@ -3618,6 +3618,9 @@ const isTeam4MissionOnePage =
 const isTeam4MissionsPage =
   window.location.pathname.startsWith('/team4-lab/missions');
 
+  const isTeam4RegisterPage =
+  window.location.pathname === '/team4-lab/register';
+
 const isTeam4AvatarPage =
   window.location.pathname === '/team4-lab/avatar';
 
@@ -3660,7 +3663,12 @@ if (isTeam4MissionsPage) {
     setLang,
   });
 }
-
+if (isTeam4RegisterPage) {
+  return h(Team4RegisterPage, {
+    lang,
+    setLang,
+  });
+}
 
 if (isTeam4AvatarPage) {
   return h(Team4AvatarPage, {
