@@ -2797,6 +2797,8 @@ const isLibraryPage =
 
 const isTeam4LabPage =
   window.location.pathname.startsWith('/team4-lab');
+  const isTeam4MissionOnePage =
+  window.location.pathname === '/team4-lab/missions/mission-1';
   const isTeam4MissionsPage =
   window.location.pathname.startsWith('/team4-lab/missions');
 
