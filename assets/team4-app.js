@@ -2353,6 +2353,8 @@ const isLibraryPage =
 
 const isTeam4LabPage =
   window.location.pathname.startsWith('/team4-lab');
+  const isTeam4MissionsPage =
+  window.location.pathname.startsWith('/team4-lab/missions');
 
 if (isProgramPage) {
   return h(ProgramDetailPage, {
@@ -2372,7 +2374,12 @@ if (
     Footer,
   });
 }
-
+if (isTeam4MissionsPage) {
+  return h(Team4MissionsPage, {
+    lang,
+    setLang,
+  });
+}
 if (isTeam4LabPage) {
   return h(Team4LabPage, {
     lang,
