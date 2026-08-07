@@ -2785,7 +2785,715 @@ h(
     })
   );
 }
+// ==========================================
+// TEAM4 MISSION 01
+// ==========================================
 
+function Team4MissionOnePage({ lang, setLang }) {
+  const [stage, setStage] = React.useState(0);
+  const [interest, setInterest] = React.useState(72);
+  const [selectedAnswer, setSelectedAnswer] = React.useState(null);
+  const [feedback, setFeedback] = React.useState('');
+  const [xpEarned, setXpEarned] = React.useState(0);
+
+  const text =
+    lang === 'GEO'
+      ? {
+          mission: 'MISSION 01',
+          title: '„ძვირია“',
+          category: 'ფასის წინააღმდეგობის მართვა',
+          back: '← მისიებზე დაბრუნება',
+
+          clientName: 'გიორგი',
+          clientInfo: '36 წლის • მცირე ბიზნესის მფლობელი',
+          interest: 'კლიენტის ინტერესი',
+
+          situationTitle: 'სიტუაცია',
+          situation:
+            'გიორგი ეძებს სოციალური მედიის მართვის კომპანიას. შეხვედრის შემდეგ შენ მას 2,500 ₾-იან ყოველთვიურ მომსახურებას სთავაზობ.',
+
+          clientSays: 'გიორგი ამბობს:',
+
+          message:
+            '„ყველაფერი გასაგებია და მომწონს, მაგრამ 2,500 ლარი ძვირია. სხვა კომპანიამ 1,800 ლარი შემომთავაზა.“',
+
+          question: 'რას უპასუხებ?',
+
+          next: 'შემდეგი ნაბიჯი →',
+
+          insightUnlocked: 'INSIGHT UNLOCKED',
+          insight:
+            'შენ აღმოაჩინე, რომ კლიენტის მთავარი პრობლემა შესაძლოა ფასი საერთოდ არ იყოს.',
+
+          skillDiscovery: 'Discovery',
+          skillNegotiation: 'Negotiation',
+          skillClosing: 'Closing',
+        }
+      : {
+          mission: 'MISSION 01',
+          title: '“Too Expensive”',
+          category: 'Price Objection Handling',
+          back: '← Back to Missions',
+
+          clientName: 'Giorgi',
+          clientInfo: '36 years old • Small Business Owner',
+          interest: 'Client Interest',
+
+          situationTitle: 'Situation',
+          situation:
+            'Giorgi is looking for a social media management company. After the meeting, you offer him a 2,500 GEL monthly service.',
+
+          clientSays: 'Giorgi says:',
+
+          message:
+            '“Everything makes sense and I like it, but 2,500 GEL is too expensive. Another company offered me 1,800 GEL.”',
+
+          question: 'What do you say?',
+
+          next: 'Next Step →',
+
+          insightUnlocked: 'INSIGHT UNLOCKED',
+          insight:
+            'You discovered that the client’s main problem may not actually be the price.',
+
+          skillDiscovery: 'Discovery',
+          skillNegotiation: 'Negotiation',
+          skillClosing: 'Closing',
+        };
+
+  const answers =
+    lang === 'GEO'
+      ? [
+          {
+            id: 'A',
+            text: 'რამდენის გადახდა შეგიძლიათ?',
+            interest: -10,
+            xp: 20,
+            feedback:
+              'ძალიან სწრაფად გადახვედი ფასზე. ჯერ არ იცი, რეალურად რატომ ადარებს კლიენტი შეთავაზებებს.',
+          },
+          {
+            id: 'B',
+            text: 'თუ დღეს გადავწყვეტთ, შემიძლია ფასდაკლება გაგიკეთოთ.',
+            interest: -18,
+            xp: 10,
+            feedback:
+              'ფასდაკლება ძალიან ადრე შესთავაზე. კლიენტმა ჯერ არც კი გითხრა, რომ გადაწყვეტილების მთავარი კრიტერიუმი ფასია.',
+          },
+          {
+            id: 'C',
+            text: 'რა იყო მთავარი მიზეზი, რის გამოც საერთოდ დაიწყეთ ახალი კომპანიის მოძებნა?',
+            interest: 9,
+            xp: 100,
+            feedback:
+              'ძლიერი ნაბიჯია. ფასის დაცვამდე ჯერ კლიენტის რეალური პრობლემა აღმოაჩინე.',
+          },
+          {
+            id: 'D',
+            text: 'ჩვენი მომსახურება უბრალოდ უფრო ხარისხიანია.',
+            interest: -6,
+            xp: 30,
+            feedback:
+              'ზოგადი არგუმენტია. „უფრო ხარისხიანი“ კლიენტისთვის ჯერ არაფერს ამტკიცებს.',
+          },
+        ]
+      : [
+          {
+            id: 'A',
+            text: 'How much are you willing to pay?',
+            interest: -10,
+            xp: 20,
+            feedback:
+              'You moved to price too quickly. You still do not know why the client is comparing the offers.',
+          },
+          {
+            id: 'B',
+            text: 'If we decide today, I can give you a discount.',
+            interest: -18,
+            xp: 10,
+            feedback:
+              'You offered a discount too early. The client has not said that price is the main decision criterion.',
+          },
+          {
+            id: 'C',
+            text: 'What was the main reason you started looking for a new company in the first place?',
+            interest: 9,
+            xp: 100,
+            feedback:
+              'Strong move. Before defending the price, you discovered the client’s real problem.',
+          },
+          {
+            id: 'D',
+            text: 'Our service is simply higher quality.',
+            interest: -6,
+            xp: 30,
+            feedback:
+              'That is a generic argument. “Higher quality” does not yet prove anything to the client.',
+          },
+        ];
+
+  function chooseAnswer(answer) {
+    if (selectedAnswer) return;
+
+    setSelectedAnswer(answer.id);
+
+    setInterest(function (current) {
+      return Math.max(
+        0,
+        Math.min(100, current + answer.interest)
+      );
+    });
+
+    setXpEarned(answer.xp);
+    setFeedback(answer.feedback);
+
+    setTimeout(function () {
+      setStage(1);
+    }, 350);
+  }
+
+  return h(
+    React.Fragment,
+    null,
+
+    h('div', {
+      className: 'luxury-light-field',
+      'aria-hidden': 'true',
+    }),
+
+    h(Header, {
+      lang,
+      setLang,
+    }),
+
+    h(
+      'main',
+      {
+        style: {
+          minHeight: '100vh',
+          padding: '130px 22px 80px',
+          color: '#ffffff',
+          background:
+            'radial-gradient(circle at 15% 20%, rgba(239,27,19,0.18), transparent 32%), radial-gradient(circle at 85% 20%, rgba(31,74,255,0.14), transparent 34%), #030305',
+        },
+      },
+
+      h(
+        'section',
+        {
+          style: {
+            width: '100%',
+            maxWidth: '1000px',
+            margin: '0 auto',
+          },
+        },
+
+        h(
+          'button',
+          {
+            type: 'button',
+
+            onClick: function () {
+              window.location.href =
+                '/team4-lab/missions';
+            },
+
+            style: {
+              marginBottom: '25px',
+              border: 'none',
+              background: 'transparent',
+              color: 'rgba(255,255,255,0.60)',
+              fontSize: '13px',
+              fontWeight: '700',
+              cursor: 'pointer',
+            },
+          },
+          text.back
+        ),
+
+        h(
+          'div',
+          {
+            style: {
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'flex-start',
+              gap: '20px',
+              flexWrap: 'wrap',
+              marginBottom: '30px',
+            },
+          },
+
+          h(
+            'div',
+            null,
+
+            h(
+              'p',
+              {
+                style: {
+                  margin: '0 0 8px',
+                  color: '#ef1b13',
+                  fontSize: '12px',
+                  fontWeight: '900',
+                  letterSpacing: '0.18em',
+                },
+              },
+              text.mission
+            ),
+
+            h(
+              'h1',
+              {
+                style: {
+                  margin: '0 0 6px',
+                  fontSize:
+                    'clamp(36px, 6vw, 64px)',
+                  lineHeight: '1',
+                  fontWeight: '900',
+                },
+              },
+              text.title
+            ),
+
+            h(
+              'p',
+              {
+                style: {
+                  margin: 0,
+                  color:
+                    'rgba(255,255,255,0.55)',
+                  fontSize: '14px',
+                },
+              },
+              text.category
+            )
+          ),
+
+          h(
+            'div',
+            {
+              style: {
+                minWidth: '230px',
+                padding: '16px',
+                border:
+                  '1px solid rgba(255,255,255,0.10)',
+                borderRadius: '14px',
+                background:
+                  'rgba(255,255,255,0.04)',
+              },
+            },
+
+            h(
+              'div',
+              {
+                style: {
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  marginBottom: '8px',
+                  fontSize: '12px',
+                  fontWeight: '800',
+                },
+              },
+
+              h('span', null, text.interest),
+
+              h(
+                'span',
+                {
+                  style: {
+                    color:
+                      interest >= 70
+                        ? '#ffffff'
+                        : '#ef1b13',
+                  },
+                },
+                interest + '%'
+              )
+            ),
+
+            h(
+              'div',
+              {
+                style: {
+                  height: '7px',
+                  borderRadius: '999px',
+                  overflow: 'hidden',
+                  background:
+                    'rgba(255,255,255,0.10)',
+                },
+              },
+
+              h('div', {
+                style: {
+                  width: interest + '%',
+                  height: '100%',
+                  borderRadius: '999px',
+                  background: '#ef1b13',
+                  transition:
+                    'width 0.7s cubic-bezier(.2,.8,.2,1)',
+                },
+              })
+            )
+          )
+        ),
+
+        h(
+          'div',
+          {
+            style: {
+              display: 'grid',
+              gridTemplateColumns:
+                'repeat(auto-fit, minmax(280px, 1fr))',
+              gap: '18px',
+              marginBottom: '22px',
+            },
+          },
+
+          h(
+            'article',
+            {
+              style: {
+                padding: '20px',
+                border:
+                  '1px solid rgba(255,255,255,0.09)',
+                borderRadius: '16px',
+                background:
+                  'rgba(255,255,255,0.035)',
+              },
+            },
+
+            h(
+              'div',
+              {
+                style: {
+                  fontSize: '34px',
+                  marginBottom: '10px',
+                },
+              },
+              '👤'
+            ),
+
+            h(
+              'strong',
+              {
+                style: {
+                  display: 'block',
+                  marginBottom: '5px',
+                  fontSize: '19px',
+                },
+              },
+              text.clientName
+            ),
+
+            h(
+              'span',
+              {
+                style: {
+                  color:
+                    'rgba(255,255,255,0.55)',
+                  fontSize: '13px',
+                },
+              },
+              text.clientInfo
+            )
+          ),
+
+          h(
+            'article',
+            {
+              style: {
+                padding: '20px',
+                border:
+                  '1px solid rgba(255,255,255,0.09)',
+                borderRadius: '16px',
+                background:
+                  'rgba(255,255,255,0.035)',
+              },
+            },
+
+            h(
+              'strong',
+              {
+                style: {
+                  display: 'block',
+                  marginBottom: '8px',
+                  color: '#ef1b13',
+                  fontSize: '12px',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.12em',
+                },
+              },
+              text.situationTitle
+            ),
+
+            h(
+              'p',
+              {
+                style: {
+                  margin: 0,
+                  color:
+                    'rgba(255,255,255,0.68)',
+                  fontSize: '14px',
+                  lineHeight: '1.6',
+                },
+              },
+              text.situation
+            )
+          )
+        ),
+
+        h(
+          'article',
+          {
+            style: {
+              padding: '24px',
+              marginBottom: '24px',
+              border:
+                '1px solid rgba(255,255,255,0.10)',
+              borderRadius: '18px',
+              background: '#111114',
+              boxShadow:
+                '0 20px 60px rgba(0,0,0,0.28)',
+            },
+          },
+
+          h(
+            'p',
+            {
+              style: {
+                margin: '0 0 8px',
+                color:
+                  'rgba(255,255,255,0.45)',
+                fontSize: '12px',
+                fontWeight: '800',
+              },
+            },
+            text.clientSays
+          ),
+
+          h(
+            'p',
+            {
+              style: {
+                margin: 0,
+                fontSize:
+                  'clamp(17px, 2.4vw, 22px)',
+                lineHeight: '1.55',
+                fontWeight: '700',
+              },
+            },
+            text.message
+          )
+        ),
+
+        stage === 0 &&
+          h(
+            React.Fragment,
+            null,
+
+            h(
+              'h2',
+              {
+                style: {
+                  margin: '0 0 14px',
+                  fontSize: '20px',
+                  fontWeight: '900',
+                },
+              },
+              text.question
+            ),
+
+            h(
+              'div',
+              {
+                style: {
+                  display: 'grid',
+                  gap: '10px',
+                },
+              },
+
+              answers.map(function (answer) {
+                const isSelected =
+                  selectedAnswer === answer.id;
+
+                return h(
+                  'button',
+                  {
+                    key: answer.id,
+                    type: 'button',
+
+                    onClick: function () {
+                      chooseAnswer(answer);
+                    },
+
+                    style: {
+                      width: '100%',
+                      padding: '16px 18px',
+                      border:
+                        isSelected
+                          ? '1px solid #ef1b13'
+                          : '1px solid rgba(255,255,255,0.10)',
+                      borderRadius: '12px',
+                      background:
+                        isSelected
+                          ? 'rgba(239,27,19,0.12)'
+                          : 'rgba(255,255,255,0.035)',
+                      color: '#fff',
+                      textAlign: 'left',
+                      cursor: selectedAnswer
+                        ? 'default'
+                        : 'pointer',
+                      transition:
+                        'transform 0.18s ease, border-color 0.18s ease, background 0.18s ease',
+                    },
+                  },
+
+                  h(
+                    'span',
+                    {
+                      style: {
+                        display: 'inline-block',
+                        minWidth: '30px',
+                        color: '#ef1b13',
+                        fontWeight: '900',
+                      },
+                    },
+                    answer.id
+                  ),
+
+                  h(
+                    'span',
+                    {
+                      style: {
+                        fontSize: '14px',
+                        fontWeight: '700',
+                        lineHeight: '1.5',
+                      },
+                    },
+                    answer.text
+                  )
+                );
+              })
+            )
+          ),
+
+        stage === 1 &&
+          h(
+            'div',
+            {
+              style: {
+                padding: '22px',
+                border:
+                  '1px solid rgba(239,27,19,0.30)',
+                borderRadius: '16px',
+                background:
+                  'linear-gradient(135deg, rgba(239,27,19,0.10), rgba(255,255,255,0.025))',
+                animation:
+                  'team4MissionReveal 0.45s ease both',
+              },
+            },
+
+            h(
+              'div',
+              {
+                style: {
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  gap: '15px',
+                  flexWrap: 'wrap',
+                  marginBottom: '10px',
+                },
+              },
+
+              h(
+                'strong',
+                {
+                  style: {
+                    color: '#ef1b13',
+                    fontSize: '13px',
+                    letterSpacing: '0.10em',
+                  },
+                },
+                selectedAnswer === 'C'
+                  ? '🔓 ' + text.insightUnlocked
+                  : 'TEAM4 COACH'
+              ),
+
+              h(
+                'strong',
+                {
+                  style: {
+                    fontSize: '14px',
+                  },
+                },
+                '+' + xpEarned + ' XP'
+              )
+            ),
+
+            h(
+              'p',
+              {
+                style: {
+                  margin: '0 0 12px',
+                  color: '#fff',
+                  fontSize: '14px',
+                  lineHeight: '1.6',
+                },
+              },
+              feedback
+            ),
+
+            selectedAnswer === 'C' &&
+              h(
+                'p',
+                {
+                  style: {
+                    margin: '0 0 18px',
+                    color:
+                      'rgba(255,255,255,0.58)',
+                    fontSize: '13px',
+                    lineHeight: '1.6',
+                  },
+                },
+                text.insight
+              ),
+
+            h(
+              'button',
+              {
+                type: 'button',
+
+                onClick: function () {
+                  alert(
+                    lang === 'GEO'
+                      ? 'შემდეგ ეტაპს ახლა ავაწყობთ.'
+                      : 'We will build the next stage next.'
+                  );
+                },
+
+                style: {
+                  padding: '12px 18px',
+                  border: 'none',
+                  borderRadius: '9px',
+                  background: '#ef1b13',
+                  color: '#fff',
+                  fontSize: '13px',
+                  fontWeight: '900',
+                  cursor: 'pointer',
+                },
+              },
+              text.next
+            )
+          )
+      )
+    ),
+
+    h(Footer, {
+      lang,
+    })
+  );
+}
 
 // ამის შემდეგ უკვე შენი არსებული კოდი
 
