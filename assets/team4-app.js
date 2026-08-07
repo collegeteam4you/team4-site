@@ -2438,8 +2438,6 @@ function Team4MissionsPage({ lang, setLang }) {
 
 
 // ამის შემდეგ უკვე შენი არსებული კოდი
-const isProgramPage =
-  window.location.pathname.startsWith('/program/');
 
 const isProgramPage =
   window.location.pathname.startsWith('/program/');
