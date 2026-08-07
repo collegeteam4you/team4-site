@@ -2266,12 +2266,15 @@ function Team4LabPage({ lang, setLang }) {
               ),
 
 h(
-  'h2',
+  'div',
   {
-    className: 'team4-lab-card-title',
     style: {
       margin: '0 0 8px',
-      fontWeight: '900',
+      fontSize: '15px',
+      lineHeight: '1.3',
+      fontWeight: '800',
+      letterSpacing: '0',
+      textTransform: 'none',
     },
   },
   item.title
@@ -2280,10 +2283,11 @@ h(
 h(
   'p',
   {
-    className: 'team4-lab-card-text',
     style: {
       margin: 0,
       color: 'rgba(255,255,255,0.65)',
+      fontSize: '12px',
+      lineHeight: '1.5',
     },
   },
   item.text
