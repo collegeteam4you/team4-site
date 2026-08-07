@@ -2685,44 +2685,87 @@ h(
 ),
 
 [
-  [
-    '01',
-    lang === 'GEO'
-      ? '„ძვირია“'
-      : '“Too Expensive”',
-    false,
-  ],
-  [
-    '02',
-    lang === 'GEO'
-      ? '„ვიფიქრებ“'
-      : '“I’ll Think About It”',
-    true,
-  ],
-  [
-    '03',
-    lang === 'GEO'
-      ? '„ბოლო ფასი მითხარი“'
-      : '“Give Me Your Final Price”',
-    true,
-  ],
-  [
-    '04',
-    lang === 'GEO'
-      ? '„დირექტორს უნდა ვკითხო“'
-      : '“I Need To Ask My Director”',
-    true,
-  ],
-  [
-    '05',
-    'BOSS MISSION 🔥',
-    true,
-  ],
+  {
+    id: '01',
+    title:
+      lang === 'GEO'
+        ? '„ძვირია“'
+        : '“Too Expensive”',
+    completed: mission1Completed,
+    locked: false,
+    href: '/team4-lab/missions/mission-1',
+  },
+
+  {
+    id: '02',
+    title:
+      lang === 'GEO'
+        ? '„ვიფიქრებ“'
+        : '“I’ll Think About It”',
+    completed: false,
+    locked: !mission1Completed,
+    href: '/team4-lab/missions/mission-2',
+  },
+
+  {
+    id: '03',
+    title:
+      lang === 'GEO'
+        ? '„ბოლო ფასი მითხარი“'
+        : '“Give Me Your Final Price”',
+    completed: false,
+    locked: true,
+    href: null,
+  },
+
+  {
+    id: '04',
+    title:
+      lang === 'GEO'
+        ? '„დირექტორს უნდა ვკითხო“'
+        : '“I Need To Ask My Director”',
+    completed: false,
+    locked: true,
+    href: null,
+  },
+
+  {
+    id: '05',
+    title: 'BOSS MISSION 🔥',
+    completed: false,
+    locked: true,
+    href: null,
+  },
 ].map(function (mission) {
   return h(
     'div',
     {
-      key: mission[0],
+      key: mission.id,
+
+      onClick: function () {
+        if (!mission.locked && mission.href) {
+          window.location.href = mission.href;
+        }
+      },
+
+      onMouseEnter: function (event) {
+        if (mission.locked) return;
+
+        event.currentTarget.style.transform =
+          'translateX(5px)';
+
+        event.currentTarget.style.borderColor =
+          'rgba(239,27,19,0.40)';
+      },
+
+      onMouseLeave: function (event) {
+        event.currentTarget.style.transform =
+          'translateX(0)';
+
+        event.currentTarget.style.borderColor =
+          'rgba(255,255,255,0.08)';
+      },
+
       style: {
         display: 'flex',
         justifyContent: 'space-between',
@@ -2730,10 +2773,24 @@ h(
         gap: '16px',
         padding: '16px 18px',
         marginBottom: '10px',
-        border: '1px solid rgba(255,255,255,0.08)',
+        border:
+          '1px solid rgba(255,255,255,0.08)',
         borderRadius: '12px',
-        background: 'rgba(255,255,255,0.03)',
-        opacity: mission[2] ? 0.55 : 1,
+
+        background:
+          mission.completed
+            ? 'rgba(40,180,100,0.07)'
+            : 'rgba(255,255,255,0.03)',
+
+        opacity: mission.locked ? 0.45 : 1,
+
+        cursor:
+          mission.locked
+            ? 'not-allowed'
+            : 'pointer',
+
+        transition:
+          'transform 0.2s ease, border-color 0.2s ease',
       },
     },
 
@@ -2746,12 +2803,16 @@ h(
         {
           style: {
             marginRight: '12px',
-            color: mission[2]
-              ? 'rgba(255,255,255,0.45)'
-              : '#ef1b13',
+
+            color:
+              mission.completed
+                ? '#4ade80'
+                : mission.locked
+                ? 'rgba(255,255,255,0.45)'
+                : '#ef1b13',
           },
         },
-        mission[0]
+        mission.id
       ),
 
       h(
@@ -2762,7 +2823,7 @@ h(
             fontWeight: '700',
           },
         },
-        mission[1]
+        mission.title
       )
     ),
 
@@ -2774,11 +2835,18 @@ h(
           fontWeight: '800',
         },
       },
-      mission[2]
+
+      mission.completed
+        ? lang === 'GEO'
+          ? '✓ შესრულებულია'
+          : '✓ COMPLETED'
+        : mission.locked
         ? lang === 'GEO'
           ? '🔒 ჩაკეტილია'
-          : '🔒 Locked'
-        : '● ACTIVE'
+          : '🔒 LOCKED'
+        : lang === 'GEO'
+        ? '● ხელმისაწვდომია'
+        : '● AVAILABLE'
     )
   );
 })
