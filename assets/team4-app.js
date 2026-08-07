@@ -2414,18 +2414,368 @@ function Team4MissionsPage({ lang, setLang }) {
             : 'Missions'
         ),
 
-        h(
-          'p',
-          {
-            style: {
-              color: 'rgba(255,255,255,0.65)',
-              fontSize: '16px',
-            },
+h(
+  'p',
+  {
+    style: {
+      maxWidth: '680px',
+      margin: '0 0 30px',
+      color: 'rgba(255,255,255,0.65)',
+      fontSize: '16px',
+      lineHeight: '1.6',
+    },
+  },
+  lang === 'GEO'
+    ? 'გაიარე რეალური გაყიდვების სიტუაციები, დააგროვე XP და განავითარე შენი გაყიდვების უნარები.'
+    : 'Complete realistic sales situations, earn XP, and improve your sales skills.'
+),
+
+h(
+  'div',
+  {
+    style: {
+      padding: '22px',
+      marginBottom: '26px',
+      border: '1px solid rgba(255,255,255,0.10)',
+      borderRadius: '18px',
+      background: 'rgba(255,255,255,0.04)',
+    },
+  },
+
+  h(
+    'div',
+    {
+      style: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        gap: '16px',
+        flexWrap: 'wrap',
+        marginBottom: '12px',
+      },
+    },
+
+    h(
+      'strong',
+      {
+        style: {
+          fontSize: '16px',
+        },
+      },
+      lang === 'GEO'
+        ? 'დონე 1 — Rookie'
+        : 'Level 1 — Rookie'
+    ),
+
+    h(
+      'span',
+      {
+        style: {
+          color: '#ef1b13',
+          fontWeight: '900',
+        },
+      },
+      '0 / 500 XP'
+    )
+  ),
+
+  h(
+    'div',
+    {
+      style: {
+        width: '100%',
+        height: '8px',
+        borderRadius: '999px',
+        background: 'rgba(255,255,255,0.10)',
+        overflow: 'hidden',
+      },
+    },
+
+    h('div', {
+      style: {
+        width: '0%',
+        height: '100%',
+        borderRadius: '999px',
+        background: '#ef1b13',
+        transition: 'width 0.6s ease',
+      },
+    })
+  )
+),
+
+h(
+  'p',
+  {
+    style: {
+      margin: '0 0 10px',
+      color: '#ef1b13',
+      fontSize: '12px',
+      fontWeight: '900',
+      letterSpacing: '0.14em',
+      textTransform: 'uppercase',
+    },
+  },
+  lang === 'GEO'
+    ? '🔥 აქტიური მისია'
+    : '🔥 Active Mission'
+),
+
+h(
+  'article',
+  {
+    style: {
+      padding: '26px',
+      marginBottom: '34px',
+      border: '1px solid rgba(239,27,19,0.35)',
+      borderRadius: '20px',
+      background:
+        'linear-gradient(135deg, rgba(239,27,19,0.10), rgba(255,255,255,0.03))',
+      boxShadow: '0 18px 50px rgba(239,27,19,0.08)',
+    },
+  },
+
+  h(
+    'div',
+    {
+      style: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        gap: '12px',
+        flexWrap: 'wrap',
+        marginBottom: '12px',
+      },
+    },
+
+    h(
+      'span',
+      {
+        style: {
+          fontSize: '12px',
+          fontWeight: '900',
+          color: '#ef1b13',
+        },
+      },
+      'MISSION 01'
+    ),
+
+    h(
+      'span',
+      {
+        style: {
+          fontSize: '12px',
+          fontWeight: '900',
+        },
+      },
+      '+300 XP'
+    )
+  ),
+
+  h(
+    'h2',
+    {
+      style: {
+        margin: '0 0 10px',
+        fontSize: '28px',
+        fontWeight: '900',
+      },
+    },
+    lang === 'GEO'
+      ? '„ძვირია“'
+      : '“Too Expensive”'
+  ),
+
+  h(
+    'p',
+    {
+      style: {
+        maxWidth: '720px',
+        margin: '0 0 16px',
+        color: 'rgba(255,255,255,0.70)',
+        fontSize: '14px',
+        lineHeight: '1.6',
+      },
+    },
+    lang === 'GEO'
+      ? 'კლიენტი შენს 2,500 ₾-იან შეთავაზებას კონკურენტის 1,800 ₾-იან ფასს ადარებს.'
+      : 'The client compares your 2,500 GEL offer with a competitor’s 1,800 GEL price.'
+  ),
+
+  h(
+    'div',
+    {
+      style: {
+        display: 'flex',
+        gap: '16px',
+        flexWrap: 'wrap',
+        marginBottom: '20px',
+        fontSize: '13px',
+        color: 'rgba(255,255,255,0.55)',
+      },
+    },
+
+    h('span', null, '🎯 Negotiation'),
+    h(
+      'span',
+      null,
+      lang === 'GEO'
+        ? '⏱ 5–7 წუთი'
+        : '⏱ 5–7 min'
+    )
+  ),
+
+  h(
+    'button',
+    {
+      type: 'button',
+      onClick: function () {
+        window.location.href =
+          '/team4-lab/missions/mission-1';
+      },
+      style: {
+        padding: '13px 20px',
+        border: 'none',
+        borderRadius: '10px',
+        background: '#ef1b13',
+        color: '#fff',
+        fontSize: '13px',
+        fontWeight: '900',
+        cursor: 'pointer',
+        transition:
+          'transform 0.2s ease, box-shadow 0.2s ease',
+      },
+
+      onMouseEnter: function (event) {
+        event.currentTarget.style.transform =
+          'translateY(-2px)';
+        event.currentTarget.style.boxShadow =
+          '0 12px 30px rgba(239,27,19,0.28)';
+      },
+
+      onMouseLeave: function (event) {
+        event.currentTarget.style.transform =
+          'translateY(0)';
+        event.currentTarget.style.boxShadow =
+          'none';
+      },
+    },
+    lang === 'GEO'
+      ? 'მისიის დაწყება →'
+      : 'Start Mission →'
+  )
+),
+
+h(
+  'h2',
+  {
+    style: {
+      margin: '0 0 14px',
+      fontSize: '22px',
+      fontWeight: '900',
+    },
+  },
+  lang === 'GEO'
+    ? 'შენი კარიერა'
+    : 'Your Career'
+),
+
+[
+  [
+    '01',
+    lang === 'GEO'
+      ? '„ძვირია“'
+      : '“Too Expensive”',
+    false,
+  ],
+  [
+    '02',
+    lang === 'GEO'
+      ? '„ვიფიქრებ“'
+      : '“I’ll Think About It”',
+    true,
+  ],
+  [
+    '03',
+    lang === 'GEO'
+      ? '„ბოლო ფასი მითხარი“'
+      : '“Give Me Your Final Price”',
+    true,
+  ],
+  [
+    '04',
+    lang === 'GEO'
+      ? '„დირექტორს უნდა ვკითხო“'
+      : '“I Need To Ask My Director”',
+    true,
+  ],
+  [
+    '05',
+    'BOSS MISSION 🔥',
+    true,
+  ],
+].map(function (mission) {
+  return h(
+    'div',
+    {
+      key: mission[0],
+      style: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        gap: '16px',
+        padding: '16px 18px',
+        marginBottom: '10px',
+        border: '1px solid rgba(255,255,255,0.08)',
+        borderRadius: '12px',
+        background: 'rgba(255,255,255,0.03)',
+        opacity: mission[2] ? 0.55 : 1,
+      },
+    },
+
+    h(
+      'div',
+      null,
+
+      h(
+        'strong',
+        {
+          style: {
+            marginRight: '12px',
+            color: mission[2]
+              ? 'rgba(255,255,255,0.45)'
+              : '#ef1b13',
           },
-          lang === 'GEO'
-            ? 'აქ დაიწყება შენი გაყიდვების კარიერა.'
-            : 'Your sales career starts here.'
-        )
+        },
+        mission[0]
+      ),
+
+      h(
+        'span',
+        {
+          style: {
+            fontSize: '14px',
+            fontWeight: '700',
+          },
+        },
+        mission[1]
+      )
+    ),
+
+    h(
+      'span',
+      {
+        style: {
+          fontSize: '12px',
+          fontWeight: '800',
+        },
+      },
+      mission[2]
+        ? lang === 'GEO'
+          ? '🔒 ჩაკეტილია'
+          : '🔒 Locked'
+        : '● ACTIVE'
+    )
+  );
+})
 
       )
     ),
