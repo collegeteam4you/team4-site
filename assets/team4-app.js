@@ -2932,25 +2932,50 @@ function Team4MissionOnePage({ lang, setLang }) {
           },
         ];
 
-  function chooseAnswer(answer) {
-    if (selectedAnswer) return;
+function chooseAnswer(answer) {
+  if (selectedAnswer) return;
 
-    setSelectedAnswer(answer.id);
+  setSelectedAnswer(answer.id);
 
-    setInterest(function (current) {
-      return Math.max(
-        0,
-        Math.min(100, current + answer.interest)
-      );
-    });
+  setInterest(function (current) {
+    return Math.max(
+      0,
+      Math.min(100, current + answer.interest)
+    );
+  });
 
-    setXpEarned(answer.xp);
-    setFeedback(answer.feedback);
+  setXpEarned(answer.xp);
+  setFeedback(answer.feedback);
 
-    setTimeout(function () {
-      setStage(1);
-    }, 350);
-  }
+  // მიმდინარე XP
+  const currentXp =
+    Number(localStorage.getItem('team4LabXp')) || 0;
+
+  // ახალი XP
+  const newXp = currentXp + answer.xp;
+
+  // ვინახავთ XP-ს
+  localStorage.setItem(
+    'team4LabXp',
+    String(newXp)
+  );
+
+  // Mission 01 შესრულებულია
+  localStorage.setItem(
+    'team4Mission1Completed',
+    'true'
+  );
+
+  // ვინახავთ პასუხსაც
+  localStorage.setItem(
+    'team4Mission1Answer',
+    answer.id
+  );
+
+  setTimeout(function () {
+    setStage(1);
+  }, 350);
+}
 
   return h(
     React.Fragment,
