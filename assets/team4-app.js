@@ -3602,12 +3602,18 @@ const isProgramPage =
 const isLibraryPage =
   window.location.pathname.startsWith('/library');
 
+const isTeam4MissionOnePage =
+  window.location.pathname === '/team4-lab/missions/mission-1';
+
+const isTeam4MissionsPage =
+  window.location.pathname.startsWith('/team4-lab/missions');
+
+const isTeam4AvatarPage =
+  window.location.pathname === '/team4-lab/avatar';
+
 const isTeam4LabPage =
   window.location.pathname.startsWith('/team4-lab');
-  const isTeam4MissionOnePage =
-  window.location.pathname === '/team4-lab/missions/mission-1';
-  const isTeam4MissionsPage =
-  window.location.pathname.startsWith('/team4-lab/missions');
+
 
 if (isProgramPage) {
   return h(ProgramDetailPage, {
@@ -3615,6 +3621,7 @@ if (isProgramPage) {
     setLang,
   });
 }
+
 
 if (
   isLibraryPage &&
@@ -3627,18 +3634,32 @@ if (
     Footer,
   });
 }
-  if (isTeam4MissionOnePage) {
+
+
+if (isTeam4MissionOnePage) {
   return h(Team4MissionOnePage, {
     lang,
     setLang,
   });
 }
+
+
 if (isTeam4MissionsPage) {
   return h(Team4MissionsPage, {
     lang,
     setLang,
   });
 }
+
+
+if (isTeam4AvatarPage) {
+  return h(Team4AvatarPage, {
+    lang,
+    setLang,
+  });
+}
+
+
 if (isTeam4LabPage) {
   return h(Team4LabPage, {
     lang,
@@ -3646,30 +3667,66 @@ if (isTeam4LabPage) {
   });
 }
 
-  if (isLibraryPage) {
-    return h(LibraryPage, { lang, setLang });
-  }
 
-  return h(
-    React.Fragment,
-    null,
-    h('div', {
-      className: 'luxury-light-field',
-      'aria-hidden': 'true',
-    }),
-    h(Header, { lang, setLang }),
-h(
-  'main',
-  null,
-  h(Hero, { lang }),
-  h(About, { lang }),
-  h(Programs, { lang }),
-  h(WinSpaceSection, { lang }),
-  h(Testimonials, { lang }),
-  h(Contact, { lang })
-),
-    h(Footer, { lang })
-  );
+if (isLibraryPage) {
+  return h(LibraryPage, {
+    lang,
+    setLang,
+  });
 }
 
-ReactDOM.createRoot(document.getElementById('root')).render(h(App));
+
+return h(
+  React.Fragment,
+  null,
+
+  h('div', {
+    className: 'luxury-light-field',
+    'aria-hidden': 'true',
+  }),
+
+  h(Header, {
+    lang,
+    setLang,
+  }),
+
+  h(
+    'main',
+    null,
+
+    h(Hero, {
+      lang,
+    }),
+
+    h(About, {
+      lang,
+    }),
+
+    h(Programs, {
+      lang,
+    }),
+
+    h(WinSpaceSection, {
+      lang,
+    }),
+
+    h(Testimonials, {
+      lang,
+    }),
+
+    h(Contact, {
+      lang,
+    })
+  ),
+
+  h(Footer, {
+    lang,
+  })
+);
+}
+
+ReactDOM.createRoot(
+  document.getElementById('root')
+).render(
+  h(App)
+);
