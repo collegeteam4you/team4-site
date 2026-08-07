@@ -2499,7 +2499,7 @@ h(
 
     h('div', {
       style: {
-        width: '0%',
+        width: Math.min((totalXp / 500) * 100, 100) + '%',
         height: '100%',
         borderRadius: '999px',
         background: '#ef1b13',
