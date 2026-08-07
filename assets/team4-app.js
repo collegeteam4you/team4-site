@@ -2126,7 +2126,11 @@ function Team4LabPage({ lang, setLang }) {
   };
 
   const t = labCopy[lang] || labCopy.GEO;
+const playerCreated =
+  localStorage.getItem('team4PlayerCreated') === 'true';
 
+const avatarCreated =
+  localStorage.getItem('team4AvatarCreated') === 'true';
   return h(
     React.Fragment,
     null,
@@ -2218,11 +2222,17 @@ function Team4LabPage({ lang, setLang }) {
           },
 
           [
- {
+{
   icon: '🎯',
   title: t.missionsTitle,
   text: t.missionsText,
-  href: '/team4-lab/missions',
+
+  href:
+    !playerCreated
+      ? '/team4-lab/register'
+      : !avatarCreated
+      ? '/team4-lab/avatar'
+      : '/team4-lab/missions',
 },
   {
     icon: '🧠',
