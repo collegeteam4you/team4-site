@@ -2825,7 +2825,7 @@ function Team4MissionOnePage({ lang, setLang }) {
 
           question: 'რას უპასუხებ?',
 
-          next: 'შემდეგი ნაბიჯი →',
+          next: 'მისიების გვერდზე დაბრუნება →',
 
           insightUnlocked: 'INSIGHT UNLOCKED',
           insight:
