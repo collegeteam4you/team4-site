@@ -3983,3 +3983,29 @@ button.site-cta:hover,
     padding-right: 20px !important;
   }
 }
+/* Team4 Lab cards */
+.team4-lab-card-title {
+  margin: 0 0 8px !important;
+  font-size: 18px !important;
+  line-height: 1.3 !important;
+  font-weight: 900 !important;
+  letter-spacing: 0 !important;
+  word-break: normal !important;
+  overflow-wrap: break-word !important;
+}
+
+.team4-lab-card-text {
+  margin: 0 !important;
+  font-size: 13px !important;
+  line-height: 1.55 !important;
+}
+
+@media (max-width: 768px) {
+  .team4-lab-card-title {
+    font-size: 17px !important;
+  }
+
+  .team4-lab-card-text {
+    font-size: 13px !important;
+  }
+}
