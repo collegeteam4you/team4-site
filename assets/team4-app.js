@@ -3872,8 +3872,6 @@ function Team4AvatarPage({ lang, setLang }) {
     })
   );
 }
-  );
-}
 function Team4MissionsPage({ lang, setLang }) {
   
 const [totalXp, setTotalXp] = React.useState(
