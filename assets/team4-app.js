@@ -2582,222 +2582,373 @@ function Team4AvatarPage({ lang, setLang }) {
   );
 
   const [skin, setSkin] = React.useState(
-    () => localStorage.getItem('team4AvatarSkin') || 'medium'
+    () => localStorage.getItem('team4AvatarSkin') || 'skin-02'
   );
 
   const [hair, setHair] = React.useState(
-    () => localStorage.getItem('team4AvatarHair') || 'short'
+    () => localStorage.getItem('team4AvatarHair') || 'hair-01'
   );
 
-  const [hairColor, setHairColor] = React.useState(
-    () => localStorage.getItem('team4AvatarHairColor') || 'black'
+  const [face, setFace] = React.useState(
+    () => localStorage.getItem('team4AvatarFace') || 'face-01'
+  );
+
+  const [eyes, setEyes] = React.useState(
+    () => localStorage.getItem('team4AvatarEyes') || 'eyes-01'
   );
 
   const [outfit, setOutfit] = React.useState(
-    () => localStorage.getItem('team4AvatarOutfit') || 'basic'
+    () => localStorage.getItem('team4AvatarOutfit') || 'outfit-01'
   );
 
   const [shoes, setShoes] = React.useState(
-    () => localStorage.getItem('team4AvatarShoes') || 'black'
+    () => localStorage.getItem('team4AvatarShoes') || 'shoes-01'
   );
 
   const [accessory, setAccessory] = React.useState(
     () => localStorage.getItem('team4AvatarAccessory') || 'none'
   );
 
-  const skinColors = {
-    light: '#f2c7a5',
-    medium: '#c98f65',
-    tan: '#a86f4a',
-    dark: '#70452f',
-  };
-
-  const hairColors = {
-    black: '#111111',
-    brown: '#4a2a1a',
-    blonde: '#c9a85c',
-    gray: '#8a8a8a',
-  };
-
-  const outfitColors = {
-    basic: '#2d2d32',
-    shirt: '#ececec',
-    black: '#111111',
-    red: '#8d1717',
-  };
-
-  const shoeColors = {
-    black: '#111111',
-    white: '#e8e8e8',
-    brown: '#51321f',
-  };
+  const [activeCategory, setActiveCategory] = React.useState('character');
 
   const text = {
-    kicker: 'TEAM4 LAB / AVATAR',
-
-    title: isGeo
-      ? 'შექმენი შენი ავატარი'
-      : 'Create Your Avatar',
-
+    title: isGeo ? 'შექმენი შენი ავატარი' : 'Create Your Avatar',
     subtitle: isGeo
-      ? 'შექმენი პერსონაჟი, რომელიც Team4 Lab-ში შენს კარიერას წარმოადგენს. მომავალში გაყიდვებით მიღებული ვირტუალური ფულით შეძლებ ახალი ტანსაცმლის, ფეხსაცმლის, ვარცხნილობებისა და აქსესუარების შეძენას.'
-      : 'Create the character that represents your career inside Team4 Lab. Later, use virtual money earned from sales to buy new clothes, shoes, hairstyles and accessories.',
-
-    gender: isGeo ? 'პერსონაჟი' : 'Character',
-    male: isGeo ? 'კაცი' : 'Male',
-    female: isGeo ? 'ქალი' : 'Female',
-
-    skin: isGeo ? 'კანის ტონი' : 'Skin Tone',
-    hair: isGeo ? 'ვარცხნილობა' : 'Hair Style',
-    hairColor: isGeo ? 'თმის ფერი' : 'Hair Color',
-    outfit: isGeo ? 'ტანსაცმელი' : 'Outfit',
-    shoes: isGeo ? 'ფეხსაცმელი' : 'Shoes',
-    accessory: isGeo ? 'აქსესუარი' : 'Accessory',
-
+      ? 'შექმენი პერსონაჟი, რომელიც Team4 Lab-ში შენს კარიერას წარმოადგენს.'
+      : 'Create the character that represents your career inside Team4 Lab.',
     save: isGeo
       ? 'ავატარის შენახვა და კარიერის დაწყება →'
       : 'Save Avatar & Start Career →',
   };
 
-  function optionButton(label, active, onClick) {
-    return h(
-      'button',
-      {
-        type: 'button',
-        onClick: onClick,
+  const categories = [
+    ['character', '👤', isGeo ? 'პერსონაჟი' : 'Character'],
+    ['skin', '🙂', isGeo ? 'კანის ტონი' : 'Skin Tone'],
+    ['hair', '💇', isGeo ? 'თმა' : 'Hair'],
+    ['face', '😀', isGeo ? 'სახე' : 'Face'],
+    ['eyes', '👁️', isGeo ? 'თვალები' : 'Eyes'],
+    ['outfit', '👕', isGeo ? 'ტანსაცმელი' : 'Outfit'],
+    ['shoes', '👟', isGeo ? 'ფეხსაცმელი' : 'Shoes'],
+    ['accessory', '🕶️', isGeo ? 'აქსესუარები' : 'Accessories'],
+  ];
 
-        style: {
-          padding: '11px 14px',
-          border: active
-            ? '1px solid #ef1b13'
-            : '1px solid rgba(255,255,255,0.11)',
-
-          borderRadius: '10px',
-
-          background: active
-            ? 'rgba(239,27,19,0.14)'
-            : 'rgba(255,255,255,0.04)',
-
-          color: '#ffffff',
-
-          fontSize: '13px',
-          fontWeight: '800',
-          cursor: 'pointer',
-
-          transition:
-            'border-color 0.2s ease, background 0.2s ease, transform 0.2s ease',
-        },
-
-        onMouseEnter: function (event) {
-          event.currentTarget.style.transform =
-            'translateY(-2px)';
-        },
-
-        onMouseLeave: function (event) {
-          event.currentTarget.style.transform =
-            'translateY(0)';
-        },
-      },
-      label
-    );
-  }
-
-  function colorButton(color, active, onClick) {
-    return h('button', {
-      type: 'button',
-      onClick: onClick,
-
+  function avatarLayer(src, zIndex) {
+    return h('img', {
+      src,
+      alt: '',
+      draggable: false,
       style: {
-        width: '42px',
-        height: '42px',
-        borderRadius: '50%',
-
-        border: active
-          ? '3px solid #ef1b13'
-          : '2px solid rgba(255,255,255,0.16)',
-
-        background: color,
-        cursor: 'pointer',
-
-        boxShadow: active
-          ? '0 0 20px rgba(239,27,19,0.25)'
-          : 'none',
+        position: 'absolute',
+        inset: 0,
+        width: '100%',
+        height: '100%',
+        objectFit: 'contain',
+        zIndex,
+        pointerEvents: 'none',
+        userSelect: 'none',
       },
     });
   }
 
   function saveAvatar() {
-    localStorage.setItem(
-      'team4AvatarGender',
-      gender
-    );
+    const avatar = {
+      gender,
+      skin,
+      hair,
+      face,
+      eyes,
+      outfit,
+      shoes,
+      accessory,
+    };
 
-    localStorage.setItem(
-      'team4AvatarSkin',
-      skin
-    );
+    localStorage.setItem('team4AvatarGender', gender);
+    localStorage.setItem('team4AvatarSkin', skin);
+    localStorage.setItem('team4AvatarHair', hair);
+    localStorage.setItem('team4AvatarFace', face);
+    localStorage.setItem('team4AvatarEyes', eyes);
+    localStorage.setItem('team4AvatarOutfit', outfit);
+    localStorage.setItem('team4AvatarShoes', shoes);
+    localStorage.setItem('team4AvatarAccessory', accessory);
+    localStorage.setItem('team4AvatarCreated', 'true');
 
-    localStorage.setItem(
-      'team4AvatarHair',
-      hair
-    );
-
-    localStorage.setItem(
-      'team4AvatarHairColor',
-      hairColor
-    );
-
-    localStorage.setItem(
-      'team4AvatarOutfit',
-      outfit
-    );
-
-    localStorage.setItem(
-      'team4AvatarShoes',
-      shoes
-    );
-
-    localStorage.setItem(
-      'team4AvatarAccessory',
-      accessory
-    );
-
-    localStorage.setItem(
-      'team4AvatarCreated',
-      'true'
-    );
-
-    const existingUser =
-      localStorage.getItem('team4LabUser');
+    const existingUser = localStorage.getItem('team4LabUser');
 
     if (existingUser) {
       try {
         const user = JSON.parse(existingUser);
-
-        user.avatar = {
-          gender,
-          skin,
-          hair,
-          hairColor,
-          outfit,
-          shoes,
-          accessory,
-        };
+        user.avatar = avatar;
 
         localStorage.setItem(
           'team4LabUser',
           JSON.stringify(user)
         );
       } catch (error) {
-        console.error(
-          'Could not update Team4 avatar:',
-          error
-        );
+        console.error('Avatar save error:', error);
       }
     }
 
-    window.location.href =
-      '/team4-lab/missions';
+    window.location.href = '/team4-lab/missions';
+  }
+
+  function tileButton(label, active, onClick) {
+    return h(
+      'button',
+      {
+        type: 'button',
+        onClick,
+        style: {
+          minWidth: '78px',
+          minHeight: '58px',
+          padding: '10px',
+          border: active
+            ? '2px solid #ef1b13'
+            : '1px solid rgba(255,255,255,0.12)',
+          borderRadius: '12px',
+          background: active
+            ? 'rgba(239,27,19,0.12)'
+            : '#181a20',
+          color: '#fff',
+          fontSize: '12px',
+          fontWeight: '800',
+          cursor: 'pointer',
+          transition: '0.2s ease',
+        },
+      },
+      label
+    );
+  }
+
+  function renderControls() {
+    if (activeCategory === 'character') {
+      return h(
+        'div',
+        {
+          style: {
+            display: 'flex',
+            gap: '10px',
+            flexWrap: 'wrap',
+          },
+        },
+
+        tileButton(
+          isGeo ? 'კაცი' : 'Male',
+          gender === 'male',
+          function () {
+            setGender('male');
+          }
+        ),
+
+        tileButton(
+          isGeo ? 'ქალი' : 'Female',
+          gender === 'female',
+          function () {
+            setGender('female');
+          }
+        )
+      );
+    }
+
+    if (activeCategory === 'skin') {
+      const skins = ['skin-01', 'skin-02', 'skin-03', 'skin-04'];
+
+      return h(
+        'div',
+        {
+          style: {
+            display: 'flex',
+            gap: '12px',
+            flexWrap: 'wrap',
+          },
+        },
+
+        skins.map(function (item) {
+          return h('button', {
+            key: item,
+            type: 'button',
+            onClick: function () {
+              setSkin(item);
+            },
+            style: {
+              width: '58px',
+              height: '58px',
+              borderRadius: '50%',
+              border:
+                skin === item
+                  ? '3px solid #ef1b13'
+                  : '2px solid rgba(255,255,255,0.18)',
+              background:
+                item === 'skin-01'
+                  ? '#f5c9a6'
+                  : item === 'skin-02'
+                  ? '#d4976b'
+                  : item === 'skin-03'
+                  ? '#ad704d'
+                  : '#6f452f',
+              cursor: 'pointer',
+            },
+          });
+        })
+      );
+    }
+
+    if (activeCategory === 'hair') {
+      return h(
+        'div',
+        {
+          style: {
+            display: 'flex',
+            gap: '10px',
+            flexWrap: 'wrap',
+          },
+        },
+
+        ['hair-01', 'hair-02', 'hair-03', 'hair-04', 'hair-05'].map(
+          function (item, index) {
+            return tileButton(
+              (isGeo ? 'თმა ' : 'Hair ') + (index + 1),
+              hair === item,
+              function () {
+                setHair(item);
+              }
+            );
+          }
+        )
+      );
+    }
+
+    if (activeCategory === 'face') {
+      return h(
+        'div',
+        {
+          style: {
+            display: 'flex',
+            gap: '10px',
+            flexWrap: 'wrap',
+          },
+        },
+
+        ['face-01', 'face-02', 'face-03'].map(function (item, index) {
+          return tileButton(
+            (isGeo ? 'სახე ' : 'Face ') + (index + 1),
+            face === item,
+            function () {
+              setFace(item);
+            }
+          );
+        })
+      );
+    }
+
+    if (activeCategory === 'eyes') {
+      return h(
+        'div',
+        {
+          style: {
+            display: 'flex',
+            gap: '10px',
+            flexWrap: 'wrap',
+          },
+        },
+
+        ['eyes-01', 'eyes-02', 'eyes-03'].map(function (item, index) {
+          return tileButton(
+            (isGeo ? 'თვალები ' : 'Eyes ') + (index + 1),
+            eyes === item,
+            function () {
+              setEyes(item);
+            }
+          );
+        })
+      );
+    }
+
+    if (activeCategory === 'outfit') {
+      return h(
+        'div',
+        {
+          style: {
+            display: 'flex',
+            gap: '10px',
+            flexWrap: 'wrap',
+          },
+        },
+
+        ['outfit-01', 'outfit-02', 'outfit-03', 'outfit-04'].map(
+          function (item, index) {
+            return tileButton(
+              (isGeo ? 'სტილი ' : 'Style ') + (index + 1),
+              outfit === item,
+              function () {
+                setOutfit(item);
+              }
+            );
+          }
+        )
+      );
+    }
+
+    if (activeCategory === 'shoes') {
+      return h(
+        'div',
+        {
+          style: {
+            display: 'flex',
+            gap: '10px',
+            flexWrap: 'wrap',
+          },
+        },
+
+        ['shoes-01', 'shoes-02', 'shoes-03'].map(function (item, index) {
+          return tileButton(
+            (isGeo ? 'ფეხსაცმელი ' : 'Shoes ') + (index + 1),
+            shoes === item,
+            function () {
+              setShoes(item);
+            }
+          );
+        })
+      );
+    }
+
+    if (activeCategory === 'accessory') {
+      return h(
+        'div',
+        {
+          style: {
+            display: 'flex',
+            gap: '10px',
+            flexWrap: 'wrap',
+          },
+        },
+
+        tileButton(
+          isGeo ? 'არცერთი' : 'None',
+          accessory === 'none',
+          function () {
+            setAccessory('none');
+          }
+        ),
+
+        tileButton(
+          isGeo ? 'სათვალე' : 'Glasses',
+          accessory === 'glasses-01',
+          function () {
+            setAccessory('glasses-01');
+          }
+        ),
+
+        tileButton(
+          isGeo ? 'საათი' : 'Watch',
+          accessory === 'watch-01',
+          function () {
+            setAccessory('watch-01');
+          }
+        )
+      );
+    }
+
+    return null;
   }
 
   return h(
@@ -2819,12 +2970,9 @@ function Team4AvatarPage({ lang, setLang }) {
       {
         style: {
           minHeight: '100vh',
-          padding: '140px 24px 80px',
-
-          background:
-            'radial-gradient(circle at 20% 20%, rgba(239,27,19,0.18), transparent 32%), radial-gradient(circle at 80% 25%, rgba(29,92,255,0.16), transparent 34%), #030305',
-
-          color: '#ffffff',
+          padding: '120px 24px 70px',
+          background: '#050507',
+          color: '#fff',
         },
       },
 
@@ -2833,34 +2981,17 @@ function Team4AvatarPage({ lang, setLang }) {
         {
           style: {
             width: '100%',
-            maxWidth: '1100px',
+            maxWidth: '1380px',
             margin: '0 auto',
           },
         },
 
         h(
-          'p',
-          {
-            style: {
-              margin: '0 0 10px',
-              color: '#ef1b13',
-              fontSize: '12px',
-              fontWeight: '900',
-              letterSpacing: '0.18em',
-            },
-          },
-          text.kicker
-        ),
-
-        h(
           'h1',
           {
             style: {
-              margin: '0 0 14px',
-              fontSize:
-                'clamp(38px, 6vw, 68px)',
-
-              lineHeight: '1',
+              margin: '0 0 10px',
+              fontSize: 'clamp(34px, 5vw, 58px)',
               fontWeight: '900',
             },
           },
@@ -2871,14 +3002,9 @@ function Team4AvatarPage({ lang, setLang }) {
           'p',
           {
             style: {
-              maxWidth: '760px',
-              margin: '0 0 32px',
-
-              color:
-                'rgba(255,255,255,0.64)',
-
+              margin: '0 0 26px',
+              color: 'rgba(255,255,255,0.62)',
               fontSize: '15px',
-              lineHeight: '1.65',
             },
           },
           text.subtitle
@@ -2889,36 +3015,25 @@ function Team4AvatarPage({ lang, setLang }) {
           {
             style: {
               display: 'grid',
-
-              gridTemplateColumns:
-                'repeat(auto-fit, minmax(320px, 1fr))',
-
-              gap: '24px',
-              alignItems: 'start',
+              gridTemplateColumns: 'minmax(420px, 1.15fr) minmax(520px, 1fr)',
+              gap: '22px',
             },
           },
 
-          // AVATAR PREVIEW
+          // LEFT: WHITE AVATAR PREVIEW
           h(
             'div',
             {
               style: {
-                minHeight: '560px',
-
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-
+                minHeight: '680px',
+                padding: '30px',
+                background: '#ffffff',
+                borderRadius: '24px',
                 position: 'relative',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
                 overflow: 'hidden',
-
-                border:
-                  '1px solid rgba(255,255,255,0.10)',
-
-                borderRadius: '22px',
-
-                background:
-                  'radial-gradient(circle at 50% 35%, rgba(239,27,19,0.16), transparent 30%), linear-gradient(180deg, rgba(255,255,255,0.055), rgba(255,255,255,0.015))',
               },
             },
 
@@ -2927,773 +3042,169 @@ function Team4AvatarPage({ lang, setLang }) {
               {
                 style: {
                   position: 'relative',
-                  width: '260px',
-                  height: '470px',
+                  width: '390px',
+                  height: '600px',
                 },
               },
 
-              // shadow
-              h('div', {
-                style: {
-                  position: 'absolute',
-                  bottom: '15px',
-                  left: '42px',
-
-                  width: '175px',
-                  height: '30px',
-
-                  borderRadius: '50%',
-
-                  background:
-                    'rgba(0,0,0,0.42)',
-
-                  filter: 'blur(8px)',
-                },
-              }),
-
-              // hair
-              h('div', {
-                style: {
-                  position: 'absolute',
-
-                  top:
-                    hair === 'long'
-                      ? '30px'
-                      : '35px',
-
-                  left: '75px',
-
-                  width: '110px',
-
-                  height:
-                    hair === 'long'
-                      ? '170px'
-                      : hair === 'buzz'
-                      ? '62px'
-                      : hair === 'side'
-                      ? '85px'
-                      : '72px',
-
-                  borderRadius:
-                    hair === 'buzz'
-                      ? '50%'
-                      : '52% 52% 35% 35%',
-
-                  background:
-                    hairColors[hairColor],
-
-                  zIndex: 2,
-                },
-              }),
-
-              // face
-              h('div', {
-                style: {
-                  position: 'absolute',
-
-                  top: '52px',
-                  left: '82px',
-
-                  width: '96px',
-                  height: '118px',
-
-                  borderRadius:
-                    gender === 'female'
-                      ? '48% 48% 45% 45%'
-                      : '45% 45% 40% 40%',
-
-                  background:
-                    skinColors[skin],
-
-                  zIndex: 3,
-
-                  boxShadow:
-                    'inset 0 -8px 20px rgba(0,0,0,0.08)',
-                },
-              }),
-
-              // eyes
-              h('div', {
-                style: {
-                  position: 'absolute',
-                  top: '100px',
-                  left: '103px',
-
-                  width: '8px',
-                  height: '5px',
-
-                  borderRadius: '50%',
-                  background: '#171717',
-                  zIndex: 4,
-                },
-              }),
-
-              h('div', {
-                style: {
-                  position: 'absolute',
-                  top: '100px',
-                  right: '103px',
-
-                  width: '8px',
-                  height: '5px',
-
-                  borderRadius: '50%',
-                  background: '#171717',
-                  zIndex: 4,
-                },
-              }),
-
-              // mouth
-              h('div', {
-                style: {
-                  position: 'absolute',
-
-                  top: '135px',
-                  left: '119px',
-
-                  width: '22px',
-                  height: '4px',
-
-                  borderRadius: '50%',
-                  background:
-                    'rgba(90,35,35,0.75)',
-
-                  zIndex: 4,
-                },
-              }),
-
-              // neck
-              h('div', {
-                style: {
-                  position: 'absolute',
-
-                  top: '158px',
-                  left: '111px',
-
-                  width: '38px',
-                  height: '42px',
-
-                  background:
-                    skinColors[skin],
-
-                  zIndex: 1,
-                },
-              }),
-
-              // body
-              h('div', {
-                style: {
-                  position: 'absolute',
-
-                  top: '188px',
-                  left: '54px',
-
-                  width: '152px',
-                  height: '190px',
-
-                  borderRadius:
-                    gender === 'female'
-                      ? '42px 42px 22px 22px'
-                      : '34px 34px 20px 20px',
-
-                  background:
-                    outfitColors[outfit],
-
-                  zIndex: 2,
-
-                  boxShadow:
-                    'inset 0 -20px 40px rgba(0,0,0,0.18)',
-                },
-              }),
-
-              // left arm
-              h('div', {
-                style: {
-                  position: 'absolute',
-
-                  top: '202px',
-                  left: '30px',
-
-                  width: '42px',
-                  height: '165px',
-
-                  borderRadius: '24px',
-
-                  background:
-                    outfitColors[outfit],
-
-                  transform: 'rotate(5deg)',
-
-                  zIndex: 1,
-                },
-              }),
-
-              // right arm
-              h('div', {
-                style: {
-                  position: 'absolute',
-
-                  top: '202px',
-                  right: '30px',
-
-                  width: '42px',
-                  height: '165px',
-
-                  borderRadius: '24px',
-
-                  background:
-                    outfitColors[outfit],
-
-                  transform: 'rotate(-5deg)',
-
-                  zIndex: 1,
-                },
-              }),
-
-              // pants left
-              h('div', {
-                style: {
-                  position: 'absolute',
-
-                  top: '360px',
-                  left: '73px',
-
-                  width: '49px',
-                  height: '82px',
-
-                  borderRadius: '10px',
-
-                  background: '#202025',
-                },
-              }),
-
-              // pants right
-              h('div', {
-                style: {
-                  position: 'absolute',
-
-                  top: '360px',
-                  right: '73px',
-
-                  width: '49px',
-                  height: '82px',
-
-                  borderRadius: '10px',
-
-                  background: '#202025',
-                },
-              }),
-
-              // shoes
-              h('div', {
-                style: {
-                  position: 'absolute',
-
-                  bottom: '9px',
-                  left: '60px',
-
-                  width: '66px',
-                  height: '28px',
-
-                  borderRadius:
-                    '12px 20px 8px 8px',
-
-                  background:
-                    shoeColors[shoes],
-                },
-              }),
-
-              h('div', {
-                style: {
-                  position: 'absolute',
-
-                  bottom: '9px',
-                  right: '60px',
-
-                  width: '66px',
-                  height: '28px',
-
-                  borderRadius:
-                    '20px 12px 8px 8px',
-
-                  background:
-                    shoeColors[shoes],
-                },
-              }),
-
-              // glasses
-              accessory === 'glasses' &&
-                h(
-                  React.Fragment,
-                  null,
-
-                  h('div', {
-                    style: {
-                      position: 'absolute',
-
-                      top: '93px',
-                      left: '95px',
-
-                      width: '31px',
-                      height: '18px',
-
-                      border:
-                        '3px solid #111',
-
-                      borderRadius: '7px',
-
-                      zIndex: 6,
-                    },
-                  }),
-
-                  h('div', {
-                    style: {
-                      position: 'absolute',
-
-                      top: '93px',
-                      right: '95px',
-
-                      width: '31px',
-                      height: '18px',
-
-                      border:
-                        '3px solid #111',
-
-                      borderRadius: '7px',
-
-                      zIndex: 6,
-                    },
-                  }),
-
-                  h('div', {
-                    style: {
-                      position: 'absolute',
-
-                      top: '101px',
-                      left: '124px',
-
-                      width: '13px',
-                      height: '3px',
-
-                      background: '#111',
-
-                      zIndex: 6,
-                    },
-                  })
-                ),
-
-              // watch
-              accessory === 'watch' &&
-                h('div', {
-                  style: {
-                    position: 'absolute',
-
-                    top: '317px',
-                    right: '28px',
-
-                    width: '19px',
-                    height: '19px',
-
-                    borderRadius: '50%',
-
-                    background: '#d8b04e',
-
-                    border:
-                      '3px solid #222',
-
-                    zIndex: 5,
-                  },
-                })
+              avatarLayer(
+                gender === 'male'
+                  ? '/assets/avatar/base-male.svg'
+                  : '/assets/avatar/base-female.svg',
+                1
+              ),
+
+              avatarLayer(
+                '/assets/avatar/skin/' + skin + '.svg',
+                2
+              ),
+
+              avatarLayer(
+                '/assets/avatar/face/' + face + '.svg',
+                3
+              ),
+
+              avatarLayer(
+                '/assets/avatar/eyes/' + eyes + '.svg',
+                4
+              ),
+
+              avatarLayer(
+                '/assets/avatar/hair/' + hair + '.svg',
+                5
+              ),
+
+              avatarLayer(
+                '/assets/avatar/outfits/' + outfit + '.svg',
+                6
+              ),
+
+              avatarLayer(
+                '/assets/avatar/shoes/' + shoes + '.svg',
+                7
+              ),
+
+              accessory !== 'none' &&
+                avatarLayer(
+                  '/assets/avatar/accessories/' + accessory + '.svg',
+                  8
+                )
             )
           ),
 
-          // CONTROLS
+          // RIGHT BUILDER
           h(
             'div',
             {
               style: {
-                padding: '24px',
-
-                border:
-                  '1px solid rgba(255,255,255,0.10)',
-
-                borderRadius: '22px',
-
-                background:
-                  'rgba(255,255,255,0.035)',
+                display: 'grid',
+                gridTemplateColumns: '180px 1fr',
+                minHeight: '680px',
+                border: '1px solid rgba(255,255,255,0.10)',
+                borderRadius: '24px',
+                overflow: 'hidden',
+                background: '#111319',
               },
             },
 
             h(
-              'p',
+              'div',
               {
                 style: {
-                  margin: '0 0 10px',
-                  fontSize: '13px',
-                  fontWeight: '900',
+                  padding: '18px',
+                  borderRight: '1px solid rgba(255,255,255,0.08)',
+                  background: '#0d0f14',
                 },
               },
-              text.gender
+
+              categories.map(function (category) {
+                const active = activeCategory === category[0];
+
+                return h(
+                  'button',
+                  {
+                    key: category[0],
+                    type: 'button',
+                    onClick: function () {
+                      setActiveCategory(category[0]);
+                    },
+                    style: {
+                      width: '100%',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '10px',
+                      padding: '13px 12px',
+                      marginBottom: '8px',
+                      border: active
+                        ? '1px solid rgba(239,27,19,0.45)'
+                        : '1px solid transparent',
+                      borderRadius: '10px',
+                      background: active
+                        ? 'rgba(239,27,19,0.10)'
+                        : 'transparent',
+                      color: active ? '#fff' : 'rgba(255,255,255,0.68)',
+                      textAlign: 'left',
+                      fontSize: '13px',
+                      fontWeight: '800',
+                      cursor: 'pointer',
+                    },
+                  },
+
+                  h(
+                    'span',
+                    {
+                      style: {
+                        fontSize: '19px',
+                      },
+                    },
+                    category[1]
+                  ),
+
+                  category[2]
+                );
+              })
             ),
 
             h(
               'div',
               {
                 style: {
+                  padding: '28px',
                   display: 'flex',
-                  gap: '8px',
-                  flexWrap: 'wrap',
-                  marginBottom: '24px',
+                  flexDirection: 'column',
                 },
               },
 
-              optionButton(
-                text.male,
-                gender === 'male',
-                function () {
-                  setGender('male');
-                }
+              h(
+                'div',
+                {
+                  style: {
+                    flex: '1 1 auto',
+                  },
+                },
+                renderControls()
               ),
 
-              optionButton(
-                text.female,
-                gender === 'female',
-                function () {
-                  setGender('female');
-                }
+              h(
+                'button',
+                {
+                  type: 'button',
+                  onClick: saveAvatar,
+                  style: {
+                    width: '100%',
+                    marginTop: '30px',
+                    padding: '15px 18px',
+                    border: 'none',
+                    borderRadius: '11px',
+                    background: '#ef1b13',
+                    color: '#fff',
+                    fontSize: '14px',
+                    fontWeight: '900',
+                    cursor: 'pointer',
+                  },
+                },
+                text.save
               )
-            ),
-
-            h(
-              'p',
-              {
-                style: {
-                  margin: '0 0 10px',
-                  fontSize: '13px',
-                  fontWeight: '900',
-                },
-              },
-              text.skin
-            ),
-
-            h(
-              'div',
-              {
-                style: {
-                  display: 'flex',
-                  gap: '10px',
-                  flexWrap: 'wrap',
-                  marginBottom: '24px',
-                },
-              },
-
-              Object.keys(skinColors).map(
-                function (key) {
-                  return colorButton(
-                    skinColors[key],
-                    skin === key,
-                    function () {
-                      setSkin(key);
-                    }
-                  );
-                }
-              )
-            ),
-
-            h(
-              'p',
-              {
-                style: {
-                  margin: '0 0 10px',
-                  fontSize: '13px',
-                  fontWeight: '900',
-                },
-              },
-              text.hair
-            ),
-
-            h(
-              'div',
-              {
-                style: {
-                  display: 'flex',
-                  gap: '8px',
-                  flexWrap: 'wrap',
-                  marginBottom: '22px',
-                },
-              },
-
-              optionButton(
-                'Short',
-                hair === 'short',
-                function () {
-                  setHair('short');
-                }
-              ),
-
-              optionButton(
-                'Side',
-                hair === 'side',
-                function () {
-                  setHair('side');
-                }
-              ),
-
-              optionButton(
-                'Buzz',
-                hair === 'buzz',
-                function () {
-                  setHair('buzz');
-                }
-              ),
-
-              optionButton(
-                'Long',
-                hair === 'long',
-                function () {
-                  setHair('long');
-                }
-              )
-            ),
-
-            h(
-              'p',
-              {
-                style: {
-                  margin: '0 0 10px',
-                  fontSize: '13px',
-                  fontWeight: '900',
-                },
-              },
-              text.hairColor
-            ),
-
-            h(
-              'div',
-              {
-                style: {
-                  display: 'flex',
-                  gap: '10px',
-                  flexWrap: 'wrap',
-                  marginBottom: '24px',
-                },
-              },
-
-              Object.keys(hairColors).map(
-                function (key) {
-                  return colorButton(
-                    hairColors[key],
-                    hairColor === key,
-                    function () {
-                      setHairColor(key);
-                    }
-                  );
-                }
-              )
-            ),
-
-            h(
-              'p',
-              {
-                style: {
-                  margin: '0 0 10px',
-                  fontSize: '13px',
-                  fontWeight: '900',
-                },
-              },
-              text.outfit
-            ),
-
-            h(
-              'div',
-              {
-                style: {
-                  display: 'flex',
-                  gap: '8px',
-                  flexWrap: 'wrap',
-                  marginBottom: '24px',
-                },
-              },
-
-              optionButton(
-                isGeo ? 'საბაზისო' : 'Basic',
-                outfit === 'basic',
-                function () {
-                  setOutfit('basic');
-                }
-              ),
-
-              optionButton(
-                isGeo ? 'პერანგი' : 'Shirt',
-                outfit === 'shirt',
-                function () {
-                  setOutfit('shirt');
-                }
-              ),
-
-              optionButton(
-                isGeo ? 'შავი' : 'Black',
-                outfit === 'black',
-                function () {
-                  setOutfit('black');
-                }
-              ),
-
-              optionButton(
-                isGeo ? 'წითელი' : 'Red',
-                outfit === 'red',
-                function () {
-                  setOutfit('red');
-                }
-              )
-            ),
-
-            h(
-              'p',
-              {
-                style: {
-                  margin: '0 0 10px',
-                  fontSize: '13px',
-                  fontWeight: '900',
-                },
-              },
-              text.shoes
-            ),
-
-            h(
-              'div',
-              {
-                style: {
-                  display: 'flex',
-                  gap: '8px',
-                  flexWrap: 'wrap',
-                  marginBottom: '24px',
-                },
-              },
-
-              optionButton(
-                isGeo ? 'შავი' : 'Black',
-                shoes === 'black',
-                function () {
-                  setShoes('black');
-                }
-              ),
-
-              optionButton(
-                isGeo ? 'თეთრი' : 'White',
-                shoes === 'white',
-                function () {
-                  setShoes('white');
-                }
-              ),
-
-              optionButton(
-                isGeo ? 'ყავისფერი' : 'Brown',
-                shoes === 'brown',
-                function () {
-                  setShoes('brown');
-                }
-              )
-            ),
-
-            h(
-              'p',
-              {
-                style: {
-                  margin: '0 0 10px',
-                  fontSize: '13px',
-                  fontWeight: '900',
-                },
-              },
-              text.accessory
-            ),
-
-            h(
-              'div',
-              {
-                style: {
-                  display: 'flex',
-                  gap: '8px',
-                  flexWrap: 'wrap',
-                  marginBottom: '28px',
-                },
-              },
-
-              optionButton(
-                isGeo ? 'არცერთი' : 'None',
-                accessory === 'none',
-                function () {
-                  setAccessory('none');
-                }
-              ),
-
-              optionButton(
-                isGeo ? 'სათვალე' : 'Glasses',
-                accessory === 'glasses',
-                function () {
-                  setAccessory('glasses');
-                }
-              ),
-
-              optionButton(
-                isGeo ? 'საათი' : 'Watch',
-                accessory === 'watch',
-                function () {
-                  setAccessory('watch');
-                }
-              )
-            ),
-
-            h(
-              'button',
-              {
-                type: 'button',
-
-                onClick: saveAvatar,
-
-                style: {
-                  width: '100%',
-
-                  padding: '15px 18px',
-
-                  border: 'none',
-
-                  borderRadius: '11px',
-
-                  background: '#ef1b13',
-
-                  color: '#ffffff',
-
-                  fontSize: '14px',
-                  fontWeight: '900',
-
-                  cursor: 'pointer',
-
-                  boxShadow:
-                    '0 12px 34px rgba(239,27,19,0.20)',
-
-                  transition:
-                    'transform 0.2s ease, box-shadow 0.2s ease',
-                },
-
-                onMouseEnter: function (event) {
-                  event.currentTarget.style.transform =
-                    'translateY(-2px)';
-
-                  event.currentTarget.style.boxShadow =
-                    '0 16px 40px rgba(239,27,19,0.32)';
-                },
-
-                onMouseLeave: function (event) {
-                  event.currentTarget.style.transform =
-                    'translateY(0)';
-
-                  event.currentTarget.style.boxShadow =
-                    '0 12px 34px rgba(239,27,19,0.20)';
-                },
-              },
-
-              text.save
             )
           )
         )
