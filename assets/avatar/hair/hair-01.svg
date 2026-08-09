@@ -1,0 +1,41 @@
+<svg width="390" height="600" viewBox="0 0 390 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+  <!-- Short classic hair -->
+  <path
+    d="M126 151
+       C126 91 153 57 195 57
+       C238 57 265 91 265 151
+       C250 126 231 110 195 108
+       C160 110 141 126 126 151Z"
+    fill="#3B2418"
+  />
+
+  <!-- Left side -->
+  <path
+    d="M127 137
+       C119 157 121 184 132 199
+       L145 183
+       L143 139Z"
+    fill="#3B2418"
+  />
+
+  <!-- Right side -->
+  <path
+    d="M263 137
+       C271 157 269 184 258 199
+       L245 183
+       L247 139Z"
+    fill="#3B2418"
+  />
+
+  <!-- Hair highlight -->
+  <path
+    d="M151 91
+       C169 72 207 66 234 84"
+    stroke="#69402B"
+    stroke-width="9"
+    stroke-linecap="round"
+    opacity="0.65"
+  />
+
+</svg>
