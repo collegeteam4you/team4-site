@@ -3048,47 +3048,16 @@ function Team4AvatarPage({ lang, setLang }) {
               },
 
               avatarLayer(
-                gender === 'male'
-                  ? '/assets/avatar/base-male.svg'
-                  : '/assets/avatar/base-female.svg',
-                1
-              ),
+  gender === 'male'
+    ? '/assets/avatar/base-male.svg'
+    : '/assets/avatar/base-female.svg',
+  1
+),
 
-              avatarLayer(
-                '/assets/avatar/skin/' + skin + '.svg',
-                2
-              ),
-
-              avatarLayer(
-                '/assets/avatar/face/' + face + '.svg',
-                3
-              ),
-
-              avatarLayer(
-                '/assets/avatar/eyes/' + eyes + '.svg',
-                4
-              ),
-
-              avatarLayer(
-                '/assets/avatar/hair/' + hair + '.svg',
-                5
-              ),
-
-              avatarLayer(
-                '/assets/avatar/outfits/' + outfit + '.svg',
-                6
-              ),
-
-              avatarLayer(
-                '/assets/avatar/shoes/' + shoes + '.svg',
-                7
-              ),
-
-              accessory !== 'none' &&
-                avatarLayer(
-                  '/assets/avatar/accessories/' + accessory + '.svg',
-                  8
-                )
+avatarLayer(
+  '/assets/avatar/hair/' + hair + '.svg',
+  2
+)
             )
           ),
 
