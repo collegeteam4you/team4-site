@@ -2577,6 +2577,10 @@ h(Footer, {
 function Team4AvatarPage({ lang, setLang }) {
   const isGeo = lang === 'GEO';
 
+  // ==========================================
+  // PLAYER AVATAR STATE
+  // ==========================================
+
   const [gender, setGender] = React.useState(
     () => localStorage.getItem('team4AvatarGender') || 'male'
   );
@@ -2589,75 +2593,285 @@ function Team4AvatarPage({ lang, setLang }) {
     () => localStorage.getItem('team4AvatarHair') || 'hair-01'
   );
 
-  const [face, setFace] = React.useState(
-    () => localStorage.getItem('team4AvatarFace') || 'face-01'
-  );
-
   const [eyes, setEyes] = React.useState(
     () => localStorage.getItem('team4AvatarEyes') || 'eyes-01'
   );
 
-  const [outfit, setOutfit] = React.useState(
-    () => localStorage.getItem('team4AvatarOutfit') || 'outfit-01'
+  const [brows, setBrows] = React.useState(
+    () => localStorage.getItem('team4AvatarBrows') || 'brows-01'
+  );
+
+  const [nose, setNose] = React.useState(
+    () => localStorage.getItem('team4AvatarNose') || 'nose-01'
+  );
+
+  const [mouth, setMouth] = React.useState(
+    () => localStorage.getItem('team4AvatarMouth') || 'mouth-01'
+  );
+
+  const [beard, setBeard] = React.useState(
+    () => localStorage.getItem('team4AvatarBeard') || 'none'
+  );
+
+  const [top, setTop] = React.useState(
+    () => localStorage.getItem('team4AvatarTop') || 'hoodie-black'
+  );
+
+  const [pants, setPants] = React.useState(
+    () => localStorage.getItem('team4AvatarPants') || 'cargo-black'
   );
 
   const [shoes, setShoes] = React.useState(
-    () => localStorage.getItem('team4AvatarShoes') || 'shoes-01'
+    () => localStorage.getItem('team4AvatarShoes') || 'sneaker-black'
   );
 
   const [accessory, setAccessory] = React.useState(
     () => localStorage.getItem('team4AvatarAccessory') || 'none'
   );
 
-  const [activeCategory, setActiveCategory] = React.useState('character');
+  const [activeCategory, setActiveCategory] =
+    React.useState('character');
+
+
+  // ==========================================
+  // TEXT
+  // ==========================================
 
   const text = {
-    title: isGeo ? 'შექმენი შენი ავატარი' : 'Create Your Avatar',
-    subtitle: isGeo
-      ? 'შექმენი პერსონაჟი, რომელიც Team4 Lab-ში შენს კარიერას წარმოადგენს.'
-      : 'Create the character that represents your career inside Team4 Lab.',
-    save: isGeo
-      ? 'ავატარის შენახვა და კარიერის დაწყება →'
-      : 'Save Avatar & Start Career →',
+    title:
+      isGeo
+        ? 'შექმენი შენი ავატარი'
+        : 'Create Your Avatar',
+
+    subtitle:
+      isGeo
+        ? 'შექმენი შენი პერსონაჟი და დაიწყე კარიერა Team4 Lab-ში.'
+        : 'Create your character and start your career inside Team4 Lab.',
+
+    save:
+      isGeo
+        ? 'ავატარის შენახვა და კარიერის დაწყება →'
+        : 'Save Avatar & Start Career →',
+
+    random:
+      isGeo
+        ? 'რანდომი'
+        : 'Random',
+
+    character:
+      isGeo
+        ? 'პერსონაჟი'
+        : 'Character',
+
+    skin:
+      isGeo
+        ? 'კანის ტონი'
+        : 'Skin Tone',
+
+    hair:
+      isGeo
+        ? 'თმა'
+        : 'Hair',
+
+    eyes:
+      isGeo
+        ? 'თვალები'
+        : 'Eyes',
+
+    brows:
+      isGeo
+        ? 'წარბები'
+        : 'Eyebrows',
+
+    nose:
+      isGeo
+        ? 'ცხვირი'
+        : 'Nose',
+
+    mouth:
+      isGeo
+        ? 'პირი'
+        : 'Mouth',
+
+    beard:
+      isGeo
+        ? 'წვერი'
+        : 'Beard',
+
+    top:
+      isGeo
+        ? 'ტანსაცმელი'
+        : 'Top',
+
+    pants:
+      isGeo
+        ? 'შარვალი'
+        : 'Pants',
+
+    shoes:
+      isGeo
+        ? 'ფეხსაცმელი'
+        : 'Shoes',
+
+    accessory:
+      isGeo
+        ? 'აქსესუარები'
+        : 'Accessories',
   };
 
+
+  // ==========================================
+  // CATEGORIES
+  // ==========================================
+
   const categories = [
-    ['character', '👤', isGeo ? 'პერსონაჟი' : 'Character'],
-    ['skin', '🙂', isGeo ? 'კანის ტონი' : 'Skin Tone'],
-    ['hair', '💇', isGeo ? 'თმა' : 'Hair'],
-    ['face', '😀', isGeo ? 'სახე' : 'Face'],
-    ['eyes', '👁️', isGeo ? 'თვალები' : 'Eyes'],
-    ['outfit', '👕', isGeo ? 'ტანსაცმელი' : 'Outfit'],
-    ['shoes', '👟', isGeo ? 'ფეხსაცმელი' : 'Shoes'],
-    ['accessory', '🕶️', isGeo ? 'აქსესუარები' : 'Accessories'],
+    ['character', '👤', text.character],
+    ['skin', '🙂', text.skin],
+    ['hair', '💇', text.hair],
+    ['eyes', '👁️', text.eyes],
+    ['brows', '〰️', text.brows],
+    ['nose', '👃', text.nose],
+    ['mouth', '👄', text.mouth],
+    ['beard', '🧔', text.beard],
+    ['top', '👕', text.top],
+    ['pants', '👖', text.pants],
+    ['shoes', '👟', text.shoes],
+    ['accessory', '🕶️', text.accessory],
   ];
+
+
+  // ==========================================
+  // OPTIONS
+  // ==========================================
+
+  const avatarOptions = {
+    skin: [
+      'skin-01',
+      'skin-02',
+      'skin-03',
+      'skin-04',
+      'skin-05',
+      'skin-06',
+    ],
+
+    hair: [
+      'hair-01',
+      'hair-02',
+      'hair-03',
+      'hair-04',
+      'hair-05',
+      'hair-06',
+    ],
+
+    eyes: [
+      'eyes-01',
+      'eyes-02',
+      'eyes-03',
+    ],
+
+    brows: [
+      'brows-01',
+      'brows-02',
+      'brows-03',
+    ],
+
+    nose: [
+      'nose-01',
+      'nose-02',
+      'nose-03',
+    ],
+
+    mouth: [
+      'mouth-01',
+      'mouth-02',
+      'mouth-03',
+      'mouth-04',
+    ],
+
+    beard: [
+      'none',
+      'beard-01',
+      'beard-02',
+      'beard-03',
+    ],
+
+    top: [
+      'hoodie-black',
+      'tshirt-white',
+      'shirt-white',
+      'suit-black',
+    ],
+
+    pants: [
+      'cargo-black',
+      'jeans-blue',
+      'formal-black',
+    ],
+
+    shoes: [
+      'sneaker-black',
+      'sneaker-white',
+      'formal-black',
+    ],
+
+    accessory: [
+      'none',
+      'glasses',
+      'sunglasses',
+      'watch',
+    ],
+  };
+
+
+  // ==========================================
+  // LAYER
+  // ==========================================
 
   function avatarLayer(src, zIndex) {
     return h('img', {
       src,
       alt: '',
       draggable: false,
+
+      onError: function (event) {
+        // Missing asset არ გააფუჭებს გვერდს
+        event.currentTarget.style.display = 'none';
+      },
+
       style: {
         position: 'absolute',
         inset: 0,
+
         width: '100%',
         height: '100%',
+
         objectFit: 'contain',
-        zIndex,
+
+        zIndex: zIndex,
+
         pointerEvents: 'none',
         userSelect: 'none',
       },
     });
   }
 
+
+  // ==========================================
+  // SAVE AVATAR
+  // ==========================================
+
   function saveAvatar() {
     const avatar = {
       gender,
       skin,
       hair,
-      face,
       eyes,
-      outfit,
+      brows,
+      nose,
+      mouth,
+      beard,
+      top,
+      pants,
       shoes,
       accessory,
     };
@@ -2665,18 +2879,29 @@ function Team4AvatarPage({ lang, setLang }) {
     localStorage.setItem('team4AvatarGender', gender);
     localStorage.setItem('team4AvatarSkin', skin);
     localStorage.setItem('team4AvatarHair', hair);
-    localStorage.setItem('team4AvatarFace', face);
     localStorage.setItem('team4AvatarEyes', eyes);
-    localStorage.setItem('team4AvatarOutfit', outfit);
+    localStorage.setItem('team4AvatarBrows', brows);
+    localStorage.setItem('team4AvatarNose', nose);
+    localStorage.setItem('team4AvatarMouth', mouth);
+    localStorage.setItem('team4AvatarBeard', beard);
+    localStorage.setItem('team4AvatarTop', top);
+    localStorage.setItem('team4AvatarPants', pants);
     localStorage.setItem('team4AvatarShoes', shoes);
     localStorage.setItem('team4AvatarAccessory', accessory);
-    localStorage.setItem('team4AvatarCreated', 'true');
 
-    const existingUser = localStorage.getItem('team4LabUser');
+    localStorage.setItem(
+      'team4AvatarCreated',
+      'true'
+    );
+
+    const existingUser =
+      localStorage.getItem('team4LabUser');
 
     if (existingUser) {
       try {
-        const user = JSON.parse(existingUser);
+        const user =
+          JSON.parse(existingUser);
+
         user.avatar = avatar;
 
         localStorage.setItem(
@@ -2684,74 +2909,244 @@ function Team4AvatarPage({ lang, setLang }) {
           JSON.stringify(user)
         );
       } catch (error) {
-        console.error('Avatar save error:', error);
+        console.error(
+          'Avatar save error:',
+          error
+        );
       }
     }
 
-    window.location.href = '/team4-lab/missions';
+    window.location.href =
+      '/team4-lab/missions';
   }
 
-  function tileButton(label, active, onClick) {
+
+  // ==========================================
+  // RANDOM AVATAR
+  // ==========================================
+
+  function randomItem(items) {
+    return items[
+      Math.floor(
+        Math.random() * items.length
+      )
+    ];
+  }
+
+  function randomAvatar() {
+    setSkin(
+      randomItem(avatarOptions.skin)
+    );
+
+    setHair(
+      randomItem(avatarOptions.hair)
+    );
+
+    setEyes(
+      randomItem(avatarOptions.eyes)
+    );
+
+    setBrows(
+      randomItem(avatarOptions.brows)
+    );
+
+    setNose(
+      randomItem(avatarOptions.nose)
+    );
+
+    setMouth(
+      randomItem(avatarOptions.mouth)
+    );
+
+    setBeard(
+      randomItem(avatarOptions.beard)
+    );
+
+    setTop(
+      randomItem(avatarOptions.top)
+    );
+
+    setPants(
+      randomItem(avatarOptions.pants)
+    );
+
+    setShoes(
+      randomItem(avatarOptions.shoes)
+    );
+
+    setAccessory(
+      randomItem(avatarOptions.accessory)
+    );
+  }
+
+
+  // ==========================================
+  // SIMPLE OPTION BUTTON
+  // ==========================================
+
+  function optionButton(
+    label,
+    active,
+    onClick
+  ) {
     return h(
       'button',
       {
         type: 'button',
+
         onClick,
+
         style: {
-          minWidth: '78px',
-          minHeight: '58px',
-          padding: '10px',
-          border: active
-            ? '2px solid #ef1b13'
-            : '1px solid rgba(255,255,255,0.12)',
+          minWidth: '92px',
+
+          padding: '12px 15px',
+
+          border:
+            active
+              ? '2px solid #ef1b13'
+              : '1px solid rgba(255,255,255,0.12)',
+
           borderRadius: '12px',
-          background: active
-            ? 'rgba(239,27,19,0.12)'
-            : '#181a20',
-          color: '#fff',
-          fontSize: '12px',
+
+          background:
+            active
+              ? 'rgba(239,27,19,0.12)'
+              : '#181a20',
+
+          color: '#ffffff',
+
+          fontSize: '13px',
           fontWeight: '800',
+
           cursor: 'pointer',
-          transition: '0.2s ease',
+
+          transition:
+            'transform .2s ease, border-color .2s ease',
         },
+
+        onMouseEnter:
+          function (event) {
+            event.currentTarget.style.transform =
+              'translateY(-2px)';
+          },
+
+        onMouseLeave:
+          function (event) {
+            event.currentTarget.style.transform =
+              'translateY(0)';
+          },
       },
+
       label
     );
   }
 
-  function renderControls() {
-    if (activeCategory === 'character') {
-      return h(
-        'div',
-        {
-          style: {
-            display: 'flex',
-            gap: '10px',
-            flexWrap: 'wrap',
-          },
+
+  // ==========================================
+  // IMAGE OPTION
+  // ==========================================
+
+  function imageOption(
+    src,
+    label,
+    active,
+    onClick
+  ) {
+    return h(
+      'button',
+      {
+        type: 'button',
+
+        onClick,
+
+        title: label,
+
+        style: {
+          width: '86px',
+          height: '86px',
+
+          padding: '6px',
+
+          border:
+            active
+              ? '2px solid #ef1b13'
+              : '1px solid rgba(255,255,255,0.10)',
+
+          borderRadius: '14px',
+
+          background: '#ffffff',
+
+          overflow: 'hidden',
+
+          cursor: 'pointer',
+
+          transition:
+            'transform .2s ease, border-color .2s ease',
+
+          position: 'relative',
         },
 
-        tileButton(
-          isGeo ? 'კაცი' : 'Male',
-          gender === 'male',
-          function () {
-            setGender('male');
-          }
-        ),
+        onMouseEnter:
+          function (event) {
+            event.currentTarget.style.transform =
+              'translateY(-3px)';
+          },
 
-        tileButton(
-          isGeo ? 'ქალი' : 'Female',
-          gender === 'female',
-          function () {
-            setGender('female');
-          }
-        )
-      );
-    }
+        onMouseLeave:
+          function (event) {
+            event.currentTarget.style.transform =
+              'translateY(0)';
+          },
+      },
 
-    if (activeCategory === 'skin') {
-      const skins = ['skin-01', 'skin-02', 'skin-03', 'skin-04'];
+      h('img', {
+        src,
 
+        alt: label,
+
+        onError:
+          function (event) {
+            event.currentTarget.style.display =
+              'none';
+          },
+
+        style: {
+          width: '100%',
+          height: '100%',
+          objectFit: 'contain',
+        },
+      }),
+
+      h(
+        'span',
+        {
+          style: {
+            position: 'absolute',
+            bottom: '3px',
+            left: '4px',
+            right: '4px',
+
+            color: '#111',
+
+            fontSize: '9px',
+            fontWeight: '900',
+
+            textAlign: 'center',
+          },
+        },
+        label
+      )
+    );
+  }
+
+
+  // ==========================================
+  // CATEGORY CONTENT
+  // ==========================================
+
+  function renderControls() {
+
+    if (activeCategory === 'character') {
       return h(
         'div',
         {
@@ -2762,202 +3157,228 @@ function Team4AvatarPage({ lang, setLang }) {
           },
         },
 
-        skins.map(function (item) {
-          return h('button', {
-            key: item,
-            type: 'button',
-            onClick: function () {
-              setSkin(item);
-            },
-            style: {
-              width: '58px',
-              height: '58px',
-              borderRadius: '50%',
-              border:
-                skin === item
-                  ? '3px solid #ef1b13'
-                  : '2px solid rgba(255,255,255,0.18)',
-              background:
-                item === 'skin-01'
-                  ? '#f5c9a6'
-                  : item === 'skin-02'
-                  ? '#d4976b'
-                  : item === 'skin-03'
-                  ? '#ad704d'
-                  : '#6f452f',
-              cursor: 'pointer',
-            },
-          });
-        })
-      );
-    }
-
-    if (activeCategory === 'hair') {
-      return h(
-        'div',
-        {
-          style: {
-            display: 'flex',
-            gap: '10px',
-            flexWrap: 'wrap',
-          },
-        },
-
-        ['hair-01'].map(
-          function (item, index) {
-            return tileButton(
-              (isGeo ? 'თმა ' : 'Hair ') + (index + 1),
-              hair === item,
-              function () {
-                setHair(item);
-              }
-            );
-          }
-        )
-      );
-    }
-
-    if (activeCategory === 'face') {
-      return h(
-        'div',
-        {
-          style: {
-            display: 'flex',
-            gap: '10px',
-            flexWrap: 'wrap',
-          },
-        },
-
-        ['face-01', 'face-02', 'face-03'].map(function (item, index) {
-          return tileButton(
-            (isGeo ? 'სახე ' : 'Face ') + (index + 1),
-            face === item,
-            function () {
-              setFace(item);
-            }
-          );
-        })
-      );
-    }
-
-    if (activeCategory === 'eyes') {
-      return h(
-        'div',
-        {
-          style: {
-            display: 'flex',
-            gap: '10px',
-            flexWrap: 'wrap',
-          },
-        },
-
-        ['eyes-01', 'eyes-02', 'eyes-03'].map(function (item, index) {
-          return tileButton(
-            (isGeo ? 'თვალები ' : 'Eyes ') + (index + 1),
-            eyes === item,
-            function () {
-              setEyes(item);
-            }
-          );
-        })
-      );
-    }
-
-    if (activeCategory === 'outfit') {
-      return h(
-        'div',
-        {
-          style: {
-            display: 'flex',
-            gap: '10px',
-            flexWrap: 'wrap',
-          },
-        },
-
-        ['outfit-01', 'outfit-02', 'outfit-03', 'outfit-04'].map(
-          function (item, index) {
-            return tileButton(
-              (isGeo ? 'სტილი ' : 'Style ') + (index + 1),
-              outfit === item,
-              function () {
-                setOutfit(item);
-              }
-            );
-          }
-        )
-      );
-    }
-
-    if (activeCategory === 'shoes') {
-      return h(
-        'div',
-        {
-          style: {
-            display: 'flex',
-            gap: '10px',
-            flexWrap: 'wrap',
-          },
-        },
-
-        ['shoes-01', 'shoes-02', 'shoes-03'].map(function (item, index) {
-          return tileButton(
-            (isGeo ? 'ფეხსაცმელი ' : 'Shoes ') + (index + 1),
-            shoes === item,
-            function () {
-              setShoes(item);
-            }
-          );
-        })
-      );
-    }
-
-    if (activeCategory === 'accessory') {
-      return h(
-        'div',
-        {
-          style: {
-            display: 'flex',
-            gap: '10px',
-            flexWrap: 'wrap',
-          },
-        },
-
-        tileButton(
-          isGeo ? 'არცერთი' : 'None',
-          accessory === 'none',
+        optionButton(
+          isGeo ? '♂ კაცი' : '♂ Male',
+          gender === 'male',
           function () {
-            setAccessory('none');
+            setGender('male');
           }
         ),
 
-        tileButton(
-          isGeo ? 'სათვალე' : 'Glasses',
-          accessory === 'glasses-01',
+        optionButton(
+          isGeo ? '♀ ქალი' : '♀ Female',
+          gender === 'female',
           function () {
-            setAccessory('glasses-01');
-          }
-        ),
-
-        tileButton(
-          isGeo ? 'საათი' : 'Watch',
-          accessory === 'watch-01',
-          function () {
-            setAccessory('watch-01');
+            setGender('female');
           }
         )
       );
     }
 
-    return null;
+
+    if (activeCategory === 'skin') {
+      const colors = {
+        'skin-01': '#f8d1b2',
+        'skin-02': '#edb484',
+        'skin-03': '#d99a68',
+        'skin-04': '#bc784e',
+        'skin-05': '#91583b',
+        'skin-06': '#633b2d',
+      };
+
+      return h(
+        'div',
+        {
+          style: {
+            display: 'flex',
+            gap: '14px',
+            flexWrap: 'wrap',
+          },
+        },
+
+        avatarOptions.skin.map(
+          function (item) {
+            return h('button', {
+              key: item,
+
+              type: 'button',
+
+              onClick: function () {
+                setSkin(item);
+              },
+
+              style: {
+                width: '58px',
+                height: '58px',
+
+                borderRadius: '50%',
+
+                border:
+                  skin === item
+                    ? '4px solid #ef1b13'
+                    : '2px solid rgba(255,255,255,.18)',
+
+                background:
+                  colors[item],
+
+                cursor: 'pointer',
+
+                boxShadow:
+                  skin === item
+                    ? '0 0 0 4px rgba(239,27,19,.15)'
+                    : 'none',
+              },
+            });
+          }
+        )
+      );
+    }
+
+
+    const config = {
+      hair: {
+        list: avatarOptions.hair,
+        value: hair,
+        setter: setHair,
+        folder: 'hair',
+      },
+
+      eyes: {
+        list: avatarOptions.eyes,
+        value: eyes,
+        setter: setEyes,
+        folder: 'eyes',
+      },
+
+      brows: {
+        list: avatarOptions.brows,
+        value: brows,
+        setter: setBrows,
+        folder: 'brows',
+      },
+
+      nose: {
+        list: avatarOptions.nose,
+        value: nose,
+        setter: setNose,
+        folder: 'nose',
+      },
+
+      mouth: {
+        list: avatarOptions.mouth,
+        value: mouth,
+        setter: setMouth,
+        folder: 'mouth',
+      },
+
+      beard: {
+        list: avatarOptions.beard,
+        value: beard,
+        setter: setBeard,
+        folder: 'beard',
+      },
+
+      top: {
+        list: avatarOptions.top,
+        value: top,
+        setter: setTop,
+        folder: 'tops',
+      },
+
+      pants: {
+        list: avatarOptions.pants,
+        value: pants,
+        setter: setPants,
+        folder: 'pants',
+      },
+
+      shoes: {
+        list: avatarOptions.shoes,
+        value: shoes,
+        setter: setShoes,
+        folder: 'shoes',
+      },
+
+      accessory: {
+        list: avatarOptions.accessory,
+        value: accessory,
+        setter: setAccessory,
+        folder: 'accessories',
+      },
+    };
+
+
+    const current =
+      config[activeCategory];
+
+    if (!current) {
+      return null;
+    }
+
+
+    return h(
+      'div',
+      {
+        style: {
+          display: 'flex',
+          gap: '12px',
+          flexWrap: 'wrap',
+        },
+      },
+
+      current.list.map(
+        function (item) {
+
+          if (item === 'none') {
+            return optionButton(
+              isGeo
+                ? 'არცერთი'
+                : 'None',
+
+              current.value === item,
+
+              function () {
+                current.setter(item);
+              }
+            );
+          }
+
+
+          return imageOption(
+            '/assets/avatar-v2/' +
+              current.folder +
+              '/' +
+              item +
+              '.png',
+
+            item,
+
+            current.value === item,
+
+            function () {
+              current.setter(item);
+            }
+          );
+        }
+      )
+    );
   }
+
+
+  // ==========================================
+  // RENDER
+  // ==========================================
 
   return h(
     React.Fragment,
     null,
 
     h('div', {
-      className: 'luxury-light-field',
-      'aria-hidden': 'true',
+      className:
+        'luxury-light-field',
+
+      'aria-hidden':
+        'true',
     }),
 
     h(Header, {
@@ -2970,9 +3391,15 @@ function Team4AvatarPage({ lang, setLang }) {
       {
         style: {
           minHeight: '100vh',
-          padding: '120px 24px 70px',
-          background: '#050507',
-          color: '#fff',
+
+          padding:
+            '120px 24px 70px',
+
+          background:
+            '#050507',
+
+          color:
+            '#ffffff',
         },
       },
 
@@ -2980,9 +3407,11 @@ function Team4AvatarPage({ lang, setLang }) {
         'section',
         {
           style: {
-            width: '100%',
-            maxWidth: '1380px',
-            margin: '0 auto',
+            maxWidth:
+              '1440px',
+
+            margin:
+              '0 auto',
           },
         },
 
@@ -2990,11 +3419,17 @@ function Team4AvatarPage({ lang, setLang }) {
           'h1',
           {
             style: {
-              margin: '0 0 10px',
-              fontSize: 'clamp(34px, 5vw, 58px)',
-              fontWeight: '900',
+              margin:
+                '0 0 10px',
+
+              fontSize:
+                'clamp(34px,5vw,58px)',
+
+              fontWeight:
+                '900',
             },
           },
+
           text.title
         ),
 
@@ -3002,11 +3437,17 @@ function Team4AvatarPage({ lang, setLang }) {
           'p',
           {
             style: {
-              margin: '0 0 26px',
-              color: 'rgba(255,255,255,0.62)',
-              fontSize: '15px',
+              margin:
+                '0 0 26px',
+
+              color:
+                'rgba(255,255,255,.62)',
+
+              fontSize:
+                '15px',
             },
           },
+
           text.subtitle
         ),
 
@@ -3014,26 +3455,51 @@ function Team4AvatarPage({ lang, setLang }) {
           'div',
           {
             style: {
-              display: 'grid',
-              gridTemplateColumns: 'minmax(420px, 1.15fr) minmax(520px, 1fr)',
-              gap: '22px',
+              display:
+                'grid',
+
+              gridTemplateColumns:
+                'minmax(420px, .9fr) minmax(600px, 1.35fr)',
+
+              gap:
+                '22px',
             },
           },
 
-          // LEFT: WHITE AVATAR PREVIEW
+          // =================================
+          // LEFT PREVIEW
+          // =================================
+
           h(
             'div',
             {
               style: {
-                minHeight: '680px',
-                padding: '30px',
-                background: '#ffffff',
-                borderRadius: '24px',
-                position: 'relative',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                overflow: 'hidden',
+                minHeight:
+                  '720px',
+
+                background:
+                  '#ffffff',
+
+                borderRadius:
+                  '26px',
+
+                position:
+                  'relative',
+
+                display:
+                  'flex',
+
+                alignItems:
+                  'center',
+
+                justifyContent:
+                  'center',
+
+                overflow:
+                  'hidden',
+
+                padding:
+                  '24px',
               },
             },
 
@@ -3041,106 +3507,298 @@ function Team4AvatarPage({ lang, setLang }) {
               'div',
               {
                 style: {
-                  position: 'relative',
-                  width: '390px',
-                  height: '600px',
+                  width:
+                    '460px',
+
+                  height:
+                    '680px',
+
+                  position:
+                    'relative',
                 },
               },
 
               avatarLayer(
-  gender === 'male'
-    ? '/assets/avatar/base-male.svg'
-    : '/assets/avatar/base-female.svg',
-  1
-),
+                '/assets/avatar-v2/base/' +
+                  gender +
+                  '.png',
+                1
+              ),
 
-avatarLayer(
-  '/assets/avatar/hair/' + hair + '.svg',
-  2
-)
+              avatarLayer(
+                '/assets/avatar-v2/skin/' +
+                  skin +
+                  '.png',
+                2
+              ),
+
+              avatarLayer(
+                '/assets/avatar-v2/eyes/' +
+                  eyes +
+                  '.png',
+                3
+              ),
+
+              avatarLayer(
+                '/assets/avatar-v2/brows/' +
+                  brows +
+                  '.png',
+                4
+              ),
+
+              avatarLayer(
+                '/assets/avatar-v2/nose/' +
+                  nose +
+                  '.png',
+                5
+              ),
+
+              avatarLayer(
+                '/assets/avatar-v2/mouth/' +
+                  mouth +
+                  '.png',
+                6
+              ),
+
+              beard !== 'none' &&
+                avatarLayer(
+                  '/assets/avatar-v2/beard/' +
+                    beard +
+                    '.png',
+                  7
+                ),
+
+              avatarLayer(
+                '/assets/avatar-v2/hair/' +
+                  hair +
+                  '.png',
+                8
+              ),
+
+              avatarLayer(
+                '/assets/avatar-v2/tops/' +
+                  top +
+                  '.png',
+                9
+              ),
+
+              avatarLayer(
+                '/assets/avatar-v2/pants/' +
+                  pants +
+                  '.png',
+                10
+              ),
+
+              avatarLayer(
+                '/assets/avatar-v2/shoes/' +
+                  shoes +
+                  '.png',
+                11
+              ),
+
+              accessory !== 'none' &&
+                avatarLayer(
+                  '/assets/avatar-v2/accessories/' +
+                    accessory +
+                    '.png',
+                  12
+                )
+            ),
+
+            h(
+              'button',
+              {
+                type:
+                  'button',
+
+                onClick:
+                  randomAvatar,
+
+                style: {
+                  position:
+                    'absolute',
+
+                  bottom:
+                    '22px',
+
+                  left:
+                    '22px',
+
+                  padding:
+                    '12px 18px',
+
+                  border:
+                    'none',
+
+                  borderRadius:
+                    '11px',
+
+                  background:
+                    '#111',
+
+                  color:
+                    '#fff',
+
+                  fontWeight:
+                    '900',
+
+                  cursor:
+                    'pointer',
+                },
+              },
+
+              '↻ ' + text.random
             )
           ),
 
+          // =================================
           // RIGHT BUILDER
+          // =================================
+
           h(
             'div',
             {
               style: {
-                display: 'grid',
-                gridTemplateColumns: '180px 1fr',
-                minHeight: '680px',
-                border: '1px solid rgba(255,255,255,0.10)',
-                borderRadius: '24px',
-                overflow: 'hidden',
-                background: '#111319',
+                display:
+                  'grid',
+
+                gridTemplateColumns:
+                  '190px 1fr',
+
+                minHeight:
+                  '720px',
+
+                border:
+                  '1px solid rgba(255,255,255,.10)',
+
+                borderRadius:
+                  '26px',
+
+                overflow:
+                  'hidden',
+
+                background:
+                  '#111319',
               },
             },
 
+            // CATEGORY MENU
             h(
               'div',
               {
                 style: {
-                  padding: '18px',
-                  borderRight: '1px solid rgba(255,255,255,0.08)',
-                  background: '#0d0f14',
+                  padding:
+                    '18px',
+
+                  background:
+                    '#0d0f14',
+
+                  borderRight:
+                    '1px solid rgba(255,255,255,.08)',
                 },
               },
 
-              categories.map(function (category) {
-                const active = activeCategory === category[0];
+              categories.map(
+                function (category) {
 
-                return h(
-                  'button',
-                  {
-                    key: category[0],
-                    type: 'button',
-                    onClick: function () {
-                      setActiveCategory(category[0]);
-                    },
-                    style: {
-                      width: '100%',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '10px',
-                      padding: '13px 12px',
-                      marginBottom: '8px',
-                      border: active
-                        ? '1px solid rgba(239,27,19,0.45)'
-                        : '1px solid transparent',
-                      borderRadius: '10px',
-                      background: active
-                        ? 'rgba(239,27,19,0.10)'
-                        : 'transparent',
-                      color: active ? '#fff' : 'rgba(255,255,255,0.68)',
-                      textAlign: 'left',
-                      fontSize: '13px',
-                      fontWeight: '800',
-                      cursor: 'pointer',
-                    },
-                  },
+                  const active =
+                    activeCategory ===
+                    category[0];
 
-                  h(
-                    'span',
+                  return h(
+                    'button',
                     {
+                      key:
+                        category[0],
+
+                      type:
+                        'button',
+
+                      onClick:
+                        function () {
+                          setActiveCategory(
+                            category[0]
+                          );
+                        },
+
                       style: {
-                        fontSize: '19px',
+                        width:
+                          '100%',
+
+                        display:
+                          'flex',
+
+                        alignItems:
+                          'center',
+
+                        gap:
+                          '10px',
+
+                        padding:
+                          '13px 12px',
+
+                        marginBottom:
+                          '6px',
+
+                        border:
+                          active
+                            ? '1px solid rgba(239,27,19,.55)'
+                            : '1px solid transparent',
+
+                        borderRadius:
+                          '11px',
+
+                        background:
+                          active
+                            ? 'rgba(239,27,19,.10)'
+                            : 'transparent',
+
+                        color:
+                          active
+                            ? '#ffffff'
+                            : 'rgba(255,255,255,.65)',
+
+                        fontWeight:
+                          '800',
+
+                        cursor:
+                          'pointer',
+
+                        textAlign:
+                          'left',
                       },
                     },
-                    category[1]
-                  ),
 
-                  category[2]
-                );
-              })
+                    h(
+                      'span',
+                      {
+                        style: {
+                          fontSize:
+                            '18px',
+                        },
+                      },
+                      category[1]
+                    ),
+
+                    category[2]
+                  );
+                }
+              )
             ),
 
+            // OPTIONS
             h(
               'div',
               {
                 style: {
-                  padding: '28px',
-                  display: 'flex',
-                  flexDirection: 'column',
+                  padding:
+                    '28px',
+
+                  display:
+                    'flex',
+
+                  flexDirection:
+                    'column',
                 },
               },
 
@@ -3148,30 +3806,59 @@ avatarLayer(
                 'div',
                 {
                   style: {
-                    flex: '1 1 auto',
+                    flex:
+                      '1 1 auto',
                   },
                 },
+
                 renderControls()
               ),
 
               h(
                 'button',
                 {
-                  type: 'button',
-                  onClick: saveAvatar,
+                  type:
+                    'button',
+
+                  onClick:
+                    saveAvatar,
+
                   style: {
-                    width: '100%',
-                    marginTop: '30px',
-                    padding: '15px 18px',
-                    border: 'none',
-                    borderRadius: '11px',
-                    background: '#ef1b13',
-                    color: '#fff',
-                    fontSize: '14px',
-                    fontWeight: '900',
-                    cursor: 'pointer',
+                    width:
+                      '100%',
+
+                    padding:
+                      '17px 20px',
+
+                    marginTop:
+                      '30px',
+
+                    border:
+                      'none',
+
+                    borderRadius:
+                      '12px',
+
+                    background:
+                      '#ef1b13',
+
+                    color:
+                      '#ffffff',
+
+                    fontSize:
+                      '15px',
+
+                    fontWeight:
+                      '900',
+
+                    cursor:
+                      'pointer',
+
+                    boxShadow:
+                      '0 14px 35px rgba(239,27,19,.18)',
                   },
                 },
+
                 text.save
               )
             )
@@ -3183,6 +3870,8 @@ avatarLayer(
     h(Footer, {
       lang,
     })
+  );
+}
   );
 }
 function Team4MissionsPage({ lang, setLang }) {
