@@ -2803,7 +2803,7 @@ function Team4AvatarPage({ lang, setLang }) {
           },
         },
 
-        ['hair-01', 'hair-02', 'hair-03', 'hair-04', 'hair-05'].map(
+        ['hair-01'].map(
           function (item, index) {
             return tileButton(
               (isGeo ? 'თმა ' : 'Hair ') + (index + 1),
