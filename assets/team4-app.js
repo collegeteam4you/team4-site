@@ -3519,11 +3519,11 @@ function Team4AvatarPage({ lang, setLang }) {
               },
 
               avatarLayer(
-                '/assets/avatar-v2/base/' +
-                  gender +
-                  '.png',
-                1
-              ),
+  '/assets/avatar-v2/base/' +
+    gender +
+    '-base.png',
+  1
+),
 
               avatarLayer(
                 '/assets/avatar-v2/skin/' +
