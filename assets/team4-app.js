@@ -3608,12 +3608,13 @@ hairFemale: [
                   7
                 ),
 
-              avatarLayer(
-  gender === 'male'
-  ? '/assets/avatar-v2/hair/male/' + hair + '.png'
-  : '/assets/avatar-v2/hair/female/' + hair + '.png',
-8
-),
+              hair !== 'none' &&
+  avatarLayer(
+    gender === 'male'
+      ? '/assets/avatar-v2/hair/male/' + hair + '.png'
+      : '/assets/avatar-v2/hair/female/' + hair + '.png',
+    8
+  ),
 
               avatarLayer(
                 '/assets/avatar-v2/tops/' +
