@@ -3556,11 +3556,23 @@ hairFemale: [
                 },
               },
 
-              avatarLayer(
+            avatarLayer(
   '/assets/avatar-v2/base/' +
     gender +
     '-base.png',
-  1
+  1,
+  {
+    width: '100%',
+    height: '100%',
+
+    left: gender === 'male' ? '-12%' : '0%',
+    top: '0',
+
+    right: 'auto',
+    bottom: 'auto',
+
+    objectFit: 'contain',
+  }
 ),
 
               avatarLayer(
