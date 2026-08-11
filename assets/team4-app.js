@@ -3270,12 +3270,19 @@ hairFemale: [
 
     const config = {
       hair: {
-        list: avatarOptions.hair,
-        value: hair,
-        setter: setHair,
-        folder: 'hair',
-      },
+  list:
+    gender === 'male'
+      ? avatarOptions.hairMale
+      : avatarOptions.hairFemale,
 
+  value: hair,
+  setter: setHair,
+
+  folder:
+    gender === 'male'
+      ? 'hair/male'
+      : 'hair/female',
+},
       eyes: {
         list: avatarOptions.eyes,
         value: eyes,
