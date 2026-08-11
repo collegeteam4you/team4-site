@@ -3609,12 +3609,10 @@ hairFemale: [
                 ),
 
               avatarLayer(
-  '/assets/avatar-v2/hair/' +
-    gender +
-    '/' +
-    hair +
-    '.png',
-  8
+  gender === 'male'
+  ? '/assets/avatar-v2/hair/male/' + hair + '.png'
+  : '/assets/avatar-v2/hair/female/' + hair + '.png',
+8
 ),
 
               avatarLayer(
