@@ -3606,12 +3606,26 @@ hairFemale: [
                   7
                 ),
 
-              hair !== 'none' &&
+             hair !== 'none' &&
   avatarLayer(
     gender === 'male'
       ? '/assets/avatar-v2/hair/male/' + hair + '.png'
       : '/assets/avatar-v2/hair/female/' + hair + '.png',
-    8
+    8,
+    {
+      width: gender === 'male' ? '42%' : '52%',
+      height: 'auto',
+
+      left: '50%',
+      right: 'auto',
+
+      top: gender === 'male' ? '7%' : '5%',
+      bottom: 'auto',
+
+      transform: 'translateX(-50%)',
+
+      objectFit: 'contain',
+    }
   ),
 
               avatarLayer(
