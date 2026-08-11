@@ -2590,8 +2590,18 @@ function Team4AvatarPage({ lang, setLang }) {
   );
 
   const [hair, setHair] = React.useState(
-    () => localStorage.getItem('team4AvatarHair') || 'hair-01'
-  );
+  () => {
+    const savedHair = localStorage.getItem('team4AvatarHair');
+
+    if (savedHair) {
+      return savedHair;
+    }
+
+    return gender === 'male'
+      ? 'hair-m-01'
+      : 'hair-f-01';
+  }
+);
 
   const [eyes, setEyes] = React.useState(
     () => localStorage.getItem('team4AvatarEyes') || 'eyes-01'
