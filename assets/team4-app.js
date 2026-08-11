@@ -2860,33 +2860,31 @@ hairFemale: [
   // LAYER
   // ==========================================
 
-  function avatarLayer(src, zIndex) {
-    return h('img', {
-      src,
-      alt: '',
-      draggable: false,
+  function avatarLayer(src, zIndex, customStyle) {
+  return h('img', {
+    src,
+    alt: '',
+    draggable: false,
 
-      onError: function (event) {
-        // Missing asset არ გააფუჭებს გვერდს
-        event.currentTarget.style.display = 'none';
-      },
+    onError: function (event) {
+      event.currentTarget.style.display = 'none';
+    },
 
-      style: {
+    style: Object.assign(
+      {
         position: 'absolute',
         inset: 0,
-
         width: '100%',
         height: '100%',
-
         objectFit: 'contain',
-
         zIndex: zIndex,
-
         pointerEvents: 'none',
         userSelect: 'none',
       },
-    });
-  }
+      customStyle || {}
+    ),
+  });
+}
 
 
   // ==========================================
