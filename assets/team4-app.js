@@ -3613,13 +3613,13 @@ hairFemale: [
       : '/assets/avatar-v2/hair/female/' + hair + '.png',
     8,
     {
-      width: gender === 'male' ? '42%' : '52%',
+      width: gender === 'male' ? '29%' : '34%',
       height: 'auto',
 
-      left: '50%',
+      left: gender === 'male' ? '62%' : '50%',
       right: 'auto',
 
-      top: gender === 'male' ? '7%' : '5%',
+      top: gender === 'male' ? '8%' : '6%',
       bottom: 'auto',
 
       transform: 'translateX(-50%)',
