@@ -3613,13 +3613,13 @@ hairFemale: [
       : '/assets/avatar-v2/hair/female/' + hair + '.png',
     8,
     {
-      width: gender === 'male' ? '29%' : '34%',
+      width: gender === 'male' ? '23%' : '30%',
       height: 'auto',
 
-      left: gender === 'male' ? '62%' : '50%',
+      left: gender === 'male' ? '55%' : '50%',
       right: 'auto',
 
-      top: gender === 'male' ? '8%' : '6%',
+      top: gender === 'male' ? '10%' : '7%',
       bottom: 'auto',
 
       transform: 'translateX(-50%)',
@@ -3627,7 +3627,6 @@ hairFemale: [
       objectFit: 'contain',
     }
   ),
-
               avatarLayer(
                 '/assets/avatar-v2/tops/' +
                   top +
