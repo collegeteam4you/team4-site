@@ -2641,15 +2641,13 @@ const hairAdjustments = {
     'hair-m-01': { width: '29%', top: '0.8%', x: '0%' },
     'hair-m-02': { width: '28%', top: '0.1%', x: '0%' },
     'hair-m-03': { width: '29%', top: '0.1%', x: '0%' },
-    'hair-m-04': { width: '27%', top: '0.1%', x: '0%' },
+    'hair-m-04': { width: '25%', top: '0.1%', x: '0%' },
     'hair-m-05': { width: '29%', top: '0.1%', x: '0%' },
     'hair-m-06': { width: '29%', top: '0.1%', x: '0%' },
-
     'hair-m-09': { width: '30%', top: '0.1%', x: '0%' },
     'hair-m-10': { width: '28%', top: '0.1%', x: '0%' },
     'hair-m-11': { width: '27%', top: '0.1%', x: '0%' },
     'hair-m-12': { width: '27%', top: '0.1%', x: '0%' },
-
     'hair-m-13': { width: '30%', top: '0.1%', x: '0%' },
     'hair-m-14': { width: '26%', top: '0.1%', x: '0%' },
     'hair-m-16': { width: '28%', top: '0.1%', x: '0%' },
@@ -2662,14 +2660,12 @@ const hairAdjustments = {
     'hair-f-03': { width: '34%', top: '5%', x: '0%' },
     'hair-f-05': { width: '34%', top: '5%', x: '0%' },
     'hair-f-06': { width: '33%', top: '5%', x: '0%' },
-
     'hair-f-07': { width: '31%', top: '4%', x: '0%' },
     'hair-f-08': { width: '34%', top: '5%', x: '0%' },
     'hair-f-09': { width: '34%', top: '5%', x: '0%' },
     'hair-f-10': { width: '32%', top: '3%', x: '0%' },
     'hair-f-11': { width: '32%', top: '5%', x: '0%' },
     'hair-f-12': { width: '32%', top: '5%', x: '0%' },
-
     'hair-f-15': { width: '35%', top: '5%', x: '0%' },
     'hair-f-18': { width: '34%', top: '4%', x: '0%' },
   }
