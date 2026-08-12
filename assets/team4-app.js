@@ -2900,9 +2900,13 @@ hairFemale: [
 
   function randomAvatar() {
 
-    setHair(
-      randomItem(avatarOptions.hair)
-    );
+setHair(
+  randomItem(
+    gender === 'male'
+      ? avatarOptions.hairMale
+      : avatarOptions.hairFemale
+  )
+);
 
     setBeard(
       randomItem(avatarOptions.beard)
