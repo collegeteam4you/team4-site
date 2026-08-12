@@ -3579,13 +3579,6 @@ hairFemale: [
 ),
 
               avatarLayer(
-                '/assets/avatar-v2/skin/' +
-                  skin +
-                  '.png',
-                2
-              ),
-
-              avatarLayer(
                 '/assets/avatar-v2/eyes/' +
                   eyes +
                   '.png',
