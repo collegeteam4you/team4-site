@@ -2590,22 +2590,6 @@ function Team4AvatarPage({ lang, setLang }) {
   () => localStorage.getItem('team4AvatarHair') || 'none'
 );
 
-  const [eyes, setEyes] = React.useState(
-    () => localStorage.getItem('team4AvatarEyes') || 'eyes-01'
-  );
-
-  const [brows, setBrows] = React.useState(
-    () => localStorage.getItem('team4AvatarBrows') || 'brows-01'
-  );
-
-  const [nose, setNose] = React.useState(
-    () => localStorage.getItem('team4AvatarNose') || 'nose-01'
-  );
-
-  const [mouth, setMouth] = React.useState(
-    () => localStorage.getItem('team4AvatarMouth') || 'mouth-01'
-  );
-
   const [beard, setBeard] = React.useState(
     () => localStorage.getItem('team4AvatarBeard') || 'none'
   );
@@ -2703,26 +2687,6 @@ const currentHairStyle =
         ? 'თმა'
         : 'Hair',
 
-    eyes:
-      isGeo
-        ? 'თვალები'
-        : 'Eyes',
-
-    brows:
-      isGeo
-        ? 'წარბები'
-        : 'Eyebrows',
-
-    nose:
-      isGeo
-        ? 'ცხვირი'
-        : 'Nose',
-
-    mouth:
-      isGeo
-        ? 'პირი'
-        : 'Mouth',
-
     beard:
       isGeo
         ? 'წვერი'
@@ -2757,10 +2721,6 @@ const currentHairStyle =
   const categories = [
     ['character', '👤', text.character],
     ['hair', '💇', text.hair],
-    ['eyes', '👁️', text.eyes],
-    ['brows', '〰️', text.brows],
-    ['nose', '👃', text.nose],
-    ['mouth', '👄', text.mouth],
     ['beard', '🧔', text.beard],
     ['top', '👕', text.top],
     ['pants', '👖', text.pants],
@@ -2804,31 +2764,6 @@ hairFemale: [
   'hair-f-15',
   'hair-f-18',
 ],
-
-    eyes: [
-      'eyes-01',
-      'eyes-02',
-      'eyes-03',
-    ],
-
-    brows: [
-      'brows-01',
-      'brows-02',
-      'brows-03',
-    ],
-
-    nose: [
-      'nose-01',
-      'nose-02',
-      'nose-03',
-    ],
-
-    mouth: [
-      'mouth-01',
-      'mouth-02',
-      'mouth-03',
-      'mouth-04',
-    ],
 
     beard: [
       'none',
@@ -2904,10 +2839,6 @@ hairFemale: [
     const avatar = {
       gender,
       hair,
-      eyes,
-      brows,
-      nose,
-      mouth,
       beard,
       top,
       pants,
@@ -2916,11 +2847,7 @@ hairFemale: [
     };
 
     localStorage.setItem('team4AvatarGender', gender);
-    localStorage.setItem('team4AvatarHair', hair);
-    localStorage.setItem('team4AvatarEyes', eyes);
-    localStorage.setItem('team4AvatarBrows', brows);
-    localStorage.setItem('team4AvatarNose', nose);
-    localStorage.setItem('team4AvatarMouth', mouth);
+    localStorage.setItem('team4AvatarHair', hair);;
     localStorage.setItem('team4AvatarBeard', beard);
     localStorage.setItem('team4AvatarTop', top);
     localStorage.setItem('team4AvatarPants', pants);
@@ -2975,22 +2902,6 @@ hairFemale: [
 
     setHair(
       randomItem(avatarOptions.hair)
-    );
-
-    setEyes(
-      randomItem(avatarOptions.eyes)
-    );
-
-    setBrows(
-      randomItem(avatarOptions.brows)
-    );
-
-    setNose(
-      randomItem(avatarOptions.nose)
-    );
-
-    setMouth(
-      randomItem(avatarOptions.mouth)
     );
 
     setBeard(
@@ -3211,16 +3122,6 @@ hairFemale: [
     }
 
 
-    if (activeCategory === 'skin') {
-      const colors = {
-        'skin-01': '#f8d1b2',
-        'skin-02': '#edb484',
-        'skin-03': '#d99a68',
-        'skin-04': '#bc784e',
-        'skin-05': '#91583b',
-        'skin-06': '#633b2d',
-      };
-
       return h(
         'div',
         {
@@ -3285,33 +3186,6 @@ hairFemale: [
       ? 'hair/male'
       : 'hair/female',
 },
-      eyes: {
-        list: avatarOptions.eyes,
-        value: eyes,
-        setter: setEyes,
-        folder: 'eyes',
-      },
-
-      brows: {
-        list: avatarOptions.brows,
-        value: brows,
-        setter: setBrows,
-        folder: 'brows',
-      },
-
-      nose: {
-        list: avatarOptions.nose,
-        value: nose,
-        setter: setNose,
-        folder: 'nose',
-      },
-
-      mouth: {
-        list: avatarOptions.mouth,
-        value: mouth,
-        setter: setMouth,
-        folder: 'mouth',
-      },
 
       beard: {
         list: avatarOptions.beard,
