@@ -2783,14 +2783,6 @@ const currentHairStyle =
   // ==========================================
 
   const avatarOptions = {
-    skin: [
-      'skin-01',
-      'skin-02',
-      'skin-03',
-      'skin-04',
-      'skin-05',
-      'skin-06',
-    ],
 
     hairMale: [
   'hair-m-01',
