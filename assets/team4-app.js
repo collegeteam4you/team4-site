@@ -2655,7 +2655,7 @@ const hairAdjustments = {
   },
 
   female: {
-    'hair-f-01': { width: '31%', top: '4%', x: '0%' },
+    'hair-f-01': { width: '32%', top: '3%', x: '0%' },
     'hair-f-02': { width: '33%', top: '5%', x: '0%' },
     'hair-f-03': { width: '34%', top: '5%', x: '0%' },
     'hair-f-05': { width: '34%', top: '5%', x: '0%' },
