@@ -3666,18 +3666,21 @@ hairFemale: [
       : '/assets/avatar-v2/hair/female/' + hair + '.png',
     8,
     {
-      width: gender === 'male' ? '23%' : '30%',
+      width: currentHairStyle.width,
       height: 'auto',
 
-      left: gender === 'male' ? '55%' : '50%',
+      left: '50%',
       right: 'auto',
 
-      top: gender === 'male' ? '10%' : '7%',
+      top: currentHairStyle.top,
       bottom: 'auto',
 
-      transform: 'translateX(-50%)',
+      transform:
+        'translateX(calc(-50% + ' +
+        currentHairStyle.x +
+        '))',
 
-      objectFit: 'contain',
+      objectFit: 'contain'
     }
   ),
               avatarLayer(
