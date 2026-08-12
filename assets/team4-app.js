@@ -2698,11 +2698,6 @@ const currentHairStyle =
         ? 'პერსონაჟი'
         : 'Character',
 
-    skin:
-      isGeo
-        ? 'კანის ტონი'
-        : 'Skin Tone',
-
     hair:
       isGeo
         ? 'თმა'
@@ -2761,7 +2756,6 @@ const currentHairStyle =
 
   const categories = [
     ['character', '👤', text.character],
-    ['skin', '🙂', text.skin],
     ['hair', '💇', text.hair],
     ['eyes', '👁️', text.eyes],
     ['brows', '〰️', text.brows],
@@ -2909,7 +2903,6 @@ hairFemale: [
   function saveAvatar() {
     const avatar = {
       gender,
-      skin,
       hair,
       eyes,
       brows,
@@ -2979,9 +2972,6 @@ hairFemale: [
   }
 
   function randomAvatar() {
-    setSkin(
-      randomItem(avatarOptions.skin)
-    );
 
     setHair(
       randomItem(avatarOptions.hair)
