@@ -2647,7 +2647,7 @@ const hairAdjustments = {
     'hair-m-09': { width: '30%', top: '0.1%', x: '0%' },
     'hair-m-10': { width: '28%', top: '0.1%', x: '0%' },
     'hair-m-11': { width: '27%', top: '0.1%', x: '0%' },
-    'hair-m-12': { width: '27%', top: '0.1%', x: '0%' },
+    'hair-m-12': { width: '29%', top: '0.1%', x: '0%' },
     'hair-m-13': { width: '30%', top: '0.1%', x: '0%' },
     'hair-m-14': { width: '26%', top: '0.1%', x: '0%' },
     'hair-m-16': { width: '28%', top: '0.1%', x: '0%' },
