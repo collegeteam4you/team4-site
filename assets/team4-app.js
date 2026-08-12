@@ -2638,7 +2638,7 @@ function Team4AvatarPage({ lang, setLang }) {
   // ==========================================
 const hairAdjustments = {
   male: {
-    'hair-m-01': { width: '27%', top: '2.5%', x: '0%' },
+    'hair-m-01': { width: '27%', top: '1.5%', x: '0%' },
     'hair-m-02': { width: '28%', top: '7%', x: '0%' },
     'hair-m-03': { width: '29%', top: '6.5%', x: '0%' },
     'hair-m-04': { width: '25%', top: '8%', x: '0%' },
