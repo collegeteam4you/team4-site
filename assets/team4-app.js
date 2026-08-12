@@ -2071,11 +2071,6 @@ function LibraryPage({ lang, setLang }) {
     h(Footer, { lang })
   );
 }
-
-function App() {
-  const [lang, setLang] = React.useState(
-    () => localStorage.getItem('team4Lang') || 'GEO'
-  );
   function Team4RegisterPage({ lang, setLang }) {
   const isGeo = lang === 'GEO';
 
