@@ -2636,7 +2636,60 @@ function Team4AvatarPage({ lang, setLang }) {
   // ==========================================
   // TEXT
   // ==========================================
+const hairAdjustments = {
+  male: {
+    'hair-m-01': { width: '27%', top: '7.5%', x: '0%' },
+    'hair-m-02': { width: '28%', top: '7%', x: '0%' },
+    'hair-m-03': { width: '29%', top: '6.5%', x: '0%' },
+    'hair-m-04': { width: '25%', top: '8%', x: '0%' },
+    'hair-m-05': { width: '29%', top: '7%', x: '0%' },
+    'hair-m-06': { width: '29%', top: '6.5%', x: '0%' },
 
+    'hair-m-07': { width: '28%', top: '7%', x: '0%' },
+    'hair-m-08': { width: '27%', top: '7%', x: '0%' },
+    'hair-m-09': { width: '30%', top: '6.5%', x: '0%' },
+    'hair-m-10': { width: '28%', top: '6.5%', x: '0%' },
+    'hair-m-11': { width: '29%', top: '6%', x: '0%' },
+    'hair-m-12': { width: '27%', top: '5%', x: '0%' },
+
+    'hair-m-13': { width: '30%', top: '5.5%', x: '0%' },
+    'hair-m-14': { width: '25%', top: '8%', x: '0%' },
+    'hair-m-15': { width: '29%', top: '6%', x: '0%' },
+    'hair-m-16': { width: '29%', top: '6.5%', x: '0%' },
+    'hair-m-17': { width: '28%', top: '6.5%', x: '0%' },
+    'hair-m-18': { width: '31%', top: '5.5%', x: '0%' },
+  },
+
+  female: {
+    'hair-f-01': { width: '31%', top: '4%', x: '0%' },
+    'hair-f-02': { width: '33%', top: '5%', x: '0%' },
+    'hair-f-03': { width: '34%', top: '5%', x: '0%' },
+    'hair-f-04': { width: '34%', top: '4%', x: '0%' },
+    'hair-f-05': { width: '34%', top: '5%', x: '0%' },
+    'hair-f-06': { width: '33%', top: '5%', x: '0%' },
+
+    'hair-f-07': { width: '31%', top: '4%', x: '0%' },
+    'hair-f-08': { width: '34%', top: '5%', x: '0%' },
+    'hair-f-09': { width: '34%', top: '5%', x: '0%' },
+    'hair-f-10': { width: '32%', top: '3%', x: '0%' },
+    'hair-f-11': { width: '32%', top: '5%', x: '0%' },
+    'hair-f-12': { width: '32%', top: '5%', x: '0%' },
+
+    'hair-f-13': { width: '35%', top: '3%', x: '0%' },
+    'hair-f-14': { width: '34%', top: '3%', x: '0%' },
+    'hair-f-15': { width: '35%', top: '5%', x: '0%' },
+    'hair-f-16': { width: '34%', top: '3%', x: '0%' },
+    'hair-f-17': { width: '32%', top: '5%', x: '0%' },
+    'hair-f-18': { width: '34%', top: '4%', x: '0%' },
+  }
+};
+
+const currentHairStyle =
+  hairAdjustments[gender]?.[hair] || {
+    width: gender === 'male' ? '28%' : '33%',
+    top: gender === 'male' ? '7%' : '5%',
+    x: '0%'
+  };
   const text = {
     title:
       isGeo
