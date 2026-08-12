@@ -2585,9 +2585,6 @@ function Team4AvatarPage({ lang, setLang }) {
     () => localStorage.getItem('team4AvatarGender') || 'male'
   );
 
-  const [skin, setSkin] = React.useState(
-    () => localStorage.getItem('team4AvatarSkin') || 'skin-02'
-  );
 
   const [hair, setHair] = React.useState(
   () => localStorage.getItem('team4AvatarHair') || 'none'
