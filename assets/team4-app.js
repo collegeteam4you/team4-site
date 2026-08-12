@@ -2923,7 +2923,6 @@ hairFemale: [
     };
 
     localStorage.setItem('team4AvatarGender', gender);
-    localStorage.setItem('team4AvatarSkin', skin);
     localStorage.setItem('team4AvatarHair', hair);
     localStorage.setItem('team4AvatarEyes', eyes);
     localStorage.setItem('team4AvatarBrows', brows);
