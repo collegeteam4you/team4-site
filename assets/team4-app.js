@@ -3441,34 +3441,6 @@ hairFemale: [
   1
 ),
 
-              avatarLayer(
-                '/assets/avatar-v2/eyes/' +
-                  eyes +
-                  '.png',
-                3
-              ),
-
-              avatarLayer(
-                '/assets/avatar-v2/brows/' +
-                  brows +
-                  '.png',
-                4
-              ),
-
-              avatarLayer(
-                '/assets/avatar-v2/nose/' +
-                  nose +
-                  '.png',
-                5
-              ),
-
-              avatarLayer(
-                '/assets/avatar-v2/mouth/' +
-                  mouth +
-                  '.png',
-                6
-              ),
-
               beard !== 'none' &&
                 avatarLayer(
                   '/assets/avatar-v2/beard/' +
