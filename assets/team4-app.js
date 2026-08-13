@@ -2564,9 +2564,10 @@ h(Footer, {
 })
 );
 
+} // <-- ეს დაამატე
 
 // ==========================================
-// TEAM4 MISSIONS PAGE
+// TEAM4 AVATAR PAGE
 // ==========================================
 function Team4AvatarPage({ lang, setLang }) {
   const isGeo = lang === 'GEO';
