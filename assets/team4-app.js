@@ -3103,20 +3103,22 @@ setHair(
         },
 
         optionButton(
-          isGeo ? '♂ კაცი' : '♂ Male',
-          gender === 'male',
-          function () {
-            setGender('male');
-          }
-        ),
+  isGeo ? '♂ კაცი' : '♂ Male',
+  gender === 'male',
+  function () {
+    setGender('male');
+    setHair('none');
+  }
+),
 
-        optionButton(
-          isGeo ? '♀ ქალი' : '♀ Female',
-          gender === 'female',
-          function () {
-            setGender('female');
-          }
-        )
+optionButton(
+  isGeo ? '♀ ქალი' : '♀ Female',
+  gender === 'female',
+  function () {
+    setGender('female');
+    setHair('none');
+  }
+)
       );
     }
 
