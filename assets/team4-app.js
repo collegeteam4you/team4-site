@@ -3429,12 +3429,30 @@ optionButton(
 ),
 
               beard !== 'none' &&
-                avatarLayer(
-                  '/assets/avatar-v2/beard/' +
-                    beard +
-                    '.png',
-                  7
-                ),
+gender === 'male' &&
+  avatarLayer(
+    '/assets/avatar-v2/beard/' +
+      beard +
+      '.png',
+    7,
+    {
+      width: currentBeardStyle.width,
+      height: 'auto',
+
+      left: '50%',
+      right: 'auto',
+
+      top: currentBeardStyle.top,
+      bottom: 'auto',
+
+      transform:
+        'translateX(calc(-50% + ' +
+        currentBeardStyle.x +
+        '))',
+
+      objectFit: 'contain'
+    }
+  ),
 
              hair !== 'none' &&
   avatarLayer(
