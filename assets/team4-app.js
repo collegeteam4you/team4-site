@@ -3108,6 +3108,7 @@ setHair(
   function () {
     setGender('male');
     setHair('none');
+    setBeard('none');
   }
 ),
 
@@ -3117,10 +3118,11 @@ optionButton(
   function () {
     setGender('female');
     setHair('none');
+    setBeard('none');
   }
 )
-      );
-    }
+);
+}
 
 
       
