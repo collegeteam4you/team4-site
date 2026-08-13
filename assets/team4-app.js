@@ -2872,7 +2872,7 @@ hairFemale: [
     };
 
     localStorage.setItem('team4AvatarGender', gender);
-    localStorage.setItem('team4AvatarHair', hair);;
+    localStorage.setItem('team4AvatarHair', hair);
     localStorage.setItem('team4AvatarBeard', beard);
     localStorage.setItem('team4AvatarTop', top);
     localStorage.setItem('team4AvatarPants', pants);
