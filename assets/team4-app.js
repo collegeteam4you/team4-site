@@ -2664,13 +2664,13 @@ const beardAdjustments = {
 
   'beard-02': {
     width: '29%',
-    top: '14%',
+    top: '15%',
     x: '0%'
   },
 
   'beard-03': {
     width: '30%',
-    top: '14%',
+    top: '15%',
     x: '0%'
   }
 };
