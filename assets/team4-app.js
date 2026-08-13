@@ -2681,6 +2681,24 @@ const currentBeardStyle =
     top: '13%',
     x: '0%'
   };
+  // ==========================================
+// TOP / CLOTHING ADJUSTMENTS
+// ==========================================
+
+const topAdjustments = {
+  'hoodie-black': {
+    width: '72%',
+    top: '23%',
+    x: '0%'
+  }
+};
+
+const currentTopStyle =
+  topAdjustments[top] || {
+    width: '72%',
+    top: '23%',
+    x: '0%'
+  };
   const text = {
     title:
       isGeo
