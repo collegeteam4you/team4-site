@@ -2657,19 +2657,19 @@ const currentHairStyle =
 
 const beardAdjustments = {
   'beard-01': {
-    width: '27%',
+    width: '28%',
     top: '16%',
     x: '0%'
   },
 
   'beard-02': {
-    width: '27%',
+    width: '28%',
     top: '16%',
     x: '0%'
   },
 
   'beard-03': {
-    width: '28%',
+    width: '29%',
     top: '15%',
     x: '0%'
   }
