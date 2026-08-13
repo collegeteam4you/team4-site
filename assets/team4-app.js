@@ -2590,8 +2590,8 @@ function Team4AvatarPage({ lang, setLang }) {
   );
 
   const [top, setTop] = React.useState(
-    () => localStorage.getItem('team4AvatarTop') || 'hoodie-black'
-  );
+  () => localStorage.getItem('team4AvatarTop') || 'none'
+);
 
   const [pants, setPants] = React.useState(
     () => localStorage.getItem('team4AvatarPants') || 'cargo-black'
