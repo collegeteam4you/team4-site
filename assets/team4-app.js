@@ -2651,6 +2651,36 @@ const currentHairStyle =
     top: gender === 'male' ? '7%' : '5%',
     x: '0%'
   };
+  // ==========================================
+// BEARD ADJUSTMENTS
+// ==========================================
+
+const beardAdjustments = {
+  'beard-01': {
+    width: '19%',
+    top: '13%',
+    x: '0%'
+  },
+
+  'beard-02': {
+    width: '20%',
+    top: '13%',
+    x: '0%'
+  },
+
+  'beard-03': {
+    width: '21%',
+    top: '13%',
+    x: '0%'
+  }
+};
+
+const currentBeardStyle =
+  beardAdjustments[beard] || {
+    width: '19%',
+    top: '13%',
+    x: '0%'
+  };
   const text = {
     title:
       isGeo
