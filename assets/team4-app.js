@@ -3501,7 +3501,24 @@ gender === 'male' &&
     '/assets/avatar-v2/top/' +
       top +
       '.png',
-    9
+    9,
+    {
+      width: currentTopStyle.width,
+      height: 'auto',
+
+      left: '50%',
+      right: 'auto',
+
+      top: currentTopStyle.top,
+      bottom: 'auto',
+
+      transform:
+        'translateX(calc(-50% + ' +
+        currentTopStyle.x +
+        '))',
+
+      objectFit: 'contain'
+    }
   ),
 
               avatarLayer(
