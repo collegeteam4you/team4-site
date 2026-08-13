@@ -3478,12 +3478,13 @@ gender === 'male' &&
       objectFit: 'contain'
     }
   ),
-              avatarLayer(
-                '/assets/avatar-v2/top/' +
-                  top +
-                  '.png',
-                9
-              ),
+              top !== 'none' &&
+  avatarLayer(
+    '/assets/avatar-v2/top/' +
+      top +
+      '.png',
+    9
+  ),
 
               avatarLayer(
                 '/assets/avatar-v2/pants/' +
