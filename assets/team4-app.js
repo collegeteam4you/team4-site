@@ -3479,7 +3479,7 @@ gender === 'male' &&
     }
   ),
               avatarLayer(
-                '/assets/avatar-v2/tops/' +
+                '/assets/avatar-v2/top/' +
                   top +
                   '.png',
                 9
