@@ -5014,142 +5014,160 @@ if (!alreadyCompleted) {
 
 // ამის შემდეგ უკვე შენი არსებული კოდი
 
-const isProgramPage =
-  window.location.pathname.startsWith('/program/');
+function App() {
+  const [lang, setLang] = React.useState(
+    () => localStorage.getItem('team4Lang') || 'GEO'
+  );
 
-const isLibraryPage =
-  window.location.pathname.startsWith('/library');
+  const isProgramPage =
+    window.location.pathname.startsWith('/program/');
 
-const isTeam4MissionOnePage =
-  window.location.pathname === '/team4-lab/missions/mission-1';
+  const isLibraryPage =
+    window.location.pathname.startsWith('/library');
 
-const isTeam4MissionsPage =
-  window.location.pathname.startsWith('/team4-lab/missions');
+  const isTeam4MissionOnePage =
+    window.location.pathname === '/team4-lab/missions/mission-1';
+
+  const isTeam4MissionsPage =
+    window.location.pathname.startsWith('/team4-lab/missions');
 
   const isTeam4RegisterPage =
-  window.location.pathname === '/team4-lab/register';
+    window.location.pathname === '/team4-lab/register';
 
-const isTeam4AvatarPage =
-  window.location.pathname === '/team4-lab/avatar';
+  const isTeam4AvatarPage =
+    window.location.pathname === '/team4-lab/avatar';
 
-const isTeam4LabPage =
-  window.location.pathname.startsWith('/team4-lab');
-
-
-if (isProgramPage) {
-  return h(ProgramDetailPage, {
-    lang,
-    setLang,
-  });
-}
+  const isTeam4LabPage =
+    window.location.pathname.startsWith('/team4-lab');
 
 
-if (
-  isLibraryPage &&
-  window.Team4ManualLibraryPage
-) {
-  return h(window.Team4ManualLibraryPage, {
-    lang,
-    setLang,
-    Header,
-    Footer,
-  });
-}
+  // PROGRAM PAGE
+  if (isProgramPage) {
+    return h(ProgramDetailPage, {
+      lang,
+      setLang,
+    });
+  }
 
 
-if (isTeam4MissionOnePage) {
-  return h(Team4MissionOnePage, {
-    lang,
-    setLang,
-  });
-}
+  // MANUAL LIBRARY
+  if (
+    isLibraryPage &&
+    window.Team4ManualLibraryPage
+  ) {
+    return h(window.Team4ManualLibraryPage, {
+      lang,
+      setLang,
+      Header,
+      Footer,
+    });
+  }
 
 
-if (isTeam4MissionsPage) {
-  return h(Team4MissionsPage, {
-    lang,
-    setLang,
-  });
-}
-if (isTeam4RegisterPage) {
-  return h(Team4RegisterPage, {
-    lang,
-    setLang,
-  });
-}
-
-if (isTeam4AvatarPage) {
-  return h(Team4AvatarPage, {
-    lang,
-    setLang,
-  });
-}
+  // MISSION 1
+  if (isTeam4MissionOnePage) {
+    return h(Team4MissionOnePage, {
+      lang,
+      setLang,
+    });
+  }
 
 
-if (isTeam4LabPage) {
-  return h(Team4LabPage, {
-    lang,
-    setLang,
-  });
-}
+  // MISSIONS
+  if (isTeam4MissionsPage) {
+    return h(Team4MissionsPage, {
+      lang,
+      setLang,
+    });
+  }
 
 
-if (isLibraryPage) {
-  return h(LibraryPage, {
-    lang,
-    setLang,
-  });
-}
+  // REGISTER
+  if (isTeam4RegisterPage) {
+    return h(Team4RegisterPage, {
+      lang,
+      setLang,
+    });
+  }
 
 
-return h(
-  React.Fragment,
-  null,
+  // AVATAR
+  if (isTeam4AvatarPage) {
+    return h(Team4AvatarPage, {
+      lang,
+      setLang,
+    });
+  }
 
-  h('div', {
-    className: 'luxury-light-field',
-    'aria-hidden': 'true',
-  }),
 
-  h(Header, {
-    lang,
-    setLang,
-  }),
+  // TEAM4 LAB
+  if (isTeam4LabPage) {
+    return h(Team4LabPage, {
+      lang,
+      setLang,
+    });
+  }
 
-  h(
-    'main',
+
+  // LIBRARY
+  if (isLibraryPage) {
+    return h(LibraryPage, {
+      lang,
+      setLang,
+    });
+  }
+
+
+  // HOME PAGE
+  return h(
+    React.Fragment,
     null,
 
-    h(Hero, {
-      lang,
+    h('div', {
+      className: 'luxury-light-field',
+      'aria-hidden': 'true',
     }),
 
-    h(About, {
+    h(Header, {
       lang,
+      setLang,
     }),
 
-    h(Programs, {
-      lang,
-    }),
+    h(
+      'main',
+      null,
 
-    h(WinSpaceSection, {
-      lang,
-    }),
+      h(Hero, {
+        lang,
+      }),
 
-    h(Testimonials, {
-      lang,
-    }),
+      h(About, {
+        lang,
+      }),
 
-    h(Contact, {
+      h(Programs, {
+        lang,
+      }),
+
+      h(WinSpaceSection, {
+        lang,
+      }),
+
+      h(Testimonials, {
+        lang,
+      }),
+
+      h(Contact, {
+        lang,
+      })
+    ),
+
+    h(Footer, {
       lang,
     })
-  ),
-
-  h(Footer, {
-    lang,
-  })
-);
+  );
 }
+
 
 ReactDOM.createRoot(
   document.getElementById('root')
