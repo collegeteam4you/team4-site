@@ -3121,53 +3121,7 @@ setHair(
     }
 
 
-      return h(
-        'div',
-        {
-          style: {
-            display: 'flex',
-            gap: '14px',
-            flexWrap: 'wrap',
-          },
-        },
-
-        avatarOptions.skin.map(
-          function (item) {
-            return h('button', {
-              key: item,
-
-              type: 'button',
-
-              onClick: function () {
-                setSkin(item);
-              },
-
-              style: {
-                width: '58px',
-                height: '58px',
-
-                borderRadius: '50%',
-
-                border:
-                  skin === item
-                    ? '4px solid #ef1b13'
-                    : '2px solid rgba(255,255,255,.18)',
-
-                background:
-                  colors[item],
-
-                cursor: 'pointer',
-
-                boxShadow:
-                  skin === item
-                    ? '0 0 0 4px rgba(239,27,19,.15)'
-                    : 'none',
-              },
-            });
-          }
-        )
-      );
-    }
+      
 
 
     const config = {
