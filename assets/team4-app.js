@@ -3185,7 +3185,7 @@ optionButton(
         list: avatarOptions.top,
         value: top,
         setter: setTop,
-        folder: 'tops',
+        folder: 'top',
       },
 
       pants: {
