@@ -2895,15 +2895,13 @@ hairFemale: [
   // ==========================================
 
   function saveAvatar() {
-    const avatar = {
-      gender,
-      hair,
-      beard,
-      top,
-      pants,
-      shoes,
-      accessory,
-    };
+   const avatar = {
+  gender,
+  look,
+  hair,
+  beard,
+  accessory,
+};
 
     localStorage.setItem('team4AvatarGender', gender);
     localStorage.setItem('team4AvatarHair', hair);
