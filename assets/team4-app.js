@@ -2955,6 +2955,10 @@ localStorage.setItem('team4AvatarAccessory', accessory);
 
   function randomAvatar() {
 
+setLook(
+  randomItem(avatarOptions.look)
+);
+
 setHair(
   randomItem(
     gender === 'male'
@@ -2963,25 +2967,17 @@ setHair(
   )
 );
 
-    setBeard(
-      randomItem(avatarOptions.beard)
-    );
+if (gender === 'male') {
+  setBeard(
+    randomItem(avatarOptions.beard)
+  );
+} else {
+  setBeard('none');
+}
 
-    setTop(
-      randomItem(avatarOptions.top)
-    );
-
-    setPants(
-      randomItem(avatarOptions.pants)
-    );
-
-    setShoes(
-      randomItem(avatarOptions.shoes)
-    );
-
-    setAccessory(
-      randomItem(avatarOptions.accessory)
-    );
+setAccessory(
+  randomItem(avatarOptions.accessory)
+);
   }
 
 
