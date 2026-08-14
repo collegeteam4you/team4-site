@@ -2762,14 +2762,17 @@ const currentTopStyle =
   // ==========================================
 
   const categories = [
-    ['character', '👤', text.character],
-    ['hair', '💇', text.hair],
-    ['beard', '🧔', text.beard],
-    ['top', '👕', text.top],
-    ['pants', '👖', text.pants],
-    ['shoes', '👟', text.shoes],
-    ['accessory', '🕶️', text.accessory],
-  ];
+  ['character', '👤', text.character],
+  ['top', '👕', text.top],
+  ['pants', '👖', text.pants],
+  ['shoes', '👟', text.shoes],
+  ['accessory', '🕶️', text.accessory],
+  ['hair', '💇', text.hair],
+
+  ...(gender === 'male'
+    ? [['beard', '🧔', text.beard]]
+    : [])
+];
 
 
   // ==========================================
