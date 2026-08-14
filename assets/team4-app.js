@@ -2819,11 +2819,12 @@ hairFemale: [
     ],
 
     top: [
-      'hoodie-black',
-      'tshirt-white',
-      'shirt-white',
-      'suit-black',
-    ],
+  'none',
+  'hoodie-black',
+  'tshirt-white',
+  'shirt-white',
+  'suit-black',
+],
 
     pants: [
       'cargo-black',
