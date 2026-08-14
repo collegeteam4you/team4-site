@@ -2763,15 +2763,14 @@ const currentTopStyle =
 
   const categories = [
   ['character', '👤', text.character],
-  ['top', '👕', text.top],
-  ['pants', '👖', text.pants],
-  ['shoes', '👟', text.shoes],
-  ['accessory', '🕶️', text.accessory],
+  ['look', '👔', text.look],
   ['hair', '💇', text.hair],
 
   ...(gender === 'male'
     ? [['beard', '🧔', text.beard]]
-    : [])
+    : []),
+
+  ['accessory', '🕶️', text.accessory],
 ];
 
 
