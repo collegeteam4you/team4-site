@@ -3466,13 +3466,13 @@ optionButton(
               },
 
            avatarLayer(
-  top === 'hoodie-black' && gender === 'male'
-    ? '/assets/avatar-v2/base-outfits/male/hoodie-black.png'
-    : '/assets/avatar-v2/base/' + gender + '-base.png',
+  gender === 'male'
+    ? '/assets/avatar-v2/looks/male/' + look + '.png'
+    : '/assets/avatar-v2/looks/female/' + look + '.png',
   1
 ),
 
-              beard !== 'none' &&
+beard !== 'none' &&
 gender === 'male' &&
   avatarLayer(
     '/assets/avatar-v2/beard/' +
@@ -3498,7 +3498,7 @@ gender === 'male' &&
     }
   ),
 
-             hair !== 'none' &&
+hair !== 'none' &&
   avatarLayer(
     gender === 'male'
       ? '/assets/avatar-v2/hair/male/' + hair + '.png'
@@ -3522,53 +3522,14 @@ gender === 'male' &&
       objectFit: 'contain'
     }
   ),
-             top !== 'none' &&
-top !== 'hoodie-black' &&
+
+accessory !== 'none' &&
   avatarLayer(
-    '/assets/avatar-v2/top/' +
-      top +
+    '/assets/avatar-v2/accessories/' +
+      accessory +
       '.png',
-    9,
-    {
-      width: currentTopStyle.width,
-      height: 'auto',
-
-      left: '50%',
-      right: 'auto',
-
-      top: currentTopStyle.top,
-      bottom: 'auto',
-
-      transform:
-        'translateX(calc(-50% + ' +
-        currentTopStyle.x +
-        '))',
-
-      objectFit: 'contain'
-    }
-  ),
-
-              avatarLayer(
-                '/assets/avatar-v2/pants/' +
-                  pants +
-                  '.png',
-                10
-              ),
-
-              avatarLayer(
-                '/assets/avatar-v2/shoes/' +
-                  shoes +
-                  '.png',
-                11
-              ),
-
-              accessory !== 'none' &&
-                avatarLayer(
-                  '/assets/avatar-v2/accessories/' +
-                    accessory +
-                    '.png',
-                  12
-                )
+    12
+  )
             ),
 
             h(
