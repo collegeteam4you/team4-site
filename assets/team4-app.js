@@ -2687,8 +2687,8 @@ const currentBeardStyle =
 
 const topAdjustments = {
   'hoodie-black': {
-    width: '94%',
-    top: '22%',
+    width: '91%',
+    top: '24%',
     x: '0%'
   }
 };
