@@ -2588,6 +2588,9 @@ function Team4AvatarPage({ lang, setLang }) {
   const [beard, setBeard] = React.useState(
     () => localStorage.getItem('team4AvatarBeard') || 'none'
   );
+  const [look, setLook] = React.useState(
+  () => localStorage.getItem('team4AvatarLook') || 'team4-look'
+);
 
   const [top, setTop] = React.useState(
   () => localStorage.getItem('team4AvatarTop') || 'none'
