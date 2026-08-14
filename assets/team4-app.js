@@ -2830,25 +2830,6 @@ hairFemale: [
   'business',
 ],
 
-    top: [
-  'none',
-  'hoodie-black',
-  'tshirt-white',
-  'shirt-white',
-  'suit-black',
-],
-
-    pants: [
-      'cargo-black',
-      'jeans-blue',
-      'formal-black',
-    ],
-
-    shoes: [
-      'sneaker-black',
-      'sneaker-white',
-      'formal-black',
-    ],
 
     accessory: [
       'none',
