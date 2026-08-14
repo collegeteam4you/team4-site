@@ -3443,10 +3443,10 @@ optionButton(
                 },
               },
 
-            avatarLayer(
-  '/assets/avatar-v2/base/' +
-    gender +
-    '-base.png',
+           avatarLayer(
+  top === 'hoodie-black' && gender === 'male'
+    ? '/assets/avatar-v2/base-outfits/male/hoodie-black.png'
+    : '/assets/avatar-v2/base/' + gender + '-base.png',
   1
 ),
 
