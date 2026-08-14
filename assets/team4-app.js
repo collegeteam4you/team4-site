@@ -2820,6 +2820,12 @@ hairFemale: [
       'beard-02',
       'beard-03',
     ],
+    look: [
+  'team4-look',
+  'casual',
+  'smart-casual',
+  'business',
+],
 
     top: [
   'none',
