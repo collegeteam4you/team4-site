@@ -2724,6 +2724,10 @@ const currentTopStyle =
       isGeo
         ? 'პერსონაჟი'
         : 'Character',
+    look:
+  isGeo
+    ? 'ლუქები'
+    : 'Looks',
 
     hair:
       isGeo
