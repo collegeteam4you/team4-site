@@ -3500,7 +3500,8 @@ gender === 'male' &&
       objectFit: 'contain'
     }
   ),
-              top !== 'none' &&
+             top !== 'none' &&
+top !== 'hoodie-black' &&
   avatarLayer(
     '/assets/avatar-v2/top/' +
       top +
