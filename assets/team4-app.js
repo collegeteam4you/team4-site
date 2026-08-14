@@ -3218,7 +3218,11 @@ optionButton(
   list: avatarOptions.look,
   value: look,
   setter: setLook,
-  folder: 'looks',
+
+  folder:
+    gender === 'male'
+      ? 'looks/male'
+      : 'looks/female',
 },
 
       top: {
