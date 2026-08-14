@@ -2904,12 +2904,10 @@ hairFemale: [
 };
 
     localStorage.setItem('team4AvatarGender', gender);
-    localStorage.setItem('team4AvatarHair', hair);
-    localStorage.setItem('team4AvatarBeard', beard);
-    localStorage.setItem('team4AvatarTop', top);
-    localStorage.setItem('team4AvatarPants', pants);
-    localStorage.setItem('team4AvatarShoes', shoes);
-    localStorage.setItem('team4AvatarAccessory', accessory);
+localStorage.setItem('team4AvatarLook', look);
+localStorage.setItem('team4AvatarHair', hair);
+localStorage.setItem('team4AvatarBeard', beard);
+localStorage.setItem('team4AvatarAccessory', accessory);
 
     localStorage.setItem(
       'team4AvatarCreated',
