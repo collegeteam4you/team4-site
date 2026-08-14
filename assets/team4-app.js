@@ -3214,6 +3214,12 @@ optionButton(
         setter: setBeard,
         folder: 'beard',
       },
+      look: {
+  list: avatarOptions.look,
+  value: look,
+  setter: setLook,
+  folder: 'looks',
+},
 
       top: {
         list: avatarOptions.top,
