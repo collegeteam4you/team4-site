@@ -3217,26 +3217,7 @@ optionButton(
       : 'looks/female',
 },
 
-      top: {
-        list: avatarOptions.top,
-        value: top,
-        setter: setTop,
-        folder: 'top',
-      },
-
-      pants: {
-        list: avatarOptions.pants,
-        value: pants,
-        setter: setPants,
-        folder: 'pants',
-      },
-
-      shoes: {
-        list: avatarOptions.shoes,
-        value: shoes,
-        setter: setShoes,
-        folder: 'shoes',
-      },
+      
 
       accessory: {
         list: avatarOptions.accessory,
