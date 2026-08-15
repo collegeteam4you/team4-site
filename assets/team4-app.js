@@ -2908,12 +2908,24 @@ const premiumAccessories = [
   // ==========================================
 
   function saveAvatar() {
-   const avatar = {
+  const avatar = {
   gender,
   look,
   hair,
   beard,
   accessory,
+
+  hairX,
+  hairY,
+  hairScale,
+
+  beardX,
+  beardY,
+  beardScale,
+
+  accessoryX,
+  accessoryY,
+  accessoryScale,
 };
 
     localStorage.setItem('team4AvatarGender', gender);
@@ -2921,7 +2933,50 @@ localStorage.setItem('team4AvatarLook', look);
 localStorage.setItem('team4AvatarHair', hair);
 localStorage.setItem('team4AvatarBeard', beard);
 localStorage.setItem('team4AvatarAccessory', accessory);
+localStorage.setItem(
+  'team4AvatarHairX',
+  String(hairX)
+);
 
+localStorage.setItem(
+  'team4AvatarHairY',
+  String(hairY)
+);
+
+localStorage.setItem(
+  'team4AvatarHairScale',
+  String(hairScale)
+);
+
+localStorage.setItem(
+  'team4AvatarBeardX',
+  String(beardX)
+);
+
+localStorage.setItem(
+  'team4AvatarBeardY',
+  String(beardY)
+);
+
+localStorage.setItem(
+  'team4AvatarBeardScale',
+  String(beardScale)
+);
+
+localStorage.setItem(
+  'team4AvatarAccessoryX',
+  String(accessoryX)
+);
+
+localStorage.setItem(
+  'team4AvatarAccessoryY',
+  String(accessoryY)
+);
+
+localStorage.setItem(
+  'team4AvatarAccessoryScale',
+  String(accessoryScale)
+);
     localStorage.setItem(
       'team4AvatarCreated',
       'true'
