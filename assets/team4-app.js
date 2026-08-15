@@ -3504,12 +3504,25 @@ gender === 'male' &&
   ),
 
 hair !== 'none' &&
-  avatarLayer(
-    gender === 'male'
-      ? '/assets/avatar-v2/hair/male/' + hair + '.png'
-      : '/assets/avatar-v2/hair/female/' + hair + '.png',
-    8,
-    {
+  h('img', {
+    src:
+      gender === 'male'
+        ? '/assets/avatar-v2/hair/male/' +
+          hair +
+          '.png'
+        : '/assets/avatar-v2/hair/female/' +
+          hair +
+          '.png',
+
+    alt: '',
+
+    draggable: false,
+
+    onMouseDown: startHairDrag,
+
+    style: {
+      position: 'absolute',
+
       width: currentHairStyle.width,
       height: 'auto',
 
@@ -3522,11 +3535,27 @@ hair !== 'none' &&
       transform:
         'translateX(calc(-50% + ' +
         currentHairStyle.x +
-        '))',
+        ')) ' +
+        'translate(' +
+        hairX +
+        'px, ' +
+        hairY +
+        'px)',
 
-      objectFit: 'contain'
-    }
-  ),
+      objectFit: 'contain',
+
+      zIndex: 8,
+
+      cursor:
+        isDraggingHair
+          ? 'grabbing'
+          : 'grab',
+
+      userSelect: 'none',
+
+      pointerEvents: 'auto',
+    },
+  }),
 
 accessory !== 'none' &&
   avatarLayer(
