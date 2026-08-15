@@ -3729,8 +3729,132 @@ accessory !== 'none' &&
       accessory +
       '.png',
     12
+  ),
+
+(activeCategory === 'hair' ||
+  (activeCategory === 'beard' &&
+    gender === 'male')) &&
+
+  h(
+    'div',
+    {
+      style: {
+        position: 'absolute',
+        top: '18px',
+        right: '18px',
+
+        display: 'flex',
+        alignItems: 'center',
+        gap: '8px',
+
+        zIndex: 50,
+
+        padding: '8px',
+
+        borderRadius: '12px',
+
+        background:
+          'rgba(0,0,0,0.82)',
+
+        boxShadow:
+          '0 8px 24px rgba(0,0,0,0.20)',
+      },
+    },
+
+    h(
+      'button',
+      {
+        type: 'button',
+
+        onClick: function () {
+          if (activeCategory === 'hair') {
+            makeHairSmaller();
+          }
+
+          if (activeCategory === 'beard') {
+            makeBeardSmaller();
+          }
+        },
+
+        style: {
+          width: '38px',
+          height: '38px',
+          border: 'none',
+          borderRadius: '9px',
+          background: '#202228',
+          color: '#fff',
+          fontSize: '22px',
+          fontWeight: '900',
+          cursor: 'pointer',
+        },
+      },
+
+      '−'
+    ),
+
+    h(
+      'button',
+      {
+        type: 'button',
+
+        onClick: function () {
+          if (activeCategory === 'hair') {
+            makeHairBigger();
+          }
+
+          if (activeCategory === 'beard') {
+            makeBeardBigger();
+          }
+        },
+
+        style: {
+          width: '38px',
+          height: '38px',
+          border: 'none',
+          borderRadius: '9px',
+          background: '#202228',
+          color: '#fff',
+          fontSize: '20px',
+          fontWeight: '900',
+          cursor: 'pointer',
+        },
+      },
+
+      '+'
+    ),
+
+    h(
+      'button',
+      {
+        type: 'button',
+
+        onClick: function () {
+          if (activeCategory === 'hair') {
+            resetHairPosition();
+          }
+
+          if (activeCategory === 'beard') {
+            resetBeardPosition();
+          }
+        },
+
+        style: {
+          height: '38px',
+          padding: '0 12px',
+          border: 'none',
+          borderRadius: '9px',
+          background: '#ef1b13',
+          color: '#fff',
+          fontSize: '12px',
+          fontWeight: '900',
+          cursor: 'pointer',
+        },
+      },
+
+      'Reset'
+    )
   )
-            ),
+),
 
             h(
               'button',
