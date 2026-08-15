@@ -3684,9 +3684,10 @@ hair !== 'none' &&
 
     draggable: false,
 
-    onMouseDown: startHairDrag,
+   onMouseDown: startHairDrag,
+onWheel: resizeHair,
 
-    style: {
+style: {
       position: 'absolute',
 
       width: currentHairStyle.width,
@@ -3699,14 +3700,19 @@ hair !== 'none' &&
       bottom: 'auto',
 
       transform:
-        'translateX(calc(-50% + ' +
-        currentHairStyle.x +
-        ')) ' +
-        'translate(' +
-        hairX +
-        'px, ' +
-        hairY +
-        'px)',
+  'translateX(calc(-50% + ' +
+  currentHairStyle.x +
+  ')) ' +
+  'translate(' +
+  hairX +
+  'px, ' +
+  hairY +
+  'px) ' +
+  'scale(' +
+  hairScale +
+  ')',
+
+transformOrigin: 'center top',
 
       objectFit: 'contain',
 
