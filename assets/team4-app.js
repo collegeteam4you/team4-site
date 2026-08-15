@@ -3503,7 +3503,13 @@ optionButton(
           const isPremiumLook =
   activeCategory === 'look' &&
   premiumLooks.includes(item);
+const isPremiumAccessory =
+  activeCategory === 'accessory' &&
+  premiumAccessories.includes(item);
 
+const isPremium =
+  isPremiumLook ||
+  isPremiumAccessory;
 return imageOption(
   '/assets/avatar-v2/' +
     current.folder +
