@@ -3950,15 +3950,19 @@ accessory !== 'none' &&
       {
         type: 'button',
 
-        onClick: function () {
-          if (activeCategory === 'hair') {
-            makeHairBigger();
-          }
+       onClick: function () {
+  if (activeCategory === 'hair') {
+    makeHairBigger();
+  }
 
-          if (activeCategory === 'beard') {
-            makeBeardBigger();
-          }
-        },
+  if (activeCategory === 'beard') {
+    makeBeardBigger();
+  }
+
+  if (activeCategory === 'accessory') {
+    makeAccessoryBigger();
+  }
+},
 
         style: {
           width: '38px',
