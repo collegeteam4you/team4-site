@@ -3986,14 +3986,18 @@ accessory !== 'none' &&
         type: 'button',
 
         onClick: function () {
-          if (activeCategory === 'hair') {
-            resetHairPosition();
-          }
+  if (activeCategory === 'hair') {
+    resetHairPosition();
+  }
 
-          if (activeCategory === 'beard') {
-            resetBeardPosition();
-          }
-        },
+  if (activeCategory === 'beard') {
+    resetBeardPosition();
+  }
+
+  if (activeCategory === 'accessory') {
+    resetAccessoryPosition();
+  }
+},
 
         style: {
           height: '38px',
