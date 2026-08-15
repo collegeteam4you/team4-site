@@ -3602,18 +3602,30 @@ return imageOption(
 
   function () {
 
-    if (isPremium) {
-      alert(
-        isGeo
-          ? 'ეს ლუქი Premium-ია 🔒'
-          : 'This look is Premium 🔒'
-      );
+  if (isPremium) {
+    alert(
+      isGeo
+        ? 'ეს ელემენტი Premium-ია 🔒'
+        : 'This item is Premium 🔒'
+    );
 
-      return;
-    }
-
-    current.setter(item);
+    return;
   }
+
+  current.setter(item);
+
+  if (activeCategory === 'hair') {
+    resetHairPosition();
+  }
+
+  if (activeCategory === 'beard') {
+    resetBeardPosition();
+  }
+
+  if (activeCategory === 'accessory') {
+    resetAccessoryPosition();
+  }
+}
 );
         }
       )
