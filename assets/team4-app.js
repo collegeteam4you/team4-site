@@ -2592,17 +2592,6 @@ function Team4AvatarPage({ lang, setLang }) {
   () => localStorage.getItem('team4AvatarLook') || 'team4-look'
 );
 
-  const [top, setTop] = React.useState(
-  () => localStorage.getItem('team4AvatarTop') || 'none'
-);
-
-  const [pants, setPants] = React.useState(
-    () => localStorage.getItem('team4AvatarPants') || 'cargo-black'
-  );
-
-  const [shoes, setShoes] = React.useState(
-    () => localStorage.getItem('team4AvatarShoes') || 'sneaker-black'
-  );
 
   const [accessory, setAccessory] = React.useState(
     () => localStorage.getItem('team4AvatarAccessory') || 'none'
