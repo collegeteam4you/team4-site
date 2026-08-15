@@ -3040,7 +3040,85 @@ function makeHairBigger() {
     return Math.min(2, currentScale + 0.05);
   });
 }
+// ==========================================
+// BEARD DRAG FUNCTIONS
+// ==========================================
 
+function startBeardDrag(event) {
+  event.preventDefault();
+
+  setIsDraggingBeard(true);
+
+  setBeardDragStart({
+    x: event.clientX - beardX,
+    y: event.clientY - beardY,
+  });
+}
+
+
+function moveBeard(event) {
+  if (!isDraggingBeard) {
+    return;
+  }
+
+  setBeardX(
+    event.clientX - beardDragStart.x
+  );
+
+  setBeardY(
+    event.clientY - beardDragStart.y
+  );
+}
+
+
+function stopBeardDrag() {
+  setIsDraggingBeard(false);
+}
+
+
+function resizeBeard(event) {
+  event.preventDefault();
+
+  const direction =
+    event.deltaY < 0 ? 0.05 : -0.05;
+
+  setBeardScale(function (currentScale) {
+    const newScale =
+      currentScale + direction;
+
+    return Math.min(
+      2,
+      Math.max(0.5, newScale)
+    );
+  });
+}
+
+
+function resetBeardPosition() {
+  setBeardX(0);
+  setBeardY(0);
+  setBeardScale(1);
+}
+
+
+function makeBeardSmaller() {
+  setBeardScale(function (currentScale) {
+    return Math.max(
+      0.5,
+      currentScale - 0.05
+    );
+  });
+}
+
+
+function makeBeardBigger() {
+  setBeardScale(function (currentScale) {
+    return Math.min(
+      2,
+      currentScale + 0.05
+    );
+  });
+}
   // ==========================================
   // SIMPLE OPTION BUTTON
   // ==========================================
