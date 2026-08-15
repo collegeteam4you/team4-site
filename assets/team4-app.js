@@ -2602,6 +2602,9 @@ function Team4AvatarPage({ lang, setLang }) {
   const [hairX, setHairX] = React.useState(0);
 const [hairY, setHairY] = React.useState(0);
 
+// თმის ზომა
+const [hairScale, setHairScale] = React.useState(1);
+
 const [isDraggingHair, setIsDraggingHair] = React.useState(false);
 
 const [hairDragStart, setHairDragStart] = React.useState({
@@ -2609,8 +2612,8 @@ const [hairDragStart, setHairDragStart] = React.useState({
   y: 0,
 });
 
-  const [activeCategory, setActiveCategory] =
-    React.useState('character');
+const [activeCategory, setActiveCategory] =
+  React.useState('character');
 
 
   // ==========================================
