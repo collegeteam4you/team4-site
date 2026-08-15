@@ -3456,19 +3456,23 @@ return imageOption(
             },
 
             h(
-              'div',
-              {
-                style: {
-                  width:
-                    '460px',
+  'div',
+  {
+    onMouseMove: moveHair,
+    onMouseUp: stopHairDrag,
+    onMouseLeave: stopHairDrag,
 
-                  height:
-                    '680px',
+    style: {
+      width:
+        '460px',
 
-                  position:
-                    'relative',
-                },
-              },
+      height:
+        '680px',
+
+      position:
+        'relative',
+    },
+  },
 
            avatarLayer(
   gender === 'male'
