@@ -3675,19 +3675,22 @@ return imageOption(
             h(
   'div',
   {
-    onMouseMove: function (event) {
+ onMouseMove: function (event) {
   moveHair(event);
   moveBeard(event);
+  moveAccessory(event);
 },
 
 onMouseUp: function () {
   stopHairDrag();
   stopBeardDrag();
+  stopAccessoryDrag();
 },
 
 onMouseLeave: function () {
   stopHairDrag();
   stopBeardDrag();
+  stopAccessoryDrag();
 },
 
     style: {
