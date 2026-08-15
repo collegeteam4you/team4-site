@@ -2621,9 +2621,17 @@ const [hairDragStart, setHairDragStart] = React.useState({
 // BEARD DRAG
 // ==========================================
 
-const [beardX, setBeardX] = React.useState(0);
-const [beardY, setBeardY] = React.useState(0);
-const [beardScale, setBeardScale] = React.useState(1);
+const [beardX, setBeardX] = React.useState(
+  () => Number(localStorage.getItem('team4AvatarBeardX')) || 0
+);
+
+const [beardY, setBeardY] = React.useState(
+  () => Number(localStorage.getItem('team4AvatarBeardY')) || 0
+);
+
+const [beardScale, setBeardScale] = React.useState(
+  () => Number(localStorage.getItem('team4AvatarBeardScale')) || 1
+);
 
 const [isDraggingBeard, setIsDraggingBeard] =
   React.useState(false);
