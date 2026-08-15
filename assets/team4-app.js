@@ -3012,6 +3012,18 @@ function resizeHair(event) {
 function resetHairPosition() {
   setHairX(0);
   setHairY(0);
+  setHairScale(1);
+}
+  function makeHairSmaller() {
+  setHairScale(function (currentScale) {
+    return Math.max(0.5, currentScale - 0.05);
+  });
+}
+
+function makeHairBigger() {
+  setHairScale(function (currentScale) {
+    return Math.min(2, currentScale + 0.05);
+  });
 }
 
   // ==========================================
