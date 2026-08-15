@@ -2599,11 +2599,17 @@ function Team4AvatarPage({ lang, setLang }) {
   // ==========================================
 // HAIR DRAG
 // ==========================================
-  const [hairX, setHairX] = React.useState(0);
-const [hairY, setHairY] = React.useState(0);
+  const [hairX, setHairX] = React.useState(
+  () => Number(localStorage.getItem('team4AvatarHairX')) || 0
+);
 
-// თმის ზომა
-const [hairScale, setHairScale] = React.useState(1);
+const [hairY, setHairY] = React.useState(
+  () => Number(localStorage.getItem('team4AvatarHairY')) || 0
+);
+
+const [hairScale, setHairScale] = React.useState(
+  () => Number(localStorage.getItem('team4AvatarHairScale')) || 1
+);
 
 const [isDraggingHair, setIsDraggingHair] = React.useState(false);
 
