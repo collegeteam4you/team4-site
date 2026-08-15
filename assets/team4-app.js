@@ -2647,9 +2647,17 @@ const [activeCategory, setActiveCategory] =
 // ACCESSORY DRAG
 // ==========================================
 
-const [accessoryX, setAccessoryX] = React.useState(0);
-const [accessoryY, setAccessoryY] = React.useState(0);
-const [accessoryScale, setAccessoryScale] = React.useState(1);
+const [accessoryX, setAccessoryX] = React.useState(
+  () => Number(localStorage.getItem('team4AvatarAccessoryX')) || 0
+);
+
+const [accessoryY, setAccessoryY] = React.useState(
+  () => Number(localStorage.getItem('team4AvatarAccessoryY')) || 0
+);
+
+const [accessoryScale, setAccessoryScale] = React.useState(
+  () => Number(localStorage.getItem('team4AvatarAccessoryScale')) || 1
+);
 
 const [isDraggingAccessory, setIsDraggingAccessory] =
   React.useState(false);
