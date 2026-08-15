@@ -3606,12 +3606,21 @@ return imageOption(
 
 beard !== 'none' &&
 gender === 'male' &&
-  avatarLayer(
-    '/assets/avatar-v2/beard/' +
+  h('img', {
+    src:
+      '/assets/avatar-v2/beard/' +
       beard +
       '.png',
-    7,
-    {
+
+    alt: '',
+    draggable: false,
+
+    onMouseDown: startBeardDrag,
+    onWheel: resizeBeard,
+
+    style: {
+      position: 'absolute',
+
       width: currentBeardStyle.width,
       height: 'auto',
 
@@ -3624,12 +3633,31 @@ gender === 'male' &&
       transform:
         'translateX(calc(-50% + ' +
         currentBeardStyle.x +
-        '))',
+        ')) ' +
+        'translate(' +
+        beardX +
+        'px, ' +
+        beardY +
+        'px) ' +
+        'scale(' +
+        beardScale +
+        ')',
 
-      objectFit: 'contain'
-    }
-  ),
+      transformOrigin: 'center top',
 
+      objectFit: 'contain',
+
+      zIndex: 7,
+
+      cursor:
+        isDraggingBeard
+          ? 'grabbing'
+          : 'grab',
+
+      userSelect: 'none',
+      pointerEvents: 'auto',
+    },
+  }),
 hair !== 'none' &&
   h('img', {
     src:
