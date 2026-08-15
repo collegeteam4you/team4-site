@@ -2629,7 +2629,22 @@ const [beardDragStart, setBeardDragStart] =
   });
 const [activeCategory, setActiveCategory] =
   React.useState('character');
+// ==========================================
+// ACCESSORY DRAG
+// ==========================================
 
+const [accessoryX, setAccessoryX] = React.useState(0);
+const [accessoryY, setAccessoryY] = React.useState(0);
+const [accessoryScale, setAccessoryScale] = React.useState(1);
+
+const [isDraggingAccessory, setIsDraggingAccessory] =
+  React.useState(false);
+
+const [accessoryDragStart, setAccessoryDragStart] =
+  React.useState({
+    x: 0,
+    y: 0,
+  });
 
   // ==========================================
   // TEXT
