@@ -3517,7 +3517,7 @@ return imageOption(
     item +
     '.png',
 
-  isPremiumLook
+  isPremium
     ? '🔒 ' + item
     : item,
 
@@ -3525,7 +3525,7 @@ return imageOption(
 
   function () {
 
-    if (isPremiumLook) {
+    if (isPremium) {
       alert(
         isGeo
           ? 'ეს ლუქი Premium-ია 🔒'
