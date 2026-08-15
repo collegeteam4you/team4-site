@@ -3228,21 +3228,38 @@ optionButton(
           }
 
 
-          return imageOption(
-            '/assets/avatar-v2/' +
-              current.folder +
-              '/' +
-              item +
-              '.png',
+          const isPremiumLook =
+  activeCategory === 'look' &&
+  premiumLooks.includes(item);
 
-            item,
+return imageOption(
+  '/assets/avatar-v2/' +
+    current.folder +
+    '/' +
+    item +
+    '.png',
 
-            current.value === item,
+  isPremiumLook
+    ? '🔒 ' + item
+    : item,
 
-            function () {
-              current.setter(item);
-            }
-          );
+  current.value === item,
+
+  function () {
+
+    if (isPremiumLook) {
+      alert(
+        isGeo
+          ? 'ეს ლუქი Premium-ია 🔒'
+          : 'This look is Premium 🔒'
+      );
+
+      return;
+    }
+
+    current.setter(item);
+  }
+);
         }
       )
     );
