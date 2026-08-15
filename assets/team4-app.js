@@ -2596,6 +2596,18 @@ function Team4AvatarPage({ lang, setLang }) {
   const [accessory, setAccessory] = React.useState(
     () => localStorage.getItem('team4AvatarAccessory') || 'none'
   );
+  // ==========================================
+// HAIR DRAG
+// ==========================================
+  const [hairX, setHairX] = React.useState(0);
+const [hairY, setHairY] = React.useState(0);
+
+const [isDraggingHair, setIsDraggingHair] = React.useState(false);
+
+const [hairDragStart, setHairDragStart] = React.useState({
+  x: 0,
+  y: 0,
+});
 
   const [activeCategory, setActiveCategory] =
     React.useState('character');
