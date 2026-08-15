@@ -3878,10 +3878,12 @@ accessory !== 'none' &&
     },
   })
 
-(activeCategory === 'hair' ||
+(
+  activeCategory === 'hair' ||
+  activeCategory === 'accessory' ||
   (activeCategory === 'beard' &&
-    gender === 'male')) &&
-
+    gender === 'male')
+) &&
   h(
     'div',
     {
