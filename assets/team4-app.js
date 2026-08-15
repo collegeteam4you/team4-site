@@ -3916,14 +3916,18 @@ accessory !== 'none' &&
         type: 'button',
 
         onClick: function () {
-          if (activeCategory === 'hair') {
-            makeHairSmaller();
-          }
+  if (activeCategory === 'hair') {
+    makeHairSmaller();
+  }
 
-          if (activeCategory === 'beard') {
-            makeBeardSmaller();
-          }
-        },
+  if (activeCategory === 'beard') {
+    makeBeardSmaller();
+  }
+
+  if (activeCategory === 'accessory') {
+    makeAccessorySmaller();
+  }
+},
 
         style: {
           width: '38px',
