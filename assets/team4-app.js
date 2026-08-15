@@ -2955,7 +2955,46 @@ setAccessory(
   randomItem(avatarOptions.accessory)
 );
   }
+// ==========================================
+// HAIR DRAG FUNCTIONS
+// ==========================================
 
+function startHairDrag(event) {
+  event.preventDefault();
+
+  setIsDraggingHair(true);
+
+  setHairDragStart({
+    x: event.clientX - hairX,
+    y: event.clientY - hairY,
+  });
+}
+
+
+function moveHair(event) {
+  if (!isDraggingHair) {
+    return;
+  }
+
+  setHairX(
+    event.clientX - hairDragStart.x
+  );
+
+  setHairY(
+    event.clientY - hairDragStart.y
+  );
+}
+
+
+function stopHairDrag() {
+  setIsDraggingHair(false);
+}
+
+
+function resetHairPosition() {
+  setHairX(0);
+  setHairY(0);
+}
 
   // ==========================================
   // SIMPLE OPTION BUTTON
