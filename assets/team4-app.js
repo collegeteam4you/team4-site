@@ -3581,9 +3581,20 @@ return imageOption(
             h(
   'div',
   {
-    onMouseMove: moveHair,
-    onMouseUp: stopHairDrag,
-    onMouseLeave: stopHairDrag,
+    onMouseMove: function (event) {
+  moveHair(event);
+  moveBeard(event);
+},
+
+onMouseUp: function () {
+  stopHairDrag();
+  stopBeardDrag();
+},
+
+onMouseLeave: function () {
+  stopHairDrag();
+  stopBeardDrag();
+},
 
     style: {
       width:
