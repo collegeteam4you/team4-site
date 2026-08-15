@@ -3563,18 +3563,30 @@ optionButton(
         function (item) {
 
           if (item === 'none') {
-            return optionButton(
-              isGeo
-                ? 'არცერთი'
-                : 'None',
+  return optionButton(
+    isGeo
+      ? 'არცერთი'
+      : 'None',
 
-              current.value === item,
+    current.value === item,
 
-              function () {
-                current.setter(item);
-              }
-            );
-          }
+    function () {
+      current.setter(item);
+
+      if (activeCategory === 'beard') {
+        resetBeardPosition();
+      }
+
+      if (activeCategory === 'accessory') {
+        resetAccessoryPosition();
+      }
+
+      if (activeCategory === 'hair') {
+        resetHairPosition();
+      }
+    }
+  );
+}
 
 
           const isPremiumLook =
