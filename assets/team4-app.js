@@ -3824,12 +3824,56 @@ transformOrigin: 'center top',
   }),
 
 accessory !== 'none' &&
-  avatarLayer(
-    '/assets/avatar-v2/accessories/' +
+  h('img', {
+    src:
+      '/assets/avatar-v2/accessories/' +
       accessory +
       '.png',
-    12
-  ),
+
+    alt: '',
+    draggable: false,
+
+    onMouseDown: startAccessoryDrag,
+    onWheel: resizeAccessory,
+
+    style: {
+      position: 'absolute',
+
+      width: '24%',
+      height: 'auto',
+
+      left: '50%',
+      right: 'auto',
+
+      top: '16%',
+      bottom: 'auto',
+
+      transform:
+        'translateX(-50%) ' +
+        'translate(' +
+        accessoryX +
+        'px, ' +
+        accessoryY +
+        'px) ' +
+        'scale(' +
+        accessoryScale +
+        ')',
+
+      transformOrigin: 'center center',
+
+      objectFit: 'contain',
+
+      zIndex: 12,
+
+      cursor:
+        isDraggingAccessory
+          ? 'grabbing'
+          : 'grab',
+
+      userSelect: 'none',
+      pointerEvents: 'auto',
+    },
+  })
 
 (activeCategory === 'hair' ||
   (activeCategory === 'beard' &&
