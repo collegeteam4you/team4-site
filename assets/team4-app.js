@@ -2868,6 +2868,10 @@ const premiumLooks = [
   'business',
 ];
 
+const premiumAccessories = [
+  'watch',
+];
+
   // ==========================================
   // LAYER
   // ==========================================
