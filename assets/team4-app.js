@@ -2992,7 +2992,22 @@ function moveHair(event) {
 function stopHairDrag() {
   setIsDraggingHair(false);
 }
+function resizeHair(event) {
+  event.preventDefault();
 
+  const direction =
+    event.deltaY < 0 ? 0.05 : -0.05;
+
+  setHairScale(function (currentScale) {
+    const newScale =
+      currentScale + direction;
+
+    return Math.min(
+      2,
+      Math.max(0.5, newScale)
+    );
+  });
+}
 
 function resetHairPosition() {
   setHairX(0);
