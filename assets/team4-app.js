@@ -3135,6 +3135,85 @@ function makeBeardBigger() {
   });
 }
   // ==========================================
+// ACCESSORY DRAG FUNCTIONS
+// ==========================================
+
+function startAccessoryDrag(event) {
+  event.preventDefault();
+
+  setIsDraggingAccessory(true);
+
+  setAccessoryDragStart({
+    x: event.clientX - accessoryX,
+    y: event.clientY - accessoryY,
+  });
+}
+
+
+function moveAccessory(event) {
+  if (!isDraggingAccessory) {
+    return;
+  }
+
+  setAccessoryX(
+    event.clientX - accessoryDragStart.x
+  );
+
+  setAccessoryY(
+    event.clientY - accessoryDragStart.y
+  );
+}
+
+
+function stopAccessoryDrag() {
+  setIsDraggingAccessory(false);
+}
+
+
+function resizeAccessory(event) {
+  event.preventDefault();
+
+  const direction =
+    event.deltaY < 0 ? 0.05 : -0.05;
+
+  setAccessoryScale(function (currentScale) {
+    const newScale =
+      currentScale + direction;
+
+    return Math.min(
+      2,
+      Math.max(0.5, newScale)
+    );
+  });
+}
+
+
+function resetAccessoryPosition() {
+  setAccessoryX(0);
+  setAccessoryY(0);
+  setAccessoryScale(1);
+}
+
+
+function makeAccessorySmaller() {
+  setAccessoryScale(function (currentScale) {
+    return Math.max(
+      0.5,
+      currentScale - 0.05
+    );
+  });
+}
+
+
+function makeAccessoryBigger() {
+  setAccessoryScale(function (currentScale) {
+    return Math.min(
+      2,
+      currentScale + 0.05
+    );
+  });
+}
+  // ==========================================
   // SIMPLE OPTION BUTTON
   // ==========================================
 
