@@ -2611,7 +2611,22 @@ const [hairDragStart, setHairDragStart] = React.useState({
   x: 0,
   y: 0,
 });
+// ==========================================
+// BEARD DRAG
+// ==========================================
 
+const [beardX, setBeardX] = React.useState(0);
+const [beardY, setBeardY] = React.useState(0);
+const [beardScale, setBeardScale] = React.useState(1);
+
+const [isDraggingBeard, setIsDraggingBeard] =
+  React.useState(false);
+
+const [beardDragStart, setBeardDragStart] =
+  React.useState({
+    x: 0,
+    y: 0,
+  });
 const [activeCategory, setActiveCategory] =
   React.useState('character');
 
