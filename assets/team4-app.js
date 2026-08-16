@@ -5648,6 +5648,9 @@ function Team4JobPage({ lang, setLang }) {
   const isGeo = lang === 'GEO';
 
   const [avatar, setAvatar] = React.useState(null);
+  const [playerName, setPlayerName] = React.useState(
+  () => localStorage.getItem('team4PlayerName') || ''
+);
 
   React.useEffect(function () {
     try {
