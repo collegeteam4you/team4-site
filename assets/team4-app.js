@@ -3027,7 +3027,7 @@ localStorage.setItem(
     }
 
     window.location.href =
-      '/team4-lab/missions';
+  '/team4-lab/job';
   }
 
 
