@@ -5651,7 +5651,25 @@ function Team4JobPage({ lang, setLang }) {
   const [playerName, setPlayerName] = React.useState(
   () => localStorage.getItem('team4PlayerName') || ''
 );
+function savePlayerName() {
+  const cleanName = playerName.trim();
 
+  if (!cleanName) {
+    alert(
+      isGeo
+        ? 'გთხოვ, შეიყვანე პერსონაჟის სახელი.'
+        : 'Please enter your character name.'
+    );
+    return;
+  }
+
+  localStorage.setItem(
+    'team4PlayerName',
+    cleanName
+  );
+
+  setPlayerName(cleanName);
+}
   React.useEffect(function () {
     try {
       const savedUser =
