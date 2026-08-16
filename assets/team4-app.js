@@ -3987,7 +3987,7 @@ accessory !== 'none' &&
       userSelect: 'none',
       pointerEvents: 'auto',
     },
-  })
+   }),
 
 (
   activeCategory === 'hair' ||
