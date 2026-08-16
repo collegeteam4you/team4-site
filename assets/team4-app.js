@@ -5663,7 +5663,8 @@ function App() {
 
   const isTeam4AvatarPage =
     window.location.pathname === '/team4-lab/avatar';
-
+const isTeam4JobPage =
+  window.location.pathname === '/team4-lab/job';
   const isTeam4LabPage =
     window.location.pathname.startsWith('/team4-lab');
 
@@ -5725,7 +5726,13 @@ function App() {
       setLang,
     });
   }
-
+// JOB
+if (isTeam4JobPage) {
+  return h(Team4JobPage, {
+    lang,
+    setLang,
+  });
+}
 
   // TEAM4 LAB
   if (isTeam4LabPage) {
