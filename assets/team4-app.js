@@ -5640,7 +5640,173 @@ if (!alreadyCompleted) {
 }
 
 // ამის შემდეგ უკვე შენი არსებული კოდი
+// ==========================================
+// JOB PAGE
+// ==========================================
 
+function Team4JobPage({ lang, setLang }) {
+  const isGeo = lang === 'GEO';
+
+  const [avatar, setAvatar] = React.useState(null);
+
+  React.useEffect(function () {
+    try {
+      const savedUser =
+        localStorage.getItem('team4LabUser');
+
+      if (savedUser) {
+        const user = JSON.parse(savedUser);
+
+        if (user.avatar) {
+          setAvatar(user.avatar);
+          return;
+        }
+      }
+
+      setAvatar({
+        gender:
+          localStorage.getItem('team4AvatarGender') || 'male',
+
+        look:
+          localStorage.getItem('team4AvatarLook') || 'team4-look',
+
+        hair:
+          localStorage.getItem('team4AvatarHair') || 'none',
+
+        beard:
+          localStorage.getItem('team4AvatarBeard') || 'none',
+
+        accessory:
+          localStorage.getItem('team4AvatarAccessory') || 'none',
+
+        hairX:
+          Number(localStorage.getItem('team4AvatarHairX')) || 0,
+
+        hairY:
+          Number(localStorage.getItem('team4AvatarHairY')) || 0,
+
+        hairScale:
+          Number(localStorage.getItem('team4AvatarHairScale')) || 1,
+
+        beardX:
+          Number(localStorage.getItem('team4AvatarBeardX')) || 0,
+
+        beardY:
+          Number(localStorage.getItem('team4AvatarBeardY')) || 0,
+
+        beardScale:
+          Number(localStorage.getItem('team4AvatarBeardScale')) || 1,
+
+        accessoryX:
+          Number(localStorage.getItem('team4AvatarAccessoryX')) || 0,
+
+        accessoryY:
+          Number(localStorage.getItem('team4AvatarAccessoryY')) || 0,
+
+        accessoryScale:
+          Number(localStorage.getItem('team4AvatarAccessoryScale')) || 1,
+      });
+    } catch (error) {
+      console.error('Job avatar load error:', error);
+    }
+  }, []);
+
+  return h(
+    React.Fragment,
+    null,
+
+    h(Header, {
+      lang,
+      setLang,
+    }),
+
+    h(
+      'main',
+      {
+        style: {
+          minHeight: '100vh',
+          padding: '120px 24px 70px',
+          background: '#050507',
+          color: '#ffffff',
+        },
+      },
+
+      h(
+        'section',
+        {
+          style: {
+            maxWidth: '1400px',
+            margin: '0 auto',
+          },
+        },
+
+        h(
+          'h1',
+          {
+            style: {
+              margin: '0 0 10px',
+              fontSize: 'clamp(34px,5vw,58px)',
+              fontWeight: '900',
+            },
+          },
+
+          isGeo
+            ? 'აირჩიე შენი პირველი სამსახური'
+            : 'Choose Your First Job'
+        ),
+
+        h(
+          'p',
+          {
+            style: {
+              margin: '0 0 30px',
+              color: 'rgba(255,255,255,.62)',
+              fontSize: '16px',
+            },
+          },
+
+          isGeo
+            ? 'შენი კარიერა აქ იწყება.'
+            : 'Your career starts here.'
+        ),
+
+        h(
+          'div',
+          {
+            style: {
+              padding: '24px',
+              borderRadius: '20px',
+              background: '#111319',
+              border:
+                '1px solid rgba(255,255,255,.10)',
+            },
+          },
+
+          h(
+            'pre',
+            {
+              style: {
+                margin: 0,
+                whiteSpace: 'pre-wrap',
+                color: '#ffffff',
+              },
+            },
+
+            avatar
+              ? JSON.stringify(avatar, null, 2)
+              : isGeo
+                ? 'იტვირთება...'
+                : 'Loading...'
+          )
+        )
+      )
+    ),
+
+    h(Footer, {
+      lang,
+    })
+  );
+}
 function App() {
   const [lang, setLang] = React.useState(
     () => localStorage.getItem('team4Lang') || 'GEO'
