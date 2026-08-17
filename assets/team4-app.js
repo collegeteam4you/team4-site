@@ -6836,7 +6836,7 @@ hintText &&
     },
 
     hintText
-  )
+  ),
         )
       )
     ),
