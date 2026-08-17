@@ -7098,24 +7098,102 @@ h(
     )
   )
 ),
-          h(
-  'p',
+          // ==========================================
+// HR SPEECH BUBBLE
+// ==========================================
+
+h(
+  'div',
   {
     style: {
-      margin: '0 0 18px',
-      color: 'rgba(255,255,255,.72)',
-      fontSize: '16px',
-      lineHeight: '1.6',
+      position: 'relative',
+
+      maxWidth: '620px',
+
+      margin: '24px 0 22px',
+
+      padding: '18px 22px',
+
+      borderRadius: '20px',
+
+      background: '#ffffff',
+
+      color: '#111111',
+
+      boxShadow:
+        '0 12px 35px rgba(0,0,0,.28)',
     },
   },
 
-  isGeo
-    ? 'გამარჯობა, ' +
-      playerName +
-      '. მოკლედ მომიყევი შენს შესახებ და რატომ გინდა გაყიდვებში მუშაობა?'
-    : 'Hello, ' +
-      playerName +
-      '. Tell me briefly about yourself and why you want to work in sales.'
+  // პატარა წარწერა
+  h(
+    'div',
+    {
+      style: {
+        marginBottom: '7px',
+
+        color: '#ef1b13',
+
+        fontSize: '11px',
+
+        fontWeight: '900',
+
+        letterSpacing: '.08em',
+
+        textTransform: 'uppercase',
+      },
+    },
+
+    isGeo
+      ? 'HR მენეჯერი'
+      : 'HR MANAGER'
+  ),
+
+  // HR-ის ტექსტი
+  h(
+    'div',
+    {
+      style: {
+        fontSize: '16px',
+
+        lineHeight: '1.6',
+
+        fontWeight: '700',
+      },
+    },
+
+    isGeo
+      ? 'გამარჯობა, ' +
+        playerName +
+        '. მოკლედ მომიყევი შენს შესახებ და რატომ გინდა გაყიდვებში მუშაობა?'
+      : 'Hello, ' +
+        playerName +
+        '. Tell me briefly about yourself and why you want to work in sales.'
+  ),
+
+  // Speech Bubble-ის კუდი
+  h('div', {
+    style: {
+      position: 'absolute',
+
+      left: '42px',
+
+      bottom: '-14px',
+
+      width: '0',
+
+      height: '0',
+
+      borderLeft:
+        '16px solid transparent',
+
+      borderRight:
+        '4px solid transparent',
+
+      borderTop:
+        '16px solid #ffffff',
+    },
+  })
 ),
 
 // ==========================================
