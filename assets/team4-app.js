@@ -7044,7 +7044,7 @@ function renderInterviewAvatar() {
               : 'HR Manager'
           ),
 // ==========================================
-// INTERVIEW ROOM SCENE
+// PREMIUM INTERVIEW ROOM
 // ==========================================
 
 h(
@@ -7052,24 +7052,87 @@ h(
   {
     style: {
       position: 'relative',
-      height: '470px',
-      marginBottom: '30px',
-
+      width: '100%',
+      height: '620px',
+      marginBottom: '28px',
       overflow: 'hidden',
-
-      borderRadius: '24px',
+      borderRadius: '28px',
 
       background:
-        'linear-gradient(180deg, #20242c 0%, #15181e 70%, #101216 100%)',
+        'linear-gradient(180deg, #0a0b0d 0%, #111318 55%, #08090b 100%)',
 
       border:
         '1px solid rgba(255,255,255,.10)',
+
+      boxShadow:
+        '0 30px 80px rgba(0,0,0,.45)',
     },
   },
 
 
   // ========================================
-  // ROOM TITLE
+  // BACK WALL
+  // ========================================
+
+  h('div', {
+    style: {
+      position: 'absolute',
+      inset: 0,
+
+      background:
+        'radial-gradient(circle at 50% 38%, rgba(174,105,45,.16), transparent 30%)',
+
+      pointerEvents: 'none',
+    },
+  }),
+
+
+  // ========================================
+  // LEFT DECORATIVE WALL
+  // ========================================
+
+  h('div', {
+    style: {
+      position: 'absolute',
+
+      left: '28%',
+      top: 0,
+
+      width: '8px',
+      height: '72%',
+
+      background:
+        'linear-gradient(180deg, transparent, #5b3921, transparent)',
+
+      opacity: .7,
+    },
+  }),
+
+
+  // ========================================
+  // RIGHT DECORATIVE WALL
+  // ========================================
+
+  h('div', {
+    style: {
+      position: 'absolute',
+
+      right: '28%',
+      top: 0,
+
+      width: '8px',
+      height: '72%',
+
+      background:
+        'linear-gradient(180deg, transparent, #5b3921, transparent)',
+
+      opacity: .7,
+    },
+  }),
+
+
+  // ========================================
+  // INTERVIEW ROOM LABEL
   // ========================================
 
   h(
@@ -7077,25 +7140,187 @@ h(
     {
       style: {
         position: 'absolute',
-        top: '20px',
+
+        top: '22px',
         left: '24px',
 
-        color: 'rgba(255,255,255,.45)',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '9px',
+
+        padding: '9px 14px',
+
+        borderRadius: '999px',
+
+        background:
+          'rgba(0,0,0,.42)',
+
+        border:
+          '1px solid rgba(255,255,255,.10)',
+
+        color: '#ffffff',
 
         fontSize: '12px',
         fontWeight: '900',
-        letterSpacing: '.12em',
+        letterSpacing: '.08em',
+
+        zIndex: 20,
       },
     },
 
-    isGeo
-      ? 'გასაუბრების ოთახი'
-      : 'INTERVIEW ROOM'
+    h('span', {
+      style: {
+        width: '9px',
+        height: '9px',
+
+        borderRadius: '50%',
+
+        background: '#ef1b13',
+
+        boxShadow:
+          '0 0 12px rgba(239,27,19,.8)',
+      },
+    }),
+
+    'INTERVIEW ROOM'
   ),
 
 
   // ========================================
-  // HR PERSON
+  // CENTER TEAM4 BRAND
+  // ========================================
+
+  h(
+    'div',
+    {
+      style: {
+        position: 'absolute',
+
+        top: '42px',
+        left: '50%',
+
+        transform:
+          'translateX(-50%)',
+
+        textAlign: 'center',
+
+        zIndex: 2,
+      },
+    },
+
+    h(
+      'div',
+      {
+        style: {
+          fontSize: '42px',
+          fontWeight: '950',
+
+          letterSpacing: '.08em',
+
+          color: '#ffffff',
+
+          textShadow:
+            '0 8px 30px rgba(0,0,0,.7)',
+        },
+      },
+
+      'TEAM4'
+    ),
+
+    h(
+      'div',
+      {
+        style: {
+          marginTop: '3px',
+
+          fontSize: '11px',
+          fontWeight: '800',
+
+          letterSpacing: '.32em',
+
+          color:
+            'rgba(255,255,255,.62)',
+        },
+      },
+
+      'SALES COLLEGE'
+    )
+  ),
+
+
+  // ========================================
+  // LEFT PLANT
+  // ========================================
+
+  h(
+    'div',
+    {
+      style: {
+        position: 'absolute',
+
+        left: '24px',
+        bottom: '145px',
+
+        fontSize: '105px',
+
+        filter:
+          'drop-shadow(0 12px 18px rgba(0,0,0,.6))',
+
+        opacity: .85,
+
+        zIndex: 1,
+      },
+    },
+
+    '🌿'
+  ),
+
+
+  // ========================================
+  // HR AREA
+  // ========================================
+
+  h(
+    'div',
+    {
+      style: {
+        position: 'absolute',
+
+        left: '7%',
+        bottom: '120px',
+
+        width: '250px',
+        height: '330px',
+
+        display: 'flex',
+        alignItems: 'flex-end',
+        justifyContent: 'center',
+
+        zIndex: 5,
+      },
+    },
+
+    // დროებითი HR
+    h(
+      'div',
+      {
+        style: {
+          fontSize: '150px',
+
+          lineHeight: '1',
+
+          filter:
+            'drop-shadow(0 15px 20px rgba(0,0,0,.55))',
+        },
+      },
+
+      '👩‍💼'
+    )
+  ),
+
+
+  // ========================================
+  // HR NAME
   // ========================================
 
   h(
@@ -7105,115 +7330,30 @@ h(
         position: 'absolute',
 
         left: '8%',
-        bottom: '70px',
+        bottom: '102px',
 
-        width: '190px',
+        width: '220px',
 
         textAlign: 'center',
 
-        zIndex: 3,
+        color:
+          'rgba(255,255,255,.75)',
+
+        fontSize: '13px',
+        fontWeight: '900',
+
+        zIndex: 8,
       },
     },
 
-    h(
-      'div',
-      {
-        style: {
-          fontSize: '110px',
-          lineHeight: '1',
-        },
-      },
-
-      '👩‍💼'
-    ),
-
-    h(
-      'div',
-      {
-        style: {
-          marginTop: '8px',
-
-          fontSize: '14px',
-          fontWeight: '900',
-        },
-      },
-
-      isGeo
-        ? 'HR მენეჯერი'
-        : 'HR Manager'
-    )
+    isGeo
+      ? 'HR მენეჯერი'
+      : 'HR Manager'
   ),
 
 
   // ========================================
-  // TABLE
-  // ========================================
-
-  h('div', {
-    style: {
-      position: 'absolute',
-
-      left: '50%',
-      bottom: '72px',
-
-      transform:
-        'translateX(-50%)',
-
-      width: '48%',
-      height: '95px',
-
-      background:
-        'linear-gradient(180deg,#70452c,#432718)',
-
-      borderRadius:
-        '14px 14px 5px 5px',
-
-      boxShadow:
-        '0 18px 35px rgba(0,0,0,.45)',
-
-      zIndex: 4,
-    },
-  }),
-
-
-  // LEFT TABLE LEG
-  h('div', {
-    style: {
-      position: 'absolute',
-
-      left: '35%',
-      bottom: '18px',
-
-      width: '22px',
-      height: '65px',
-
-      background: '#352016',
-
-      zIndex: 2,
-    },
-  }),
-
-
-  // RIGHT TABLE LEG
-  h('div', {
-    style: {
-      position: 'absolute',
-
-      right: '35%',
-      bottom: '18px',
-
-      width: '22px',
-      height: '65px',
-
-      background: '#352016',
-
-      zIndex: 2,
-    },
-  }),
-
-
-  // ========================================
-  // PLAYER
+  // PLAYER AREA
   // ========================================
 
   h(
@@ -7222,19 +7362,19 @@ h(
       style: {
         position: 'absolute',
 
-        right: '8%',
-        bottom: '55px',
+        right: '7%',
+        bottom: '105px',
 
-        width: '210px',
-        height: '310px',
+        width: '250px',
+        height: '360px',
 
         display: 'flex',
-        justifyContent: 'center',
         alignItems: 'flex-end',
+        justifyContent: 'center',
 
         overflow: 'hidden',
 
-        zIndex: 3,
+        zIndex: 5,
       },
     },
 
@@ -7252,21 +7392,188 @@ h(
       style: {
         position: 'absolute',
 
-        right: '10%',
-        bottom: '24px',
+        right: '8%',
+        bottom: '88px',
 
-        width: '170px',
+        width: '220px',
 
         textAlign: 'center',
+
+        color: '#ffffff',
 
         fontSize: '14px',
         fontWeight: '900',
 
-        zIndex: 6,
+        zIndex: 8,
       },
     },
 
     playerName
+  ),
+
+
+  // ========================================
+  // TABLE TOP
+  // ========================================
+
+  h('div', {
+    style: {
+      position: 'absolute',
+
+      left: '50%',
+      bottom: '55px',
+
+      transform:
+        'translateX(-50%)',
+
+      width: '72%',
+      height: '155px',
+
+      borderRadius:
+        '50% 50% 10px 10px / 22% 22% 8px 8px',
+
+      background:
+        'linear-gradient(180deg,#805033 0%,#5a341f 48%,#382014 100%)',
+
+      borderTop:
+        '2px solid rgba(255,190,120,.25)',
+
+      boxShadow:
+        '0 -8px 25px rgba(0,0,0,.25), 0 25px 45px rgba(0,0,0,.65)',
+
+      zIndex: 10,
+    },
+  }),
+
+
+  // ========================================
+  // TABLE FRONT
+  // ========================================
+
+  h('div', {
+    style: {
+      position: 'absolute',
+
+      left: '50%',
+      bottom: 0,
+
+      transform:
+        'translateX(-50%)',
+
+      width: '65%',
+      height: '85px',
+
+      background:
+        'linear-gradient(180deg,#4b2a19,#24140d)',
+
+      borderRadius:
+        '0 0 18px 18px',
+
+      boxShadow:
+        '0 20px 50px rgba(0,0,0,.65)',
+
+      zIndex: 9,
+    },
+  }),
+
+
+  // ========================================
+  // LAPTOP
+  // ========================================
+
+  h(
+    'div',
+    {
+      style: {
+        position: 'absolute',
+
+        left: '19%',
+        bottom: '137px',
+
+        width: '125px',
+        height: '78px',
+
+        borderRadius: '7px',
+
+        background:
+          'linear-gradient(145deg,#222,#080808)',
+
+        border:
+          '1px solid rgba(255,255,255,.12)',
+
+        transform:
+          'perspective(500px) rotateX(-8deg)',
+
+        boxShadow:
+          '0 15px 25px rgba(0,0,0,.5)',
+
+        zIndex: 12,
+
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      },
+    },
+
+    h(
+      'span',
+      {
+        style: {
+          color: '#ffffff',
+          fontSize: '12px',
+          fontWeight: '900',
+          letterSpacing: '.12em',
+        },
+      },
+
+      'TEAM4'
+    )
+  ),
+
+
+  // ========================================
+  // HR COFFEE
+  // ========================================
+
+  h(
+    'div',
+    {
+      style: {
+        position: 'absolute',
+
+        left: '37%',
+        bottom: '145px',
+
+        fontSize: '44px',
+
+        zIndex: 13,
+      },
+    },
+
+    '☕'
+  ),
+
+
+  // ========================================
+  // PLAYER COFFEE
+  // ========================================
+
+  h(
+    'div',
+    {
+      style: {
+        position: 'absolute',
+
+        right: '34%',
+        bottom: '145px',
+
+        fontSize: '44px',
+
+        zIndex: 13,
+      },
+    },
+
+    '☕'
   )
 ),
           // ==========================================
