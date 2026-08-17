@@ -5815,19 +5815,12 @@ function renderJobAvatar() {
     'div',
     {
       style: {
-        width: '230px',
-        height: '340px',
-
-        margin: '0 auto 18px',
-
-        position: 'relative',
-        overflow: 'hidden',
-
-        borderRadius: '18px',
-
-        background:
-          'linear-gradient(180deg,#f7f7f7,#e9e9e9)',
-      },
+  width: '230px',
+  height: '340px',
+  position: 'relative',
+  overflow: 'hidden',
+  background: 'transparent',
+},
     },
 
     h(
