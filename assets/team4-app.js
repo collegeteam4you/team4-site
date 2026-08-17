@@ -6174,10 +6174,17 @@ renderJobAvatar(),
         },
       },
 
+      nameSaved
+  ? (
+      isGeo
+        ? '✓ სახელი შენახულია'
+        : '✓ Name Saved'
+    )
+  : (
       isGeo
         ? 'სახელის შენახვა'
         : 'Save Name'
-    ),
+    )
 
     h(
       'div',
