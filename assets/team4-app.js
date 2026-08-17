@@ -5671,8 +5671,13 @@ function savePlayerName() {
     cleanName
   );
 
-  setPlayerName(cleanName);
-}
+  localStorage.setItem(
+  'team4PlayerName',
+  cleanName
+);
+
+setPlayerName(cleanName);
+setNameSaved(true);
   React.useEffect(function () {
     try {
       const savedUser =
