@@ -6113,8 +6113,9 @@ renderJobAvatar(),
       value: playerName,
 
       onChange: function (event) {
-        setPlayerName(event.target.value);
-      },
+  setPlayerName(event.target.value);
+  setNameSaved(false);
+},
 
       placeholder:
         isGeo
