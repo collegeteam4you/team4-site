@@ -6578,7 +6578,25 @@ function Team4InterviewPage({ lang, setLang }) {
     selectedJob === 'sales-representative'
       ? 'Sales Representative'
       : 'Junior Sales';
+// ==========================================
+// HINT SYSTEM
+// ==========================================
 
+const [hintsLeft, setHintsLeft] = React.useState(
+  () => {
+    const savedHints =
+      localStorage.getItem('team4Hints');
+
+    if (savedHints === null) {
+      return 3;
+    }
+
+    return Number(savedHints);
+  }
+);
+
+const [hintText, setHintText] =
+  React.useState('');
   return h(
     React.Fragment,
     null,
