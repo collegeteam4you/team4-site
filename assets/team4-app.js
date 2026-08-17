@@ -7067,6 +7067,549 @@ function renderInterviewAvatar() {
     '☕'
   )
 ),
+        // ==========================================
+// PREMIUM INTERVIEW ROOM V2
+// ==========================================
+
+h(
+  'div',
+  {
+    style: {
+      position: 'relative',
+      width: '100%',
+      height: '620px',
+      marginBottom: '28px',
+      overflow: 'hidden',
+      borderRadius: '28px',
+
+      background:
+        'radial-gradient(circle at 50% 35%, #251b15 0%, #101114 42%, #050607 100%)',
+
+      border: '1px solid rgba(255,255,255,.10)',
+
+      boxShadow:
+        '0 30px 80px rgba(0,0,0,.55)',
+    },
+  },
+
+  // ========================================
+  // BACK WALL PANELS
+  // ========================================
+
+  h('div', {
+    style: {
+      position: 'absolute',
+      inset: 0,
+
+      background:
+        'repeating-linear-gradient(90deg, transparent 0px, transparent 75px, rgba(255,150,70,.055) 76px, transparent 80px)',
+
+      pointerEvents: 'none',
+    },
+  }),
+
+  // ========================================
+  // INTERVIEW ROOM LABEL
+  // ========================================
+
+  h(
+    'div',
+    {
+      style: {
+        position: 'absolute',
+        top: '20px',
+        left: '22px',
+
+        display: 'flex',
+        alignItems: 'center',
+        gap: '9px',
+
+        padding: '9px 14px',
+
+        borderRadius: '999px',
+
+        background: 'rgba(0,0,0,.55)',
+
+        border:
+          '1px solid rgba(255,255,255,.12)',
+
+        color: '#ffffff',
+
+        fontSize: '12px',
+        fontWeight: '900',
+        letterSpacing: '.08em',
+
+        zIndex: 30,
+      },
+    },
+
+    h('span', {
+      style: {
+        width: '9px',
+        height: '9px',
+
+        borderRadius: '50%',
+
+        background: '#ef1b13',
+
+        boxShadow:
+          '0 0 14px rgba(239,27,19,.9)',
+      },
+    }),
+
+    'INTERVIEW ROOM'
+  ),
+
+  // ========================================
+  // TEAM4 BACK WALL BRAND
+  // ========================================
+
+  h(
+    'div',
+    {
+      style: {
+        position: 'absolute',
+
+        top: '55px',
+        left: '50%',
+
+        transform: 'translateX(-50%)',
+
+        textAlign: 'center',
+
+        zIndex: 2,
+      },
+    },
+
+    h(
+      'div',
+      {
+        style: {
+          fontSize: '46px',
+          fontWeight: '950',
+
+          letterSpacing: '.10em',
+
+          color: '#ffffff',
+
+          textShadow:
+            '0 10px 35px rgba(0,0,0,.8)',
+        },
+      },
+
+      'TEAM4'
+    ),
+
+    h(
+      'div',
+      {
+        style: {
+          marginTop: '5px',
+
+          fontSize: '12px',
+          fontWeight: '800',
+
+          letterSpacing: '.32em',
+
+          color: 'rgba(255,255,255,.68)',
+        },
+      },
+
+      'SALES COLLEGE'
+    )
+  ),
+
+  // ========================================
+  // LEFT WARM LIGHT
+  // ========================================
+
+  h('div', {
+    style: {
+      position: 'absolute',
+
+      left: '6%',
+      top: '70px',
+
+      width: '3px',
+      height: '330px',
+
+      background:
+        'linear-gradient(180deg, transparent, #c47a3d, transparent)',
+
+      boxShadow:
+        '0 0 25px rgba(196,122,61,.35)',
+
+      opacity: .8,
+    },
+  }),
+
+  // ========================================
+  // RIGHT WARM LIGHT
+  // ========================================
+
+  h('div', {
+    style: {
+      position: 'absolute',
+
+      right: '6%',
+      top: '70px',
+
+      width: '3px',
+      height: '330px',
+
+      background:
+        'linear-gradient(180deg, transparent, #c47a3d, transparent)',
+
+      boxShadow:
+        '0 0 25px rgba(196,122,61,.35)',
+
+      opacity: .8,
+    },
+  }),
+
+  // ========================================
+  // HR CHAIR
+  // ========================================
+
+  h('div', {
+    style: {
+      position: 'absolute',
+
+      left: '9%',
+      bottom: '105px',
+
+      width: '205px',
+      height: '250px',
+
+      borderRadius: '70px 70px 30px 30px',
+
+      background:
+        'linear-gradient(90deg,#090909,#252525,#090909)',
+
+      border:
+        '1px solid rgba(255,255,255,.12)',
+
+      boxShadow:
+        '0 25px 45px rgba(0,0,0,.65)',
+
+      zIndex: 3,
+    },
+  }),
+
+  // ========================================
+  // HR WOMAN
+  // ========================================
+
+  h(
+    'div',
+    {
+      style: {
+        position: 'absolute',
+
+        left: '10%',
+        bottom: '120px',
+
+        width: '190px',
+        height: '280px',
+
+        display: 'flex',
+        alignItems: 'flex-end',
+        justifyContent: 'center',
+
+        zIndex: 5,
+      },
+    },
+
+    h(
+      'div',
+      {
+        style: {
+          fontSize: '145px',
+          lineHeight: '1',
+
+          filter:
+            'drop-shadow(0 15px 20px rgba(0,0,0,.6))',
+        },
+      },
+
+      '👩‍💼'
+    )
+  ),
+
+  // ========================================
+  // HR NAME
+  // ========================================
+
+  h(
+    'div',
+    {
+      style: {
+        position: 'absolute',
+
+        left: '8%',
+        bottom: '88px',
+
+        width: '230px',
+
+        textAlign: 'center',
+
+        color: '#ffffff',
+
+        fontSize: '13px',
+        fontWeight: '900',
+
+        zIndex: 15,
+      },
+    },
+
+    isGeo
+      ? 'HR მენეჯერი'
+      : 'HR Manager'
+  ),
+
+  // ========================================
+  // PLAYER CHAIR
+  // ========================================
+
+  h('div', {
+    style: {
+      position: 'absolute',
+
+      right: '9%',
+      bottom: '105px',
+
+      width: '205px',
+      height: '250px',
+
+      borderRadius: '70px 70px 30px 30px',
+
+      background:
+        'linear-gradient(90deg,#090909,#252525,#090909)',
+
+      border:
+        '1px solid rgba(255,255,255,.12)',
+
+      boxShadow:
+        '0 25px 45px rgba(0,0,0,.65)',
+
+      zIndex: 3,
+    },
+  }),
+
+  // ========================================
+  // PLAYER
+  // ========================================
+
+  h(
+    'div',
+    {
+      style: {
+        position: 'absolute',
+
+        right: '8%',
+        bottom: '105px',
+
+        width: '230px',
+        height: '340px',
+
+        display: 'flex',
+        alignItems: 'flex-end',
+        justifyContent: 'center',
+
+        overflow: 'hidden',
+
+        zIndex: 6,
+      },
+    },
+
+    renderInterviewAvatar()
+  ),
+
+  // ========================================
+  // PLAYER NAME
+  // ========================================
+
+  h(
+    'div',
+    {
+      style: {
+        position: 'absolute',
+
+        right: '8%',
+        bottom: '87px',
+
+        width: '230px',
+
+        textAlign: 'center',
+
+        color: '#ffffff',
+
+        fontSize: '14px',
+        fontWeight: '900',
+
+        zIndex: 15,
+      },
+    },
+
+    playerName
+  ),
+
+  // ========================================
+  // LARGE OVAL WOOD TABLE
+  // ========================================
+
+  h('div', {
+    style: {
+      position: 'absolute',
+
+      left: '50%',
+      bottom: '-25px',
+
+      transform:
+        'translateX(-50%) perspective(700px) rotateX(8deg)',
+
+      width: '76%',
+      height: '215px',
+
+      borderRadius: '50% 50% 12px 12px / 28% 28% 8% 8%',
+
+      background:
+        'linear-gradient(180deg,#895936 0%,#694126 42%,#3d2417 100%)',
+
+      borderTop:
+        '2px solid rgba(255,190,125,.32)',
+
+      boxShadow:
+        '0 -12px 35px rgba(0,0,0,.30), 0 35px 65px rgba(0,0,0,.75)',
+
+      zIndex: 10,
+    },
+  }),
+
+  // ========================================
+  // WOOD GRAIN
+  // ========================================
+
+  h('div', {
+    style: {
+      position: 'absolute',
+
+      left: '50%',
+      bottom: '3px',
+
+      transform:
+        'translateX(-50%) perspective(700px) rotateX(8deg)',
+
+      width: '73%',
+      height: '180px',
+
+      borderRadius: '50%',
+
+      background:
+        'repeating-linear-gradient(90deg, rgba(255,255,255,.025) 0px, rgba(255,255,255,.025) 2px, transparent 3px, transparent 38px)',
+
+      zIndex: 11,
+
+      pointerEvents: 'none',
+    },
+  }),
+
+  // ========================================
+  // HR LAPTOP
+  // ========================================
+
+  h(
+    'div',
+    {
+      style: {
+        position: 'absolute',
+
+        left: '22%',
+        bottom: '115px',
+
+        width: '125px',
+        height: '82px',
+
+        borderRadius: '8px',
+
+        background:
+          'linear-gradient(145deg,#292929,#080808)',
+
+        border:
+          '1px solid rgba(255,255,255,.15)',
+
+        boxShadow:
+          '0 15px 30px rgba(0,0,0,.55)',
+
+        zIndex: 15,
+
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      },
+    },
+
+    h(
+      'span',
+      {
+        style: {
+          color: '#ffffff',
+
+          fontSize: '11px',
+          fontWeight: '900',
+
+          letterSpacing: '.14em',
+        },
+      },
+
+      'TEAM4'
+    )
+  ),
+
+  // ========================================
+  // HR COFFEE
+  // ========================================
+
+  h(
+    'div',
+    {
+      style: {
+        position: 'absolute',
+
+        left: '40%',
+        bottom: '118px',
+
+        fontSize: '42px',
+
+        zIndex: 16,
+      },
+    },
+
+    '☕'
+  ),
+
+  // ========================================
+  // PLAYER COFFEE
+  // ========================================
+
+  h(
+    'div',
+    {
+      style: {
+        position: 'absolute',
+
+        right: '37%',
+        bottom: '118px',
+
+        fontSize: '42px',
+
+        zIndex: 16,
+      },
+    },
+
+    '☕'
+  )
+),
           // ==========================================
 // HR SPEECH BUBBLE
 // ==========================================
