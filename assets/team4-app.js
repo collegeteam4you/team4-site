@@ -7332,12 +7332,9 @@ h(
         type: 'button',
 
         onClick: function () {
-          alert(
-            isGeo
-              ? 'აირჩიე პასუხი: ' + answer.id
-              : 'Selected answer: ' + answer.id
-          );
-        },
+  setSelectedAnswer(answer.id);
+  setPlayerSpeech(answer.text);
+},
 
         style: {
           width: '100%',
