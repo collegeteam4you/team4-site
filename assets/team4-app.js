@@ -6185,9 +6185,10 @@ renderJobAvatar(),
         ? 'სახელის შენახვა'
         : 'Save Name'
     )
+),
 
-    h(
-      'div',
+h(
+  'div',
       {
         style: {
           display: 'grid',
