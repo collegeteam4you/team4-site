@@ -6504,15 +6504,26 @@ renderJobAvatar(),
         {
           type: 'button',
 
-          onClick: function () {
-            localStorage.setItem(
-              'team4SelectedJob',
-              'sales-representative'
-            );
+         onClick: function () {
 
-            window.location.href =
-              '/team4-lab/interview';
-          },
+  if (!nameSaved || !playerName.trim()) {
+    alert(
+      isGeo
+        ? 'ჯერ შეიყვანე და შეინახე პერსონაჟის სახელი.'
+        : 'Please enter and save your character name first.'
+    );
+
+    return;
+  }
+
+  localStorage.setItem(
+    'team4SelectedJob',
+    'sales-representative'
+  );
+
+  window.location.href =
+    '/team4-lab/interview';
+},
 
           style: {
             width: '100%',
