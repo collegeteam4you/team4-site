@@ -5666,19 +5666,16 @@ function savePlayerName() {
     return;
   }
 
-  localStorage.setItem(
-    'team4PlayerName',
-    cleanName
-  );
-
-  localStorage.setItem(
+ localStorage.setItem(
   'team4PlayerName',
   cleanName
 );
 
 setPlayerName(cleanName);
 setNameSaved(true);
-  React.useEffect(function () {
+}
+
+React.useEffect(function () {
     try {
       const savedUser =
         localStorage.getItem('team4LabUser');
