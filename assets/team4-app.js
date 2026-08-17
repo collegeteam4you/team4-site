@@ -6513,11 +6513,180 @@ renderJobAvatar(),
       )
     ),
 
+        h(Footer, {
+      lang,
+    })
+  );
+}
+
+
+// ==========================================
+// INTERVIEW PAGE
+// ==========================================
+
+function Team4InterviewPage({ lang, setLang }) {
+  const isGeo = lang === 'GEO';
+
+  const selectedJob =
+    localStorage.getItem('team4SelectedJob') ||
+    'junior-sales';
+
+  const playerName =
+    localStorage.getItem('team4PlayerName') ||
+    (isGeo ? 'კანდიდატი' : 'Candidate');
+
+  const jobTitle =
+    selectedJob === 'sales-representative'
+      ? 'Sales Representative'
+      : 'Junior Sales';
+
+  return h(
+    React.Fragment,
+    null,
+
+    h(Header, {
+      lang,
+      setLang,
+    }),
+
+    h(
+      'main',
+      {
+        style: {
+          minHeight: '100vh',
+          padding: '120px 24px 70px',
+          background: '#050507',
+          color: '#ffffff',
+        },
+      },
+
+      h(
+        'section',
+        {
+          style: {
+            maxWidth: '1100px',
+            margin: '0 auto',
+          },
+        },
+
+        h(
+          'div',
+          {
+            style: {
+              marginBottom: '10px',
+              color: '#ef1b13',
+              fontWeight: '900',
+              fontSize: '13px',
+              letterSpacing: '.12em',
+            },
+          },
+
+          isGeo
+            ? 'სამუშაო გასაუბრება'
+            : 'JOB INTERVIEW'
+        ),
+
+        h(
+          'h1',
+          {
+            style: {
+              margin: '0 0 10px',
+              fontSize: 'clamp(34px,5vw,58px)',
+              fontWeight: '900',
+            },
+          },
+
+          jobTitle
+        ),
+
+        h(
+          'p',
+          {
+            style: {
+              margin: '0 0 30px',
+              color: 'rgba(255,255,255,.62)',
+              fontSize: '16px',
+            },
+          },
+
+          isGeo
+            ? playerName + ', გასაუბრება იწყება.'
+            : playerName + ', your interview is starting.'
+        ),
+
+        h(
+          'div',
+          {
+            style: {
+              padding: '28px',
+              borderRadius: '22px',
+              background: '#111319',
+              border:
+                '1px solid rgba(255,255,255,.10)',
+            },
+          },
+
+          h(
+            'div',
+            {
+              style: {
+                fontSize: '40px',
+                marginBottom: '14px',
+              },
+            },
+
+            '👩‍💼'
+          ),
+
+          h(
+            'h2',
+            {
+              style: {
+                margin: '0 0 8px',
+                fontSize: '24px',
+              },
+            },
+
+            isGeo
+              ? 'HR მენეჯერი'
+              : 'HR Manager'
+          ),
+
+          h(
+            'p',
+            {
+              style: {
+                margin: 0,
+                color: 'rgba(255,255,255,.72)',
+                fontSize: '16px',
+                lineHeight: '1.6',
+              },
+            },
+
+            isGeo
+              ? 'გამარჯობა, ' +
+                playerName +
+                '. მოკლედ მომიყევი შენს შესახებ და რატომ გინდა გაყიდვებში მუშაობა?'
+              : 'Hello, ' +
+                playerName +
+                '. Tell me briefly about yourself and why you want to work in sales.'
+          )
+        )
+      )
+    ),
+
     h(Footer, {
       lang,
     })
   );
 }
+
+
+// ==========================================
+// APP
+// ==========================================
+
+function App() {
 function App() {
   const [lang, setLang] = React.useState(
     () => localStorage.getItem('team4Lang') || 'GEO'
