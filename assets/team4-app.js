@@ -6098,7 +6098,7 @@ function renderJobAvatar() {
         ? 'შენი პერსონაჟი'
         : 'Your Character'
     ),
-
+renderJobAvatar(),
     h('input', {
       type: 'text',
 
