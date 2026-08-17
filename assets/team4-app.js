@@ -7034,7 +7034,70 @@ function renderInterviewAvatar() {
               ? 'HR მენეჯერი'
               : 'HR Manager'
           ),
+// ==========================================
+// PLAYER AVATAR TEST
+// ==========================================
 
+h(
+  'div',
+  {
+    style: {
+      marginTop: '20px',
+      marginBottom: '20px',
+
+      display: 'flex',
+      alignItems: 'center',
+      gap: '18px',
+
+      padding: '18px',
+
+      borderRadius: '16px',
+
+      background:
+        'rgba(255,255,255,.035)',
+
+      border:
+        '1px solid rgba(255,255,255,.08)',
+    },
+  },
+
+  renderInterviewAvatar(),
+
+  h(
+    'div',
+    null,
+
+    h(
+      'div',
+      {
+        style: {
+          marginBottom: '5px',
+          color: 'rgba(255,255,255,.50)',
+          fontSize: '12px',
+          fontWeight: '800',
+          textTransform: 'uppercase',
+          letterSpacing: '.08em',
+        },
+      },
+
+      isGeo
+        ? 'კანდიდატი'
+        : 'Candidate'
+    ),
+
+    h(
+      'strong',
+      {
+        style: {
+          color: '#ffffff',
+          fontSize: '20px',
+        },
+      },
+
+      playerName
+    )
+  )
+),
           h(
   'p',
   {
