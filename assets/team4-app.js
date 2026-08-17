@@ -6741,24 +6741,102 @@ function useInterviewHint() {
           ),
 
           h(
-            'p',
-            {
-              style: {
-                margin: 0,
-                color: 'rgba(255,255,255,.72)',
-                fontSize: '16px',
-                lineHeight: '1.6',
-              },
-            },
+  'p',
+  {
+    style: {
+      margin: '0 0 18px',
+      color: 'rgba(255,255,255,.72)',
+      fontSize: '16px',
+      lineHeight: '1.6',
+    },
+  },
 
-            isGeo
-              ? 'გამარჯობა, ' +
-                playerName +
-                '. მოკლედ მომიყევი შენს შესახებ და რატომ გინდა გაყიდვებში მუშაობა?'
-              : 'Hello, ' +
-                playerName +
-                '. Tell me briefly about yourself and why you want to work in sales.'
-          )
+  isGeo
+    ? 'გამარჯობა, ' +
+      playerName +
+      '. მოკლედ მომიყევი შენს შესახებ და რატომ გინდა გაყიდვებში მუშაობა?'
+    : 'Hello, ' +
+      playerName +
+      '. Tell me briefly about yourself and why you want to work in sales.'
+),
+
+// ==========================================
+// HINT BUTTON
+// ==========================================
+
+h(
+  'button',
+  {
+    type: 'button',
+
+    onClick: useInterviewHint,
+
+    disabled: hintsLeft <= 0,
+
+    style: {
+      padding: '11px 16px',
+
+      border:
+        '1px solid rgba(255,215,0,.35)',
+
+      borderRadius: '10px',
+
+      background:
+        hintsLeft > 0
+          ? 'rgba(255,215,0,.10)'
+          : 'rgba(255,255,255,.05)',
+
+      color:
+        hintsLeft > 0
+          ? '#ffe36e'
+          : 'rgba(255,255,255,.35)',
+
+      fontSize: '13px',
+      fontWeight: '900',
+
+      cursor:
+        hintsLeft > 0
+          ? 'pointer'
+          : 'not-allowed',
+    },
+  },
+
+  '💡 Hint ' +
+    hintsLeft +
+    '/3'
+),
+
+// ==========================================
+// HINT TEXT
+// ==========================================
+
+hintText &&
+  h(
+    'div',
+    {
+      style: {
+        marginTop: '14px',
+
+        padding: '14px 16px',
+
+        borderRadius: '12px',
+
+        border:
+          '1px solid rgba(255,215,0,.20)',
+
+        background:
+          'rgba(255,215,0,.07)',
+
+        color:
+          'rgba(255,255,255,.82)',
+
+        fontSize: '14px',
+        lineHeight: '1.6',
+      },
+    },
+
+    hintText
+  )
         )
       )
     ),
