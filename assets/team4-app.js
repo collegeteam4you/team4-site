@@ -6161,7 +6161,10 @@ renderJobAvatar(),
           border: 'none',
           borderRadius: '10px',
 
-          background: '#ef1b13',
+          background:
+  nameSaved
+    ? '#169c52'
+    : '#ef1b13',
 
           color: '#ffffff',
 
