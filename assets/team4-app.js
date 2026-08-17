@@ -6542,6 +6542,8 @@ function App() {
     window.location.pathname === '/team4-lab/avatar';
 const isTeam4JobPage =
   window.location.pathname === '/team4-lab/job';
+  const isTeam4InterviewPage =
+  window.location.pathname === '/team4-lab/interview';
   const isTeam4LabPage =
     window.location.pathname.startsWith('/team4-lab');
 
