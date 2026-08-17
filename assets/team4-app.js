@@ -6687,7 +6687,6 @@ function Team4InterviewPage({ lang, setLang }) {
 // ==========================================
 
 function App() {
-function App() {
   const [lang, setLang] = React.useState(
     () => localStorage.getItem('team4Lang') || 'GEO'
   );
