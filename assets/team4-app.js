@@ -5731,7 +5731,270 @@ function savePlayerName() {
       console.error('Job avatar load error:', error);
     }
   }, []);
+// ==========================================
+// JOB PAGE AVATAR PREVIEW
+// ==========================================
 
+function renderJobAvatar() {
+  if (!avatar) {
+    return null;
+  }
+
+  const jobHairAdjustments = {
+    male: {
+      'hair-m-01': { width: '29%', top: '0.8%', x: '0%' },
+      'hair-m-02': { width: '28%', top: '0.1%', x: '0%' },
+      'hair-m-03': { width: '29%', top: '0.1%', x: '0%' },
+      'hair-m-04': { width: '26%', top: '0.1%', x: '0%' },
+      'hair-m-05': { width: '29%', top: '0.1%', x: '0%' },
+      'hair-m-06': { width: '29%', top: '0.1%', x: '0%' },
+      'hair-m-09': { width: '30%', top: '0.1%', x: '0%' },
+      'hair-m-10': { width: '28%', top: '0.1%', x: '0%' },
+      'hair-m-12': { width: '29%', top: '-2%', x: '0%' },
+      'hair-m-13': { width: '30%', top: '0.1%', x: '0%' },
+      'hair-m-16': { width: '28%', top: '0.1%', x: '0%' },
+      'hair-m-18': { width: '31%', top: '0.1%', x: '0%' },
+    },
+
+    female: {
+      'hair-f-01': { width: '32.5%', top: '2%', x: '0%' },
+      'hair-f-02': { width: '33%', top: '5%', x: '0%' },
+      'hair-f-03': { width: '34%', top: '5%', x: '0%' },
+      'hair-f-05': { width: '34%', top: '3%', x: '0%' },
+      'hair-f-06': { width: '33%', top: '5%', x: '0%' },
+      'hair-f-08': { width: '34%', top: '5%', x: '0%' },
+      'hair-f-09': { width: '34%', top: '5%', x: '0%' },
+      'hair-f-10': { width: '32%', top: '3%', x: '0%' },
+      'hair-f-11': { width: '32%', top: '5%', x: '0%' },
+      'hair-f-12': { width: '32%', top: '5%', x: '0%' },
+      'hair-f-15': { width: '35%', top: '5%', x: '0%' },
+      'hair-f-18': { width: '34%', top: '4%', x: '0%' },
+    },
+  };
+
+  const jobBeardAdjustments = {
+    'beard-01': {
+      width: '29%',
+      top: '14%',
+      x: '0%',
+    },
+
+    'beard-02': {
+      width: '29%',
+      top: '15%',
+      x: '0%',
+    },
+
+    'beard-03': {
+      width: '32%',
+      top: '15%',
+      x: '0%',
+    },
+  };
+
+  const hairStyle =
+    jobHairAdjustments[avatar.gender]?.[avatar.hair] || {
+      width: avatar.gender === 'male' ? '28%' : '33%',
+      top: avatar.gender === 'male' ? '7%' : '5%',
+      x: '0%',
+    };
+
+  const beardStyle =
+    jobBeardAdjustments[avatar.beard] || {
+      width: '19%',
+      top: '13%',
+      x: '0%',
+    };
+
+  return h(
+    'div',
+    {
+      style: {
+        width: '230px',
+        height: '340px',
+
+        margin: '0 auto 18px',
+
+        position: 'relative',
+        overflow: 'hidden',
+
+        borderRadius: '18px',
+
+        background:
+          'linear-gradient(180deg,#f7f7f7,#e9e9e9)',
+      },
+    },
+
+    h(
+      'div',
+      {
+        style: {
+          width: '460px',
+          height: '680px',
+
+          position: 'absolute',
+
+          left: '0',
+          top: '0',
+
+          transform:
+            'scale(0.5)',
+
+          transformOrigin:
+            'top left',
+        },
+      },
+
+      // LOOK
+      h('img', {
+        src:
+          '/assets/avatar-v2/looks/' +
+          avatar.gender +
+          '/' +
+          avatar.look +
+          '.png',
+
+        alt: '',
+
+        style: {
+          position: 'absolute',
+          inset: 0,
+
+          width: '100%',
+          height: '100%',
+
+          objectFit: 'contain',
+
+          zIndex: 1,
+        },
+      }),
+
+      // BEARD
+      avatar.gender === 'male' &&
+      avatar.beard !== 'none' &&
+        h('img', {
+          src:
+            '/assets/avatar-v2/beard/' +
+            avatar.beard +
+            '.png',
+
+          alt: '',
+
+          style: {
+            position: 'absolute',
+
+            width:
+              beardStyle.width,
+
+            height: 'auto',
+
+            left: '50%',
+            top: beardStyle.top,
+
+            transform:
+              'translateX(calc(-50% + ' +
+              beardStyle.x +
+              ')) ' +
+              'translate(' +
+              (avatar.beardX || 0) +
+              'px, ' +
+              (avatar.beardY || 0) +
+              'px) ' +
+              'scale(' +
+              (avatar.beardScale || 1) +
+              ')',
+
+            transformOrigin:
+              'center top',
+
+            zIndex: 7,
+          },
+        }),
+
+      // HAIR
+      avatar.hair !== 'none' &&
+        h('img', {
+          src:
+            avatar.gender === 'male'
+              ? '/assets/avatar-v2/hair/male/' +
+                avatar.hair +
+                '.png'
+              : '/assets/avatar-v2/hair/female/' +
+                avatar.hair +
+                '.png',
+
+          alt: '',
+
+          style: {
+            position: 'absolute',
+
+            width:
+              hairStyle.width,
+
+            height: 'auto',
+
+            left: '50%',
+            top: hairStyle.top,
+
+            transform:
+              'translateX(calc(-50% + ' +
+              hairStyle.x +
+              ')) ' +
+              'translate(' +
+              (avatar.hairX || 0) +
+              'px, ' +
+              (avatar.hairY || 0) +
+              'px) ' +
+              'scale(' +
+              (avatar.hairScale || 1) +
+              ')',
+
+            transformOrigin:
+              'center top',
+
+            zIndex: 8,
+          },
+        }),
+
+      // ACCESSORY
+      avatar.accessory !== 'none' &&
+        h('img', {
+          src:
+            '/assets/avatar-v2/accessories/' +
+            avatar.accessory +
+            '.png',
+
+          alt: '',
+
+          style: {
+            position: 'absolute',
+
+            width: '24%',
+            height: 'auto',
+
+            left: '50%',
+            top: '16%',
+
+            transform:
+              'translateX(-50%) ' +
+              'translate(' +
+              (avatar.accessoryX || 0) +
+              'px, ' +
+              (avatar.accessoryY || 0) +
+              'px) ' +
+              'scale(' +
+              (avatar.accessoryScale || 1) +
+              ')',
+
+            transformOrigin:
+              'center center',
+
+            zIndex: 12,
+          },
+        })
+    )
+  );
+}
   return h(
     React.Fragment,
     null,
