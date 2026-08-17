@@ -7204,7 +7204,95 @@ h(
     },
   })
 ),
+// ==========================================
+// PLAYER SPEECH BUBBLE
+// ==========================================
 
+playerSpeech &&
+  h(
+    'div',
+    {
+      style: {
+        position: 'relative',
+
+        maxWidth: '620px',
+
+        margin:
+          '28px 0 24px auto',
+
+        padding: '18px 22px',
+
+        borderRadius: '20px',
+
+        background: '#ef1b13',
+
+        color: '#ffffff',
+
+        boxShadow:
+          '0 12px 35px rgba(239,27,19,.18)',
+      },
+    },
+
+    h(
+      'div',
+      {
+        style: {
+          marginBottom: '7px',
+
+          color:
+            'rgba(255,255,255,.70)',
+
+          fontSize: '11px',
+
+          fontWeight: '900',
+
+          letterSpacing: '.08em',
+
+          textTransform: 'uppercase',
+        },
+      },
+
+      playerName
+    ),
+
+    h(
+      'div',
+      {
+        style: {
+          fontSize: '16px',
+
+          lineHeight: '1.6',
+
+          fontWeight: '700',
+        },
+      },
+
+      playerSpeech
+    ),
+
+    // bubble tail - მარჯვნივ
+    h('div', {
+      style: {
+        position: 'absolute',
+
+        right: '42px',
+
+        bottom: '-14px',
+
+        width: '0',
+        height: '0',
+
+        borderLeft:
+          '4px solid transparent',
+
+        borderRight:
+          '16px solid transparent',
+
+        borderTop:
+          '16px solid #ef1b13',
+      },
+    })
+  ),
 // ==========================================
 // HINT BUTTON
 // ==========================================
