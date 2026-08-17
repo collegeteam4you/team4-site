@@ -6628,6 +6628,71 @@ function useInterviewHint() {
       : '💡 Think not only about why you need the job, but what value you can create for the company.'
   );
 }
+  React.useEffect(function () {
+  try {
+    const savedUser =
+      localStorage.getItem('team4LabUser');
+
+    if (savedUser) {
+      const user = JSON.parse(savedUser);
+
+      if (user.avatar) {
+        setAvatar(user.avatar);
+        return;
+      }
+    }
+
+    setAvatar({
+      gender:
+        localStorage.getItem('team4AvatarGender') || 'male',
+
+      look:
+        localStorage.getItem('team4AvatarLook') || 'team4-look',
+
+      hair:
+        localStorage.getItem('team4AvatarHair') || 'none',
+
+      beard:
+        localStorage.getItem('team4AvatarBeard') || 'none',
+
+      accessory:
+        localStorage.getItem('team4AvatarAccessory') || 'none',
+
+      hairX:
+        Number(localStorage.getItem('team4AvatarHairX')) || 0,
+
+      hairY:
+        Number(localStorage.getItem('team4AvatarHairY')) || 0,
+
+      hairScale:
+        Number(localStorage.getItem('team4AvatarHairScale')) || 1,
+
+      beardX:
+        Number(localStorage.getItem('team4AvatarBeardX')) || 0,
+
+      beardY:
+        Number(localStorage.getItem('team4AvatarBeardY')) || 0,
+
+      beardScale:
+        Number(localStorage.getItem('team4AvatarBeardScale')) || 1,
+
+      accessoryX:
+        Number(localStorage.getItem('team4AvatarAccessoryX')) || 0,
+
+      accessoryY:
+        Number(localStorage.getItem('team4AvatarAccessoryY')) || 0,
+
+      accessoryScale:
+        Number(localStorage.getItem('team4AvatarAccessoryScale')) || 1,
+    });
+
+  } catch (error) {
+    console.error(
+      'Interview avatar load error:',
+      error
+    );
+  }
+}, []);
   return h(
     React.Fragment,
     null,
