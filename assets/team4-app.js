@@ -6773,15 +6773,7 @@ function renderInterviewAvatar() {
   return h(
     'div',
     {
-      style: {
-        width: '230px',
-        height: '340px',
-        position: 'relative',
-        overflow: 'hidden',
-        borderRadius: '18px',
-        background:
-          'linear-gradient(180deg,#f7f7f7,#e9e9e9)',
-      },
+      'linear-gradient(180deg,#f7f7f7,#e9e9e9)',
     },
 
     h(
