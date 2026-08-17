@@ -6780,7 +6780,13 @@ if (isTeam4JobPage) {
     setLang,
   });
 }
-
+// INTERVIEW
+if (isTeam4InterviewPage) {
+  return h(Team4InterviewPage, {
+    lang,
+    setLang,
+  });
+}
   // TEAM4 LAB
   if (isTeam4LabPage) {
     return h(Team4LabPage, {
