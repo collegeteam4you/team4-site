@@ -6598,6 +6598,15 @@ const [hintsLeft, setHintsLeft] = React.useState(
 const [hintText, setHintText] =
   React.useState('');
   // ==========================================
+// PLAYER ANSWER
+// ==========================================
+
+const [selectedAnswer, setSelectedAnswer] =
+  React.useState(null);
+
+const [playerSpeech, setPlayerSpeech] =
+  React.useState('');
+  // ==========================================
 // USE INTERVIEW HINT
 // ==========================================
 
