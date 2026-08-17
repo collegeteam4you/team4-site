@@ -5792,34 +5792,191 @@ function savePlayerName() {
         ),
 
         h(
-          'div',
-          {
-            style: {
-              padding: '24px',
-              borderRadius: '20px',
-              background: '#111319',
-              border:
-                '1px solid rgba(255,255,255,.10)',
-            },
-          },
+  'div',
+  {
+    style: {
+      display: 'grid',
+      gridTemplateColumns:
+        '320px minmax(0, 1fr)',
+      gap: '24px',
+      alignItems: 'start',
+    },
+  },
 
-          h(
-            'pre',
-            {
-              style: {
-                margin: 0,
-                whiteSpace: 'pre-wrap',
-                color: '#ffffff',
-              },
-            },
+  // ==========================================
+  // PLAYER CARD
+  // ==========================================
 
-            avatar
-              ? JSON.stringify(avatar, null, 2)
-              : isGeo
-                ? 'იტვირთება...'
-                : 'Loading...'
-          )
-        )
+  h(
+    'div',
+    {
+      style: {
+        padding: '22px',
+        borderRadius: '22px',
+        background: '#111319',
+
+        border:
+          '1px solid rgba(255,255,255,.10)',
+      },
+    },
+
+    h(
+      'div',
+      {
+        style: {
+          marginBottom: '18px',
+          fontSize: '14px',
+          color: 'rgba(255,255,255,.55)',
+          fontWeight: '800',
+        },
+      },
+
+      isGeo
+        ? 'შენი პერსონაჟი'
+        : 'Your Character'
+    ),
+
+    h('input', {
+      type: 'text',
+
+      value: playerName,
+
+      onChange: function (event) {
+        setPlayerName(event.target.value);
+      },
+
+      placeholder:
+        isGeo
+          ? 'შეიყვანე სახელი'
+          : 'Enter name',
+
+      style: {
+        width: '100%',
+        boxSizing: 'border-box',
+
+        padding: '13px 14px',
+        marginBottom: '10px',
+
+        borderRadius: '10px',
+
+        border:
+          '1px solid rgba(255,255,255,.14)',
+
+        background: '#0b0d12',
+
+        color: '#ffffff',
+
+        fontSize: '16px',
+        fontWeight: '700',
+
+        outline: 'none',
+      },
+    }),
+
+    h(
+      'button',
+      {
+        type: 'button',
+
+        onClick: savePlayerName,
+
+        style: {
+          width: '100%',
+
+          padding: '12px 14px',
+          marginBottom: '22px',
+
+          border: 'none',
+          borderRadius: '10px',
+
+          background: '#ef1b13',
+
+          color: '#ffffff',
+
+          fontWeight: '900',
+
+          cursor: 'pointer',
+        },
+      },
+
+      isGeo
+        ? 'სახელის შენახვა'
+        : 'Save Name'
+    ),
+
+    h(
+      'div',
+      {
+        style: {
+          display: 'grid',
+          gap: '10px',
+        },
+      },
+
+      h('div', null, '💰 Cash: 2,450 ₾'),
+
+      h('div', null, '⭐ Level: 1'),
+
+      h(
+        'div',
+        null,
+        isGeo
+          ? '💼 სტატუსი: უმუშევარი'
+          : '💼 Status: Unemployed'
+      )
+    )
+  ),
+
+  // ==========================================
+  // JOB AREA
+  // ==========================================
+
+  h(
+    'div',
+    {
+      style: {
+        minHeight: '420px',
+
+        padding: '24px',
+
+        borderRadius: '22px',
+
+        background: '#111319',
+
+        border:
+          '1px solid rgba(255,255,255,.10)',
+      },
+    },
+
+    h(
+      'h2',
+      {
+        style: {
+          margin: '0 0 10px',
+          fontSize: '28px',
+        },
+      },
+
+      isGeo
+        ? 'სამსახურის ვარიანტები'
+        : 'Job Options'
+    ),
+
+    h(
+      'p',
+      {
+        style: {
+          margin: 0,
+          color: 'rgba(255,255,255,.60)',
+        },
+      },
+
+      isGeo
+        ? 'აქ გამოჩნდება ორი სამსახური.'
+        : 'Two job options will appear here.'
+    )
+  )
+)
       )
     ),
 
