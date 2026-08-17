@@ -6565,7 +6565,7 @@ h(
 
 function Team4InterviewPage({ lang, setLang }) {
   const isGeo = lang === 'GEO';
-
+const [avatar, setAvatar] = React.useState(null);
   const selectedJob =
     localStorage.getItem('team4SelectedJob') ||
     'junior-sales';
