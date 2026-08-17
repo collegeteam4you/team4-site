@@ -5651,6 +5651,9 @@ function Team4JobPage({ lang, setLang }) {
   const [playerName, setPlayerName] = React.useState(
   () => localStorage.getItem('team4PlayerName') || ''
 );
+  const [nameSaved, setNameSaved] = React.useState(
+  () => !!localStorage.getItem('team4PlayerName')
+);
 function savePlayerName() {
   const cleanName = playerName.trim();
 
