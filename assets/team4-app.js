@@ -6597,6 +6597,37 @@ const [hintsLeft, setHintsLeft] = React.useState(
 
 const [hintText, setHintText] =
   React.useState('');
+  // ==========================================
+// USE INTERVIEW HINT
+// ==========================================
+
+function useInterviewHint() {
+  if (hintsLeft <= 0) {
+    alert(
+      isGeo
+        ? 'უფასო მინიშნებები ამოგეწურა.'
+        : 'You have no free hints left.'
+    );
+
+    return;
+  }
+
+  const newHints =
+    hintsLeft - 1;
+
+  setHintsLeft(newHints);
+
+  localStorage.setItem(
+    'team4Hints',
+    String(newHints)
+  );
+
+  setHintText(
+    isGeo
+      ? '💡 იფიქრე არა იმაზე, რატომ გჭირდება სამსახური, არამედ რა ღირებულების შექმნა შეგიძლია კომპანიისთვის.'
+      : '💡 Think not only about why you need the job, but what value you can create for the company.'
+  );
+}
   return h(
     React.Fragment,
     null,
