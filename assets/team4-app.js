@@ -6195,50 +6195,320 @@ renderJobAvatar(),
   // ==========================================
 
   h(
-    'div',
+  'div',
+  {
+    style: {
+      minHeight: '420px',
+
+      padding: '24px',
+
+      borderRadius: '22px',
+
+      background: '#111319',
+
+      border:
+        '1px solid rgba(255,255,255,.10)',
+    },
+  },
+
+  h(
+    'h2',
     {
       style: {
-        minHeight: '420px',
-
-        padding: '24px',
-
-        borderRadius: '22px',
-
-        background: '#111319',
-
-        border:
-          '1px solid rgba(255,255,255,.10)',
+        margin: '0 0 8px',
+        fontSize: '28px',
       },
     },
 
+    isGeo
+      ? 'სამსახურის ვარიანტები'
+      : 'Job Options'
+  ),
+
+  h(
+    'p',
+    {
+      style: {
+        margin: '0 0 22px',
+        color: 'rgba(255,255,255,.60)',
+      },
+    },
+
+    isGeo
+      ? 'აირჩიე პოზიცია და გაიარე გასაუბრება.'
+      : 'Choose a position and attend the interview.'
+  ),
+
+  h(
+    'div',
+    {
+      style: {
+        display: 'grid',
+        gridTemplateColumns:
+          'repeat(2, minmax(0, 1fr))',
+        gap: '18px',
+      },
+    },
+
+    // ==========================================
+    // JOB 1 — JUNIOR SALES
+    // ==========================================
+
     h(
-      'h2',
+      'article',
       {
         style: {
-          margin: '0 0 10px',
-          fontSize: '28px',
+          padding: '22px',
+
+          borderRadius: '18px',
+
+          border:
+            '1px solid rgba(239,27,19,.30)',
+
+          background:
+            'linear-gradient(145deg, rgba(239,27,19,.10), rgba(255,255,255,.025))',
         },
       },
 
-      isGeo
-        ? 'სამსახურის ვარიანტები'
-        : 'Job Options'
+      h(
+        'div',
+        {
+          style: {
+            marginBottom: '12px',
+            fontSize: '30px',
+          },
+        },
+        '💼'
+      ),
+
+      h(
+        'h3',
+        {
+          style: {
+            margin: '0 0 8px',
+            fontSize: '22px',
+            fontWeight: '900',
+          },
+        },
+
+        'Junior Sales'
+      ),
+
+      h(
+        'p',
+        {
+          style: {
+            margin: '0 0 18px',
+            color: 'rgba(255,255,255,.62)',
+            lineHeight: '1.5',
+            fontSize: '14px',
+          },
+        },
+
+        isGeo
+          ? 'სტაბილური დასაწყისი, შედარებით მარტივი ლიდები და კარგი გარემო გამოცდილების დასაგროვებლად.'
+          : 'A stable starting role with easier leads and a good environment for gaining experience.'
+      ),
+
+      h(
+        'div',
+        {
+          style: {
+            display: 'grid',
+            gap: '8px',
+            marginBottom: '20px',
+            fontSize: '14px',
+          },
+        },
+
+        h('div', null, '💰 1,200 ₾ / თვე'),
+
+        h(
+          'div',
+          null,
+          isGeo
+            ? '📈 კომისია: 5–10%'
+            : '📈 Commission: 5–10%'
+        ),
+
+        h(
+          'div',
+          null,
+          isGeo
+            ? '🎯 სირთულე: მარტივი'
+            : '🎯 Difficulty: Easy'
+        )
+      ),
+
+      h(
+        'button',
+        {
+          type: 'button',
+
+          onClick: function () {
+            localStorage.setItem(
+              'team4SelectedJob',
+              'junior-sales'
+            );
+
+            window.location.href =
+              '/team4-lab/interview';
+          },
+
+          style: {
+            width: '100%',
+
+            padding: '14px 16px',
+
+            border: 'none',
+            borderRadius: '10px',
+
+            background: '#ef1b13',
+
+            color: '#fff',
+
+            fontWeight: '900',
+
+            cursor: 'pointer',
+          },
+        },
+
+        isGeo
+          ? 'გასაუბრებაზე წასვლა →'
+          : 'Go To Interview →'
+      )
     ),
 
+    // ==========================================
+    // JOB 2 — SALES REPRESENTATIVE
+    // ==========================================
+
     h(
-      'p',
+      'article',
       {
         style: {
-          margin: 0,
-          color: 'rgba(255,255,255,.60)',
+          padding: '22px',
+
+          borderRadius: '18px',
+
+          border:
+            '1px solid rgba(70,110,255,.30)',
+
+          background:
+            'linear-gradient(145deg, rgba(70,110,255,.10), rgba(255,255,255,.025))',
         },
       },
 
-      isGeo
-        ? 'აქ გამოჩნდება ორი სამსახური.'
-        : 'Two job options will appear here.'
+      h(
+        'div',
+        {
+          style: {
+            marginBottom: '12px',
+            fontSize: '30px',
+          },
+        },
+        '🚀'
+      ),
+
+      h(
+        'h3',
+        {
+          style: {
+            margin: '0 0 8px',
+            fontSize: '22px',
+            fontWeight: '900',
+          },
+        },
+
+        'Sales Representative'
+      ),
+
+      h(
+        'p',
+        {
+          style: {
+            margin: '0 0 18px',
+            color: 'rgba(255,255,255,.62)',
+            lineHeight: '1.5',
+            fontSize: '14px',
+          },
+        },
+
+        isGeo
+          ? 'უფრო რთული კლიენტები, ნაკლები ფიქსირებული ხელფასი, მაგრამ მაღალი შემოსავლის პოტენციალი.'
+          : 'Harder clients and lower base salary, but much higher earning potential.'
+      ),
+
+      h(
+        'div',
+        {
+          style: {
+            display: 'grid',
+            gap: '8px',
+            marginBottom: '20px',
+            fontSize: '14px',
+          },
+        },
+
+        h('div', null, '💰 900 ₾ / თვე'),
+
+        h(
+          'div',
+          null,
+          isGeo
+            ? '📈 კომისია: 10–20%'
+            : '📈 Commission: 10–20%'
+        ),
+
+        h(
+          'div',
+          null,
+          isGeo
+            ? '🎯 სირთულე: საშუალო'
+            : '🎯 Difficulty: Medium'
+        )
+      ),
+
+      h(
+        'button',
+        {
+          type: 'button',
+
+          onClick: function () {
+            localStorage.setItem(
+              'team4SelectedJob',
+              'sales-representative'
+            );
+
+            window.location.href =
+              '/team4-lab/interview';
+          },
+
+          style: {
+            width: '100%',
+
+            padding: '14px 16px',
+
+            border: 'none',
+            borderRadius: '10px',
+
+            background: '#3157ff',
+
+            color: '#fff',
+
+            fontWeight: '900',
+
+            cursor: 'pointer',
+          },
+        },
+
+        isGeo
+          ? 'გასაუბრებაზე წასვლა →'
+          : 'Go To Interview →'
+      )
     )
   )
+)
 )
       )
     ),
