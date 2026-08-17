@@ -6365,14 +6365,25 @@ renderJobAvatar(),
           type: 'button',
 
           onClick: function () {
-            localStorage.setItem(
-              'team4SelectedJob',
-              'junior-sales'
-            );
 
-            window.location.href =
-              '/team4-lab/interview';
-          },
+  if (!nameSaved || !playerName.trim()) {
+    alert(
+      isGeo
+        ? 'ჯერ შეიყვანე და შეინახე პერსონაჟის სახელი.'
+        : 'Please enter and save your character name first.'
+    );
+
+    return;
+  }
+
+  localStorage.setItem(
+    'team4SelectedJob',
+    'junior-sales'
+  );
+
+  window.location.href =
+    '/team4-lab/interview';
+},
 
           style: {
             width: '100%',
