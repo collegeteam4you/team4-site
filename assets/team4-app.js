@@ -7044,67 +7044,229 @@ function renderInterviewAvatar() {
               : 'HR Manager'
           ),
 // ==========================================
-// PLAYER AVATAR TEST
+// INTERVIEW ROOM SCENE
 // ==========================================
 
 h(
   'div',
   {
     style: {
-      marginTop: '20px',
-      marginBottom: '20px',
+      position: 'relative',
+      height: '470px',
+      marginBottom: '30px',
 
-      display: 'flex',
-      alignItems: 'center',
-      gap: '18px',
+      overflow: 'hidden',
 
-      padding: '18px',
-
-      borderRadius: '16px',
+      borderRadius: '24px',
 
       background:
-        'rgba(255,255,255,.035)',
+        'linear-gradient(180deg, #20242c 0%, #15181e 70%, #101216 100%)',
 
       border:
-        '1px solid rgba(255,255,255,.08)',
+        '1px solid rgba(255,255,255,.10)',
     },
   },
 
-  renderInterviewAvatar(),
+
+  // ========================================
+  // ROOM TITLE
+  // ========================================
 
   h(
     'div',
-    null,
+    {
+      style: {
+        position: 'absolute',
+        top: '20px',
+        left: '24px',
+
+        color: 'rgba(255,255,255,.45)',
+
+        fontSize: '12px',
+        fontWeight: '900',
+        letterSpacing: '.12em',
+      },
+    },
+
+    isGeo
+      ? 'გასაუბრების ოთახი'
+      : 'INTERVIEW ROOM'
+  ),
+
+
+  // ========================================
+  // HR PERSON
+  // ========================================
+
+  h(
+    'div',
+    {
+      style: {
+        position: 'absolute',
+
+        left: '8%',
+        bottom: '70px',
+
+        width: '190px',
+
+        textAlign: 'center',
+
+        zIndex: 3,
+      },
+    },
 
     h(
       'div',
       {
         style: {
-          marginBottom: '5px',
-          color: 'rgba(255,255,255,.50)',
-          fontSize: '12px',
-          fontWeight: '800',
-          textTransform: 'uppercase',
-          letterSpacing: '.08em',
+          fontSize: '110px',
+          lineHeight: '1',
+        },
+      },
+
+      '👩‍💼'
+    ),
+
+    h(
+      'div',
+      {
+        style: {
+          marginTop: '8px',
+
+          fontSize: '14px',
+          fontWeight: '900',
         },
       },
 
       isGeo
-        ? 'კანდიდატი'
-        : 'Candidate'
-    ),
-
-    h(
-      'strong',
-      {
-        style: {
-          color: '#ffffff',
-          fontSize: '20px',
-        },
-      },
-
-      playerName
+        ? 'HR მენეჯერი'
+        : 'HR Manager'
     )
+  ),
+
+
+  // ========================================
+  // TABLE
+  // ========================================
+
+  h('div', {
+    style: {
+      position: 'absolute',
+
+      left: '50%',
+      bottom: '72px',
+
+      transform:
+        'translateX(-50%)',
+
+      width: '48%',
+      height: '95px',
+
+      background:
+        'linear-gradient(180deg,#70452c,#432718)',
+
+      borderRadius:
+        '14px 14px 5px 5px',
+
+      boxShadow:
+        '0 18px 35px rgba(0,0,0,.45)',
+
+      zIndex: 4,
+    },
+  }),
+
+
+  // LEFT TABLE LEG
+  h('div', {
+    style: {
+      position: 'absolute',
+
+      left: '35%',
+      bottom: '18px',
+
+      width: '22px',
+      height: '65px',
+
+      background: '#352016',
+
+      zIndex: 2,
+    },
+  }),
+
+
+  // RIGHT TABLE LEG
+  h('div', {
+    style: {
+      position: 'absolute',
+
+      right: '35%',
+      bottom: '18px',
+
+      width: '22px',
+      height: '65px',
+
+      background: '#352016',
+
+      zIndex: 2,
+    },
+  }),
+
+
+  // ========================================
+  // PLAYER
+  // ========================================
+
+  h(
+    'div',
+    {
+      style: {
+        position: 'absolute',
+
+        right: '8%',
+        bottom: '55px',
+
+        width: '210px',
+        height: '310px',
+
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'flex-end',
+
+        overflow: 'hidden',
+
+        zIndex: 3,
+      },
+    },
+
+    renderInterviewAvatar()
+  ),
+
+
+  // ========================================
+  // PLAYER NAME
+  // ========================================
+
+  h(
+    'div',
+    {
+      style: {
+        position: 'absolute',
+
+        right: '10%',
+        bottom: '24px',
+
+        width: '170px',
+
+        textAlign: 'center',
+
+        fontSize: '14px',
+        fontWeight: '900',
+
+        zIndex: 6,
+      },
+    },
+
+    playerName
   )
 ),
           // ==========================================
