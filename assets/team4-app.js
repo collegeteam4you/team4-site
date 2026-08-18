@@ -3755,7 +3755,7 @@ return imageOption(
             {
               style: {
                 minHeight:
-                  '720px',
+                  '820px',
 
                 background:
                   '#ffffff',
