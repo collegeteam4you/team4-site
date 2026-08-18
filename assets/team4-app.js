@@ -6796,19 +6796,7 @@ function renderInterviewAvatar() {
       },
     },
 
-    h(
-      'div',
-      {
-        style: {
-          width: '460px',
-          height: '680px',
-          position: 'absolute',
-          left: '0',
-          top: '0',
-          transform: 'scale(0.5)',
-          transformOrigin: 'top left',
-        },
-      },
+    
 
       h('img', {
         src:
