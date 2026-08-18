@@ -7109,26 +7109,26 @@ h(
     },
   },
 
-  h(
-    'div',
-    {
-      style: {
-        width: '230px',
-        height: '340px',
+ h(
+  'div',
+  {
+    style: {
+      width: '230px',
+      height: '340px',
 
-        // ზომა HR-ს მოვარგოთ
-        transform: 'scale(1.12)',
-        transformOrigin: 'top center',
+      // ავატარს ვადიდებთ HR-ის პროპორციამდე
+      transform: 'scale(1.32)',
+      transformOrigin: 'top center',
 
-        // ავატარი ოდნავ ქვემოთ
-        position: 'relative',
-        top: '18px',
-      },
+      position: 'relative',
+
+      // გაზრდის შემდეგ ოდნავ ქვემოთ ვსვამთ
+      top: '10px',
     },
+  },
 
-    renderInterviewAvatar()
-  )
-),
+  renderInterviewAvatar()
+)
   // ========================================
   // PLAYER NAME
   // ========================================
