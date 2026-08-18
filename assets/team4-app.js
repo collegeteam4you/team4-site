@@ -7085,23 +7085,25 @@ h(
     style: {
       position: 'absolute',
 
-      // სკამის პოზიცია
+      // ავატარი სკამის ცენტრში
       left: '54%',
-      bottom: '31%',
+      bottom: '24%',
 
       transform: 'translateX(-50%)',
 
-      // ხილული არე — მხოლოდ ზედა ტანი
-      width: '210px',
-      height: '220px',
+      // უფრო დიდი სივრცე თავისა და თმისთვის
+      width: '280px',
+      height: '330px',
 
-      overflow: 'hidden',
+      // IMPORTANT — აღარ ჭრის თმას/თავს
+      overflow: 'visible',
 
-      zIndex: 8,
+      // ლოგოს წინ
+      zIndex: 20,
 
       display: 'flex',
       justifyContent: 'center',
-      alignItems: 'flex-start',
+      alignItems: 'flex-end',
 
       pointerEvents: 'none',
     },
@@ -7111,19 +7113,18 @@ h(
     'div',
     {
       style: {
-        width: '230px',
-        height: '340px',
+        width: '250px',
+        height: '370px',
 
-        // ავატარს ვადიდებთ, რომ სკამს მოერგოს
-        transform: 'scale(1.18)',
-        transformOrigin: 'top center',
+        // HR-ის პროპორციასთან ვაახლოებთ
+        transform: 'scale(1.28)',
+        transformOrigin: 'bottom center',
       },
     },
 
     renderInterviewAvatar()
   )
 ),
-
   // ========================================
   // PLAYER NAME
   // ========================================
