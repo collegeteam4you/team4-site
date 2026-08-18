@@ -7076,40 +7076,54 @@ h(
     },
   },
 
-  // ========================================
-  // SELECTED PLAYER AVATAR
-  // ========================================
+ // ========================================
+// SELECTED PLAYER AVATAR — SEATED
+// ========================================
+
+h(
+  'div',
+  {
+    style: {
+      position: 'absolute',
+
+      // სკამის პოზიცია
+      left: '50%',
+      bottom: '28%',
+
+      transform: 'translateX(-50%)',
+
+      // ხილული არე — მხოლოდ ზედა ტანი
+      width: '250px',
+      height: '245px',
+
+      overflow: 'hidden',
+
+      zIndex: 8,
+
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'flex-start',
+
+      pointerEvents: 'none',
+    },
+  },
 
   h(
     'div',
     {
       style: {
-        position: 'absolute',
-
-        // ცარიელი სკამის ცენტრი
-        left: '50%',
-
-        // მაგიდის უკან ჩასმა
-        bottom: '22%',
-
-        transform:
-          'translateX(-50%)',
-
         width: '230px',
         height: '340px',
 
-        display: 'flex',
-        alignItems: 'flex-end',
-        justifyContent: 'center',
-
-        overflow: 'hidden',
-
-        zIndex: 10,
+        // ავატარს ვადიდებთ, რომ სკამს მოერგოს
+        transform: 'scale(1.18)',
+        transformOrigin: 'top center',
       },
     },
 
     renderInterviewAvatar()
-  ),
+  )
+),
 
   // ========================================
   // PLAYER NAME
