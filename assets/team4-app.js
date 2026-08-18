@@ -6771,9 +6771,29 @@ function renderInterviewAvatar() {
     };
 
   return h(
+  'div',
+  {
+    style: {
+      width: '230px',
+      height: '340px',
+      position: 'relative',
+      overflow: 'hidden',
+      background: 'transparent',
+    },
+  },
+
+  h(
     'div',
     {
-      'linear-gradient(180deg,#f7f7f7,#e9e9e9)',
+      style: {
+        width: '460px',
+        height: '680px',
+        position: 'absolute',
+        left: '0',
+        top: '0',
+        transform: 'scale(0.5)',
+        transformOrigin: 'top left',
+      },
     },
 
     h(
