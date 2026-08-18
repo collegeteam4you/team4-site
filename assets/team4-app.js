@@ -7049,11 +7049,11 @@ h(
     style: {
       position: 'relative',
 
-      width: '100%',
+      width: '92%',
 
-      aspectRatio: '3 / 2',
+      aspectRatio: '16 / 9',
 
-      marginBottom: '28px',
+      margin: '0 auto 28px',
 
       overflow: 'hidden',
 
@@ -7088,7 +7088,7 @@ h(
 
       // სკამის პოზიცია
       left: '54%',
-      bottom: '34%',
+      bottom: '31%',
 
       transform: 'translateX(-50%)',
 
@@ -7116,7 +7116,7 @@ h(
         height: '340px',
 
         // ავატარს ვადიდებთ, რომ სკამს მოერგოს
-        transform: 'scale(1.02)',
+        transform: 'scale(1.18)',
         transformOrigin: 'top center',
       },
     },
