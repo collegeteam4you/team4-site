@@ -5818,7 +5818,7 @@ function renderJobAvatar() {
   width: '230px',
   height: '340px',
   position: 'relative',
-  overflow: 'hidden',
+  overflow: 'visible',
   background: 'transparent',
 },
     },
