@@ -7085,25 +7085,25 @@ h(
     style: {
       position: 'absolute',
 
-      // ავატარი სკამის ცენტრში
+      // სკამის ცენტრი
       left: '54%',
-      bottom: '24%',
+      bottom: '25%',
 
       transform: 'translateX(-50%)',
 
-      // უფრო დიდი სივრცე თავისა და თმისთვის
-      width: '280px',
-      height: '330px',
+      // ფანჯარა, რომელშიც ავატარი ჩანს
+      width: '240px',
+      height: '245px',
 
-      // IMPORTANT — აღარ ჭრის თმას/თავს
-      overflow: 'visible',
+      // ფეხებს ვჭრით
+      overflow: 'hidden',
 
-      // ლოგოს წინ
+      // ავატარი ოთახის ფოტოს ზემოდან
       zIndex: 20,
 
       display: 'flex',
       justifyContent: 'center',
-      alignItems: 'flex-end',
+      alignItems: 'flex-start',
 
       pointerEvents: 'none',
     },
@@ -7113,12 +7113,16 @@ h(
     'div',
     {
       style: {
-        width: '250px',
-        height: '370px',
+        width: '230px',
+        height: '340px',
 
-        // HR-ის პროპორციასთან ვაახლოებთ
-        transform: 'scale(1.28)',
-        transformOrigin: 'bottom center',
+        // ზომა HR-ს მოვარგოთ
+        transform: 'scale(1.12)',
+        transformOrigin: 'top center',
+
+        // ავატარი ოდნავ ქვემოთ
+        position: 'relative',
+        top: '18px',
       },
     },
 
