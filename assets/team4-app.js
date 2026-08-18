@@ -7127,8 +7127,10 @@ h(
     },
   },
 
-  renderInterviewAvatar()
+ renderInterviewAvatar()
+  )
 ),
+
   // ========================================
   // PLAYER NAME
   // ========================================
