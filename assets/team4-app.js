@@ -7020,7 +7020,6 @@ function renderInterviewAvatar() {
               },
             },
 
-            '👩‍💼'
           ),
 
           h(
