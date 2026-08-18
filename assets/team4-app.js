@@ -7087,7 +7087,7 @@ h(
 
       // სკამის ცენტრი
       left: '54%',
-      bottom: '31%',
+      bottom: '36%',
 
       transform: 'translateX(-50%)',
 
