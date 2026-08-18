@@ -7087,14 +7087,14 @@ h(
       position: 'absolute',
 
       // სკამის პოზიცია
-      left: '50%',
-      bottom: '28%',
+      left: '54%',
+      bottom: '34%',
 
       transform: 'translateX(-50%)',
 
       // ხილული არე — მხოლოდ ზედა ტანი
-      width: '250px',
-      height: '245px',
+      width: '210px',
+      height: '220px',
 
       overflow: 'hidden',
 
@@ -7116,7 +7116,7 @@ h(
         height: '340px',
 
         // ავატარს ვადიდებთ, რომ სკამს მოერგოს
-        transform: 'scale(1.18)',
+        transform: 'scale(1.02)',
         transformOrigin: 'top center',
       },
     },
