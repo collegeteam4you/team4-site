@@ -7030,28 +7030,7 @@ function renderInterviewAvatar() {
           ),
 
 
-  // ========================================
-  // PLAYER COFFEE
-  // ========================================
-
-  h(
-    'div',
-    {
-      style: {
-        position: 'absolute',
-
-        right: '34%',
-        bottom: '145px',
-
-        fontSize: '44px',
-
-        zIndex: 13,
-      },
-    },
-
-    '☕'
-  )
-),
+ 
         // ==========================================
 // INTERVIEW ROOM IMAGE + PLAYER AVATAR
 // ==========================================
