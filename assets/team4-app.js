@@ -7136,7 +7136,7 @@ h(
         position: 'absolute',
 
         left: '50%',
-        bottom: '17%',
+        bottom: '24%',
 
         transform:
           'translateX(-50%)',
