@@ -6791,7 +6791,7 @@ function renderInterviewAvatar() {
         position: 'absolute',
         left: '0',
         top: '0',
-        transform: 'scale(0.5)',
+        transform: 'scale(0.5) scaleY(0.93)',
         transformOrigin: 'top left',
       },
     },
