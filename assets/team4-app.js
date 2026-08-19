@@ -7946,9 +7946,30 @@ h(
   {
     type: 'button',
 
-    onClick: function () {
-      setInterviewFinished(true);
-    },
+onClick: function () {
+  setInterviewFinished(true);
+
+  if (correctAnswers < 4) {
+    const nextRetry =
+      Date.now() + 60 * 60 * 1000;
+
+    localStorage.setItem(
+      'team4InterviewRetryUntil',
+      String(nextRetry)
+    );
+
+    setRetryUntil(nextRetry);
+  } else {
+    localStorage.removeItem(
+      'team4InterviewRetryUntil'
+    );
+
+    localStorage.setItem(
+      'team4InterviewPassed',
+      'true'
+    );
+  }
+},
 
     style: {
       marginTop: '18px',
