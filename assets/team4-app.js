@@ -6606,9 +6606,11 @@ const [playerSpeech, setPlayerSpeech] =
 const [currentQuestion, setCurrentQuestion] =
   React.useState(0);
 
-const [interviewScore, setInterviewScore] =
+const [correctAnswers, setCorrectAnswers] =
   React.useState(0);
 
+const [interviewFinished, setInterviewFinished] =
+  React.useState(false);
 const [hrReaction, setHrReaction] =
   React.useState('');
   // ==========================================
