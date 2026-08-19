@@ -7087,18 +7087,20 @@ h(
 
       // სკამის ცენტრი
       left: '54%',
-      bottom: '36%',
+
+      // ავატარის თავი TEAM4-ის წარწერის ქვემოთ იწყება
+      top: '27%',
 
       transform: 'translateX(-50%)',
 
-      // ფანჯარა, რომელშიც ავატარი ჩანს
-      width: '240px',
-      height: '245px',
+      width: '220px',
 
-      // ფეხებს ვჭრით
+      // აქ ვწყვეტთ ავატარს მაგიდის უკანა ზოლზე
+      height: '230px',
+
+      // ქვედა ნაწილი აღარ გადმოვა მაგიდაზე
       overflow: 'hidden',
 
-      // ავატარი ოთახის ფოტოს ზემოდან
       zIndex: 20,
 
       display: 'flex',
@@ -7109,28 +7111,25 @@ h(
     },
   },
 
- h(
-  'div',
-  {
-    style: {
-      width: '230px',
-      height: '340px',
+  h(
+    'div',
+    {
+      style: {
+        width: '230px',
+        height: '340px',
 
-      // ავატარს ვადიდებთ HR-ის პროპორციამდე
-      transform: 'scale(1.32)',
-      transformOrigin: 'top center',
+        // ზომა უცვლელი/ბუნებრივი
+        transform: 'scale(1.08)',
+        transformOrigin: 'top center',
 
-      position: 'relative',
-
-      // გაზრდის შემდეგ ოდნავ ქვემოთ ვსვამთ
-      top: '10px',
+        position: 'relative',
+        top: '0',
+      },
     },
-  },
 
- renderInterviewAvatar()
+    renderInterviewAvatar()
   )
 ),
-
   // ========================================
   // PLAYER NAME
   // ========================================
