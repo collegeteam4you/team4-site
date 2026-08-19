@@ -7367,13 +7367,9 @@ h(
       },
     },
 
-    isGeo
-      ? 'გამარჯობა, ' +
-        playerName +
-        '. მოკლედ მომიყევი შენს შესახებ და რატომ გინდა გაყიდვებში მუშაობა?'
-      : 'Hello, ' +
-        playerName +
-        '. Tell me briefly about yourself and why you want to work in sales.'
+isGeo
+  ? activeQuestion.questionGeo
+  : activeQuestion.questionEng
   ),
 
   // Speech Bubble-ის კუდი
