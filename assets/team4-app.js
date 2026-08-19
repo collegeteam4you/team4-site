@@ -6730,6 +6730,7 @@ const interviewQuestions = [
         score: 0,
       },
     ],
+  },
   
 // ========================================
 // QUESTION 3
