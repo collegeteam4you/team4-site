@@ -6730,8 +6730,7 @@ const interviewQuestions = [
         score: 0,
       },
     ],
-  },
-];
+  
 // ========================================
 // QUESTION 3
 // ========================================
@@ -6902,9 +6901,10 @@ const interviewQuestions = [
       eng:
         'I would tell them the offer is about to expire, even if that is not actually true.',
       score: 0,
-    },
-  ],
+    ],
 },
+];
+
 const activeQuestion =
   interviewQuestions[currentQuestion];
   // ==========================================
