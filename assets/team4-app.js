@@ -7767,19 +7767,23 @@ h(
           type: 'button',
 
           onClick: function () {
-            setSelectedAnswer(answer.id);
+  setSelectedAnswer(answer.id);
 
-            setPlayerSpeech(
-              isGeo
-                ? answer.geo
-                : answer.eng
-            );
+  setPlayerSpeech(
+    isGeo
+      ? answer.geo
+      : answer.eng
+  );
 
-            setInterviewScore(
-              interviewScore + answer.score
-            );
-          },
-
+  if (
+    answer.id ===
+    activeQuestion.correctAnswer
+  ) {
+    setCorrectAnswers(
+      correctAnswers + 1
+    );
+  }
+},
           style: {
             width: '100%',
             padding: '15px 17px',
