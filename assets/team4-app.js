@@ -7899,6 +7899,125 @@ isGeo
 );
 }
 // ==========================================
+// FINISH INTERVIEW BUTTON
+// ==========================================
+
+selectedAnswer &&
+currentQuestion === interviewQuestions.length - 1 &&
+!interviewFinished &&
+h(
+  'button',
+  {
+    type: 'button',
+
+    onClick: function () {
+      setInterviewFinished(true);
+    },
+
+    style: {
+      marginTop: '18px',
+      padding: '14px 22px',
+      border: 'none',
+      borderRadius: '12px',
+      background: '#ef1b13',
+      color: '#ffffff',
+      fontSize: '14px',
+      fontWeight: '900',
+      cursor: 'pointer',
+    },
+  },
+
+  isGeo
+    ? 'გასაუბრების დასრულება →'
+    : 'Finish Interview →'
+),
+
+// ==========================================
+// INTERVIEW RESULT
+// ==========================================
+
+interviewFinished &&
+h(
+  'div',
+  {
+    style: {
+      marginTop: '24px',
+      padding: '24px',
+      borderRadius: '18px',
+
+      background:
+        correctAnswers >= 4
+          ? 'rgba(40,180,90,.12)'
+          : 'rgba(239,27,19,.10)',
+
+      border:
+        correctAnswers >= 4
+          ? '1px solid rgba(40,180,90,.40)'
+          : '1px solid rgba(239,27,19,.35)',
+    },
+  },
+
+  h(
+    'h2',
+    {
+      style: {
+        margin: '0 0 12px',
+        fontSize: '24px',
+        fontWeight: '900',
+      },
+    },
+
+    correctAnswers >= 4
+      ? (
+          isGeo
+            ? 'გილოცავთ! თქვენ გაიარეთ გასაუბრება.'
+            : 'Congratulations! You passed the interview.'
+        )
+      : (
+          isGeo
+            ? 'მადლობა გასაუბრებისთვის.'
+            : 'Thank you for the interview.'
+        )
+  ),
+
+  h(
+    'p',
+    {
+      style: {
+        margin: '0 0 10px',
+        fontSize: '16px',
+        fontWeight: '800',
+      },
+    },
+
+    isGeo
+      ? 'სწორი პასუხები: ' + correctAnswers + ' / 5'
+      : 'Correct answers: ' + correctAnswers + ' / 5'
+  ),
+
+  h(
+    'p',
+    {
+      style: {
+        margin: 0,
+        lineHeight: '1.6',
+      },
+    },
+
+    correctAnswers >= 4
+      ? (
+          isGeo
+            ? 'HR: გილოცავთ. თქვენ წარმატებით გაიარეთ გასაუბრება და გადადიხართ შემდეგ ეტაპზე.'
+            : 'HR: Congratulations. You successfully passed the interview and move to the next stage.'
+        )
+      : (
+          isGeo
+            ? 'HR: მადლობა. ჩვენ დაგიკავშირდებით. გასაუბრების ხელახლა გავლას 1 საათში შეძლებთ.'
+            : 'HR: Thank you. We will contact you. You can try the interview again in 1 hour.'
+        )
+  )
+)
+// ==========================================
 // APP
 // ==========================================
 
