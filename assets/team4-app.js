@@ -6626,6 +6626,31 @@ const [now, setNow] =
 
 const [showRetryVideo, setShowRetryVideo] =
   React.useState(false);
+  React.useEffect(function () {
+  const timer = setInterval(function () {
+    setNow(Date.now());
+  }, 1000);
+
+  return function () {
+    clearInterval(timer);
+  };
+}, []);
+  const interviewLocked =
+  retryUntil > now;
+
+const retrySeconds =
+  Math.max(
+    0,
+    Math.ceil(
+      (retryUntil - now) / 1000
+    )
+  );
+
+const retryMinutes =
+  Math.floor(retrySeconds / 60);
+
+const retryRemainingSeconds =
+  retrySeconds % 60;
 const [hrReaction, setHrReaction] =
   React.useState('');
   // ==========================================
