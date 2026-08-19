@@ -6611,6 +6611,21 @@ const [correctAnswers, setCorrectAnswers] =
 
 const [interviewFinished, setInterviewFinished] =
   React.useState(false);
+  const [retryUntil, setRetryUntil] =
+  React.useState(
+    () =>
+      Number(
+        localStorage.getItem(
+          'team4InterviewRetryUntil'
+        )
+      ) || 0
+  );
+
+const [now, setNow] =
+  React.useState(Date.now());
+
+const [showRetryVideo, setShowRetryVideo] =
+  React.useState(false);
 const [hrReaction, setHrReaction] =
   React.useState('');
   // ==========================================
