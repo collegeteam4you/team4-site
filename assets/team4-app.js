@@ -7119,7 +7119,7 @@ clipPath: 'inset(-120px 0 0 0)',
         width: '230px',
         height: '340px',
 
-        transform: 'scale(1.08)',
+        transform: 'scale(1.42)',
         transformOrigin: 'top center',
 
         position: 'relative',
