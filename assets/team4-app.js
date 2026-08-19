@@ -6600,6 +6600,142 @@ const [selectedAnswer, setSelectedAnswer] =
 const [playerSpeech, setPlayerSpeech] =
   React.useState('');
   // ==========================================
+// INTERVIEW PROGRESS
+// ==========================================
+
+const [currentQuestion, setCurrentQuestion] =
+  React.useState(0);
+
+const [interviewScore, setInterviewScore] =
+  React.useState(0);
+
+const [hrReaction, setHrReaction] =
+  React.useState('');
+  // ==========================================
+// INTERVIEW QUESTIONS
+// ==========================================
+
+const interviewQuestions = [
+  {
+    id: 1,
+
+    questionGeo:
+      'გამარჯობა, ' +
+      playerName +
+      '. მოკლედ მომიყევი შენს შესახებ და რატომ გინდა გაყიდვებში მუშაობა?',
+
+    questionEng:
+      'Hello, ' +
+      playerName +
+      '. Tell me briefly about yourself and why you want to work in sales.',
+
+    hintGeo:
+      '💡 იფიქრე არა იმაზე, რატომ გჭირდება სამსახური, არამედ რა ღირებულების შექმნა შეგიძლია კომპანიისთვის.',
+
+    hintEng:
+      '💡 Think not only about why you need the job, but what value you can create for the company.',
+
+    answers: [
+      {
+        id: 'A',
+        geo:
+          'მინდა სტაბილური სამსახური და ვფიქრობ, გაყიდვები ჩემთვის კარგი დასაწყისია.',
+        eng:
+          'I want a stable job and I think sales is a good starting point.',
+        score: 1,
+      },
+
+      {
+        id: 'B',
+        geo:
+          'მომწონს ადამიანებთან კომუნიკაცია და მინდა ვისწავლო, როგორ ვაქციო საუბარი შედეგიან გაყიდვად.',
+        eng:
+          'I enjoy communicating with people and want to learn how to turn conversations into successful sales.',
+        score: 3,
+      },
+
+      {
+        id: 'C',
+        geo:
+          'მინდა მაღალი შემოსავალი და ვიცი, რომ გაყიდვებში შედეგი ჩემს უნარებზეა დამოკიდებული.',
+        eng:
+          'I want a higher income and I know my results in sales depend on my skills.',
+        score: 2,
+      },
+
+      {
+        id: 'D',
+        geo:
+          'უბრალოდ სამსახური მჭირდება და ვნახოთ, გამომივა თუ არა.',
+        eng:
+          'I just need a job and I want to see whether I can do it.',
+        score: 0,
+      },
+    ],
+  },
+
+  // ========================================
+  // QUESTION 2
+  // ========================================
+
+  {
+    id: 2,
+
+    questionGeo:
+      'წარმოიდგინე, რომ კლიენტს შენი შეთავაზება მოსწონს, მაგრამ გეუბნება: „ძვირია, კონკურენტთან უფრო იაფად ვიღებ.“ რას უპასუხებ?',
+
+    questionEng:
+      'Imagine that a customer likes your offer but says: “It is too expensive. I can get it cheaper from a competitor.” How would you respond?',
+
+    hintGeo:
+      '💡 ნუ იჩქარებ ფასის დაკლებას. ჯერ გაარკვიე, კონკრეტულად რას ადარებს კლიენტი და რა არის მისთვის მნიშვნელოვანი.',
+
+    hintEng:
+      '💡 Do not rush to lower the price. First understand what the customer is comparing and what matters to them.',
+
+    answers: [
+      {
+        id: 'A',
+        geo:
+          'ვეცდები ფასდაკლება გავუკეთო, რომ კლიენტი არ დავკარგო.',
+        eng:
+          'I would try to give a discount so I do not lose the customer.',
+        score: 1,
+      },
+
+      {
+        id: 'B',
+        geo:
+          'ავუხსნი, რომ ჩვენი პროდუქტი უკეთესია და ამიტომ უფრო ძვირი ღირს.',
+        eng:
+          'I would explain that our product is better and therefore costs more.',
+        score: 2,
+      },
+
+      {
+        id: 'C',
+        geo:
+          'ვკითხავ: კონკრეტულად რას ადარებთ ჩვენს შეთავაზებას და ფასის გარდა რა არის თქვენთვის მნიშვნელოვანი?',
+        eng:
+          'I would ask: What exactly are you comparing our offer with, and besides price, what is important to you?',
+        score: 3,
+      },
+
+      {
+        id: 'D',
+        geo:
+          'თუ კონკურენტთან უფრო იაფია, ვეტყვი, რომ იქ შეიძინოს.',
+        eng:
+          'If the competitor is cheaper, I would tell them to buy there.',
+        score: 0,
+      },
+    ],
+  },
+];
+
+const activeQuestion =
+  interviewQuestions[currentQuestion];
+  // ==========================================
 // USE INTERVIEW HINT
 // ==========================================
 
