@@ -6895,14 +6895,15 @@ const interviewQuestions = [
       score: 1,
     },
 
-    {
-      id: 'D',
-      geo:
-        'ვეტყვი, რომ შეთავაზება მალე დასრულდება, მიუხედავად იმისა, რეალურად ასეა თუ არა.',
-      eng:
-        'I would tell them the offer is about to expire, even if that is not actually true.',
-      score: 0,
-    ],
+   {
+  id: 'D',
+  geo:
+    'ვეტყვი, რომ შეთავაზება მალე დასრულდება, მიუხედავად იმისა, რეალურად ასეა თუ არა.',
+  eng:
+    'I would tell them the offer is about to expire, even if that is not actually true.',
+  score: 0,
+},
+],
 },
 ];
 
