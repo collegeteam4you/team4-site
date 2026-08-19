@@ -7100,7 +7100,7 @@ h(
 
       // ქვედა ნაწილი აღარ გადმოვა მაგიდაზე
       overflow: 'visible',
-clipPath: 'inset(-120px 0 0 0)',
+clipPath: 'inset(-120px 0 70px 0)',
 
       zIndex: 20,
 
