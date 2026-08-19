@@ -8211,7 +8211,141 @@ if (isTeam4InterviewPage) {
     });
   }
 
+// ==========================================
+// INTERVIEW RETRY LOCK
+// ==========================================
 
+if (interviewLocked) {
+  return h(
+    React.Fragment,
+    null,
+
+    h(Header, {
+      lang,
+      setLang,
+    }),
+
+    h(
+      'main',
+      {
+        style: {
+          minHeight: '100vh',
+          padding: '150px 24px 80px',
+          background: '#050507',
+          color: '#ffffff',
+        },
+      },
+
+      h(
+        'div',
+        {
+          style: {
+            maxWidth: '720px',
+            margin: '0 auto',
+            padding: '36px',
+            borderRadius: '22px',
+            background: '#111319',
+            border:
+              '1px solid rgba(255,255,255,.10)',
+            textAlign: 'center',
+          },
+        },
+
+        h(
+          'div',
+          {
+            style: {
+              fontSize: '42px',
+              marginBottom: '15px',
+            },
+          },
+          '⏳'
+        ),
+
+        h(
+          'h1',
+          {
+            style: {
+              margin: '0 0 12px',
+              fontSize: '28px',
+              fontWeight: '900',
+            },
+          },
+
+          isGeo
+            ? 'გასაუბრება დროებით შეჩერებულია'
+            : 'Interview temporarily locked'
+        ),
+
+        h(
+          'p',
+          null,
+
+          isGeo
+            ? 'გასაუბრების ხელახლა გავლას შეძლებ'
+            : 'You can retry the interview in'
+        ),
+
+        h(
+          'div',
+          {
+            style: {
+              margin: '22px 0',
+              fontSize: '46px',
+              fontWeight: '900',
+              color: '#ef1b13',
+            },
+          },
+
+          String(retryMinutes).padStart(2, '0') +
+            ':' +
+            String(retryRemainingSeconds).padStart(2, '0')
+        ),
+
+        h(
+          'p',
+          {
+            style: {
+              margin: '0 auto 22px',
+              maxWidth: '520px',
+              lineHeight: '1.6',
+              color: 'rgba(255,255,255,.70)',
+            },
+          },
+
+          isGeo
+            ? 'არ გინდა ლოდინი? უყურე სასწავლო ვიდეოს ბოლომდე და გასაუბრების ხელახლა გავლას მაშინვე შეძლებ.'
+            : 'Do not want to wait? Watch the training video to the end and you can retry the interview immediately.'
+        ),
+
+        h(
+          'button',
+          {
+            type: 'button',
+
+            onClick: function () {
+              setShowRetryVideo(true);
+            },
+
+            style: {
+              padding: '14px 22px',
+              border: 'none',
+              borderRadius: '12px',
+              background: '#ef1b13',
+              color: '#ffffff',
+              fontWeight: '900',
+              cursor: 'pointer',
+            },
+          },
+
+          isGeo
+            ? '▶ ნახე სასწავლო ვიდეო'
+            : '▶ Watch Training Video'
+        )
+      )
+    )
+  );
+}
   // HOME PAGE
   return h(
     React.Fragment,
