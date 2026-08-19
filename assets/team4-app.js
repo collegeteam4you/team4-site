@@ -6761,10 +6761,10 @@ function useInterviewHint() {
   );
 
   setHintText(
-    isGeo
-      ? '💡 იფიქრე არა იმაზე, რატომ გჭირდება სამსახური, არამედ რა ღირებულების შექმნა შეგიძლია კომპანიისთვის.'
-      : '💡 Think not only about why you need the job, but what value you can create for the company.'
-  );
+  isGeo
+    ? activeQuestion.hintGeo
+    : activeQuestion.hintEng
+);
 }
   React.useEffect(function () {
   try {
