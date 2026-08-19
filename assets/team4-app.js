@@ -7099,7 +7099,8 @@ h(
       height: '230px',
 
       // ქვედა ნაწილი აღარ გადმოვა მაგიდაზე
-      overflow: 'hidden',
+      overflow: 'visible',
+clipPath: 'inset(-120px 0 0 0)',
 
       zIndex: 20,
 
@@ -7118,11 +7119,11 @@ h(
         width: '230px',
         height: '340px',
 
-        transform: 'scale(1.32)',
+        transform: 'scale(1.08)',
         transformOrigin: 'top center',
 
         position: 'relative',
-        top: '20px',
+        top: 0,
       },
     },
 
