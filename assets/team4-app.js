@@ -6617,7 +6617,8 @@ const [hrReaction, setHrReaction] =
 
 const interviewQuestions = [
   {
-    id: 1,
+  id: 1,
+  correctAnswer: 'B',
 
     questionGeo:
       'გამარჯობა, ' +
@@ -6678,8 +6679,9 @@ const interviewQuestions = [
   // QUESTION 2
   // ========================================
 
-  {
-    id: 2,
+{
+  id: 2,
+  correctAnswer: 'C',
 
     questionGeo:
       'წარმოიდგინე, რომ კლიენტს შენი შეთავაზება მოსწონს, მაგრამ გეუბნება: „ძვირია, კონკურენტთან უფრო იაფად ვიღებ.“ რას უპასუხებ?',
@@ -6738,6 +6740,7 @@ const interviewQuestions = [
 
 {
   id: 3,
+  correctAnswer: 'C',
 
   questionGeo:
     'პრეზენტაციის შემდეგ კლიენტი გეუბნება: „კარგია, მაგრამ ჯერ დავფიქრდები.“ რას უპასუხებ?',
@@ -6796,6 +6799,7 @@ const interviewQuestions = [
 
 {
   id: 4,
+  correctAnswer: 'A',
 
   questionGeo:
     'კლიენტი გაბრაზებული გირეკავს და ამბობს, რომ მომსახურებით უკმაყოფილოა. საუბარს აგრესიული ტონით იწყებს. რას გააკეთებ?',
@@ -6854,6 +6858,7 @@ const interviewQuestions = [
 
 {
   id: 5,
+  correctAnswer: 'B',
 
   questionGeo:
     'კლიენტს პროდუქტი მოსწონს, ფასიც მისაღებია და ყველა კითხვაზე პასუხი მიიღო, მაგრამ გადაწყვეტილებას მაინც არ იღებს. რას გააკეთებ?',
