@@ -6732,7 +6732,179 @@ const interviewQuestions = [
     ],
   },
 ];
+// ========================================
+// QUESTION 3
+// ========================================
 
+{
+  id: 3,
+
+  questionGeo:
+    'პრეზენტაციის შემდეგ კლიენტი გეუბნება: „კარგია, მაგრამ ჯერ დავფიქრდები.“ რას უპასუხებ?',
+
+  questionEng:
+    'After your presentation, the customer says: “Sounds good, but I need to think about it.” What would you say?',
+
+  hintGeo:
+    '💡 „დავფიქრდები“ ხშირად რეალურ მიზეზს მალავს. სცადე გაიგო, კონკრეტულად რა აჩერებს კლიენტს.',
+
+  hintEng:
+    '💡 “I need to think about it” often hides the real objection. Try to discover what is actually stopping the customer.',
+
+  answers: [
+    {
+      id: 'A',
+      geo:
+        'ვეტყვი: კარგი, როცა გადაწყვეტთ დამიკავშირდით.',
+      eng:
+        'I would say: Sure, contact me when you decide.',
+      score: 0,
+    },
+
+    {
+      id: 'B',
+      geo:
+        'შევთავაზებ დამატებით ფასდაკლებას, რომ გადაწყვეტილება დღესვე მიიღოს.',
+      eng:
+        'I would offer an additional discount so they make the decision today.',
+      score: 1,
+    },
+
+    {
+      id: 'C',
+      geo:
+        'ვკითხავ: რა თქმა უნდა. სანამ დავასრულებთ, შეიძლება გკითხოთ — კონკრეტულად რაზე გინდათ დაფიქრება?',
+      eng:
+        'I would ask: Of course. Before we finish, may I ask what specifically you would like to think about?',
+      score: 3,
+    },
+
+    {
+      id: 'D',
+      geo:
+        'კიდევ ერთხელ თავიდან ავუხსნი პროდუქტის ყველა უპირატესობას.',
+      eng:
+        'I would explain all the product benefits again from the beginning.',
+      score: 2,
+    },
+  ],
+},
+
+// ========================================
+// QUESTION 4
+// ========================================
+
+{
+  id: 4,
+
+  questionGeo:
+    'კლიენტი გაბრაზებული გირეკავს და ამბობს, რომ მომსახურებით უკმაყოფილოა. საუბარს აგრესიული ტონით იწყებს. რას გააკეთებ?',
+
+  questionEng:
+    'An angry customer calls and says they are unhappy with the service. They start the conversation aggressively. What do you do?',
+
+  hintGeo:
+    '💡 გაბრაზებულ კლიენტთან პირველივე მიზანი გაყიდვა არ არის — ჯერ ემოცია უნდა მართო და პრობლემა გაიგო.',
+
+  hintEng:
+    '💡 With an angry customer, the first goal is not selling — first manage the emotion and understand the problem.',
+
+  answers: [
+    {
+      id: 'A',
+      geo:
+        'მშვიდად მოვუსმენ, არ შევაწყვეტინებ, დავაზუსტებ პრობლემას და შემდეგ შევთავაზებ გამოსავალს.',
+      eng:
+        'I would listen calmly without interrupting, clarify the problem, and then offer a solution.',
+      score: 3,
+    },
+
+    {
+      id: 'B',
+      geo:
+        'ავუხსნი, რომ პრობლემა ჩემი ბრალი არ არის და შესაბამის თანამშრომელთან გადავამისამართებ.',
+      eng:
+        'I would explain that the problem is not my fault and redirect them to the responsible employee.',
+      score: 1,
+    },
+
+    {
+      id: 'C',
+      geo:
+        'თუ აგრესიულად მელაპარაკება, ვთხოვ ჯერ დამშვიდდეს და შემდეგ გავაგრძელოთ საუბარი.',
+      eng:
+        'If they speak aggressively, I would ask them to calm down before continuing.',
+      score: 0,
+    },
+
+    {
+      id: 'D',
+      geo:
+        'ბოდიშს მოვუხდი და მაშინვე კომპენსაციას ან ფასდაკლებას შევთავაზებ.',
+      eng:
+        'I would apologize and immediately offer compensation or a discount.',
+      score: 2,
+    },
+  ],
+},
+
+// ========================================
+// QUESTION 5
+// ========================================
+
+{
+  id: 5,
+
+  questionGeo:
+    'კლიენტს პროდუქტი მოსწონს, ფასიც მისაღებია და ყველა კითხვაზე პასუხი მიიღო, მაგრამ გადაწყვეტილებას მაინც არ იღებს. რას გააკეთებ?',
+
+  questionEng:
+    'The customer likes the product, accepts the price, and has received answers to all their questions, but still does not make a decision. What do you do?',
+
+  hintGeo:
+    '💡 თუ ძირითადი წინააღმდეგობები მოხსნილია, დროა საუბარი გადაწყვეტილებისკენ წაიყვანო.',
+
+  hintEng:
+    '💡 If the main objections are resolved, it may be time to guide the conversation toward a decision.',
+
+  answers: [
+    {
+      id: 'A',
+      geo:
+        'დაველოდები, სანამ თვითონ მეტყვის, რომ მზად არის შესაძენად.',
+      eng:
+        'I would wait until the customer tells me they are ready to buy.',
+      score: 0,
+    },
+
+    {
+      id: 'B',
+      geo:
+        'ვკითხავ: თუ ყველა მნიშვნელოვანი საკითხი გავიარეთ, შეგვიძლია შეკვეთის გაფორმებაზე გადავიდეთ?',
+      eng:
+        'I would ask: If we have covered everything important, shall we proceed with the order?',
+      score: 3,
+    },
+
+    {
+      id: 'C',
+      geo:
+        'კიდევ ერთხელ შევახსენებ პროდუქტის უპირატესობებს და დაველოდები მის რეაქციას.',
+      eng:
+        'I would remind them of the product benefits again and wait for their reaction.',
+      score: 1,
+    },
+
+    {
+      id: 'D',
+      geo:
+        'ვეტყვი, რომ შეთავაზება მალე დასრულდება, მიუხედავად იმისა, რეალურად ასეა თუ არა.',
+      eng:
+        'I would tell them the offer is about to expire, even if that is not actually true.',
+      score: 0,
+    },
+  ],
+},
 const activeQuestion =
   interviewQuestions[currentQuestion];
   // ==========================================
