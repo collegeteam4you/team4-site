@@ -7569,6 +7569,7 @@ hintText &&
           // ==========================================
 // INTERVIEW ANSWERS
 // ==========================================
+
 !selectedAnswer &&
 h(
   'div',
@@ -7580,120 +7581,137 @@ h(
     },
   },
 
-  [
-    {
-      id: 'A',
-      text: isGeo
-        ? 'მინდა სტაბილური სამსახური და ვფიქრობ, გაყიდვები ჩემთვის კარგი დასაწყისია.'
-        : 'I want a stable job and I think sales is a good starting point.',
-    },
-
-    {
-      id: 'B',
-      text: isGeo
-        ? 'მომწონს ადამიანებთან კომუნიკაცია და მინდა ვისწავლო, როგორ ვაქციო საუბარი შედეგიან გაყიდვად.'
-        : 'I enjoy communicating with people and want to learn how to turn conversations into successful sales.',
-    },
-
-    {
-      id: 'C',
-      text: isGeo
-        ? 'მინდა მაღალი შემოსავალი და ვიცი, რომ გაყიდვებში შედეგი ჩემს უნარებზეა დამოკიდებული.'
-        : 'I want a higher income and I know my results in sales depend on my skills.',
-    },
-
-    {
-      id: 'D',
-      text: isGeo
-        ? 'უბრალოდ სამსახური მჭირდება და ვნახოთ, გამომივა თუ არა.'
-        : 'I just need a job and I want to see whether I can do it.',
-    },
-  ].map(function (answer) {
-    return h(
-      'button',
-      {
-        key: answer.id,
-        type: 'button',
-
-        onClick: function () {
-  setSelectedAnswer(answer.id);
-  setPlayerSpeech(answer.text);
-},
-
-        style: {
-          width: '100%',
-          padding: '15px 17px',
-
-          border:
-            '1px solid rgba(255,255,255,.10)',
-
-          borderRadius: '12px',
-
-          background: '#0d0f14',
-
-          color: '#ffffff',
-
-          textAlign: 'left',
-
-          fontSize: '14px',
-          lineHeight: '1.5',
-
-          cursor: 'pointer',
-
-          transition:
-            'transform .18s ease, border-color .18s ease, background .18s ease',
-        },
-
-        onMouseEnter: function (event) {
-          event.currentTarget.style.transform =
-            'translateY(-2px)';
-
-          event.currentTarget.style.borderColor =
-            'rgba(239,27,19,.45)';
-
-          event.currentTarget.style.background =
-            'rgba(239,27,19,.08)';
-        },
-
-        onMouseLeave: function (event) {
-          event.currentTarget.style.transform =
-            'translateY(0)';
-
-          event.currentTarget.style.borderColor =
-            'rgba(255,255,255,.10)';
-
-          event.currentTarget.style.background =
-            '#0d0f14';
-        },
-      },
-
-      h(
-        'strong',
+  activeQuestion.answers.map(
+    function (answer) {
+      return h(
+        'button',
         {
+          key: answer.id,
+          type: 'button',
+
+          onClick: function () {
+            setSelectedAnswer(answer.id);
+
+            setPlayerSpeech(
+              isGeo
+                ? answer.geo
+                : answer.eng
+            );
+
+            setInterviewScore(
+              interviewScore + answer.score
+            );
+          },
+
           style: {
-            color: '#ef1b13',
-            marginRight: '12px',
+            width: '100%',
+            padding: '15px 17px',
+
+            border:
+              '1px solid rgba(255,255,255,.10)',
+
+            borderRadius: '12px',
+
+            background: '#0d0f14',
+
+            color: '#ffffff',
+
+            textAlign: 'left',
+
+            fontSize: '14px',
+            lineHeight: '1.5',
+
+            cursor: 'pointer',
+
+            transition:
+              'transform .18s ease, border-color .18s ease, background .18s ease',
+          },
+
+          onMouseEnter: function (event) {
+            event.currentTarget.style.transform =
+              'translateY(-2px)';
+
+            event.currentTarget.style.borderColor =
+              'rgba(239,27,19,.45)';
+
+            event.currentTarget.style.background =
+              'rgba(239,27,19,.08)';
+          },
+
+          onMouseLeave: function (event) {
+            event.currentTarget.style.transform =
+              'translateY(0)';
+
+            event.currentTarget.style.borderColor =
+              'rgba(255,255,255,.10)';
+
+            event.currentTarget.style.background =
+              '#0d0f14';
           },
         },
 
-        answer.id
-      ),
+        h(
+          'strong',
+          {
+            style: {
+              color: '#ef1b13',
+              marginRight: '12px',
+            },
+          },
 
-      answer.text
-    );
-  })
-)
-        )
-      )
-    ),
+          answer.id
+        ),
 
-    h(Footer, {
-      lang,
-    })
-  );
-}
+        isGeo
+          ? answer.geo
+          : answer.eng
+      );
+      // ==========================================
+// NEXT QUESTION BUTTON
+// ==========================================
 
+selectedAnswer &&
+currentQuestion < interviewQuestions.length - 1 &&
+h(
+  'button',
+  {
+    type: 'button',
 
+    onClick: function () {
+      setCurrentQuestion(
+        currentQuestion + 1
+      );
+
+      setSelectedAnswer(null);
+      setPlayerSpeech('');
+      setHintText('');
+      setHrReaction('');
+    },
+
+    style: {
+      marginTop: '18px',
+      padding: '13px 20px',
+
+      border: 'none',
+      borderRadius: '12px',
+
+      background: '#ef1b13',
+      color: '#ffffff',
+
+      fontSize: '14px',
+      fontWeight: '900',
+
+      cursor: 'pointer',
+    },
+  },
+
+  isGeo
+    ? 'შემდეგი კითხვა →'
+    : 'Next Question →'
+),
+    }
+  )
+),
 // ==========================================
 // APP
 // ==========================================
