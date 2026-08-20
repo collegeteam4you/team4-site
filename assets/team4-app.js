@@ -8157,7 +8157,23 @@ h(
           'linear-gradient(to top, rgba(0,0,0,.88) 0%, rgba(0,0,0,.30) 55%, rgba(0,0,0,.05) 100%)',
       },
     },
+// ==========================================
+// HIRED SCENE
+// ==========================================
 
+correctAnswers >= 4 &&
+h('img', {
+  src: '/assets/team4-lab/interview/hired-scene.png',
+  alt: 'Team4 Hired',
+
+  style: {
+    width: '100%',
+    height: 'auto',
+    display: 'block',
+    borderRadius: '16px',
+    marginBottom: '22px',
+  },
+}),
     h(
       'h2',
       {
