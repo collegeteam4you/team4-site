@@ -7284,9 +7284,121 @@ function renderInterviewAvatar() {
     )
   );
 }
+
+
+// ==========================================
+// INTERVIEW RETRY LOCK
+// ==========================================
+
+if (interviewLocked) {
   return h(
     React.Fragment,
     null,
+
+    h(Header, {
+      lang,
+      setLang,
+    }),
+
+    h(
+      'main',
+      {
+        style: {
+          minHeight: '100vh',
+          padding: '150px 24px 80px',
+          background: '#050507',
+          color: '#ffffff',
+        },
+      },
+
+      h(
+        'div',
+        {
+          style: {
+            maxWidth: '720px',
+            margin: '0 auto',
+            padding: '36px',
+
+            borderRadius: '22px',
+
+            background: '#111319',
+
+            border:
+              '1px solid rgba(255,255,255,.10)',
+
+            textAlign: 'center',
+          },
+        },
+
+        h(
+          'div',
+          {
+            style: {
+              fontSize: '42px',
+              marginBottom: '15px',
+            },
+          },
+
+          '⏳'
+        ),
+
+        h(
+          'h1',
+          {
+            style: {
+              margin: '0 0 12px',
+              fontSize: '28px',
+              fontWeight: '900',
+            },
+          },
+
+          isGeo
+            ? 'გასაუბრება დროებით შეჩერებულია'
+            : 'Interview temporarily locked'
+        ),
+
+        h(
+          'p',
+          {
+            style: {
+              margin: '0 0 10px',
+              color: 'rgba(255,255,255,.70)',
+            },
+          },
+
+          isGeo
+            ? 'გასაუბრების ხელახლა გავლას შეძლებ:'
+            : 'You can retry the interview in:'
+        ),
+
+        h(
+          'div',
+          {
+            style: {
+              margin: '22px 0',
+              fontSize: '46px',
+              fontWeight: '900',
+              color: '#ef1b13',
+            },
+          },
+
+          String(retryMinutes).padStart(2, '0') +
+            ':' +
+            String(retryRemainingSeconds).padStart(2, '0')
+        )
+      )
+    )
+  );
+}
+
+
+// ==========================================
+// NORMAL INTERVIEW
+// ==========================================
+
+return h(
+  React.Fragment,
+  null,
 
     h(Header, {
       lang,
