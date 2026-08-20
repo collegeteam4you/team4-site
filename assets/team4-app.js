@@ -8366,6 +8366,13 @@ if (isTeam4InterviewPage) {
     setLang,
   });
 }
+  // APARTMENT
+if (isTeam4ApartmentPage) {
+  return h(window.Team4ApartmentPage, {
+    lang,
+    setLang,
+  });
+}
   // TEAM4 LAB
   if (isTeam4LabPage) {
     return h(Team4LabPage, {
