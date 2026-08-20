@@ -8108,23 +8108,163 @@ onClick: function () {
 // ==========================================
 
 interviewFinished &&
+correctAnswers >= 4 &&
+h(
+  'div',
+  {
+    style: {
+      marginTop: '24px',
+
+      position: 'relative',
+
+      width: '100%',
+      minHeight: '520px',
+
+      borderRadius: '22px',
+      overflow: 'hidden',
+
+      backgroundImage:
+        'url("/assets/team4-lab/interview/hired-scene.png")',
+
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat',
+
+      border:
+        '1px solid rgba(40,180,90,.40)',
+
+      boxShadow:
+        '0 30px 80px rgba(0,0,0,.45)',
+    },
+  },
+
+  h(
+    'div',
+    {
+      style: {
+        minHeight: '520px',
+
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+
+        padding: '40px',
+
+        textAlign: 'center',
+
+        background:
+          'linear-gradient(to top, rgba(0,0,0,.88) 0%, rgba(0,0,0,.30) 55%, rgba(0,0,0,.05) 100%)',
+      },
+    },
+
+    h(
+      'h2',
+      {
+        style: {
+          margin: '0 0 12px',
+
+          color: '#ffffff',
+
+          fontSize: '34px',
+          fontWeight: '900',
+        },
+      },
+
+      isGeo
+        ? 'გილოცავ, სამსახურში აგიყვანეს!'
+        : 'Congratulations, You’re Hired!'
+    ),
+
+    h(
+      'p',
+      {
+        style: {
+          margin: '0 0 8px',
+
+          color:
+            'rgba(255,255,255,.82)',
+
+          fontSize: '16px',
+        },
+      },
+
+      isGeo
+        ? 'შენ წარმატებით გაიარე გასაუბრება.'
+        : 'You successfully passed the interview.'
+    ),
+
+    h(
+      'p',
+      {
+        style: {
+          margin: '0 0 24px',
+
+          color: '#4ade80',
+
+          fontSize: '14px',
+          fontWeight: '900',
+        },
+      },
+
+      isGeo
+        ? 'სწორი პასუხები: ' +
+          correctAnswers +
+          ' / 5'
+        : 'Correct answers: ' +
+          correctAnswers +
+          ' / 5'
+    ),
+
+    h(
+      'button',
+      {
+        type: 'button',
+
+        style: {
+          padding: '14px 24px',
+
+          border: 'none',
+          borderRadius: '12px',
+
+          background: '#ef1b13',
+
+          color: '#ffffff',
+
+          fontSize: '15px',
+          fontWeight: '900',
+
+          cursor: 'pointer',
+        },
+      },
+
+      isGeo
+        ? 'დაიწყე პირველი სამუშაო დღე →'
+        : 'Start Your First Day →'
+    )
+  )
+),
+
+// ==========================================
+// FAILED INTERVIEW RESULT
+// ==========================================
+
+interviewFinished &&
+correctAnswers < 4 &&
 h(
   'div',
   {
     style: {
       marginTop: '24px',
       padding: '24px',
+
       borderRadius: '18px',
 
       background:
-        correctAnswers >= 4
-          ? 'rgba(40,180,90,.12)'
-          : 'rgba(239,27,19,.10)',
+        'rgba(239,27,19,.10)',
 
       border:
-        correctAnswers >= 4
-          ? '1px solid rgba(40,180,90,.40)'
-          : '1px solid rgba(239,27,19,.35)',
+        '1px solid rgba(239,27,19,.35)',
     },
   },
 
@@ -8133,22 +8273,15 @@ h(
     {
       style: {
         margin: '0 0 12px',
+
         fontSize: '24px',
         fontWeight: '900',
       },
     },
 
-    correctAnswers >= 4
-      ? (
-          isGeo
-            ? 'გილოცავთ! თქვენ გაიარეთ გასაუბრება.'
-            : 'Congratulations! You passed the interview.'
-        )
-      : (
-          isGeo
-            ? 'მადლობა გასაუბრებისთვის.'
-            : 'Thank you for the interview.'
-        )
+    isGeo
+      ? 'მადლობა გასაუბრებისთვის.'
+      : 'Thank you for the interview.'
   ),
 
   h(
@@ -8156,6 +8289,7 @@ h(
     {
       style: {
         margin: '0 0 10px',
+
         fontSize: '16px',
         fontWeight: '800',
       },
@@ -8175,30 +8309,16 @@ h(
     {
       style: {
         margin: 0,
+
         lineHeight: '1.6',
       },
     },
 
-    correctAnswers >= 4
-      ? (
-          isGeo
-            ? 'HR: გილოცავთ. თქვენ წარმატებით გაიარეთ გასაუბრება და გადადიხართ შემდეგ ეტაპზე.'
-            : 'HR: Congratulations. You successfully passed the interview and move to the next stage.'
-        )
-      : (
-          isGeo
-            ? 'HR: მადლობა. ჩვენ დაგიკავშირდებით. გასაუბრების ხელახლა გავლას 1 საათში შეძლებთ.'
-            : 'HR: Thank you. We will contact you. You can try the interview again in 1 hour.'
-        )
+    isGeo
+      ? 'HR: მადლობა. ჩვენ დაგიკავშირდებით. გასაუბრების ხელახლა გავლას 1 საათში შეძლებთ.'
+      : 'HR: Thank you. We will contact you. You can try the interview again in 1 hour.'
   )
 )
-)
-)
-)
-);
-}
-
-
 // ==========================================
 // APP
 // ==========================================
