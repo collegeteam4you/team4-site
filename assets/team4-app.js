@@ -8108,116 +8108,6 @@ onClick: function () {
 // ==========================================
 
 interviewFinished &&
-h(
-  'div',
-  {
-    style: {
-      marginTop: '24px',
-      padding: '24px',
-      borderRadius: '18px',
-
-      background:
-        correctAnswers >= 4
-          ? 'rgba(40,180,90,.12)'
-          : 'rgba(239,27,19,.10)',
-
-      border:
-        correctAnswers >= 4
-          ? '1px solid rgba(40,180,90,.40)'
-          : '1px solid rgba(239,27,19,.35)',
-    },
-  },
-
-  // ==========================================
-  // SUCCESS — ONLY HIRED PHOTO
-  // ==========================================
-
-  correctAnswers >= 4 &&
-  h('img', {
-    src: '/assets/team4-lab/interview/hired-scene.png',
-
-    alt: 'Team4 Hired',
-
-    style: {
-      width: '100%',
-      height: 'auto',
-
-      display: 'block',
-
-      borderRadius: '16px',
-    },
-  }),
-
-  // ==========================================
-  // FAILED — TITLE
-  // ==========================================
-
-  correctAnswers < 4 &&
-  h(
-    'h2',
-    {
-      style: {
-        margin: '0 0 12px',
-
-        fontSize: '24px',
-        fontWeight: '900',
-      },
-    },
-
-    isGeo
-      ? 'მადლობა გასაუბრებისთვის.'
-      : 'Thank you for the interview.'
-  ),
-
-  // ==========================================
-  // FAILED — SCORE
-  // ==========================================
-
-  correctAnswers < 4 &&
-  h(
-    'p',
-    {
-      style: {
-        margin: '0 0 10px',
-
-        fontSize: '16px',
-        fontWeight: '800',
-      },
-    },
-
-    isGeo
-      ? 'სწორი პასუხები: ' +
-        correctAnswers +
-        ' / 5'
-      : 'Correct answers: ' +
-        correctAnswers +
-        ' / 5'
-  ),
-
-  // ==========================================
-  // FAILED — HR MESSAGE
-  // ==========================================
-
-  correctAnswers < 4 &&
-  h(
-    'p',
-    {
-      style: {
-        margin: 0,
-        lineHeight: '1.6',
-      },
-    },
-
-    isGeo
-      ? 'HR: მადლობა. ჩვენ დაგიკავშირდებით. გასაუბრების ხელახლა გავლას 1 საათში შეძლებთ.'
-      : 'HR: Thank you. We will contact you. You can try the interview again in 1 hour.'
-  )
-)
-// ==========================================
-// HIRED SCENE
-// ==========================================
-
-interviewFinished &&
 correctAnswers >= 4 &&
 h(
   'div',
@@ -8226,10 +8116,8 @@ h(
       marginTop: '24px',
       borderRadius: '18px',
       overflow: 'hidden',
-
       border:
         '1px solid rgba(40,180,90,.40)',
-
       background: '#0d0f14',
     },
   },
@@ -8245,9 +8133,6 @@ h(
     },
   })
 ),
-// ==========================================
-// FAILED INTERVIEW RESULT
-// ==========================================
 
 interviewFinished &&
 correctAnswers < 4 &&
@@ -8273,7 +8158,6 @@ h(
     {
       style: {
         margin: '0 0 12px',
-
         fontSize: '24px',
         fontWeight: '900',
       },
@@ -8289,7 +8173,6 @@ h(
     {
       style: {
         margin: '0 0 10px',
-
         fontSize: '16px',
         fontWeight: '800',
       },
@@ -8309,17 +8192,15 @@ h(
     {
       style: {
         margin: 0,
-
         lineHeight: '1.6',
       },
     },
 
-      isGeo
+    isGeo
       ? 'HR: მადლობა. ჩვენ დაგიკავშირდებით. გასაუბრების ხელახლა გავლას 1 საათში შეძლებთ.'
       : 'HR: Thank you. We will contact you. You can try the interview again in 1 hour.'
   )
 )
-
 // ==========================================
 // CLOSE INTERVIEW PAGE
 // ==========================================
