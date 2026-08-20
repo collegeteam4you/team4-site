@@ -6603,8 +6603,7 @@ const [playerSpeech, setPlayerSpeech] =
 const [currentQuestion, setCurrentQuestion] =
   React.useState(0);
 
-const [interviewLocked, setInterviewLocked] =
-  React.useState(false);
+
   // ==========================================
 // INTERVIEW PROGRESS
 // ==========================================
