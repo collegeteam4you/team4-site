@@ -8217,106 +8217,34 @@ h(
 // HIRED SCENE
 // ==========================================
 
+interviewFinished &&
 correctAnswers >= 4 &&
-h('img', {
-  src: '/assets/team4-lab/interview/hired-scene.png',
-  alt: 'Team4 Hired',
+h(
+  'div',
+  {
+    style: {
+      marginTop: '24px',
+      borderRadius: '18px',
+      overflow: 'hidden',
 
-  style: {
-    width: '100%',
-    height: 'auto',
-    display: 'block',
-    borderRadius: '16px',
-    marginBottom: '22px',
+      border:
+        '1px solid rgba(40,180,90,.40)',
+
+      background: '#0d0f14',
+    },
   },
-}),
-    h(
-      'h2',
-      {
-        style: {
-          margin: '0 0 12px',
 
-          color: '#ffffff',
+  h('img', {
+    src: '/assets/team4-lab/interview/hired-scene.png',
+    alt: 'Team4 Hired',
 
-          fontSize: '34px',
-          fontWeight: '900',
-        },
-      },
-
-      isGeo
-        ? 'გილოცავ, სამსახურში აგიყვანეს!'
-        : 'Congratulations, You’re Hired!'
-    ),
-
-    h(
-      'p',
-      {
-        style: {
-          margin: '0 0 8px',
-
-          color:
-            'rgba(255,255,255,.82)',
-
-          fontSize: '16px',
-        },
-      },
-
-      isGeo
-        ? 'შენ წარმატებით გაიარე გასაუბრება.'
-        : 'You successfully passed the interview.'
-    ),
-
-    h(
-      'p',
-      {
-        style: {
-          margin: '0 0 24px',
-
-          color: '#4ade80',
-
-          fontSize: '14px',
-          fontWeight: '900',
-        },
-      },
-
-      isGeo
-        ? 'სწორი პასუხები: ' +
-          correctAnswers +
-          ' / 5'
-        : 'Correct answers: ' +
-          correctAnswers +
-          ' / 5'
-    ),
-
-    h(
-      'button',
-      {
-        type: 'button',
-
-        style: {
-          padding: '14px 24px',
-
-          border: 'none',
-          borderRadius: '12px',
-
-          background: '#ef1b13',
-
-          color: '#ffffff',
-
-          fontSize: '15px',
-          fontWeight: '900',
-
-          cursor: 'pointer',
-        },
-      },
-
-      isGeo
-        ? 'დაიწყე პირველი სამუშაო დღე →'
-        : 'Start Your First Day →'
-    )
-  )
+    style: {
+      width: '100%',
+      height: 'auto',
+      display: 'block',
+    },
+  })
 ),
-
 // ==========================================
 // FAILED INTERVIEW RESULT
 // ==========================================
