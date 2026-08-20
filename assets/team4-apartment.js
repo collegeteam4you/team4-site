@@ -50,16 +50,34 @@
           'A small and simple apartment. Lower rent, but a longer commute to the office.',
       },
 
-      {
-        id: 'comfort',
-        titleGeo: 'Apartment #2 — Comfort',
-        titleEng: 'Apartment #2 — Comfort',
+        {
+    id: 'comfort',
 
-        districtGeo: 'საბურთალო',
-        districtEng: 'Saburtalo',
+    image:
+      '/assets/team4-lab/apartment/comfort-apartment.png',
 
-        rent: 900,
-        deposit: 900,
+    titleGeo: 'Apartment #2 — Comfort',
+    titleEng: 'Apartment #2 — Comfort',
+
+    districtGeo: 'საბურთალო',
+    districtEng: 'Saburtalo',
+
+    rent: 900,
+    deposit: 900,
+
+    metroGeo: 'მეტრო: 5 წუთი ფეხით',
+    metroEng: 'Metro: 5 min walk',
+
+    officeGeo: 'ოფისამდე: დაახლოებით 18 წუთი',
+    officeEng: 'Office commute: about 18 min',
+
+    descriptionGeo:
+      'უკეთესი მდებარეობა და პირობები. უფრო ძვირია, მაგრამ ყოველდღიურად დროს ზოგავ.',
+
+    descriptionEng:
+      'Better location and living conditions. More expensive, but saves time every day.',
+  },
+];
 
         metroGeo: 'მეტრო: 5 წუთი ფეხით',
         metroEng: 'Metro: 5 min walk',
