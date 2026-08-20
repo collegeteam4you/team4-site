@@ -8108,55 +8108,111 @@ onClick: function () {
 // ==========================================
 
 interviewFinished &&
-correctAnswers >= 4 &&
 h(
   'div',
   {
     style: {
       marginTop: '24px',
+      padding: '24px',
+      borderRadius: '18px',
 
-      position: 'relative',
-
-      width: '100%',
-      minHeight: '520px',
-
-      borderRadius: '22px',
-      overflow: 'hidden',
-
-      backgroundImage:
-        'url("/assets/team4-lab/interview/hired-scene.png")',
-
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-      backgroundRepeat: 'no-repeat',
+      background:
+        correctAnswers >= 4
+          ? 'rgba(40,180,90,.12)'
+          : 'rgba(239,27,19,.10)',
 
       border:
-        '1px solid rgba(40,180,90,.40)',
-
-      boxShadow:
-        '0 30px 80px rgba(0,0,0,.45)',
+        correctAnswers >= 4
+          ? '1px solid rgba(40,180,90,.40)'
+          : '1px solid rgba(239,27,19,.35)',
     },
   },
 
+  // ==========================================
+  // SUCCESS — ONLY HIRED PHOTO
+  // ==========================================
+
+  correctAnswers >= 4 &&
+  h('img', {
+    src: '/assets/team4-lab/interview/hired-scene.png',
+
+    alt: 'Team4 Hired',
+
+    style: {
+      width: '100%',
+      height: 'auto',
+
+      display: 'block',
+
+      borderRadius: '16px',
+    },
+  }),
+
+  // ==========================================
+  // FAILED — TITLE
+  // ==========================================
+
+  correctAnswers < 4 &&
   h(
-    'div',
+    'h2',
     {
       style: {
-        minHeight: '520px',
+        margin: '0 0 12px',
 
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'flex-end',
-
-        padding: '40px',
-
-        textAlign: 'center',
-
-        background:
-          'linear-gradient(to top, rgba(0,0,0,.88) 0%, rgba(0,0,0,.30) 55%, rgba(0,0,0,.05) 100%)',
+        fontSize: '24px',
+        fontWeight: '900',
       },
     },
+
+    isGeo
+      ? 'მადლობა გასაუბრებისთვის.'
+      : 'Thank you for the interview.'
+  ),
+
+  // ==========================================
+  // FAILED — SCORE
+  // ==========================================
+
+  correctAnswers < 4 &&
+  h(
+    'p',
+    {
+      style: {
+        margin: '0 0 10px',
+
+        fontSize: '16px',
+        fontWeight: '800',
+      },
+    },
+
+    isGeo
+      ? 'სწორი პასუხები: ' +
+        correctAnswers +
+        ' / 5'
+      : 'Correct answers: ' +
+        correctAnswers +
+        ' / 5'
+  ),
+
+  // ==========================================
+  // FAILED — HR MESSAGE
+  // ==========================================
+
+  correctAnswers < 4 &&
+  h(
+    'p',
+    {
+      style: {
+        margin: 0,
+        lineHeight: '1.6',
+      },
+    },
+
+    isGeo
+      ? 'HR: მადლობა. ჩვენ დაგიკავშირდებით. გასაუბრების ხელახლა გავლას 1 საათში შეძლებთ.'
+      : 'HR: Thank you. We will contact you. You can try the interview again in 1 hour.'
+  )
+)
 // ==========================================
 // HIRED SCENE
 // ==========================================
