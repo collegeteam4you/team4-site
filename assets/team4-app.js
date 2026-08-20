@@ -6609,9 +6609,6 @@ const [interviewLocked, setInterviewLocked] =
 // INTERVIEW PROGRESS
 // ==========================================
 
-const [currentQuestion, setCurrentQuestion] =
-  React.useState(0);
-
 const [correctAnswers, setCorrectAnswers] =
   React.useState(0);
 
