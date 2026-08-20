@@ -8289,6 +8289,8 @@ const isTeam4JobPage =
   window.location.pathname === '/team4-lab/job';
   const isTeam4InterviewPage =
   window.location.pathname === '/team4-lab/interview';
+  const isTeam4ApartmentPage =
+  window.location.pathname === '/team4-lab/apartment';
   const isTeam4LabPage =
     window.location.pathname.startsWith('/team4-lab');
 
