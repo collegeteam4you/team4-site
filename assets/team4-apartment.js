@@ -5,23 +5,40 @@
 (function () {
   const { createElement: h } = React;
 
+  // ==========================================
+  // APARTMENT PAGE
+  // ==========================================
+
   function Team4ApartmentPage({ lang, setLang }) {
     const isGeo = lang === 'GEO';
+
+    // ==========================================
+    // APARTMENTS
+    // ==========================================
 
     const apartments = [
       {
         id: 'economy',
 
-        image: '/assets/team4-lab/apartment/Economy.png',
+        image:
+          '/assets/team4-lab/apartment/Economy.png',
 
-        titleGeo: 'Apartment #1 — Economy',
-        titleEng: 'Apartment #1 — Economy',
+        titleGeo:
+          'Apartment #1 — Economy',
 
-        districtGeo: 'გლდანი',
-        districtEng: 'Gldani',
+        titleEng:
+          'Apartment #1 — Economy',
+
+        districtGeo:
+          'გლდანი',
+
+        districtEng:
+          'Gldani',
 
         rent: 650,
         deposit: 650,
+
+        locked: false,
 
         metroGeo:
           'მეტრო: 12 წუთი ფეხით',
@@ -45,16 +62,25 @@
       {
         id: 'comfort',
 
-image: '/assets/team4-lab/apartment/Comfort.png',-lab/apartment/comfort-apartment.png',
+        image:
+          '/assets/team4-lab/apartment/Comfort.png',
 
-        titleGeo: 'Apartment #2 — Comfort',
-        titleEng: 'Apartment #2 — Comfort',
+        titleGeo:
+          'Apartment #2 — Comfort',
 
-        districtGeo: 'საბურთალო',
-        districtEng: 'Saburtalo',
+        titleEng:
+          'Apartment #2 — Comfort',
+
+        districtGeo:
+          'საბურთალო',
+
+        districtEng:
+          'Saburtalo',
 
         rent: 900,
         deposit: 900,
+
+        locked: false,
 
         metroGeo:
           'მეტრო: 5 წუთი ფეხით',
@@ -78,14 +104,20 @@ image: '/assets/team4-lab/apartment/Comfort.png',-lab/apartment/comfort-apartmen
       {
         id: 'own',
 
-  image: '/assets/team4-lab/apartment/Own Apartment.png',
+        image:
+          '/assets/team4-lab/apartment/Own%20Apartment.png',
 
+        titleGeo:
+          'Apartment #3 — საკუთარი ბინა',
 
-        titleGeo: 'Apartment #3 — საკუთარი ბინა',
-        titleEng: 'Apartment #3 — Own Apartment',
+        titleEng:
+          'Apartment #3 — Own Apartment',
 
-        districtGeo: 'ვაკე',
-        districtEng: 'Vake',
+        districtGeo:
+          'ვაკე',
+
+        districtEng:
+          'Vake',
 
         rent: null,
         deposit: null,
@@ -105,14 +137,22 @@ image: '/assets/team4-lab/apartment/Comfort.png',-lab/apartment/comfort-apartmen
           'Your own property',
 
         descriptionGeo:
-          'ეს ბინა არ ქირავდება — მისი ყიდვა შეგიძლია კარიერული და ფინანსური პროგრესის შემდეგ.',
+          'ეს ბინა არ ქირავდება — მისი შეძენა შესაძლებელი გახდება კარიერული და ფინანსური პროგრესის შემდეგ.',
 
         descriptionEng:
-          'This apartment is not for rent. You can purchase it after progressing financially and professionally.',
+          'This apartment is not for rent. It becomes available for purchase after career and financial progress.',
       },
     ];
 
+    // ==========================================
+    // START NEGOTIATION
+    // ==========================================
+
     function startNegotiation(apartment) {
+      if (apartment.locked) {
+        return;
+      }
+
       localStorage.setItem(
         'team4SelectedApartment',
         JSON.stringify(apartment)
@@ -127,23 +167,42 @@ image: '/assets/team4-lab/apartment/Comfort.png',-lab/apartment/comfort-apartmen
       );
     }
 
+    // ==========================================
+    // RENDER
+    // ==========================================
+
     return h(
       React.Fragment,
       null,
+
+      // ========================================
+      // HEADER
+      // ========================================
 
       h(Header, {
         lang,
         setLang,
       }),
 
+      // ========================================
+      // MAIN
+      // ========================================
+
       h(
         'main',
         {
           style: {
-            minHeight: '100vh',
-            padding: '130px 24px 80px',
-            background: '#050507',
-            color: '#ffffff',
+            minHeight:
+              '100vh',
+
+            padding:
+              '130px 24px 80px',
+
+            background:
+              '#050507',
+
+            color:
+              '#ffffff',
           },
         },
 
@@ -151,21 +210,39 @@ image: '/assets/team4-lab/apartment/Comfort.png',-lab/apartment/comfort-apartmen
           'section',
           {
             style: {
-              maxWidth: '1180px',
-              margin: '0 auto',
+              maxWidth:
+                '1180px',
+
+              margin:
+                '0 auto',
             },
           },
+
+          // ====================================
+          // KICKER
+          // ====================================
 
           h(
             'div',
             {
               style: {
-                marginBottom: '10px',
-                color: '#ef1b13',
-                fontSize: '13px',
-                fontWeight: '900',
-                letterSpacing: '.12em',
-                textTransform: 'uppercase',
+                marginBottom:
+                  '10px',
+
+                color:
+                  '#ef1b13',
+
+                fontSize:
+                  '13px',
+
+                fontWeight:
+                  '900',
+
+                letterSpacing:
+                  '.12em',
+
+                textTransform:
+                  'uppercase',
               },
             },
 
@@ -174,13 +251,22 @@ image: '/assets/team4-lab/apartment/Comfort.png',-lab/apartment/comfort-apartmen
               : 'NEW CHAPTER'
           ),
 
+          // ====================================
+          // TITLE
+          // ====================================
+
           h(
             'h1',
             {
               style: {
-                margin: '0 0 12px',
-                fontSize: 'clamp(34px,5vw,58px)',
-                fontWeight: '900',
+                margin:
+                  '0 0 12px',
+
+                fontSize:
+                  'clamp(34px,5vw,58px)',
+
+                fontWeight:
+                  '900',
               },
             },
 
@@ -189,15 +275,28 @@ image: '/assets/team4-lab/apartment/Comfort.png',-lab/apartment/comfort-apartmen
               : 'Your new life starts now.'
           ),
 
+          // ====================================
+          // SUBTITLE
+          // ====================================
+
           h(
             'p',
             {
               style: {
-                maxWidth: '760px',
-                margin: '0 0 34px',
-                color: 'rgba(255,255,255,.65)',
-                fontSize: '16px',
-                lineHeight: '1.6',
+                maxWidth:
+                  '760px',
+
+                margin:
+                  '0 0 34px',
+
+                color:
+                  'rgba(255,255,255,.65)',
+
+                fontSize:
+                  '16px',
+
+                lineHeight:
+                  '1.6',
               },
             },
 
@@ -206,20 +305,43 @@ image: '/assets/team4-lab/apartment/Comfort.png',-lab/apartment/comfort-apartmen
               : 'Choose where you will live. Consider not only rent, but also time, location and daily expenses.'
           ),
 
+          // ====================================
+          // STARTING CASH
+          // ====================================
+
           h(
             'div',
             {
               style: {
-                marginBottom: '24px',
-                padding: '14px 18px',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '10px',
-                borderRadius: '12px',
-                background: 'rgba(40,180,90,.10)',
-                border: '1px solid rgba(40,180,90,.30)',
-                fontSize: '15px',
-                fontWeight: '900',
+                marginBottom:
+                  '24px',
+
+                padding:
+                  '14px 18px',
+
+                display:
+                  'inline-flex',
+
+                alignItems:
+                  'center',
+
+                gap:
+                  '10px',
+
+                borderRadius:
+                  '12px',
+
+                background:
+                  'rgba(40,180,90,.10)',
+
+                border:
+                  '1px solid rgba(40,180,90,.30)',
+
+                fontSize:
+                  '15px',
+
+                fontWeight:
+                  '900',
               },
             },
 
@@ -228,395 +350,605 @@ image: '/assets/team4-lab/apartment/Comfort.png',-lab/apartment/comfort-apartmen
               : '💰 Starting Cash: 3,000 ₾'
           ),
 
+          // ====================================
+          // APARTMENT GRID
+          // ====================================
+
           h(
             'div',
             {
               style: {
-                display: 'grid',
+                display:
+                  'grid',
+
                 gridTemplateColumns:
                   'repeat(auto-fit, minmax(320px, 1fr))',
-                gap: '22px',
+
+                gap:
+                  '22px',
               },
             },
 
-            apartments.map(function (apartment) {
-              return h(
-                'div',
-                {
-                  key: apartment.id,
-
-                  style: {
-                    overflow: 'hidden',
-                    borderRadius: '22px',
-                    background: '#111319',
-
-                    border:
-                      '1px solid rgba(255,255,255,.10)',
-
-                    boxShadow:
-                      '0 20px 55px rgba(0,0,0,.30)',
-
-                    transition:
-                      'transform .2s ease, border-color .2s ease',
-
-                    opacity:
-                      apartment.locked
-                        ? 0.82
-                        : 1,
-                  },
-
-                  onMouseEnter: function (event) {
-                    if (apartment.locked) {
-                      return;
-                    }
-
-                    event.currentTarget.style.transform =
-                      'translateY(-4px)';
-
-                    event.currentTarget.style.borderColor =
-                      'rgba(239,27,19,.35)';
-                  },
-
-                  onMouseLeave: function (event) {
-                    if (apartment.locked) {
-                      return;
-                    }
-
-                    event.currentTarget.style.transform =
-                      'translateY(0)';
-
-                    event.currentTarget.style.borderColor =
-                      'rgba(255,255,255,.10)';
-                  },
-                },
-
-                h(
+            apartments.map(
+              function (apartment) {
+                return h(
                   'div',
                   {
-                    style: {
-                      width: '100%',
-                      height: '280px',
-                      overflow: 'hidden',
-                      position: 'relative',
-                      background: '#090a0d',
-
-                      borderBottom:
-                        '1px solid rgba(255,255,255,.08)',
-                    },
-                  },
-
-                  h('img', {
-                    src: apartment.image,
-
-                    alt:
-                      isGeo
-                        ? apartment.titleGeo
-                        : apartment.titleEng,
-
-                    onError: function (event) {
-                      event.currentTarget.style.display =
-                        'none';
-                    },
+                    key:
+                      apartment.id,
 
                     style: {
-                      width: '100%',
-                      height: '100%',
-                      display: 'block',
-                      objectFit: 'cover',
+                      overflow:
+                        'hidden',
 
-                      filter:
+                      borderRadius:
+                        '22px',
+
+                      background:
+                        '#111319',
+
+                      border:
+                        '1px solid rgba(255,255,255,.10)',
+
+                      boxShadow:
+                        '0 20px 55px rgba(0,0,0,.30)',
+
+                      transition:
+                        'transform .2s ease, border-color .2s ease',
+
+                      opacity:
                         apartment.locked
-                          ? 'brightness(.42) saturate(.65)'
-                          : 'none',
-                    },
-                  }),
-
-                  apartment.locked &&
-                    h(
-                      'div',
-                      {
-                        style: {
-                          position: 'absolute',
-                          inset: 0,
-
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-
-                          fontSize: '54px',
-
-                          pointerEvents: 'none',
-                        },
-                      },
-
-                      '🔒'
-                    )
-                ),
-
-                h(
-                  'div',
-                  {
-                    style: {
-                      padding: '24px',
-                    },
-                  },
-
-                  h(
-                    'h2',
-                    {
-                      style: {
-                        margin: '0 0 8px',
-                        fontSize: '25px',
-                        fontWeight: '900',
-                      },
+                          ? 0.82
+                          : 1,
                     },
 
-                    isGeo
-                      ? apartment.titleGeo
-                      : apartment.titleEng
-                  ),
-
-                  h(
-                    'div',
-                    {
-                      style: {
-                        marginBottom: '20px',
-                        color: '#ef1b13',
-                        fontSize: '17px',
-                        fontWeight: '900',
-                      },
-                    },
-
-                    '📍 ' +
-                      (
-                        isGeo
-                          ? apartment.districtGeo
-                          : apartment.districtEng
-                      )
-                  ),
-
-                  h(
-                    'div',
-                    {
-                      style: {
-                        marginBottom: '8px',
-                        fontSize: '20px',
-                        fontWeight: '900',
-                      },
-                    },
-
-                    apartment.locked
-                      ? (
-                          isGeo
-                            ? '🔒 ჯერ მიუწვდომელია'
-                            : '🔒 Currently Locked'
-                        )
-                      : (
-                          isGeo
-                            ? 'ქირა: ' +
-                              apartment.rent +
-                              ' ₾ / თვე'
-                            : 'Rent: ' +
-                              apartment.rent +
-                              ' ₾ / month'
-                        )
-                  ),
-
-                  h(
-                    'div',
-                    {
-                      style: {
-                        marginBottom: '18px',
-                        color: 'rgba(255,255,255,.72)',
-                        fontWeight: '700',
-                      },
-                    },
-
-                    apartment.locked
-                      ? (
-                          isGeo
-                            ? 'გაზარდე შემოსავალი და დააგროვე კაპიტალი'
-                            : 'Increase your income and build capital'
-                        )
-                      : (
-                          isGeo
-                            ? 'დეპოზიტი: ' +
-                              apartment.deposit +
-                              ' ₾'
-                            : 'Deposit: ' +
-                              apartment.deposit +
-                              ' ₾'
-                        )
-                  ),
-
-                  h(
-                    'div',
-                    {
-                      style: {
-                        marginBottom: '18px',
-                        padding: '15px',
-
-                        display: 'grid',
-                        gap: '9px',
-
-                        borderRadius: '12px',
-
-                        background:
-                          'rgba(255,255,255,.04)',
-
-                        border:
-                          '1px solid rgba(255,255,255,.07)',
-
-                        color:
-                          'rgba(255,255,255,.76)',
-
-                        fontSize: '14px',
-                      },
-                    },
-
-                    h(
-                      'div',
-                      null,
-
-                      '🚇 ' +
-                        (
-                          isGeo
-                            ? apartment.metroGeo
-                            : apartment.metroEng
-                        )
-                    ),
-
-                    h(
-                      'div',
-                      null,
-
-                      '🏢 ' +
-                        (
-                          isGeo
-                            ? apartment.officeGeo
-                            : apartment.officeEng
-                        )
-                    )
-                  ),
-
-                  h(
-                    'p',
-                    {
-                      style: {
-                        minHeight: '52px',
-                        margin: '0 0 22px',
-
-                        color:
-                          'rgba(255,255,255,.62)',
-
-                        lineHeight: '1.6',
-                      },
-                    },
-
-                    isGeo
-                      ? apartment.descriptionGeo
-                      : apartment.descriptionEng
-                  ),
-
-                  h(
-                    'button',
-                    {
-                      type: 'button',
-
-                      disabled:
-                        apartment.locked,
-
-                      onClick: function () {
-                        if (apartment.locked) {
-                          return;
-                        }
-
-                        startNegotiation(
-                          apartment
-                        );
-                      },
-
-                      style: {
-                        width: '100%',
-                        padding: '15px 18px',
-
-                        border: 'none',
-                        borderRadius: '12px',
-
-                        background:
+                    onMouseEnter:
+                      function (event) {
+                        if (
                           apartment.locked
-                            ? '#292c33'
-                            : '#ef1b13',
-
-                        color: '#ffffff',
-
-                        fontSize: '14px',
-                        fontWeight: '900',
-
-                        cursor:
-                          apartment.locked
-                            ? 'not-allowed'
-                            : 'pointer',
-
-                        opacity:
-                          apartment.locked
-                            ? 0.65
-                            : 1,
-
-                        transition:
-                          'transform .18s ease, background .18s ease',
-                      },
-
-                      onMouseEnter: function (event) {
-                        if (apartment.locked) {
+                        ) {
                           return;
                         }
 
                         event.currentTarget.style.transform =
-                          'translateY(-2px)';
+                          'translateY(-4px)';
 
-                        event.currentTarget.style.background =
-                          '#ff2118';
+                        event.currentTarget.style.borderColor =
+                          'rgba(239,27,19,.35)';
                       },
 
-                      onMouseLeave: function (event) {
-                        if (apartment.locked) {
+                    onMouseLeave:
+                      function (event) {
+                        if (
+                          apartment.locked
+                        ) {
                           return;
                         }
 
                         event.currentTarget.style.transform =
                           'translateY(0)';
 
-                        event.currentTarget.style.background =
-                          '#ef1b13';
+                        event.currentTarget.style.borderColor =
+                          'rgba(255,255,255,.10)';
+                      },
+                  },
+
+                  // =================================
+                  // APARTMENT IMAGE
+                  // =================================
+
+                  h(
+                    'div',
+                    {
+                      style: {
+                        width:
+                          '100%',
+
+                        height:
+                          '280px',
+
+                        overflow:
+                          'hidden',
+
+                        position:
+                          'relative',
+
+                        background:
+                          '#090a0d',
+
+                        borderBottom:
+                          '1px solid rgba(255,255,255,.08)',
                       },
                     },
 
-                    apartment.locked
-                      ? (
+                    h('img', {
+                      src:
+                        apartment.image,
+
+                      alt:
+                        isGeo
+                          ? apartment.titleGeo
+                          : apartment.titleEng,
+
+                      onError:
+                        function (event) {
+                          console.error(
+                            'Apartment image failed:',
+                            apartment.image
+                          );
+
+                          event.currentTarget.style.display =
+                            'none';
+                        },
+
+                      style: {
+                        width:
+                          '100%',
+
+                        height:
+                          '100%',
+
+                        display:
+                          'block',
+
+                        objectFit:
+                          'cover',
+
+                        filter:
+                          apartment.locked
+                            ? 'brightness(.42) saturate(.65)'
+                            : 'none',
+                      },
+                    }),
+
+                    // =================================
+                    // LOCK OVERLAY
+                    // =================================
+
+                    apartment.locked &&
+                      h(
+                        'div',
+                        {
+                          style: {
+                            position:
+                              'absolute',
+
+                            inset:
+                              0,
+
+                            display:
+                              'flex',
+
+                            flexDirection:
+                              'column',
+
+                            alignItems:
+                              'center',
+
+                            justifyContent:
+                              'center',
+
+                            gap:
+                              '10px',
+
+                            background:
+                              'rgba(0,0,0,.18)',
+
+                            pointerEvents:
+                              'none',
+                          },
+                        },
+
+                        h(
+                          'div',
+                          {
+                            style: {
+                              fontSize:
+                                '54px',
+                            },
+                          },
+
+                          '🔒'
+                        ),
+
+                        h(
+                          'div',
+                          {
+                            style: {
+                              padding:
+                                '8px 14px',
+
+                              borderRadius:
+                                '10px',
+
+                              background:
+                                'rgba(0,0,0,.55)',
+
+                              color:
+                                '#ffffff',
+
+                              fontSize:
+                                '14px',
+
+                              fontWeight:
+                                '900',
+                            },
+                          },
+
                           isGeo
-                            ? '🔒 ჩაკეტილია'
-                            : '🔒 Locked'
+                            ? 'ჯერ ჩაკეტილია'
+                            : 'Currently Locked'
                         )
-                      : (
+                      )
+                  ),
+
+                  // =================================
+                  // APARTMENT CONTENT
+                  // =================================
+
+                  h(
+                    'div',
+                    {
+                      style: {
+                        padding:
+                          '24px',
+                      },
+                    },
+
+                    // ===============================
+                    // TITLE
+                    // ===============================
+
+                    h(
+                      'h2',
+                      {
+                        style: {
+                          margin:
+                            '0 0 8px',
+
+                          fontSize:
+                            '25px',
+
+                          fontWeight:
+                            '900',
+                        },
+                      },
+
+                      isGeo
+                        ? apartment.titleGeo
+                        : apartment.titleEng
+                    ),
+
+                    // ===============================
+                    // DISTRICT
+                    // ===============================
+
+                    h(
+                      'div',
+                      {
+                        style: {
+                          marginBottom:
+                            '20px',
+
+                          color:
+                            '#ef1b13',
+
+                          fontSize:
+                            '17px',
+
+                          fontWeight:
+                            '900',
+                        },
+                      },
+
+                      '📍 ' +
+                        (
                           isGeo
-                            ? 'მოლაპარაკება მეპატრონესთან →'
-                            : 'Negotiate with Landlord →'
+                            ? apartment.districtGeo
+                            : apartment.districtEng
                         )
+                    ),
+
+                    // ===============================
+                    // RENT / LOCK
+                    // ===============================
+
+                    h(
+                      'div',
+                      {
+                        style: {
+                          marginBottom:
+                            '8px',
+
+                          fontSize:
+                            '20px',
+
+                          fontWeight:
+                            '900',
+
+                          color:
+                            apartment.locked
+                              ? '#f6c744'
+                              : '#ffffff',
+                        },
+                      },
+
+                      apartment.locked
+                        ? (
+                            isGeo
+                              ? '🔒 ჯერ მიუწვდომელია'
+                              : '🔒 Currently Locked'
+                          )
+                        : (
+                            isGeo
+                              ? 'ქირა: ' +
+                                apartment.rent +
+                                ' ₾ / თვე'
+                              : 'Rent: ' +
+                                apartment.rent +
+                                ' ₾ / month'
+                          )
+                    ),
+
+                    // ===============================
+                    // DEPOSIT / CAPITAL MESSAGE
+                    // ===============================
+
+                    h(
+                      'div',
+                      {
+                        style: {
+                          marginBottom:
+                            '18px',
+
+                          color:
+                            apartment.locked
+                              ? '#f6c744'
+                              : 'rgba(255,255,255,.72)',
+
+                          fontWeight:
+                            '700',
+                        },
+                      },
+
+                      apartment.locked
+                        ? (
+                            isGeo
+                              ? 'გაზარდე შემოსავალი და დააგროვე კაპიტალი'
+                              : 'Increase your income and build capital'
+                          )
+                        : (
+                            isGeo
+                              ? 'დეპოზიტი: ' +
+                                apartment.deposit +
+                                ' ₾'
+                              : 'Deposit: ' +
+                                apartment.deposit +
+                                ' ₾'
+                          )
+                    ),
+
+                    // ===============================
+                    // INFO BOX
+                    // ===============================
+
+                    h(
+                      'div',
+                      {
+                        style: {
+                          marginBottom:
+                            '18px',
+
+                          padding:
+                            '15px',
+
+                          display:
+                            'grid',
+
+                          gap:
+                            '9px',
+
+                          borderRadius:
+                            '12px',
+
+                          background:
+                            'rgba(255,255,255,.04)',
+
+                          border:
+                            '1px solid rgba(255,255,255,.07)',
+
+                          color:
+                            'rgba(255,255,255,.76)',
+
+                          fontSize:
+                            '14px',
+                        },
+                      },
+
+                      h(
+                        'div',
+                        null,
+
+                        '🚇 ' +
+                          (
+                            isGeo
+                              ? apartment.metroGeo
+                              : apartment.metroEng
+                          )
+                      ),
+
+                      h(
+                        'div',
+                        null,
+
+                        '🏢 ' +
+                          (
+                            isGeo
+                              ? apartment.officeGeo
+                              : apartment.officeEng
+                          )
+                      )
+                    ),
+
+                    // ===============================
+                    // DESCRIPTION
+                    // ===============================
+
+                    h(
+                      'p',
+                      {
+                        style: {
+                          minHeight:
+                            '52px',
+
+                          margin:
+                            '0 0 22px',
+
+                          color:
+                            'rgba(255,255,255,.62)',
+
+                          lineHeight:
+                            '1.6',
+                        },
+                      },
+
+                      isGeo
+                        ? apartment.descriptionGeo
+                        : apartment.descriptionEng
+                    ),
+
+                    // ===============================
+                    // BUTTON
+                    // ===============================
+
+                    h(
+                      'button',
+                      {
+                        type:
+                          'button',
+
+                        disabled:
+                          apartment.locked,
+
+                        onClick:
+                          function () {
+                            if (
+                              apartment.locked
+                            ) {
+                              return;
+                            }
+
+                            startNegotiation(
+                              apartment
+                            );
+                          },
+
+                        style: {
+                          width:
+                            '100%',
+
+                          padding:
+                            '15px 18px',
+
+                          border:
+                            'none',
+
+                          borderRadius:
+                            '12px',
+
+                          background:
+                            apartment.locked
+                              ? '#292c33'
+                              : '#ef1b13',
+
+                          color:
+                            '#ffffff',
+
+                          fontSize:
+                            '14px',
+
+                          fontWeight:
+                            '900',
+
+                          cursor:
+                            apartment.locked
+                              ? 'not-allowed'
+                              : 'pointer',
+
+                          opacity:
+                            apartment.locked
+                              ? 0.65
+                              : 1,
+
+                          transition:
+                            'transform .18s ease, background .18s ease',
+                        },
+
+                        onMouseEnter:
+                          function (event) {
+                            if (
+                              apartment.locked
+                            ) {
+                              return;
+                            }
+
+                            event.currentTarget.style.transform =
+                              'translateY(-2px)';
+
+                            event.currentTarget.style.background =
+                              '#ff2118';
+                          },
+
+                        onMouseLeave:
+                          function (event) {
+                            if (
+                              apartment.locked
+                            ) {
+                              return;
+                            }
+
+                            event.currentTarget.style.transform =
+                              'translateY(0)';
+
+                            event.currentTarget.style.background =
+                              '#ef1b13';
+                          },
+                      },
+
+                      apartment.locked
+                        ? (
+                            isGeo
+                              ? '🔒 ჩაკეტილია'
+                              : '🔒 Locked'
+                          )
+                        : (
+                            isGeo
+                              ? 'მოლაპარაკება მეპატრონესთან →'
+                              : 'Negotiate with Landlord →'
+                          )
+                    )
                   )
-                )
-              );
-            })
+                );
+              }
+            )
           ),
+
+          // ====================================
+          // INFO
+          // ====================================
 
           h(
             'div',
             {
               style: {
-                marginTop: '26px',
-                padding: '18px',
+                marginTop:
+                  '26px',
 
-                borderRadius: '14px',
+                padding:
+                  '18px',
+
+                borderRadius:
+                  '14px',
 
                 background:
                   'rgba(255,215,0,.06)',
@@ -627,8 +959,11 @@ image: '/assets/team4-lab/apartment/Comfort.png',-lab/apartment/comfort-apartmen
                 color:
                   'rgba(255,255,255,.72)',
 
-                fontSize: '14px',
-                lineHeight: '1.6',
+                fontSize:
+                  '14px',
+
+                lineHeight:
+                  '1.6',
               },
             },
 
@@ -640,6 +975,10 @@ image: '/assets/team4-lab/apartment/Comfort.png',-lab/apartment/comfort-apartmen
       )
     );
   }
+
+  // ==========================================
+  // EXPORT
+  // ==========================================
 
   window.Team4ApartmentPage =
     Team4ApartmentPage;
