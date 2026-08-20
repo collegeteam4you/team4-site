@@ -8,17 +8,34 @@
   function Team4ApartmentPage({ lang, setLang }) {
     const isGeo = lang === 'GEO';
 
-    const apartments = [
-      {
-        id: 'economy',
-        titleGeo: 'Apartment #1 — Economy',
-        titleEng: 'Apartment #1 — Economy',
+   const apartments = [
+  {
+    id: 'economy',
 
-        districtGeo: 'გლდანი',
-        districtEng: 'Gldani',
+    image:
+      '/assets/team4-lab/apartment/economy-apartment.png',
 
-        rent: 650,
-        deposit: 650,
+    titleGeo: 'Apartment #1 — Economy',
+    titleEng: 'Apartment #1 — Economy',
+
+    districtGeo: 'გლდანი',
+    districtEng: 'Gldani',
+
+    rent: 650,
+    deposit: 650,
+
+    metroGeo: 'მეტრო: 12 წუთი ფეხით',
+    metroEng: 'Metro: 12 min walk',
+
+    officeGeo: 'ოფისამდე: დაახლოებით 40 წუთი',
+    officeEng: 'Office commute: about 40 min',
+
+    descriptionGeo:
+      'პატარა და მარტივი ბინა. დაბალი ქირა, მაგრამ ოფისამდე უფრო დიდი გზა.',
+
+    descriptionEng:
+      'A small and simple apartment. Lower rent, but a longer commute to the office.',
+  },
 
         metroGeo: 'მეტრო: 12 წუთი ფეხით',
         metroEng: 'Metro: 12 min walk',
