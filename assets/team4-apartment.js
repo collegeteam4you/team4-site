@@ -5,16 +5,8 @@
 (function () {
   const { createElement: h } = React;
 
-  // ==========================================
-  // APARTMENT PAGE
-  // ==========================================
-
   function Team4ApartmentPage({ lang, setLang }) {
     const isGeo = lang === 'GEO';
-
-    // ==========================================
-    // APARTMENTS
-    // ==========================================
 
     const apartments = [
       {
@@ -84,11 +76,43 @@
         descriptionEng:
           'Better location and living conditions. More expensive, but saves time every day.',
       },
-    ];
 
-    // ==========================================
-    // START NEGOTIATION
-    // ==========================================
+      {
+        id: 'own',
+
+        image:
+          '/assets/team4-lab/apartment/own-apartment-locked.png',
+
+        titleGeo: 'Apartment #3 — საკუთარი ბინა',
+        titleEng: 'Apartment #3 — Own Apartment',
+
+        districtGeo: 'ვაკე',
+        districtEng: 'Vake',
+
+        rent: null,
+        deposit: null,
+
+        locked: true,
+
+        metroGeo:
+          'პრემიუმ ლოკაცია',
+
+        metroEng:
+          'Premium location',
+
+        officeGeo:
+          'საკუთარი უძრავი ქონება',
+
+        officeEng:
+          'Your own property',
+
+        descriptionGeo:
+          'ეს ბინა არ ქირავდება — მისი ყიდვა შეგიძლია კარიერული და ფინანსური პროგრესის შემდეგ.',
+
+        descriptionEng:
+          'This apartment is not for rent. You can purchase it after progressing financially and professionally.',
+      },
+    ];
 
     function startNegotiation(apartment) {
       localStorage.setItem(
@@ -105,41 +129,23 @@
       );
     }
 
-    // ==========================================
-    // RENDER
-    // ==========================================
-
     return h(
       React.Fragment,
       null,
-
-      // ========================================
-      // HEADER
-      // ========================================
 
       h(Header, {
         lang,
         setLang,
       }),
 
-      // ========================================
-      // MAIN
-      // ========================================
-
       h(
         'main',
         {
           style: {
             minHeight: '100vh',
-
-            padding:
-              '130px 24px 80px',
-
-            background:
-              '#050507',
-
-            color:
-              '#ffffff',
+            padding: '130px 24px 80px',
+            background: '#050507',
+            color: '#ffffff',
           },
         },
 
@@ -147,39 +153,21 @@
           'section',
           {
             style: {
-              maxWidth:
-                '1180px',
-
-              margin:
-                '0 auto',
+              maxWidth: '1180px',
+              margin: '0 auto',
             },
           },
-
-          // ====================================
-          // KICKER
-          // ====================================
 
           h(
             'div',
             {
               style: {
-                marginBottom:
-                  '10px',
-
-                color:
-                  '#ef1b13',
-
-                fontSize:
-                  '13px',
-
-                fontWeight:
-                  '900',
-
-                letterSpacing:
-                  '.12em',
-
-                textTransform:
-                  'uppercase',
+                marginBottom: '10px',
+                color: '#ef1b13',
+                fontSize: '13px',
+                fontWeight: '900',
+                letterSpacing: '.12em',
+                textTransform: 'uppercase',
               },
             },
 
@@ -188,22 +176,13 @@
               : 'NEW CHAPTER'
           ),
 
-          // ====================================
-          // TITLE
-          // ====================================
-
           h(
             'h1',
             {
               style: {
-                margin:
-                  '0 0 12px',
-
-                fontSize:
-                  'clamp(34px,5vw,58px)',
-
-                fontWeight:
-                  '900',
+                margin: '0 0 12px',
+                fontSize: 'clamp(34px,5vw,58px)',
+                fontWeight: '900',
               },
             },
 
@@ -212,28 +191,15 @@
               : 'Your new life starts now.'
           ),
 
-          // ====================================
-          // SUBTITLE
-          // ====================================
-
           h(
             'p',
             {
               style: {
-                maxWidth:
-                  '760px',
-
-                margin:
-                  '0 0 34px',
-
-                color:
-                  'rgba(255,255,255,.65)',
-
-                fontSize:
-                  '16px',
-
-                lineHeight:
-                  '1.6',
+                maxWidth: '760px',
+                margin: '0 0 34px',
+                color: 'rgba(255,255,255,.65)',
+                fontSize: '16px',
+                lineHeight: '1.6',
               },
             },
 
@@ -242,43 +208,20 @@
               : 'Choose where you will live. Consider not only rent, but also time, location and daily expenses.'
           ),
 
-          // ====================================
-          // STARTING CASH
-          // ====================================
-
           h(
             'div',
             {
               style: {
-                marginBottom:
-                  '24px',
-
-                padding:
-                  '14px 18px',
-
-                display:
-                  'inline-flex',
-
-                alignItems:
-                  'center',
-
-                gap:
-                  '10px',
-
-                borderRadius:
-                  '12px',
-
-                background:
-                  'rgba(40,180,90,.10)',
-
-                border:
-                  '1px solid rgba(40,180,90,.30)',
-
-                fontSize:
-                  '15px',
-
-                fontWeight:
-                  '900',
+                marginBottom: '24px',
+                padding: '14px 18px',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '10px',
+                borderRadius: '12px',
+                background: 'rgba(40,180,90,.10)',
+                border: '1px solid rgba(40,180,90,.30)',
+                fontSize: '15px',
+                fontWeight: '900',
               },
             },
 
@@ -287,434 +230,395 @@
               : '💰 Starting Cash: 3,000 ₾'
           ),
 
-          // ====================================
-          // APARTMENT GRID
-          // ====================================
-
           h(
             'div',
             {
               style: {
-                display:
-                  'grid',
-
+                display: 'grid',
                 gridTemplateColumns:
                   'repeat(auto-fit, minmax(320px, 1fr))',
-
-                gap:
-                  '22px',
+                gap: '22px',
               },
             },
 
-            apartments.map(
-              function (apartment) {
-                return h(
-                  'div',
-                  {
-                    key:
-                      apartment.id,
+            apartments.map(function (apartment) {
+              return h(
+                'div',
+                {
+                  key: apartment.id,
 
-                    style: {
-                      overflow:
-                        'hidden',
+                  style: {
+                    overflow: 'hidden',
+                    borderRadius: '22px',
+                    background: '#111319',
 
-                      borderRadius:
-                        '22px',
+                    border:
+                      '1px solid rgba(255,255,255,.10)',
 
-                      background:
-                        '#111319',
+                    boxShadow:
+                      '0 20px 55px rgba(0,0,0,.30)',
 
-                      border:
-                        '1px solid rgba(255,255,255,.10)',
+                    transition:
+                      'transform .2s ease, border-color .2s ease',
 
-                      boxShadow:
-                        '0 20px 55px rgba(0,0,0,.30)',
-
-                      transition:
-                        'transform .2s ease, border-color .2s ease',
-                    },
-
-                    onMouseEnter:
-                      function (event) {
-                        event.currentTarget.style.transform =
-                          'translateY(-4px)';
-
-                        event.currentTarget.style.borderColor =
-                          'rgba(239,27,19,.35)';
-                      },
-
-                    onMouseLeave:
-                      function (event) {
-                        event.currentTarget.style.transform =
-                          'translateY(0)';
-
-                        event.currentTarget.style.borderColor =
-                          'rgba(255,255,255,.10)';
-                      },
+                    opacity:
+                      apartment.locked
+                        ? 0.82
+                        : 1,
                   },
 
-                  // =================================
-                  // APARTMENT IMAGE
-                  // =================================
+                  onMouseEnter: function (event) {
+                    if (apartment.locked) {
+                      return;
+                    }
 
-                  h(
-                    'div',
-                    {
-                      style: {
-                        width:
-                          '100%',
+                    event.currentTarget.style.transform =
+                      'translateY(-4px)';
 
-                        height:
-                          '280px',
+                    event.currentTarget.style.borderColor =
+                      'rgba(239,27,19,.35)';
+                  },
 
-                        overflow:
-                          'hidden',
+                  onMouseLeave: function (event) {
+                    if (apartment.locked) {
+                      return;
+                    }
 
-                        background:
-                          '#090a0d',
+                    event.currentTarget.style.transform =
+                      'translateY(0)';
 
-                        borderBottom:
-                          '1px solid rgba(255,255,255,.08)',
-                      },
+                    event.currentTarget.style.borderColor =
+                      'rgba(255,255,255,.10)';
+                  },
+                },
+
+                h(
+                  'div',
+                  {
+                    style: {
+                      width: '100%',
+                      height: '280px',
+                      overflow: 'hidden',
+                      position: 'relative',
+                      background: '#090a0d',
+
+                      borderBottom:
+                        '1px solid rgba(255,255,255,.08)',
                     },
+                  },
 
-                    h('img', {
-                      src:
-                        apartment.image,
+                  h('img', {
+                    src: apartment.image,
 
-                      alt:
-                        isGeo
-                          ? apartment.titleGeo
-                          : apartment.titleEng,
-
-                      onError:
-                        function (event) {
-                          event.currentTarget.style.display =
-                            'none';
-                        },
-
-                      style: {
-                        width:
-                          '100%',
-
-                        height:
-                          '100%',
-
-                        display:
-                          'block',
-
-                        objectFit:
-                          'cover',
-                      },
-                    })
-                  ),
-
-                  // =================================
-                  // APARTMENT CONTENT
-                  // =================================
-
-                  h(
-                    'div',
-                    {
-                      style: {
-                        padding:
-                          '24px',
-                      },
-                    },
-
-                    // ===============================
-                    // TITLE
-                    // ===============================
-
-                    h(
-                      'h2',
-                      {
-                        style: {
-                          margin:
-                            '0 0 8px',
-
-                          fontSize:
-                            '25px',
-
-                          fontWeight:
-                            '900',
-                        },
-                      },
-
+                    alt:
                       isGeo
                         ? apartment.titleGeo
-                        : apartment.titleEng
-                    ),
+                        : apartment.titleEng,
 
-                    // ===============================
-                    // DISTRICT
-                    // ===============================
+                    onError: function (event) {
+                      event.currentTarget.style.display =
+                        'none';
+                    },
 
+                    style: {
+                      width: '100%',
+                      height: '100%',
+                      display: 'block',
+                      objectFit: 'cover',
+
+                      filter:
+                        apartment.locked
+                          ? 'brightness(.42) saturate(.65)'
+                          : 'none',
+                    },
+                  }),
+
+                  apartment.locked &&
                     h(
                       'div',
                       {
                         style: {
-                          marginBottom:
-                            '20px',
+                          position: 'absolute',
+                          inset: 0,
 
-                          color:
-                            '#ef1b13',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
 
-                          fontSize:
-                            '17px',
+                          fontSize: '54px',
 
-                          fontWeight:
-                            '900',
+                          pointerEvents: 'none',
                         },
                       },
 
-                      '📍 ' +
+                      '🔒'
+                    )
+                ),
+
+                h(
+                  'div',
+                  {
+                    style: {
+                      padding: '24px',
+                    },
+                  },
+
+                  h(
+                    'h2',
+                    {
+                      style: {
+                        margin: '0 0 8px',
+                        fontSize: '25px',
+                        fontWeight: '900',
+                      },
+                    },
+
+                    isGeo
+                      ? apartment.titleGeo
+                      : apartment.titleEng
+                  ),
+
+                  h(
+                    'div',
+                    {
+                      style: {
+                        marginBottom: '20px',
+                        color: '#ef1b13',
+                        fontSize: '17px',
+                        fontWeight: '900',
+                      },
+                    },
+
+                    '📍 ' +
+                      (
+                        isGeo
+                          ? apartment.districtGeo
+                          : apartment.districtEng
+                      )
+                  ),
+
+                  h(
+                    'div',
+                    {
+                      style: {
+                        marginBottom: '8px',
+                        fontSize: '20px',
+                        fontWeight: '900',
+                      },
+                    },
+
+                    apartment.locked
+                      ? (
+                          isGeo
+                            ? '🔒 ჯერ მიუწვდომელია'
+                            : '🔒 Currently Locked'
+                        )
+                      : (
+                          isGeo
+                            ? 'ქირა: ' +
+                              apartment.rent +
+                              ' ₾ / თვე'
+                            : 'Rent: ' +
+                              apartment.rent +
+                              ' ₾ / month'
+                        )
+                  ),
+
+                  h(
+                    'div',
+                    {
+                      style: {
+                        marginBottom: '18px',
+                        color: 'rgba(255,255,255,.72)',
+                        fontWeight: '700',
+                      },
+                    },
+
+                    apartment.locked
+                      ? (
+                          isGeo
+                            ? 'გაზარდე შემოსავალი და დააგროვე კაპიტალი'
+                            : 'Increase your income and build capital'
+                        )
+                      : (
+                          isGeo
+                            ? 'დეპოზიტი: ' +
+                              apartment.deposit +
+                              ' ₾'
+                            : 'Deposit: ' +
+                              apartment.deposit +
+                              ' ₾'
+                        )
+                  ),
+
+                  h(
+                    'div',
+                    {
+                      style: {
+                        marginBottom: '18px',
+                        padding: '15px',
+
+                        display: 'grid',
+                        gap: '9px',
+
+                        borderRadius: '12px',
+
+                        background:
+                          'rgba(255,255,255,.04)',
+
+                        border:
+                          '1px solid rgba(255,255,255,.07)',
+
+                        color:
+                          'rgba(255,255,255,.76)',
+
+                        fontSize: '14px',
+                      },
+                    },
+
+                    h(
+                      'div',
+                      null,
+
+                      '🚇 ' +
                         (
                           isGeo
-                            ? apartment.districtGeo
-                            : apartment.districtEng
+                            ? apartment.metroGeo
+                            : apartment.metroEng
                         )
                     ),
 
-                    // ===============================
-                    // RENT
-                    // ===============================
-
                     h(
                       'div',
-                      {
-                        style: {
-                          marginBottom:
-                            '8px',
+                      null,
 
-                          fontSize:
-                            '20px',
-
-                          fontWeight:
-                            '900',
-                        },
-                      },
-
-                      isGeo
-                        ? 'ქირა: ' +
-                          apartment.rent +
-                          ' ₾ / თვე'
-                        : 'Rent: ' +
-                          apartment.rent +
-                          ' ₾ / month'
-                    ),
-
-                    // ===============================
-                    // DEPOSIT
-                    // ===============================
-
-                    h(
-                      'div',
-                      {
-                        style: {
-                          marginBottom:
-                            '18px',
-
-                          color:
-                            'rgba(255,255,255,.72)',
-
-                          fontWeight:
-                            '700',
-                        },
-                      },
-
-                      isGeo
-                        ? 'დეპოზიტი: ' +
-                          apartment.deposit +
-                          ' ₾'
-                        : 'Deposit: ' +
-                          apartment.deposit +
-                          ' ₾'
-                    ),
-
-                    // ===============================
-                    // INFO BOX
-                    // ===============================
-
-                    h(
-                      'div',
-                      {
-                        style: {
-                          marginBottom:
-                            '18px',
-
-                          padding:
-                            '15px',
-
-                          display:
-                            'grid',
-
-                          gap:
-                            '9px',
-
-                          borderRadius:
-                            '12px',
-
-                          background:
-                            'rgba(255,255,255,.04)',
-
-                          border:
-                            '1px solid rgba(255,255,255,.07)',
-
-                          color:
-                            'rgba(255,255,255,.76)',
-
-                          fontSize:
-                            '14px',
-                        },
-                      },
-
-                      h(
-                        'div',
-                        null,
-
-                        '🚇 ' +
-                          (
-                            isGeo
-                              ? apartment.metroGeo
-                              : apartment.metroEng
-                          )
-                      ),
-
-                      h(
-                        'div',
-                        null,
-
-                        '🏢 ' +
-                          (
-                            isGeo
-                              ? apartment.officeGeo
-                              : apartment.officeEng
-                          )
-                      )
-                    ),
-
-                    // ===============================
-                    // DESCRIPTION
-                    // ===============================
-
-                    h(
-                      'p',
-                      {
-                        style: {
-                          minHeight:
-                            '52px',
-
-                          margin:
-                            '0 0 22px',
-
-                          color:
-                            'rgba(255,255,255,.62)',
-
-                          lineHeight:
-                            '1.6',
-                        },
-                      },
-
-                      isGeo
-                        ? apartment.descriptionGeo
-                        : apartment.descriptionEng
-                    ),
-
-                    // ===============================
-                    // NEGOTIATION BUTTON
-                    // ===============================
-
-                    h(
-                      'button',
-                      {
-                        type:
-                          'button',
-
-                        onClick:
-                          function () {
-                            startNegotiation(
-                              apartment
-                            );
-                          },
-
-                        style: {
-                          width:
-                            '100%',
-
-                          padding:
-                            '15px 18px',
-
-                          border:
-                            'none',
-
-                          borderRadius:
-                            '12px',
-
-                          background:
-                            '#ef1b13',
-
-                          color:
-                            '#ffffff',
-
-                          fontSize:
-                            '14px',
-
-                          fontWeight:
-                            '900',
-
-                          cursor:
-                            'pointer',
-
-                          transition:
-                            'transform .18s ease, background .18s ease',
-                        },
-
-                        onMouseEnter:
-                          function (event) {
-                            event.currentTarget.style.transform =
-                              'translateY(-2px)';
-
-                            event.currentTarget.style.background =
-                              '#ff2118';
-                          },
-
-                        onMouseLeave:
-                          function (event) {
-                            event.currentTarget.style.transform =
-                              'translateY(0)';
-
-                            event.currentTarget.style.background =
-                              '#ef1b13';
-                          },
-                      },
-
-                      isGeo
-                        ? 'მოლაპარაკება მეპატრონესთან →'
-                        : 'Negotiate with Landlord →'
+                      '🏢 ' +
+                        (
+                          isGeo
+                            ? apartment.officeGeo
+                            : apartment.officeEng
+                        )
                     )
-                  )
-                );
-              }
-            )
-          ),
+                  ),
 
-          // ====================================
-          // INFO
-          // ====================================
+                  h(
+                    'p',
+                    {
+                      style: {
+                        minHeight: '52px',
+                        margin: '0 0 22px',
+
+                        color:
+                          'rgba(255,255,255,.62)',
+
+                        lineHeight: '1.6',
+                      },
+                    },
+
+                    isGeo
+                      ? apartment.descriptionGeo
+                      : apartment.descriptionEng
+                  ),
+
+                  h(
+                    'button',
+                    {
+                      type: 'button',
+
+                      disabled:
+                        apartment.locked,
+
+                      onClick: function () {
+                        if (apartment.locked) {
+                          return;
+                        }
+
+                        startNegotiation(
+                          apartment
+                        );
+                      },
+
+                      style: {
+                        width: '100%',
+                        padding: '15px 18px',
+
+                        border: 'none',
+                        borderRadius: '12px',
+
+                        background:
+                          apartment.locked
+                            ? '#292c33'
+                            : '#ef1b13',
+
+                        color: '#ffffff',
+
+                        fontSize: '14px',
+                        fontWeight: '900',
+
+                        cursor:
+                          apartment.locked
+                            ? 'not-allowed'
+                            : 'pointer',
+
+                        opacity:
+                          apartment.locked
+                            ? 0.65
+                            : 1,
+
+                        transition:
+                          'transform .18s ease, background .18s ease',
+                      },
+
+                      onMouseEnter: function (event) {
+                        if (apartment.locked) {
+                          return;
+                        }
+
+                        event.currentTarget.style.transform =
+                          'translateY(-2px)';
+
+                        event.currentTarget.style.background =
+                          '#ff2118';
+                      },
+
+                      onMouseLeave: function (event) {
+                        if (apartment.locked) {
+                          return;
+                        }
+
+                        event.currentTarget.style.transform =
+                          'translateY(0)';
+
+                        event.currentTarget.style.background =
+                          '#ef1b13';
+                      },
+                    },
+
+                    apartment.locked
+                      ? (
+                          isGeo
+                            ? '🔒 ჩაკეტილია'
+                            : '🔒 Locked'
+                        )
+                      : (
+                          isGeo
+                            ? 'მოლაპარაკება მეპატრონესთან →'
+                            : 'Negotiate with Landlord →'
+                        )
+                  )
+                )
+              );
+            })
+          ),
 
           h(
             'div',
             {
               style: {
-                marginTop:
-                  '26px',
+                marginTop: '26px',
+                padding: '18px',
 
-                padding:
-                  '18px',
-
-                borderRadius:
-                  '14px',
+                borderRadius: '14px',
 
                 background:
                   'rgba(255,215,0,.06)',
@@ -725,11 +629,8 @@
                 color:
                   'rgba(255,255,255,.72)',
 
-                fontSize:
-                  '14px',
-
-                lineHeight:
-                  '1.6',
+                fontSize: '14px',
+                lineHeight: '1.6',
               },
             },
 
@@ -741,10 +642,6 @@
       )
     );
   }
-
-  // ==========================================
-  // EXPORT
-  // ==========================================
 
   window.Team4ApartmentPage =
     Team4ApartmentPage;
