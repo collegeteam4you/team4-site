@@ -8114,10 +8114,15 @@ h(
   {
     style: {
       marginTop: '24px',
+
+      position: 'relative',
+
       borderRadius: '18px',
       overflow: 'hidden',
+
       border:
         '1px solid rgba(40,180,90,.40)',
+
       background: '#0d0f14',
     },
   },
@@ -8130,6 +8135,44 @@ h(
       width: '100%',
       height: 'auto',
       display: 'block',
+    },
+  }),
+
+  // ==========================================
+  // START FIRST DAY — CLICK AREA
+  // ==========================================
+
+  h('button', {
+    type: 'button',
+
+    'aria-label':
+      isGeo
+        ? 'დაიწყე პირველი სამუშაო დღე'
+        : 'Start your first day',
+
+    onClick: function () {
+      window.location.href =
+        '/team4-lab/apartment';
+    },
+
+    style: {
+      position: 'absolute',
+
+      // ფოტოზე დახატული წითელი ღილაკის ადგილი
+      left: '5%',
+      bottom: '14%',
+
+      width: '31%',
+      height: '10%',
+
+      border: 'none',
+      borderRadius: '12px',
+
+      background: 'transparent',
+
+      cursor: 'pointer',
+
+      zIndex: 10,
     },
   })
 ),
