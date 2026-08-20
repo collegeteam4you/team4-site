@@ -12,8 +12,7 @@
       {
         id: 'economy',
 
-        image:
-          '/assets/team4-lab/apartment/economy-apartment.png',
+        image: '/assets/team4-lab/apartment/Economy.png',
 
         titleGeo: 'Apartment #1 — Economy',
         titleEng: 'Apartment #1 — Economy',
@@ -46,8 +45,7 @@
       {
         id: 'comfort',
 
-        image:
-          '/assets/team4-lab/apartment/comfort-apartment.png',
+image: '/assets/team4-lab/apartment/Comfort.png',-lab/apartment/comfort-apartment.png',
 
         titleGeo: 'Apartment #2 — Comfort',
         titleEng: 'Apartment #2 — Comfort',
@@ -80,8 +78,8 @@
       {
         id: 'own',
 
-        image:
-          '/assets/team4-lab/apartment/own-apartment-locked.png',
+  image: '/assets/team4-lab/apartment/Own Apartment.png',
+
 
         titleGeo: 'Apartment #3 — საკუთარი ბინა',
         titleEng: 'Apartment #3 — Own Apartment',
