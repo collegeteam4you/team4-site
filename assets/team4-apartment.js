@@ -951,7 +951,96 @@ gap: '30px',
                 backdropFilter: 'blur(10px)',
               },
             },
+// ==========================================
+// LANDLORD CHARACTER
+// ==========================================
 
+h(
+  'div',
+  {
+    style: {
+      width: '260px',
+      height: '560px',
+      flexShrink: 0,
+
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'flex-end',
+
+      position: 'relative',
+    },
+  },
+
+  h('img', {
+    src:
+      '/assets/team4-lab/apartment/landlord-female.png',
+
+    alt:
+      isGeo
+        ? 'მეპატრონე'
+        : 'Landlord',
+
+    style: {
+      width: '100%',
+      height: '100%',
+
+      objectFit: 'contain',
+      objectPosition: 'bottom center',
+
+      display: 'block',
+
+      filter:
+        'drop-shadow(0 20px 35px rgba(0,0,0,.65))',
+    },
+  }),
+
+  h(
+    'div',
+    {
+      style: {
+        position: 'absolute',
+
+        bottom: '8px',
+        left: '50%',
+
+        transform:
+          'translateX(-50%)',
+
+        padding:
+          '8px 18px',
+
+        borderRadius:
+          '999px',
+
+        background:
+          'rgba(0,0,0,.78)',
+
+        border:
+          '1px solid rgba(255,255,255,.12)',
+
+        color:
+          '#ffffff',
+
+        fontSize:
+          '12px',
+
+        fontWeight:
+          '900',
+
+        letterSpacing:
+          '1px',
+
+        whiteSpace:
+          'nowrap',
+      },
+    },
+
+    isGeo
+      ? 'მეპატრონე'
+      : 'LANDLORD'
+  )
+),
             h(
               'div',
               {
