@@ -2286,130 +2286,71 @@ function LibraryPage({ lang, setLang }) {
     })
   );
 }
+// ==========================================
+// TEAM4 LAB PAGE
+// ==========================================
+
 function Team4LabPage({ lang, setLang }) {
   const isGeo = lang === 'GEO';
 
-  const labIntroImage = isGeo
-    ? '/assets/team4-lab/team4-lab-intro-geo.jpg'
-    : '/assets/team4-lab/team4-lab-intro-eng.jpg';
+  // ==========================================
+  // LANGUAGE IMAGE
+  // ==========================================
 
-  const labCopy = {
-    GEO: {
-      badge: 'TEAM4 გაყიდვების ინტელექტი',
-      title: 'Team4 Lab',
-      subtitle: `
-TEAM4 LAB — ააშენე შენი კარიერა, შეცვალე შენი ცხოვრება.
+  const labIntroImage =
+    isGeo
+      ? '/assets/team4-lab/team4-lab-intro-geo.jpg'
+      : '/assets/team4-lab/team4-lab-intro-eng.jpg';
 
-ეს არის შენი მეორე ცხოვრება გაყიდვების სამყაროში.
+  // ==========================================
+  // RENDER
+  // ==========================================
 
-იწყებ იქიდან, სადაც ბევრი იწყებს:
-ცოტა ფული, ჩვეულებრივი საცხოვრებელი, მარტივი ტრანსპორტი და სამსახური, სადაც ჯერ საკუთარი თავის დამტკიცება გჭირდება.
-
-შემდეგ ყველაფერი შენს გადაწყვეტილებებზეა დამოკიდებული.
-
-• იპოვე უკეთესი სამსახური.
-• წადი შეხვედრებზე.
-• აწარმოე მოლაპარაკებები.
-• დახურე გარიგებები.
-• გამოიმუშავე ფული.
-• მართე ხარჯები.
-• შეიძინე უკეთესი მანქანა.
-• გადადი უკეთეს სახლში.
-• გაზარდე შენი სტატუსი და ააშენე კარიერა ნულიდან.
-
-მაგრამ აქ ფულს უბრალოდ არ გაძლევენ.
-
-უნდა გაყიდო.
-უნდა იფიქრო.
-უნდა გარისკო.
-
-ერთი არასწორი გადაწყვეტილება შეიძლება დაგიჯდეს კლიენტი, სამსახური ან ფული.
-
-ერთი სწორი მოლაპარაკება კი შეიძლება გახდეს შენი შემდეგი დიდი ნაბიჯი.
-
-ყოველი დღე ახალი არჩევანია.
-ყოველი შეხვედრა — ახალი შესაძლებლობა.
-ყოველი გაყიდვა — ერთი ნაბიჯი უკეთესი ცხოვრებისკენ.
-
-რამდენად შორს შეძლებ წასვლას?
-
-შექმენი პერსონაჟი.
-დაიწყე კარიერა.
-ააშენე ცხოვრება.
-`,
-
-      missionsTitle: 'მისიები',
-      missionsText:
-        'გაიარე ეტაპობრივი პრაქტიკული სავარჯიშოები.',
-
-      deductionTitle: 'დედუქციის ტესტები',
-      deductionText:
-        'გამოიცანი კლიენტის რეალური მოტივი და აზროვნება.',
-
-      simulationsTitle: 'სიმულაციები',
-      simulationsText:
-        'ივარჯიშე რეალურ გაყიდვების დიალოგებში.',
-
-      progressTitle: 'პროგრესი',
-      progressText:
-        'შეაგროვე ქულები და გაზარდე შენი დონე.',
-    },
-
-    ENG: {
-      badge: 'TEAM4 SALES INTELLIGENCE',
-      title: 'Team4 Lab',
-      subtitle:
-        'A practical sales laboratory with real cases, deduction tests, simulations, and daily missions.',
-
-      missionsTitle: 'Missions',
-      missionsText:
-        'Complete step-by-step practical sales exercises.',
-
-      deductionTitle: 'Deduction Tests',
-      deductionText:
-        'Identify the client’s real motive and way of thinking.',
-
-      simulationsTitle: 'Simulations',
-      simulationsText:
-        'Practice through realistic sales conversations.',
-
-      progressTitle: 'Progress',
-      progressText:
-        'Earn points and improve your sales level.',
-    },
-  };
-
-  const t = labCopy[lang] || labCopy.GEO;
-const playerCreated =
-  localStorage.getItem('team4PlayerCreated') === 'true';
-
-const avatarCreated =
-  localStorage.getItem('team4AvatarCreated') === 'true';
   return h(
     React.Fragment,
     null,
+
+    // ========================================
+    // BACKGROUND
+    // ========================================
 
     h('div', {
       className: 'luxury-light-field',
       'aria-hidden': 'true',
     }),
 
+    // ========================================
+    // HEADER
+    // ========================================
+
     h(Header, {
       lang,
       setLang,
     }),
+
+    // ========================================
+    // MAIN
+    // ========================================
 
     h(
       'main',
       {
         style: {
           minHeight: '100vh',
-          padding: '150px 24px 80px',
+
+          padding:
+            '150px 24px 80px',
+
           background:
             'radial-gradient(circle at 20% 20%, rgba(239,27,19,0.18), transparent 35%), radial-gradient(circle at 80% 30%, rgba(29,92,255,0.18), transparent 35%), #030305',
+
           color: '#ffffff',
         },
       },
+
+      // ======================================
+      // CONTENT
+      // ======================================
 
       h(
         'section',
@@ -2421,138 +2362,175 @@ const avatarCreated =
           },
         },
 
+        // ====================================
+        // BADGE
+        // ====================================
+
         h(
-          'p',
+          'div',
           {
             style: {
-              margin: '0 0 12px',
+              marginBottom: '12px',
+
               color: '#ef1b13',
+
               fontSize: '13px',
               fontWeight: '900',
-              letterSpacing: '0.18em',
+
+              letterSpacing: '.18em',
               textTransform: 'uppercase',
             },
           },
-          t.badge
+
+          isGeo
+            ? 'TEAM4 გაყიდვების ინტელექტი'
+            : 'TEAM4 SALES INTELLIGENCE'
         ),
+
+        // ====================================
+        // TITLE
+        // ====================================
 
         h(
           'h1',
           {
             style: {
-              margin: '0 0 18px',
-              maxWidth: '760px',
-              fontSize: 'clamp(42px, 7vw, 88px)',
-              lineHeight: '0.98',
+              margin: '0 0 26px',
+
+              fontSize:
+                'clamp(42px, 7vw, 88px)',
+
+              lineHeight: '.98',
+
               fontWeight: '900',
             },
           },
-          t.title
+
+          'Team4 Lab'
         ),
 
+        // ====================================
+        // INTRO IMAGE
+        // ====================================
+
         h('img', {
-  src: labIntroImage,
+          src: labIntroImage,
 
-  alt:
-    isGeo
-      ? 'Team4 Lab — ქართული'
-      : 'Team4 Lab — English',
+          alt:
+            isGeo
+              ? 'Team4 Lab — ქართული'
+              : 'Team4 Lab — English',
 
-  style: {
-    width: '100%',
-    maxWidth: '1200px',
-    display: 'block',
-    margin: '0 0 34px',
-    borderRadius: '22px',
-    objectFit: 'cover',
-    border:
-      '1px solid rgba(255,255,255,.08)',
-    boxShadow:
-      '0 24px 70px rgba(0,0,0,.45)',
-  },
-}),
+          style: {
+            width: '100%',
+            display: 'block',
 
-       h(
-  'div',
-  {
-    style: {
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      marginTop: '18px',
-    },
-  },
+            borderRadius: '22px',
 
-  h(
-    'button',
-    {
-      type: 'button',
+            objectFit: 'cover',
 
-      onClick: function () {
-        window.location.href =
-          '/team4-lab/register';
-      },
+            border:
+              '1px solid rgba(255,255,255,.08)',
 
-      onMouseEnter: function (event) {
-        event.currentTarget.style.transform =
-          'translateY(-4px) scale(1.03)';
+            boxShadow:
+              '0 24px 70px rgba(0,0,0,.45)',
+          },
+        }),
 
-        event.currentTarget.style.boxShadow =
-          '0 20px 60px rgba(239,27,19,.45)';
-      },
+        // ====================================
+        // START GAME
+        // ====================================
 
-      onMouseLeave: function (event) {
-        event.currentTarget.style.transform =
-          'translateY(0) scale(1)';
+        h(
+          'div',
+          {
+            style: {
+              display: 'flex',
+              justifyContent: 'center',
 
-        event.currentTarget.style.boxShadow =
-          '0 14px 40px rgba(239,27,19,.25)';
-      },
+              marginTop: '34px',
+            },
+          },
 
-      style: {
-        width: '100%',
-        maxWidth: '420px',
+          h(
+            'button',
+            {
+              type: 'button',
 
-        padding: '20px 30px',
+              onClick: function () {
+                window.location.href =
+                  '/team4-lab/register';
+              },
 
-        border:
-          '1px solid rgba(255,255,255,.12)',
+              onMouseEnter:
+                function (event) {
+                  event.currentTarget.style.transform =
+                    'translateY(-4px) scale(1.03)';
 
-        borderRadius: '16px',
+                  event.currentTarget.style.boxShadow =
+                    '0 20px 60px rgba(239,27,19,.45)';
 
-        background:
-          'linear-gradient(135deg, #ef1b13, #b80f0a)',
+                  event.currentTarget.style.background =
+                    '#ff241b';
+                },
 
-        color: '#ffffff',
+              onMouseLeave:
+                function (event) {
+                  event.currentTarget.style.transform =
+                    'translateY(0) scale(1)';
 
-        fontSize: '19px',
-        fontWeight: '900',
+                  event.currentTarget.style.boxShadow =
+                    '0 14px 40px rgba(239,27,19,.25)';
 
-        letterSpacing: '.02em',
+                  event.currentTarget.style.background =
+                    '#ef1b13';
+                },
 
-        cursor: 'pointer',
+              style: {
+                width: '100%',
+                maxWidth: '420px',
 
-        boxShadow:
-          '0 14px 40px rgba(239,27,19,.25)',
+                padding: '20px 30px',
 
-        transition:
-          'transform .2s ease, box-shadow .2s ease',
-      },
-    },
+                border:
+                  '1px solid rgba(255,255,255,.12)',
 
-    isGeo
-      ? '▶ დაიწყე თამაში'
-      : '▶ Start Game'
-  )
-),
+                borderRadius: '16px',
 
-h(Footer, {
-  lang,
-})
-);
+                background: '#ef1b13',
 
-} // <-- ეს დაამატე
+                color: '#ffffff',
 
+                fontSize: '19px',
+                fontWeight: '900',
+
+                cursor: 'pointer',
+
+                boxShadow:
+                  '0 14px 40px rgba(239,27,19,.25)',
+
+                transition:
+                  'transform .2s ease, background .2s ease, box-shadow .2s ease',
+              },
+            },
+
+            isGeo
+              ? '▶ დაიწყე თამაში'
+              : '▶ Start Game'
+          )
+        )
+      )
+    ),
+
+    // ========================================
+    // FOOTER
+    // ========================================
+
+    h(Footer, {
+      lang,
+    })
+  );
+}
 // ==========================================
 // TEAM4 AVATAR PAGE
 // ==========================================
