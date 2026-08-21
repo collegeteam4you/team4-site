@@ -536,55 +536,47 @@ const playerName =
       })
     ),
 
-    // PLAYER LABEL
-    h(
-      'div',
-      {
-        style: {
-          position: 'absolute',
+   // ==========================================
+// PLAYER LABEL
+// ==========================================
 
-          bottom: '8px',
-          left: '50%',
+h(
+  'div',
+  {
+    style: {
+      position: 'absolute',
 
-          transform:
-            'translateX(-50%)',
+      bottom: '8px',
+      left: '50%',
 
-          padding:
-            '8px 18px',
+      transform: 'translateX(-50%)',
 
-          borderRadius:
-            '999px',
+      padding: '8px 18px',
 
-          background:
-            'rgba(0,0,0,.78)',
+      borderRadius: '999px',
 
-          border:
-            '1px solid rgba(255,255,255,.12)',
+      background: 'rgba(0,0,0,.78)',
 
-          color:
-            '#ffffff',
+      border:
+        '1px solid rgba(255,255,255,.12)',
 
-          fontSize:
-            '12px',
+      color: '#ffffff',
 
-          fontWeight:
-            '900',
+      fontSize: '12px',
 
-          letterSpacing:
-            '1px',
+      fontWeight: '900',
 
-          whiteSpace:
-            'nowrap',
+      letterSpacing: '1px',
 
-          zIndex: 20,
-        },
-      },
+      whiteSpace: 'nowrap',
 
-      localStorage.getItem('team4PlayerName') ||
-(
+      zIndex: 20,
+    },
+  },
+
   playerName
 )
-  );
+);
 }
     // ==========================================
     // RENDER
