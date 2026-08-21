@@ -1847,6 +1847,97 @@ h(
     )
   )
 ),
+  // ==========================================
+// PRICE FINAL
+// ==========================================
+
+negotiationStep === 'price_final' &&
+h(
+  React.Fragment,
+  null,
+
+  h(
+    'div',
+    {
+      style: {
+        marginBottom: '22px',
+        padding: '20px',
+
+        borderRadius: '16px',
+
+        background:
+          'rgba(40,180,90,.08)',
+
+        border:
+          '1px solid rgba(40,180,90,.25)',
+      },
+    },
+
+    h(
+      'div',
+      {
+        style: {
+          marginBottom: '8px',
+
+          color: '#4ade80',
+
+          fontSize: '13px',
+          fontWeight: '900',
+        },
+      },
+
+      isGeo
+        ? 'მეპატრონე'
+        : 'Landlord'
+    ),
+
+    h(
+      'div',
+      {
+        style: {
+          fontSize: '17px',
+          lineHeight: '1.65',
+        },
+      },
+
+      negotiationApartment.id === 'economy'
+        ? (
+            isGeo
+              ? 'კარგი. 620 ₾-ზე შევთანხმდეთ. თუ დღესვე გადაიხდი და ხელშეკრულებას ახლავე გავაფორმებთ, თანახმა ვარ.'
+              : 'Alright. We can agree on 620 ₾. If you pay today and sign the contract now, I accept.'
+          )
+        : (
+            isGeo
+              ? 'კარგი. 860 ₾-ზე შევთანხმდეთ. თუ დღესვე გადაიხდი და ხელშეკრულებას ახლავე გავაფორმებთ, თანახმა ვარ.'
+              : 'Alright. We can agree on 860 ₾. If you pay today and sign the contract now, I accept.'
+          )
+    )
+  ),
+
+  h(
+    'button',
+    {
+      type: 'button',
+
+      onClick: function () {
+        setNegotiationScore(
+          negotiationScore + 2
+        );
+
+        setNegotiationStep(
+          'final_best'
+        );
+      },
+
+      style:
+        negotiationAnswerStyle(),
+    },
+
+    isGeo
+      ? '🤝 შევთანხმდით. გავაფორმოთ.'
+      : '🤝 Deal. Let’s sign.'
+  )
+),
   h(
     'div',
     {
