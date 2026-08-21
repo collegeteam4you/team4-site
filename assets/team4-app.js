@@ -2472,144 +2472,79 @@ const avatarCreated =
   },
 }),
 
-        h(
-          'div',
-          {
-            style: {
-              display: 'grid',
-              gridTemplateColumns:
-                'repeat(auto-fit, minmax(230px, 1fr))',
-              gap: '18px',
-            },
-          },
-
-          [
-{
-  icon: '🎯',
-  title: t.missionsTitle,
-  text: t.missionsText,
-
-  href:
-    !playerCreated
-      ? '/team4-lab/register'
-      : !avatarCreated
-      ? '/team4-lab/avatar'
-      : '/team4-lab/missions',
-},
-  {
-    icon: '🧠',
-    title: t.deductionTitle,
-    text: t.deductionText,
-  },
-  {
-    icon: '💬',
-    title: t.simulationsTitle,
-    text: t.simulationsText,
-  },
-  {
-    icon: '🏆',
-    title: t.progressTitle,
-    text: t.progressText,
-  },
- ].map(function (item) {
-  return h(
-    'article',
-    {
-      key: item.title,
-
-      onClick: function () {
-        if (item.href) {
-          window.location.href = item.href;
-        }
-      },
-
-      onMouseEnter: function (event) {
-        if (!item.href) return;
-
-        event.currentTarget.style.transform =
-          'translateY(-6px)';
-
-        event.currentTarget.style.borderColor =
-          'rgba(239,27,19,0.65)';
-
-        event.currentTarget.style.boxShadow =
-          '0 18px 45px rgba(239,27,19,0.16)';
-      },
-
-      onMouseLeave: function (event) {
-        if (!item.href) return;
-
-        event.currentTarget.style.transform =
-          'translateY(0)';
-
-        event.currentTarget.style.borderColor =
-          'rgba(255,255,255,0.10)';
-
-        event.currentTarget.style.boxShadow =
-          'none';
-      },
-
-      style: {
-        padding: '24px',
-        border:
-          '1px solid rgba(255,255,255,0.10)',
-        borderRadius: '18px',
-        background:
-          'rgba(255,255,255,0.05)',
-        backdropFilter: 'blur(10px)',
-
-        cursor: item.href
-          ? 'pointer'
-          : 'default',
-
-        transition:
-          'transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease',
-      },
-    },
-
-              h(
-                'div',
-                {
-                  style: {
-                    marginBottom: '15px',
-                    fontSize: '30px',
-                  },
-                },
-                item.icon
-              ),
-
-h(
+       h(
   'div',
   {
     style: {
-      margin: '0 0 8px',
-      fontSize: '15px',
-      lineHeight: '1.3',
-      fontWeight: '800',
-      letterSpacing: '0',
-      textTransform: 'none',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginTop: '18px',
     },
   },
-  item.title
-),
 
-h(
-  'p',
-  {
-    style: {
-      margin: 0,
-      color: 'rgba(255,255,255,0.65)',
-      fontSize: '12px',
-      lineHeight: '1.5',
+  h(
+    'button',
+    {
+      type: 'button',
+
+      onClick: function () {
+        window.location.href =
+          '/team4-lab/register';
+      },
+
+      onMouseEnter: function (event) {
+        event.currentTarget.style.transform =
+          'translateY(-4px) scale(1.03)';
+
+        event.currentTarget.style.boxShadow =
+          '0 20px 60px rgba(239,27,19,.45)';
+      },
+
+      onMouseLeave: function (event) {
+        event.currentTarget.style.transform =
+          'translateY(0) scale(1)';
+
+        event.currentTarget.style.boxShadow =
+          '0 14px 40px rgba(239,27,19,.25)';
+      },
+
+      style: {
+        width: '100%',
+        maxWidth: '420px',
+
+        padding: '20px 30px',
+
+        border:
+          '1px solid rgba(255,255,255,.12)',
+
+        borderRadius: '16px',
+
+        background:
+          'linear-gradient(135deg, #ef1b13, #b80f0a)',
+
+        color: '#ffffff',
+
+        fontSize: '19px',
+        fontWeight: '900',
+
+        letterSpacing: '.02em',
+
+        cursor: 'pointer',
+
+        boxShadow:
+          '0 14px 40px rgba(239,27,19,.25)',
+
+        transition:
+          'transform .2s ease, box-shadow .2s ease',
+      },
     },
-  },
-  item.text
-)
-            );
-          })
-        )
-      )
-    ),
+
+    isGeo
+      ? '▶ დაიწყე თამაში'
+      : '▶ Start Game'
+  )
+),
 
 h(Footer, {
   lang,
