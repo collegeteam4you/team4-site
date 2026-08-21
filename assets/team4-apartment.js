@@ -1771,6 +1771,7 @@ h(
                   : 'Close'
               )
             )
+            renderApartmentAvatar()
           ),
           // ====================================
           // INFO
