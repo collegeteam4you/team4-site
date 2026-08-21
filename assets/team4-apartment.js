@@ -16,6 +16,8 @@
 
 const [negotiationStep, setNegotiationStep] =
   React.useState('start');
+    const [negotiationScore, setNegotiationScore] =
+  React.useState(0);
 const [avatar, setAvatar] =
   React.useState(null);
 
