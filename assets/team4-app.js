@@ -6558,6 +6558,21 @@ h(
 
 function Team4InterviewPage({ lang, setLang }) {
   const isGeo = lang === 'GEO';
+    const interviewRetryVideos =
+    window.Team4InterviewVideos || [];
+
+  const [selectedRetryVideo, setSelectedRetryVideo] =
+    React.useState(null);
+
+  const [watchedRetryVideos, setWatchedRetryVideos] =
+    React.useState(
+      () =>
+        Number(
+          localStorage.getItem(
+            'team4InterviewWatchedVideos'
+          )
+        ) || 0
+    );
 const [avatar, setAvatar] = React.useState(null);
   const selectedJob =
     localStorage.getItem('team4SelectedJob') ||
