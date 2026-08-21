@@ -1597,7 +1597,11 @@ h(
                 )
               ),
 
-              negotiationStep === 'q1' &&
+              // ==========================================
+// Q1 — FIRST NEGOTIATION QUESTION
+// ==========================================
+
+negotiationStep === 'q1' &&
 h(
   React.Fragment,
   null,
@@ -1659,422 +1663,11 @@ h(
           )
     )
   ),
-// ==========================================
-// Q2 — PRICE NEGOTIATION
-// ==========================================
 
-negotiationStep === 'q2_price' &&
-h(
-  React.Fragment,
-  null,
-
-  h(
-    'div',
-    {
-      style: {
-        marginBottom: '22px',
-        padding: '20px',
-
-        borderRadius: '16px',
-
-        background:
-          'rgba(255,255,255,.04)',
-
-        border:
-          '1px solid rgba(255,255,255,.08)',
-      },
-    },
-
-    h(
-      'div',
-      {
-        style: {
-          marginBottom: '8px',
-
-          color: '#f6c744',
-
-          fontSize: '13px',
-
-          fontWeight: '900',
-        },
-      },
-
-      isGeo
-        ? 'მეპატრონე'
-        : 'Landlord'
-    ),
-
-    h(
-      'div',
-      {
-        style: {
-          fontSize: '17px',
-
-          lineHeight: '1.65',
-        },
-      },
-
-      negotiationApartment.id === 'economy'
-        ? (
-            isGeo
-              ? '600 ₾ ცოტაა. 630 ₾ შემიძლია შემოგთავაზო, თუ დღესვე გადავწყვეტთ.'
-              : '600 ₾ is too low. I can offer 630 ₾ if we close the deal today.'
-          )
-        : (
-            isGeo
-              ? '850 ₾ ცოტაა. 875 ₾ შემიძლია შემოგთავაზო, თუ დღესვე გადავწყვეტთ.'
-              : '850 ₾ is too low. I can offer 875 ₾ if we close the deal today.'
-          )
-    )
-  ),
-
-  h(
-    'div',
-    {
-      style: {
-        display: 'grid',
-
-        gap: '12px',
-      },
-    },
-
-    // ======================================
-    // ANSWER A
-    // ======================================
-
-    h(
-      'button',
-      {
-        type: 'button',
-
-        onClick: function () {
-          setNegotiationScore(
-            negotiationScore + 2
-          );
-
-          setNegotiationStep(
-            'price_success'
-          );
-        },
-
-        style:
-          negotiationAnswerStyle(),
-      },
-
-      negotiationApartment.id === 'economy'
-        ? (
-            isGeo
-              ? 'A. 630 ₾ მისაღებია. შევთანხმდით.'
-              : 'A. 630 ₾ works for me. We have a deal.'
-          )
-        : (
-            isGeo
-              ? 'A. 875 ₾ მისაღებია. შევთანხმდით.'
-              : 'A. 875 ₾ works for me. We have a deal.'
-          )
-    ),
-
-    // ======================================
-    // ANSWER B
-    // ======================================
-
-    h(
-      'button',
-      {
-        type: 'button',
-
-        onClick: function () {
-          setNegotiationScore(
-            negotiationScore + 3
-          );
-
-          setNegotiationStep(
-            'price_final'
-          );
-        },
-
-        style:
-          negotiationAnswerStyle(),
-      },
-
-      negotiationApartment.id === 'economy'
-        ? (
-            isGeo
-              ? 'B. თუ 620 ₾-ზე შევთანხმდებით, ახლავე გადავიხდი და დღესვე გავაფორმებთ.'
-              : 'B. If we agree on 620 ₾, I will pay now and sign today.'
-          )
-        : (
-            isGeo
-              ? 'B. თუ 860 ₾-ზე შევთანხმდებით, ახლავე გადავიხდი და დღესვე გავაფორმებთ.'
-              : 'B. If we agree on 860 ₾, I will pay now and sign today.'
-          )
-    ),
-
-    // ======================================
-    // ANSWER C
-    // ======================================
-
-    h(
-      'button',
-      {
-        type: 'button',
-
-        onClick: function () {
-          setNegotiationScore(
-            negotiationScore - 1
-          );
-
-          setNegotiationStep(
-            'price_failed'
-          );
-        },
-
-        style:
-          negotiationAnswerStyle(),
-      },
-
-      negotiationApartment.id === 'economy'
-        ? (
-            isGeo
-              ? 'C. არა, 600 ₾ ჩემი ბოლო ფასია.'
-              : 'C. No, 600 ₾ is my final offer.'
-          )
-        : (
-            isGeo
-              ? 'C. არა, 850 ₾ ჩემი ბოლო ფასია.'
-              : 'C. No, 850 ₾ is my final offer.'
-          )
-    )
-  )
-),
   // ==========================================
-// PRICE FINAL
-// ==========================================
-
-negotiationStep === 'price_final' &&
-h(
-  React.Fragment,
-  null,
-
-  h(
-    'div',
-    {
-      style: {
-        marginBottom: '22px',
-        padding: '20px',
-
-        borderRadius: '16px',
-
-        background:
-          'rgba(40,180,90,.08)',
-
-        border:
-          '1px solid rgba(40,180,90,.25)',
-      },
-    },
-
-    h(
-      'div',
-      {
-        style: {
-          marginBottom: '8px',
-
-          color: '#4ade80',
-
-          fontSize: '13px',
-          fontWeight: '900',
-        },
-      },
-
-      isGeo
-        ? 'მეპატრონე'
-        : 'Landlord'
-    ),
-
-    h(
-      'div',
-      {
-        style: {
-          fontSize: '17px',
-          lineHeight: '1.65',
-        },
-      },
-
-      negotiationApartment.id === 'economy'
-        ? (
-            isGeo
-              ? 'კარგი. 620 ₾-ზე შევთანხმდეთ. თუ დღესვე გადაიხდი და ხელშეკრულებას ახლავე გავაფორმებთ, თანახმა ვარ.'
-              : 'Alright. We can agree on 620 ₾. If you pay today and sign the contract now, I accept.'
-          )
-        : (
-            isGeo
-              ? 'კარგი. 860 ₾-ზე შევთანხმდეთ. თუ დღესვე გადაიხდი და ხელშეკრულებას ახლავე გავაფორმებთ, თანახმა ვარ.'
-              : 'Alright. We can agree on 860 ₾. If you pay today and sign the contract now, I accept.'
-          )
-    )
-  ),
-
-  h(
-    'button',
-    {
-      type: 'button',
-
-      onClick: function () {
-        setNegotiationScore(
-          negotiationScore + 2
-        );
-
-        setNegotiationStep(
-          'final_best'
-        );
-      },
-
-      style:
-        negotiationAnswerStyle(),
-    },
-
-    isGeo
-      ? '🤝 შევთანხმდით. გავაფორმოთ.'
-      : '🤝 Deal. Let’s sign.'
-  )
-),
+  // Q1 ANSWERS
   // ==========================================
-// FINAL BEST RESULT
-// ==========================================
 
-negotiationStep === 'final_best' &&
-h(
-  'div',
-  {
-    style: {
-      padding: '24px',
-
-      borderRadius: '16px',
-
-      background:
-        'rgba(40,180,90,.10)',
-
-      border:
-        '1px solid rgba(40,180,90,.35)',
-    },
-  },
-
-  h(
-    'div',
-    {
-      style: {
-        marginBottom: '8px',
-
-        color: '#4ade80',
-
-        fontSize: '13px',
-        fontWeight: '900',
-
-        letterSpacing: '.10em',
-      },
-    },
-
-    isGeo
-      ? 'მოლაპარაკება დასრულებულია'
-      : 'NEGOTIATION COMPLETE'
-  ),
-
-  h(
-    'h3',
-    {
-      style: {
-        margin: '0 0 16px',
-
-        fontSize: '26px',
-
-        fontWeight: '900',
-      },
-    },
-
-    isGeo
-      ? '🏆 შესანიშნავი შეთანხმება'
-      : '🏆 Excellent Deal'
-  ),
-
-  h(
-    'div',
-    {
-      style: {
-        display: 'grid',
-        gap: '9px',
-
-        fontSize: '15px',
-        lineHeight: '1.55',
-      },
-    },
-
-    h(
-      'div',
-      null,
-
-      isGeo
-        ? 'საწყისი ქირა: ' +
-          negotiationApartment.rent +
-          ' ₾'
-        : 'Starting rent: ' +
-          negotiationApartment.rent +
-          ' ₾'
-    ),
-
-    h(
-      'div',
-      {
-        style: {
-          color: '#4ade80',
-          fontWeight: '900',
-        },
-      },
-
-      negotiationApartment.id === 'economy'
-        ? (
-            isGeo
-              ? 'შეთანხმებული ქირა: 620 ₾ / თვე'
-              : 'Final rent: 620 ₾ / month'
-          )
-        : (
-            isGeo
-              ? 'შეთანხმებული ქირა: 860 ₾ / თვე'
-              : 'Final rent: 860 ₾ / month'
-          )
-    ),
-
-    h(
-      'div',
-      null,
-
-      negotiationApartment.id === 'economy'
-        ? (
-            isGeo
-              ? 'თვიური დანაზოგი: 30 ₾'
-              : 'Monthly saving: 30 ₾'
-          )
-        : (
-            isGeo
-              ? 'თვიური დანაზოგი: 40 ₾'
-              : 'Monthly saving: 40 ₾'
-          )
-    ),
-
-    h(
-      'div',
-      {
-        style: {
-          marginTop: '8px',
-          color: '#f6c744',
-          fontWeight: '900',
-        },
-      },
-
-      'Negotiation Score: ' +
-        negotiationScore
-    )
-  )
-),
   h(
     'div',
     {
@@ -2084,10 +1677,7 @@ h(
       },
     },
 
-    // ==========================================
-    // ANSWER A
-    // ==========================================
-
+    // A
     h(
       'button',
       {
@@ -2106,10 +1696,7 @@ h(
         : 'A. Okay, I agree. I will pay everything.'
     ),
 
-    // ==========================================
-    // ANSWER B
-    // ==========================================
-
+    // B
     h(
       'button',
       {
@@ -2140,10 +1727,7 @@ h(
           )
     ),
 
-    // ==========================================
-    // ANSWER C
-    // ==========================================
-
+    // C
     h(
       'button',
       {
@@ -2154,7 +1738,9 @@ h(
             negotiationScore + 2
           );
 
-          setNegotiationStep('q2_deposit');
+          setNegotiationStep(
+            'q2_deposit'
+          );
         },
 
         style:
@@ -2166,10 +1752,7 @@ h(
         : 'C. I agree to the rent, but can I split the deposit into two payments?'
     ),
 
-    // ==========================================
-    // ANSWER D
-    // ==========================================
-
+    // D
     h(
       'button',
       {
