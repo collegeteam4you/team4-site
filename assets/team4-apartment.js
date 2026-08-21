@@ -378,7 +378,7 @@ const playerName =
           bottom: '0',
 
           transform:
-            'translateX(-50%) scale(.72) scaleY(.93)',
+            'translateX(-50%) scale(.62) scaleY(.90)',
 
           transformOrigin:
             'bottom center',
