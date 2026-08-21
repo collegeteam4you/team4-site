@@ -153,24 +153,19 @@ const [negotiationStep, setNegotiationStep] =
     // START NEGOTIATION
     // ==========================================
 
-    function startNegotiation(apartment) {
-      if (apartment.locked) {
-        return;
-      }
+   function startNegotiation(apartment) {
+  if (apartment.locked) {
+    return;
+  }
 
-      localStorage.setItem(
-        'team4SelectedApartment',
-        JSON.stringify(apartment)
-      );
+  localStorage.setItem(
+    'team4SelectedApartment',
+    JSON.stringify(apartment)
+  );
 
-      alert(
-        isGeo
-          ? apartment.titleGeo +
-            ' — მეპატრონესთან მოლაპარაკება შემდეგ ეტაპზე გაიხსნება.'
-          : apartment.titleEng +
-            ' — Landlord negotiation will open in the next step.'
-      );
-    }
+  setNegotiationApartment(apartment);
+  setNegotiationStep('start');
+}
 
     // ==========================================
     // RENDER
