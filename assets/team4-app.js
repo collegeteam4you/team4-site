@@ -7447,8 +7447,50 @@ if (interviewLocked) {
           },
 
           String(retryMinutes).padStart(2, '0') +
-            ':' +
-            String(retryRemainingSeconds).padStart(2, '0')
+  ':' +
+  String(retryRemainingSeconds).padStart(2, '0')
+),
+
+// ==========================================
+// RETRY VIDEO PROGRESS
+// ==========================================
+
+h(
+  'div',
+  {
+    style: {
+      marginTop: '22px',
+      fontSize: '15px',
+      fontWeight: '900',
+      color: '#ffffff',
+    },
+  },
+
+  isGeo
+    ? '🎓 ნანახი სასწავლო ვიდეოები: ' +
+      watchedRetryVideos +
+      ' / 2'
+    : '🎓 Training videos watched: ' +
+      watchedRetryVideos +
+      ' / 2'
+),
+
+h(
+  'p',
+  {
+    style: {
+      margin: '8px 0 20px',
+      color: 'rgba(255,255,255,.62)',
+      fontSize: '14px',
+      lineHeight: '1.6',
+    },
+  },
+
+  isGeo
+    ? 'თითო ვიდეოს ბოლომდე ყურება დარჩენილ დროს 30 წუთით შეამცირებს.'
+    : 'Watching each video to the end reduces the waiting time by 30 minutes.'
+)
+
         )
       )
     )
