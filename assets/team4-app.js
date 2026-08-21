@@ -2287,6 +2287,12 @@ function LibraryPage({ lang, setLang }) {
   );
 }
 function Team4LabPage({ lang, setLang }) {
+  const isGeo = lang === 'GEO';
+
+  const labIntroImage = isGeo
+    ? '/assets/team4-lab/team4-lab-intro-geo.jpg'
+    : '/assets/team4-lab/team4-lab-intro-eng.jpg';
+
   const labCopy = {
     GEO: {
       badge: 'TEAM4 გაყიდვების ინტელექტი',
