@@ -264,7 +264,10 @@ React.useEffect(function () {
   );
 
   setNegotiationApartment(apartment);
-  setNegotiationStep('start');
+
+  setNegotiationStep('q1');
+
+  setNegotiationScore(0);
 }
 function renderApartmentAvatar() {
   if (!avatar) {
