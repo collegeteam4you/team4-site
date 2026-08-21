@@ -7467,10 +7467,10 @@ h(
   },
 
   isGeo
-    ? '🎓 ნანახი სასწავლო ვიდეოები: ' +
+    ? '🎓 ნანახი ვიდეოები: ' +
       watchedRetryVideos +
       ' / 2'
-    : '🎓 Training videos watched: ' +
+    : '🎓 videos watched: ' +
       watchedRetryVideos +
       ' / 2'
 ),
