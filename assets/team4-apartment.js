@@ -11,6 +11,11 @@
 
   function Team4ApartmentPage({ lang, setLang }) {
     const isGeo = lang === 'GEO';
+    const [negotiationApartment, setNegotiationApartment] =
+  React.useState(null);
+
+const [negotiationStep, setNegotiationStep] =
+  React.useState('start');
 
     // ==========================================
     // APARTMENTS
