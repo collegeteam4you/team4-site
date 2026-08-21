@@ -2450,19 +2450,27 @@ const avatarCreated =
           t.title
         ),
 
-        h(
-          'p',
-          {
-            style: {
-              maxWidth: '720px',
-              margin: '0 0 34px',
-              color: 'rgba(255,255,255,0.72)',
-              fontSize: '18px',
-              lineHeight: '1.65',
-            },
-          },
-          t.subtitle
-        ),
+        h('img', {
+  src: labIntroImage,
+
+  alt:
+    isGeo
+      ? 'Team4 Lab — ქართული'
+      : 'Team4 Lab — English',
+
+  style: {
+    width: '100%',
+    maxWidth: '1200px',
+    display: 'block',
+    margin: '0 0 34px',
+    borderRadius: '22px',
+    objectFit: 'cover',
+    border:
+      '1px solid rgba(255,255,255,.08)',
+    boxShadow:
+      '0 24px 70px rgba(0,0,0,.45)',
+  },
+}),
 
         h(
           'div',
