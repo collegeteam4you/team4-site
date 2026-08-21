@@ -7489,6 +7489,221 @@ h(
   isGeo
     ? 'თითო ვიდეოს ბოლომდე ყურება დარჩენილ დროს 30 წუთით შეამცირებს.'
     : 'Watching each video to the end reduces the waiting time by 30 minutes.'
+),
+        // ==========================================
+// RETRY VIDEO LIST
+// ==========================================
+
+h(
+  'div',
+  {
+    style: {
+      width: '100%',
+      maxWidth: '640px',
+
+      display: 'grid',
+      gap: '12px',
+
+      margin: '0 auto',
+    },
+  },
+
+  interviewRetryVideos.map(
+    function (video) {
+
+      const alreadyWatched =
+        localStorage.getItem(
+          'team4InterviewWatched_' +
+            video.id
+        ) === 'true';
+
+      return h(
+        'button',
+        {
+          key: video.id,
+          type: 'button',
+
+          disabled: alreadyWatched,
+
+          onClick: function () {
+            if (alreadyWatched) {
+              return;
+            }
+
+            setSelectedRetryVideo(
+              video
+            );
+          },
+
+          style: {
+            width: '100%',
+
+            padding: '15px 18px',
+
+            border:
+              alreadyWatched
+                ? '1px solid rgba(40,180,90,.25)'
+                : '1px solid rgba(255,255,255,.10)',
+
+            borderRadius: '12px',
+
+            background:
+              alreadyWatched
+                ? 'rgba(40,180,90,.08)'
+                : '#0d0f14',
+
+            color:
+              alreadyWatched
+                ? '#4ade80'
+                : '#ffffff',
+
+            textAlign: 'left',
+
+            fontSize: '14px',
+            fontWeight: '900',
+
+            cursor:
+              alreadyWatched
+                ? 'default'
+                : 'pointer',
+          },
+        },
+
+        alreadyWatched
+          ? (
+              isGeo
+                ? '✓ ნანახია — 30 წუთი დაკლებულია'
+                : '✓ Watched — 30 minutes removed'
+            )
+          : (
+              '▶ ' +
+              (
+                isGeo
+                  ? video.titleGeo
+                  : video.titleEng
+              )
+            )
+      );
+    }
+  )
+),
+        // ==========================================
+// SELECTED RETRY VIDEO PLAYER
+// ==========================================
+
+selectedRetryVideo &&
+h(
+  'div',
+  {
+    style: {
+      width: '100%',
+      maxWidth: '760px',
+
+      margin: '24px auto 0',
+      padding: '18px',
+
+      borderRadius: '16px',
+
+      background: '#090a0d',
+
+      border:
+        '1px solid rgba(239,27,19,.25)',
+    },
+  },
+
+  h(
+    'div',
+    {
+      style: {
+        marginBottom: '12px',
+
+        fontSize: '16px',
+        fontWeight: '900',
+      },
+    },
+
+    isGeo
+      ? selectedRetryVideo.titleGeo
+      : selectedRetryVideo.titleEng
+  ),
+
+  h('video', {
+    key: selectedRetryVideo.id,
+
+    src:
+      selectedRetryVideo.url,
+
+    controls: true,
+
+    onEnded: function () {
+      completeRetryVideo(
+        selectedRetryVideo.id
+      );
+    },
+
+    style: {
+      width: '100%',
+      display: 'block',
+
+      borderRadius: '12px',
+
+      background: '#000000',
+    },
+  }),
+
+  h(
+    'div',
+    {
+      style: {
+        marginTop: '12px',
+
+        color:
+          'rgba(255,255,255,.58)',
+
+        fontSize: '13px',
+
+        lineHeight: '1.5',
+      },
+    },
+
+    isGeo
+      ? 'ვიდეო ბოლომდე ნახე — დასრულებისას 30 წუთი ავტომატურად მოგაკლდება.'
+      : 'Watch the video to the end — 30 minutes will automatically be removed.'
+  ),
+
+  h(
+    'button',
+    {
+      type: 'button',
+
+      onClick: function () {
+        setSelectedRetryVideo(null);
+      },
+
+      style: {
+        marginTop: '14px',
+
+        padding: '11px 16px',
+
+        border:
+          '1px solid rgba(255,255,255,.12)',
+
+        borderRadius: '10px',
+
+        background: 'transparent',
+
+        color: '#ffffff',
+
+        fontWeight: '800',
+
+        cursor: 'pointer',
+      },
+    },
+
+    isGeo
+      ? '← ვიდეოს დახურვა'
+      : '← Close Video'
+  )
 )
 
         )
