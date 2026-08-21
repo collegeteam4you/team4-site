@@ -944,7 +944,7 @@ const [negotiationStep, setNegotiationStep] =
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-
+gap: '30px',
                 padding: '24px',
 
                 background: 'rgba(0,0,0,.82)',
