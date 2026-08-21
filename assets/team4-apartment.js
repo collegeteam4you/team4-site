@@ -932,7 +932,340 @@ const [negotiationStep, setNegotiationStep] =
               }
             )
           ),
+          negotiationApartment &&
+          h(
+            'div',
+            {
+              style: {
+                position: 'fixed',
+                inset: 0,
+                zIndex: 9999,
 
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+
+                padding: '24px',
+
+                background: 'rgba(0,0,0,.82)',
+                backdropFilter: 'blur(10px)',
+              },
+            },
+
+            h(
+              'div',
+              {
+                style: {
+                  width: '100%',
+                  maxWidth: '760px',
+
+                  padding: '30px',
+
+                  borderRadius: '22px',
+
+                  background: '#111319',
+
+                  border:
+                    '1px solid rgba(255,255,255,.12)',
+
+                  boxShadow:
+                    '0 30px 90px rgba(0,0,0,.55)',
+                },
+              },
+
+              h(
+                'div',
+                {
+                  style: {
+                    marginBottom: '10px',
+
+                    color: '#ef1b13',
+
+                    fontSize: '13px',
+                    fontWeight: '900',
+
+                    letterSpacing: '.12em',
+                  },
+                },
+
+                'NEGOTIATION MISSION'
+              ),
+
+              h(
+                'h2',
+                {
+                  style: {
+                    margin: '0 0 18px',
+
+                    fontSize: '30px',
+                    fontWeight: '900',
+                  },
+                },
+
+                isGeo
+                  ? 'მოლაპარაკება მეპატრონესთან'
+                  : 'Negotiate with the Landlord'
+              ),
+
+              h(
+                'div',
+                {
+                  style: {
+                    marginBottom: '22px',
+                    padding: '20px',
+
+                    borderRadius: '16px',
+
+                    background:
+                      'rgba(255,255,255,.04)',
+
+                    border:
+                      '1px solid rgba(255,255,255,.08)',
+                  },
+                },
+
+                h(
+                  'div',
+                  {
+                    style: {
+                      marginBottom: '8px',
+
+                      color: '#f6c744',
+
+                      fontSize: '13px',
+                      fontWeight: '900',
+                    },
+                  },
+
+                  isGeo
+                    ? 'მეპატრონე'
+                    : 'Landlord'
+                ),
+
+                h(
+                  'div',
+                  {
+                    style: {
+                      fontSize: '17px',
+                      lineHeight: '1.65',
+                    },
+                  },
+
+                  negotiationApartment.id === 'economy'
+                    ? (
+                        isGeo
+                          ? 'ქირა 650 ₾-ია. დეპოზიტიც 650 ₾. პირველი თვე და დეპოზიტი წინასწარ.'
+                          : 'The rent is 650 ₾. The deposit is also 650 ₾. The first month and deposit are due upfront.'
+                      )
+                    : (
+                        isGeo
+                          ? 'ქირა 900 ₾-ია. დეპოზიტიც 900 ₾. ბინა კარგ ლოკაციაზეა და პირობებიც უკეთესია.'
+                          : 'The rent is 900 ₾. The deposit is also 900 ₾. The apartment is in a better location and has better conditions.'
+                      )
+                )
+              ),
+
+              h(
+                'div',
+                {
+                  style: {
+                    display: 'grid',
+                    gap: '12px',
+                  },
+                },
+
+                h(
+                  'button',
+                  {
+                    type: 'button',
+
+                    onClick: function () {
+                      setNegotiationStep('accepted');
+                    },
+
+                    style: {
+                      width: '100%',
+                      padding: '15px 16px',
+
+                      border:
+                        '1px solid rgba(255,255,255,.10)',
+
+                      borderRadius: '12px',
+
+                      background: '#0d0f14',
+                      color: '#ffffff',
+
+                      textAlign: 'left',
+
+                      fontSize: '14px',
+                      fontWeight: '800',
+
+                      cursor: 'pointer',
+                    },
+                  },
+
+                  isGeo
+                    ? 'A. კარგი, თანახმა ვარ.'
+                    : 'A. Okay, I agree.'
+                ),
+
+                h(
+                  'button',
+                  {
+                    type: 'button',
+
+                    onClick: function () {
+                      setNegotiationStep('counter');
+                    },
+
+                    style: {
+                      width: '100%',
+                      padding: '15px 16px',
+
+                      border:
+                        '1px solid rgba(255,255,255,.10)',
+
+                      borderRadius: '12px',
+
+                      background: '#0d0f14',
+                      color: '#ffffff',
+
+                      textAlign: 'left',
+
+                      fontSize: '14px',
+                      fontWeight: '800',
+
+                      cursor: 'pointer',
+                    },
+                  },
+
+                  negotiationApartment.id === 'economy'
+                    ? (
+                        isGeo
+                          ? 'B. თუ დღესვე გავაფორმებთ, 600 ₾-ზე შევთანხმდეთ?'
+                          : 'B. If we sign today, can we agree on 600 ₾?'
+                      )
+                    : (
+                        isGeo
+                          ? 'B. თუ დღესვე გავაფორმებთ, 850 ₾-ზე შევთანხმდეთ?'
+                          : 'B. If we sign today, can we agree on 850 ₾?'
+                      )
+                ),
+
+                h(
+                  'button',
+                  {
+                    type: 'button',
+
+                    onClick: function () {
+                      setNegotiationStep('deposit');
+                    },
+
+                    style: {
+                      width: '100%',
+                      padding: '15px 16px',
+
+                      border:
+                        '1px solid rgba(255,255,255,.10)',
+
+                      borderRadius: '12px',
+
+                      background: '#0d0f14',
+                      color: '#ffffff',
+
+                      textAlign: 'left',
+
+                      fontSize: '14px',
+                      fontWeight: '800',
+
+                      cursor: 'pointer',
+                    },
+                  },
+
+                  isGeo
+                    ? 'C. ქირას ვეთანხმები, მაგრამ დეპოზიტი ორ ნაწილად გადავიხადო.'
+                    : 'C. I agree to the rent, but can I split the deposit into two payments?'
+                ),
+
+                h(
+                  'button',
+                  {
+                    type: 'button',
+
+                    onClick: function () {
+                      setNegotiationStep('aggressive');
+                    },
+
+                    style: {
+                      width: '100%',
+                      padding: '15px 16px',
+
+                      border:
+                        '1px solid rgba(255,255,255,.10)',
+
+                      borderRadius: '12px',
+
+                      background: '#0d0f14',
+                      color: '#ffffff',
+
+                      textAlign: 'left',
+
+                      fontSize: '14px',
+                      fontWeight: '800',
+
+                      cursor: 'pointer',
+                    },
+                  },
+
+                  negotiationApartment.id === 'economy'
+                    ? (
+                        isGeo
+                          ? 'D. ამ ბინაში 650 ₾ ბევრია. მაქსიმუმ 500 ₾.'
+                          : 'D. 650 ₾ is too much for this apartment. Maximum 500 ₾.'
+                      )
+                    : (
+                        isGeo
+                          ? 'D. 900 ₾ ზედმეტია. მაქსიმუმ 700 ₾.'
+                          : 'D. 900 ₾ is too much. Maximum 700 ₾.'
+                      )
+                )
+              ),
+
+              h(
+                'button',
+                {
+                  type: 'button',
+
+                  onClick: function () {
+                    setNegotiationApartment(null);
+                    setNegotiationStep('start');
+                  },
+
+                  style: {
+                    marginTop: '20px',
+
+                    padding: '11px 16px',
+
+                    border:
+                      '1px solid rgba(255,255,255,.12)',
+
+                    borderRadius: '10px',
+
+                    background: 'transparent',
+                    color: '#ffffff',
+
+                    fontWeight: '800',
+
+                    cursor: 'pointer',
+                  },
+                },
+
+                isGeo
+                  ? 'დახურვა'
+                  : 'Close'
+              )
+            )
+          ),
           // ====================================
           // INFO
           // ====================================
