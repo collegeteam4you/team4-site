@@ -6668,6 +6668,55 @@ const retryMinutes =
 
 const retryRemainingSeconds =
   retrySeconds % 60;
+  function completeRetryVideo(videoId) {
+  const watchedKey =
+    'team4InterviewWatched_' + videoId;
+
+  // იგივე ვიდეო მეორედ აღარ ჩაითვლება
+  if (
+    localStorage.getItem(watchedKey) === 'true'
+  ) {
+    return;
+  }
+
+  localStorage.setItem(
+    watchedKey,
+    'true'
+  );
+
+  const newWatched =
+    Math.min(
+      watchedRetryVideos + 1,
+      2
+    );
+
+  setWatchedRetryVideos(
+    newWatched
+  );
+
+  localStorage.setItem(
+    'team4InterviewWatchedVideos',
+    String(newWatched)
+  );
+
+  // თითო ვიდეო = მინუს 30 წუთი
+  const newRetryUntil =
+    Math.max(
+      Date.now(),
+      retryUntil - 30 * 60 * 1000
+    );
+
+  setRetryUntil(
+    newRetryUntil
+  );
+
+  localStorage.setItem(
+    'team4InterviewRetryUntil',
+    String(newRetryUntil)
+  );
+
+  setSelectedRetryVideo(null);
+}
 const [hrReaction, setHrReaction] =
   React.useState('');
   // ==========================================
