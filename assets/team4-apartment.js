@@ -269,6 +269,33 @@ React.useEffect(function () {
 
   setNegotiationScore(0);
 }
+    function negotiationAnswerStyle() {
+  return {
+    width: '100%',
+
+    padding: '15px 16px',
+
+    border:
+      '1px solid rgba(255,255,255,.10)',
+
+    borderRadius: '12px',
+
+    background: '#0d0f14',
+
+    color: '#ffffff',
+
+    textAlign: 'left',
+
+    fontSize: '14px',
+
+    fontWeight: '800',
+
+    cursor: 'pointer',
+
+    transition:
+      'transform .18s ease, border-color .18s ease, background .18s ease',
+  };
+}
 function renderApartmentAvatar() {
   if (!avatar) {
     return null;
