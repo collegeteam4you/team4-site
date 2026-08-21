@@ -582,9 +582,7 @@ const playerName =
 
       localStorage.getItem('team4PlayerName') ||
 (
-  isGeo
-    ? 'შენი პერსონაჟი'
-    : 'YOUR CHARACTER'
+  playerName
 )
   );
 }
