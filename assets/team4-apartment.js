@@ -352,8 +352,8 @@ const playerName =
     'div',
     {
       style: {
-        width: '260px',
-        height: '560px',
+        width: '220px',
+        height: '520px',
 
         flexShrink: 0,
 
