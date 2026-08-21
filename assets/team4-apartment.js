@@ -268,7 +268,9 @@ function renderApartmentAvatar() {
   if (!avatar) {
     return null;
   }
-
+const playerName =
+  localStorage.getItem('team4PlayerName') ||
+  (isGeo ? 'შენი პერსონაჟი' : 'YOUR CHARACTER');
   const hairAdjustments = {
     male: {
       'hair-m-01': { width: '29%', top: '0.8%', x: '0%' },
