@@ -8506,15 +8506,20 @@ h(
   },
 
   h('img', {
-    src: '/assets/team4-lab/interview/hired-scene.png',
-    alt: 'Team4 Hired',
+  src: isGeo
+    ? '/assets/team4-lab/interview/hired-scene.png'
+    : '/assets/team4-lab/interview/hired-scene-eng.jpg',
 
-    style: {
-      width: '100%',
-      height: 'auto',
-      display: 'block',
-    },
-  }),
+  alt: isGeo
+    ? 'Team4 - სამსახურში აყვანა'
+    : 'Team4 - You Got The Job',
+
+  style: {
+    width: '100%',
+    height: 'auto',
+    display: 'block',
+  },
+}),
 
   // ==========================================
   // START FIRST DAY — CLICK AREA
