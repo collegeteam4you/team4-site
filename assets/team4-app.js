@@ -7671,7 +7671,7 @@ h(
       : 'Watch the video to the end — 30 minutes will automatically be removed.'
   ),
 
-  h(
+   h(
     'button',
     {
       type: 'button',
@@ -7706,12 +7706,10 @@ h(
   )
 )
 
-        )
       )
     )
   );
 }
-
 
 // ==========================================
 // NORMAL INTERVIEW
