@@ -6672,7 +6672,7 @@ const retryRemainingSeconds =
   const watchedKey =
     'team4InterviewWatched_' + videoId;
 
-  // იგივე ვიდეო მეორედ აღარ ჩაითვლება
+  // იგივე ვიდეო მეორედ აღარ ჩაითვალოს
   if (
     localStorage.getItem(watchedKey) === 'true'
   ) {
@@ -6699,7 +6699,7 @@ const retryRemainingSeconds =
     String(newWatched)
   );
 
-  // თითო ვიდეო = მინუს 30 წუთი
+  // თითო ვიდეო = -30 წუთი
   const newRetryUntil =
     Math.max(
       Date.now(),
@@ -6716,6 +6716,45 @@ const retryRemainingSeconds =
   );
 
   setSelectedRetryVideo(null);
+
+  // ==========================================
+  // 2/2 VIDEO WATCHED → START NEW INTERVIEW
+  // ==========================================
+
+  if (newWatched >= 2) {
+
+    // Retry lock მთლიანად იხსნება
+    localStorage.removeItem(
+      'team4InterviewRetryUntil'
+    );
+
+    setRetryUntil(0);
+    setNow(Date.now());
+
+    // ძველი გასაუბრების შედეგი იშლება
+    setInterviewFinished(false);
+
+    // პირველი კითხვიდან ვიწყებთ
+    setCurrentQuestion(0);
+
+    // პასუხის state-ები იწმინდება
+    setSelectedAnswer(null);
+    setPlayerSpeech('');
+    setHintText('');
+    setHrReaction('');
+
+    // ქულა თავიდან იწყება
+    setCorrectAnswers(0);
+
+    // თუ interviewScore გაქვს გამოყენებული,
+    // ეს ხაზიც დატოვე:
+    if (typeof setInterviewScore === 'function') {
+      setInterviewScore(0);
+    }
+
+    // player დახუროს
+    setSelectedRetryVideo(null);
+  }
 }
 const [hrReaction, setHrReaction] =
   React.useState('');
