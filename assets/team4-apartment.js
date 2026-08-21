@@ -1938,6 +1938,143 @@ h(
       : '🤝 Deal. Let’s sign.'
   )
 ),
+  // ==========================================
+// FINAL BEST RESULT
+// ==========================================
+
+negotiationStep === 'final_best' &&
+h(
+  'div',
+  {
+    style: {
+      padding: '24px',
+
+      borderRadius: '16px',
+
+      background:
+        'rgba(40,180,90,.10)',
+
+      border:
+        '1px solid rgba(40,180,90,.35)',
+    },
+  },
+
+  h(
+    'div',
+    {
+      style: {
+        marginBottom: '8px',
+
+        color: '#4ade80',
+
+        fontSize: '13px',
+        fontWeight: '900',
+
+        letterSpacing: '.10em',
+      },
+    },
+
+    isGeo
+      ? 'მოლაპარაკება დასრულებულია'
+      : 'NEGOTIATION COMPLETE'
+  ),
+
+  h(
+    'h3',
+    {
+      style: {
+        margin: '0 0 16px',
+
+        fontSize: '26px',
+
+        fontWeight: '900',
+      },
+    },
+
+    isGeo
+      ? '🏆 შესანიშნავი შეთანხმება'
+      : '🏆 Excellent Deal'
+  ),
+
+  h(
+    'div',
+    {
+      style: {
+        display: 'grid',
+        gap: '9px',
+
+        fontSize: '15px',
+        lineHeight: '1.55',
+      },
+    },
+
+    h(
+      'div',
+      null,
+
+      isGeo
+        ? 'საწყისი ქირა: ' +
+          negotiationApartment.rent +
+          ' ₾'
+        : 'Starting rent: ' +
+          negotiationApartment.rent +
+          ' ₾'
+    ),
+
+    h(
+      'div',
+      {
+        style: {
+          color: '#4ade80',
+          fontWeight: '900',
+        },
+      },
+
+      negotiationApartment.id === 'economy'
+        ? (
+            isGeo
+              ? 'შეთანხმებული ქირა: 620 ₾ / თვე'
+              : 'Final rent: 620 ₾ / month'
+          )
+        : (
+            isGeo
+              ? 'შეთანხმებული ქირა: 860 ₾ / თვე'
+              : 'Final rent: 860 ₾ / month'
+          )
+    ),
+
+    h(
+      'div',
+      null,
+
+      negotiationApartment.id === 'economy'
+        ? (
+            isGeo
+              ? 'თვიური დანაზოგი: 30 ₾'
+              : 'Monthly saving: 30 ₾'
+          )
+        : (
+            isGeo
+              ? 'თვიური დანაზოგი: 40 ₾'
+              : 'Monthly saving: 40 ₾'
+          )
+    ),
+
+    h(
+      'div',
+      {
+        style: {
+          marginTop: '8px',
+          color: '#f6c744',
+          fontWeight: '900',
+        },
+      },
+
+      'Negotiation Score: ' +
+        negotiationScore
+    )
+  )
+),
   h(
     'div',
     {
