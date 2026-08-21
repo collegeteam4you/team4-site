@@ -7667,29 +7667,84 @@ h(
   ),
 
   h('video', {
-    key: selectedRetryVideo.id,
+  key: selectedRetryVideo.id,
 
-    src:
-      selectedRetryVideo.url,
+  src: selectedRetryVideo.url,
 
-    controls: true,
+  controls: true,
 
-    onEnded: function () {
-      completeRetryVideo(
-        selectedRetryVideo.id
+  // ==========================================
+  // BLOCK FORWARD SEEKING
+  // ==========================================
+
+  onLoadedMetadata: function (e) {
+    const video = e.currentTarget;
+
+    // საწყისი ნანახი პოზიცია
+    video.dataset.maxWatchedTime = '0';
+  },
+
+  onTimeUpdate: function (e) {
+    const video = e.currentTarget;
+
+    const currentTime = video.currentTime;
+
+    const maxWatchedTime =
+      Number(
+        video.dataset.maxWatchedTime || 0
       );
-    },
 
-    style: {
-      width: '100%',
-      display: 'block',
+    // მხოლოდ რეალურად ნანახ დროს ვზრდით
+    // მცირე 1.5 წამიან tolerance-ს ვტოვებთ
+    if (
+      currentTime <= maxWatchedTime + 1.5
+    ) {
+      if (currentTime > maxWatchedTime) {
+        video.dataset.maxWatchedTime =
+          String(currentTime);
+      }
+    }
+  },
 
-      borderRadius: '12px',
+  onSeeking: function (e) {
+    const video = e.currentTarget;
 
-      background: '#000000',
-    },
-  }),
+    const maxWatchedTime =
+      Number(
+        video.dataset.maxWatchedTime || 0
+      );
 
+    // უკან გადახვევა შეიძლება.
+    // წინ — მხოლოდ უკვე ნანახ მონაკვეთამდე.
+    if (
+      video.currentTime >
+      maxWatchedTime + 1.5
+    ) {
+      video.currentTime =
+        maxWatchedTime;
+    }
+  },
+
+  onEnded: function () {
+    completeRetryVideo(
+      selectedRetryVideo.id
+    );
+  },
+
+  controlsList:
+    'nodownload noplaybackrate',
+
+  disablePictureInPicture: true,
+
+  style: {
+    width: '100%',
+    display: 'block',
+
+    borderRadius: '12px',
+
+    background: '#000000',
+  },
+}),
   h(
     'div',
     {
