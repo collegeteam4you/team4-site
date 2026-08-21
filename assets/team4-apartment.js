@@ -578,10 +578,12 @@ function renderApartmentAvatar() {
         },
       },
 
-      isGeo
-        ? 'შენი პერსონაჟი'
-        : 'YOUR CHARACTER'
-    )
+      localStorage.getItem('team4PlayerName') ||
+(
+  isGeo
+    ? 'შენი პერსონაჟი'
+    : 'YOUR CHARACTER'
+)
   );
 }
     // ==========================================
