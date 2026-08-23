@@ -1556,47 +1556,7 @@ h(
                   },
                 },
 
-                h(
-                  'div',
-                  {
-                    style: {
-                      marginBottom: '8px',
-
-                      color: '#f6c744',
-
-                      fontSize: '13px',
-                      fontWeight: '900',
-                    },
-                  },
-
-                  isGeo
-                    ? 'მეპატრონე'
-                    : 'Landlord'
-                ),
-
-                h(
-                  'div',
-                  {
-                    style: {
-                      fontSize: '17px',
-                      lineHeight: '1.65',
-                    },
-                  },
-
-                  negotiationApartment.id === 'economy'
-                    ? (
-                        isGeo
-                          ? 'ქირა 650 ₾-ია. დეპოზიტიც 650 ₾. პირველი თვე და დეპოზიტი წინასწარ.'
-                          : 'The rent is 650 ₾. The deposit is also 650 ₾. The first month and deposit are due upfront.'
-                      )
-                    : (
-                        isGeo
-                          ? 'ქირა 900 ₾-ია. დეპოზიტიც 900 ₾. ბინა კარგ ლოკაციაზეა და პირობებიც უკეთესია.'
-                          : 'The rent is 900 ₾. The deposit is also 900 ₾. The apartment is in a better location and has better conditions.'
-                      )
-                )
-              ),
-
+               
               // ==========================================
 // Q1 — FIRST NEGOTIATION QUESTION
 // ==========================================
