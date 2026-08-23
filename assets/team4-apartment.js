@@ -1539,22 +1539,7 @@ h(
                   : 'Negotiate with the Landlord'
               ),
 
-              h(
-                'div',
-                {
-                  style: {
-                    marginBottom: '22px',
-                    padding: '20px',
-
-                    borderRadius: '16px',
-
-                    background:
-                      'rgba(255,255,255,.04)',
-
-                    border:
-                      '1px solid rgba(255,255,255,.08)',
-                  },
-                },
+             
 
                
               // ==========================================
