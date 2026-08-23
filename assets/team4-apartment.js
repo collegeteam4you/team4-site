@@ -1786,6 +1786,191 @@ h(
     )
   )
 ),
+              // ==========================================
+// Q2 — PRICE NEGOTIATION
+// ==========================================
+
+negotiationStep === 'q2_price' &&
+h(
+  React.Fragment,
+  null,
+
+  h(
+    'div',
+    {
+      style: {
+        marginBottom: '22px',
+        padding: '20px',
+
+        borderRadius: '16px',
+
+        background:
+          'rgba(255,255,255,.04)',
+
+        border:
+          '1px solid rgba(255,255,255,.08)',
+      },
+    },
+
+    h(
+      'div',
+      {
+        style: {
+          marginBottom: '8px',
+
+          color: '#f6c744',
+
+          fontSize: '13px',
+          fontWeight: '900',
+        },
+      },
+
+      isGeo
+        ? 'მეპატრონე'
+        : 'Landlord'
+    ),
+
+    h(
+      'div',
+      {
+        style: {
+          fontSize: '17px',
+          lineHeight: '1.65',
+        },
+      },
+
+      negotiationApartment.id === 'economy'
+        ? (
+            isGeo
+              ? '600 ₾ ცოტაა. 630 ₾ შემიძლია შემოგთავაზო, თუ დღესვე გადავწყვეტთ.'
+              : '600 ₾ is too low. I can offer 630 ₾ if we close the deal today.'
+          )
+        : (
+            isGeo
+              ? '850 ₾ ცოტაა. 875 ₾ შემიძლია შემოგთავაზო, თუ დღესვე გადავწყვეტთ.'
+              : '850 ₾ is too low. I can offer 875 ₾ if we close the deal today.'
+          )
+    )
+  ),
+
+  h(
+    'div',
+    {
+      style: {
+        display: 'grid',
+        gap: '12px',
+      },
+    },
+
+    // ======================================
+    // ANSWER A
+    // ======================================
+
+    h(
+      'button',
+      {
+        type: 'button',
+
+        onClick: function () {
+          setNegotiationScore(
+            negotiationScore + 2
+          );
+
+          setNegotiationStep(
+            'price_success'
+          );
+        },
+
+        style:
+          negotiationAnswerStyle(),
+      },
+
+      negotiationApartment.id === 'economy'
+        ? (
+            isGeo
+              ? 'A. 630 ₾ მისაღებია. შევთანხმდით.'
+              : 'A. 630 ₾ works for me. We have a deal.'
+          )
+        : (
+            isGeo
+              ? 'A. 875 ₾ მისაღებია. შევთანხმდით.'
+              : 'A. 875 ₾ works for me. We have a deal.'
+          )
+    ),
+
+    // ======================================
+    // ANSWER B
+    // ======================================
+
+    h(
+      'button',
+      {
+        type: 'button',
+
+        onClick: function () {
+          setNegotiationScore(
+            negotiationScore + 3
+          );
+
+          setNegotiationStep(
+            'price_final'
+          );
+        },
+
+        style:
+          negotiationAnswerStyle(),
+      },
+
+      negotiationApartment.id === 'economy'
+        ? (
+            isGeo
+              ? 'B. თუ 620 ₾-ზე შევთანხმდებით, ახლავე გადავიხდი და დღესვე გავაფორმებთ.'
+              : 'B. If we agree on 620 ₾, I will pay now and sign today.'
+          )
+        : (
+            isGeo
+              ? 'B. თუ 860 ₾-ზე შევთანხმდებით, ახლავე გადავიხდი და დღესვე გავაფორმებთ.'
+              : 'B. If we agree on 860 ₾, I will pay now and sign today.'
+          )
+    ),
+
+    // ======================================
+    // ANSWER C
+    // ======================================
+
+    h(
+      'button',
+      {
+        type: 'button',
+
+        onClick: function () {
+          setNegotiationScore(
+            negotiationScore - 1
+          );
+
+          setNegotiationStep(
+            'price_failed'
+          );
+        },
+
+        style:
+          negotiationAnswerStyle(),
+      },
+
+      negotiationApartment.id === 'economy'
+        ? (
+            isGeo
+              ? 'C. არა, 600 ₾ ჩემი ბოლო ფასია.'
+              : 'C. No, 600 ₾ is my final offer.'
+          )
+        : (
+            isGeo
+              ? 'C. არა, 850 ₾ ჩემი ბოლო ფასია.'
+              : 'C. No, 850 ₾ is my final offer.'
+          )
+    )
+  )
+),
               h(
                 'button',
                 {
