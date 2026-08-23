@@ -1554,380 +1554,1482 @@ h(
              
 
                
-              // ==========================================
-// Q1 — FIRST NEGOTIATION QUESTION
+             // ==========================================
+// COMPLETE NEGOTIATION ENGINE
 // ==========================================
 
-negotiationStep === 'q1' &&
-h(
-  React.Fragment,
-  null,
+(function () {
+  const isEconomy =
+    negotiationApartment.id === 'economy';
 
-  h(
-    'div',
-    {
-      style: {
-        marginBottom: '22px',
-        padding: '20px',
+  function txt(geo, eng) {
+    return isGeo ? geo : eng;
+  }
 
-        borderRadius: '16px',
+  function go(nextStep, points) {
+    setNegotiationScore(function (current) {
+      return current + (points || 0);
+    });
 
-        background:
-          'rgba(255,255,255,.04)',
+    setNegotiationStep(nextStep);
+  }
 
-        border:
-          '1px solid rgba(255,255,255,.08)',
-      },
-    },
+  function finishDeal(finalRent, deposit, result) {
+    const deal = {
+      apartmentId: negotiationApartment.id,
+      apartment:
+        isGeo
+          ? negotiationApartment.titleGeo
+          : negotiationApartment.titleEng,
 
-    h(
-      'div',
-      {
-        style: {
-          marginBottom: '8px',
+      rent: finalRent,
+      deposit: deposit,
+      result: result,
 
-          color: '#f6c744',
+      score: negotiationScore,
+    };
 
-          fontSize: '13px',
-          fontWeight: '900',
-        },
-      },
+    localStorage.setItem(
+      'team4ApartmentDeal',
+      JSON.stringify(deal)
+    );
 
-      isGeo
-        ? 'მეპატრონე'
-        : 'Landlord'
-    ),
-
-    h(
-      'div',
-      {
-        style: {
-          fontSize: '17px',
-          lineHeight: '1.65',
-        },
-      },
-
-      negotiationApartment.id === 'economy'
-        ? (
-            isGeo
-              ? 'ქირა 650 ₾-ია. დეპოზიტიც 650 ₾. პირველი თვე და დეპოზიტი წინასწარ უნდა გადაიხადო.'
-              : 'The rent is 650 ₾. The deposit is also 650 ₾. The first month and deposit must be paid upfront.'
-          )
-        : (
-            isGeo
-              ? 'ქირა 900 ₾-ია. დეპოზიტიც 900 ₾. პირველი თვე და დეპოზიტი წინასწარ უნდა გადაიხადო.'
-              : 'The rent is 900 ₾. The deposit is also 900 ₾. The first month and deposit must be paid upfront.'
-          )
-    )
-  ),
+    localStorage.setItem(
+      'team4SelectedApartment',
+      JSON.stringify(
+        Object.assign(
+          {},
+          negotiationApartment,
+          {
+            finalRent: finalRent,
+            finalDeposit: deposit,
+            negotiated: true,
+          }
+        )
+      )
+    );
+  }
 
   // ==========================================
-  // Q1 ANSWERS
+  // ALL NEGOTIATION SCENES
   // ==========================================
 
-  h(
-    'div',
-    {
-      style: {
-        display: 'grid',
-        gap: '12px',
-      },
+  const scenes = {
+
+    // ========================================
+    // QUESTION 1
+    // ========================================
+
+    q1: {
+      text:
+        isEconomy
+          ? txt(
+              'ქირა 650 ₾-ია. დეპოზიტიც 650 ₾. პირველი თვე და დეპოზიტი წინასწარ უნდა გადაიხადო.',
+              'The rent is 650 ₾. The deposit is also 650 ₾. The first month and deposit must be paid upfront.'
+            )
+          : txt(
+              'ქირა 900 ₾-ია. დეპოზიტიც 900 ₾. პირველი თვე და დეპოზიტი წინასწარ უნდა გადაიხადო.',
+              'The rent is 900 ₾. The deposit is also 900 ₾. The first month and deposit must be paid upfront.'
+            ),
+
+      answers: [
+        {
+          text: txt(
+            'A. კარგი, თანახმა ვარ. ყველაფერს გადავიხდი.',
+            'A. Okay, I agree. I will pay everything.'
+          ),
+          next: 'direct_1',
+          score: 0,
+        },
+
+        {
+          text:
+            isEconomy
+              ? txt(
+                  'B. თუ დღესვე გავაფორმებთ, 600 ₾-ზე შევთანხმდეთ?',
+                  'B. If we sign today, can we agree on 600 ₾?'
+                )
+              : txt(
+                  'B. თუ დღესვე გავაფორმებთ, 850 ₾-ზე შევთანხმდეთ?',
+                  'B. If we sign today, can we agree on 850 ₾?'
+                ),
+
+          next: 'price_1',
+          score: 2,
+        },
+
+        {
+          text: txt(
+            'C. ქირას ვეთანხმები, მაგრამ შეიძლება დეპოზიტი ორ ნაწილად გადავიხადო?',
+            'C. I agree to the rent, but can I split the deposit into two payments?'
+          ),
+
+          next: 'deposit_1',
+          score: 2,
+        },
+
+        {
+          text:
+            isEconomy
+              ? txt(
+                  'D. 650 ₾ ძალიან ბევრია. მაქსიმუმ 500 ₾.',
+                  'D. 650 ₾ is too much. Maximum 500 ₾.'
+                )
+              : txt(
+                  'D. 900 ₾ ძალიან ბევრია. მაქსიმუმ 700 ₾.',
+                  'D. 900 ₾ is too much. Maximum 700 ₾.'
+                ),
+
+          next: 'aggressive_1',
+          score: -1,
+        },
+      ],
     },
 
-    // A
-    h(
-      'button',
-      {
-        type: 'button',
+    // ========================================
+    // A PATH — ACCEPT IMMEDIATELY
+    // ========================================
 
-        onClick: function () {
-          setNegotiationStep('q2_direct');
+    direct_1: {
+      text: txt(
+        'კარგი. მაშინ პირობები უცვლელია. პირველი თვის ქირა და სრული დეპოზიტი დღესვე უნდა გადაიხადო.',
+        'Good. Then the terms remain unchanged. The first month and full deposit must be paid today.'
+      ),
+
+      answers: [
+        {
+          text: txt(
+            'A. გასაგებია. გადავიხდი.',
+            'A. Understood. I will pay.'
+          ),
+          next: 'direct_2',
+          score: 0,
         },
 
-        style:
-          negotiationAnswerStyle(),
-      },
-
-      isGeo
-        ? 'A. კარგი, თანახმა ვარ. ყველაფერს გადავიხდი.'
-        : 'A. Okay, I agree. I will pay everything.'
-    ),
-
-    // B
-    h(
-      'button',
-      {
-        type: 'button',
-
-        onClick: function () {
-          setNegotiationScore(
-            negotiationScore + 2
-          );
-
-          setNegotiationStep('q2_price');
+        {
+          text: txt(
+            'B. სანამ გადავიხდი, შეიძლება დეპოზიტის პირობებზე მაინც ვისაუბროთ?',
+            'B. Before I pay, can we at least discuss the deposit terms?'
+          ),
+          next: 'direct_2',
+          score: 1,
         },
 
-        style:
-          negotiationAnswerStyle(),
-      },
-
-      negotiationApartment.id === 'economy'
-        ? (
-            isGeo
-              ? 'B. თუ დღესვე გავაფორმებთ, 600 ₾-ზე შევთანხმდეთ?'
-              : 'B. If we sign today, can we agree on 600 ₾?'
-          )
-        : (
-            isGeo
-              ? 'B. თუ დღესვე გავაფორმებთ, 850 ₾-ზე შევთანხმდეთ?'
-              : 'B. If we sign today, can we agree on 850 ₾?'
-          )
-    ),
-
-    // C
-    h(
-      'button',
-      {
-        type: 'button',
-
-        onClick: function () {
-          setNegotiationScore(
-            negotiationScore + 2
-          );
-
-          setNegotiationStep(
-            'q2_deposit'
-          );
+        {
+          text: txt(
+            'C. თუ დღესვე გადავიხდი, რაიმე შეღავათს ხომ ვერ გამიკეთებთ?',
+            'C. If I pay today, could you offer me any concession?'
+          ),
+          next: 'direct_2',
+          score: 2,
         },
-
-        style:
-          negotiationAnswerStyle(),
-      },
-
-      isGeo
-        ? 'C. ქირას ვეთანხმები, მაგრამ დეპოზიტი ორ ნაწილად გადავიხადო.'
-        : 'C. I agree to the rent, but can I split the deposit into two payments?'
-    ),
-
-    // D
-    h(
-      'button',
-      {
-        type: 'button',
-
-        onClick: function () {
-          setNegotiationScore(
-            negotiationScore - 1
-          );
-
-          setNegotiationStep(
-            'q2_aggressive'
-          );
-        },
-
-        style:
-          negotiationAnswerStyle(),
-      },
-
-      negotiationApartment.id === 'economy'
-        ? (
-            isGeo
-              ? 'D. 650 ₾ ძალიან ბევრია. მაქსიმუმ 500 ₾.'
-              : 'D. 650 ₾ is too much. Maximum 500 ₾.'
-          )
-        : (
-            isGeo
-              ? 'D. 900 ₾ ძალიან ბევრია. მაქსიმუმ 700 ₾.'
-              : 'D. 900 ₾ is too much. Maximum 700 ₾.'
-          )
-    )
-  )
-),
-              // ==========================================
-// Q2 — PRICE NEGOTIATION
-// ==========================================
-
-negotiationStep === 'q2_price' &&
-h(
-  React.Fragment,
-  null,
-
-  h(
-    'div',
-    {
-      style: {
-        marginBottom: '22px',
-        padding: '20px',
-
-        borderRadius: '16px',
-
-        background:
-          'rgba(255,255,255,.04)',
-
-        border:
-          '1px solid rgba(255,255,255,.08)',
-      },
+      ],
     },
+
+    direct_2: {
+      text: txt(
+        'ფასზე უკვე შევთანხმდით, მაგრამ თუ დღესვე აფორმებ, დეპოზიტზე მცირე მოქნილობა შეიძლება.',
+        'We already agreed on the price, but if you sign today, I may be flexible on the deposit.'
+      ),
+
+      answers: [
+        {
+          text: txt(
+            'A. მაშინ დეპოზიტი ორ ნაწილად გადავიხადო.',
+            'A. Then let me split the deposit into two payments.'
+          ),
+          next: 'direct_3',
+          score: 2,
+        },
+
+        {
+          text: txt(
+            'B. არა, ყველაფერი დღესვე გადავიხდი.',
+            'B. No, I will pay everything today.'
+          ),
+          next: 'direct_3',
+          score: 0,
+        },
+
+        {
+          text: txt(
+            'C. დეპოზიტის ნახევარი დღეს და ნახევარი შემდეგ თვეში?',
+            'C. Half the deposit today and half next month?'
+          ),
+          next: 'direct_3',
+          score: 2,
+        },
+      ],
+    },
+
+    direct_3: {
+      text: txt(
+        'კარგი. შეგვიძლია დეპოზიტი ორ ნაწილად გავყოთ. ქირის ფასი უცვლელი რჩება.',
+        'Okay. We can split the deposit into two payments. The rent remains unchanged.'
+      ),
+
+      answers: [
+        {
+          text: txt(
+            'შევთანხმდით →',
+            'Deal →'
+          ),
+          next: 'direct_success',
+          score: 1,
+        },
+      ],
+    },
+
+    // ========================================
+    // B PATH — PRICE NEGOTIATION
+    // ========================================
+
+    price_1: {
+      text:
+        isEconomy
+          ? txt(
+              '600 ₾ ცოტაა. 630 ₾ შემიძლია შემოგთავაზო, თუ დღესვე გადავწყვეტთ.',
+              '600 ₾ is too low. I can offer 630 ₾ if we close today.'
+            )
+          : txt(
+              '850 ₾ ცოტაა. 875 ₾ შემიძლია შემოგთავაზო, თუ დღესვე გადავწყვეტთ.',
+              '850 ₾ is too low. I can offer 875 ₾ if we close today.'
+            ),
+
+      answers: [
+        {
+          text:
+            isEconomy
+              ? txt(
+                  'A. 630 ₾ მისაღებია.',
+                  'A. 630 ₾ works for me.'
+                )
+              : txt(
+                  'A. 875 ₾ მისაღებია.',
+                  'A. 875 ₾ works for me.'
+                ),
+
+          next: 'price_2',
+          score: 1,
+        },
+
+        {
+          text:
+            isEconomy
+              ? txt(
+                  'B. 620 ₾ და ახლავე გადავიხდი.',
+                  'B. 620 ₾ and I will pay right now.'
+                )
+              : txt(
+                  'B. 860 ₾ და ახლავე გადავიხდი.',
+                  'B. 860 ₾ and I will pay right now.'
+                ),
+
+          next: 'price_2_strong',
+          score: 3,
+        },
+
+        {
+          text:
+            isEconomy
+              ? txt(
+                  'C. არა. 600 ₾ ჩემი ბოლო შეთავაზებაა.',
+                  'C. No. 600 ₾ is my final offer.'
+                )
+              : txt(
+                  'C. არა. 850 ₾ ჩემი ბოლო შეთავაზებაა.',
+                  'C. No. 850 ₾ is my final offer.'
+                ),
+
+          next: 'price_2_hard',
+          score: -1,
+        },
+      ],
+    },
+
+    price_2: {
+      text: txt(
+        'კარგი. ფასზე შევთანხმდით. ახლა დეპოზიტი უნდა გადავწყვიტოთ.',
+        'Good. We have agreed on the rent. Now we need to settle the deposit.'
+      ),
+
+      answers: [
+        {
+          text: txt(
+            'A. დეპოზიტსაც სრულად გადავიხდი.',
+            'A. I will pay the full deposit.'
+          ),
+          next: 'price_3',
+          score: 0,
+        },
+
+        {
+          text: txt(
+            'B. დეპოზიტი ორ ნაწილად გავყოთ.',
+            'B. Let us split the deposit into two payments.'
+          ),
+          next: 'price_3_split',
+          score: 2,
+        },
+
+        {
+          text: txt(
+            'C. თუ დღეს ვაფორმებთ, დეპოზიტის შემცირება შეიძლება?',
+            'C. If we sign today, can you reduce the deposit?'
+          ),
+          next: 'price_3_split',
+          score: 3,
+        },
+      ],
+    },
+
+    price_2_strong: {
+      text:
+        isEconomy
+          ? txt(
+              '620 ₾ დაბალია, მაგრამ თუ ახლავე გადაიხდი და დღესვე გავაფორმებთ, დავთანხმდები.',
+              '620 ₾ is low, but if you pay now and sign today, I will accept.'
+            )
+          : txt(
+              '860 ₾ დაბალია, მაგრამ თუ ახლავე გადაიხდი და დღესვე გავაფორმებთ, დავთანხმდები.',
+              '860 ₾ is low, but if you pay now and sign today, I will accept.'
+            ),
+
+      answers: [
+        {
+          text: txt(
+            'A. შევთანხმდით. დეპოზიტსაც სრულად გადავიხდი.',
+            'A. Deal. I will pay the full deposit.'
+          ),
+          next: 'price_3_best',
+          score: 2,
+        },
+
+        {
+          text: txt(
+            'B. შევთანხმდით, მაგრამ დეპოზიტი ორ ნაწილად გავყოთ.',
+            'B. Deal, but let us split the deposit into two payments.'
+          ),
+          next: 'price_3_best_split',
+          score: 3,
+        },
+
+        {
+          text: txt(
+            'C. კიდევ ცოტა დააკელით და მაშინვე გადავიხდი.',
+            'C. Reduce it a little more and I will pay immediately.'
+          ),
+          next: 'price_overplay',
+          score: -2,
+        },
+      ],
+    },
+
+    price_2_hard: {
+      text: txt(
+        'ამ ფასზე ვერ დაგთანხმდები. ჩემი შეთავაზება უკვე მაქსიმალური შეღავათია.',
+        'I cannot agree to that price. My offer is already the maximum discount.'
+      ),
+
+      answers: [
+        {
+          text: txt(
+            'A. კარგი, თქვენს ბოლო შეთავაზებას დავთანხმდები.',
+            'A. Okay, I will accept your last offer.'
+          ),
+          next: 'price_3',
+          score: 0,
+        },
+
+        {
+          text: txt(
+            'B. მაშინ ვერ შევთანხმდებით.',
+            'B. Then we cannot make a deal.'
+          ),
+          next: 'failed',
+          score: -2,
+        },
+
+        {
+          text: txt(
+            'C. მოდი შუაში შევხვდეთ და დღესვე გავაფორმოთ.',
+            'C. Let us meet in the middle and sign today.'
+          ),
+          next: 'price_3',
+          score: 2,
+        },
+      ],
+    },
+
+    price_3: {
+      text: txt(
+        'კარგი. ეს პირობები ჩემთვის მისაღებია. შეგვიძლია ხელშეკრულება გავაფორმოთ.',
+        'Good. These terms work for me. We can sign the agreement.'
+      ),
+
+      answers: [
+        {
+          text: txt(
+            'ხელშეკრულების გაფორმება →',
+            'Sign Agreement →'
+          ),
+          next: 'price_success',
+          score: 1,
+        },
+      ],
+    },
+
+    price_3_split: {
+      text: txt(
+        'კარგი. დეპოზიტის ნახევარს დღეს გადაიხდი, მეორე ნახევარს კი შემდეგ თვეში.',
+        'Okay. You will pay half of the deposit today and the other half next month.'
+      ),
+
+      answers: [
+        {
+          text: txt(
+            'შევთანხმდით →',
+            'Deal →'
+          ),
+          next: 'price_success_split',
+          score: 2,
+        },
+      ],
+    },
+
+    price_3_best: {
+      text: txt(
+        'შევთანხმდით. კარგი მოლაპარაკება იყო.',
+        'We have a deal. Good negotiation.'
+      ),
+
+      answers: [
+        {
+          text: txt(
+            'ხელშეკრულების გაფორმება →',
+            'Sign Agreement →'
+          ),
+          next: 'best_success',
+          score: 2,
+        },
+      ],
+    },
+
+    price_3_best_split: {
+      text: txt(
+        'კარგი. ფასზეც შევთანხმდით და დეპოზიტსაც ორ ნაწილად გავყოფთ.',
+        'Good. We agreed on the rent and we will split the deposit into two payments.'
+      ),
+
+      answers: [
+        {
+          text: txt(
+            'ხელშეკრულების გაფორმება →',
+            'Sign Agreement →'
+          ),
+          next: 'best_split_success',
+          score: 3,
+        },
+      ],
+    },
+
+    price_overplay: {
+      text: txt(
+        'არა. უკვე საკმაოდ დაგითმე. თუ კიდევ ფასს აკლებ, შეთანხმებას ვეღარ გავაგრძელებ.',
+        'No. I have already made a significant concession. If you push the price lower, I cannot continue the deal.'
+      ),
+
+      answers: [
+        {
+          text: txt(
+            'A. კარგი, წინა შეთავაზებას დავუბრუნდეთ.',
+            'A. Okay, let us return to the previous offer.'
+          ),
+          next: 'price_3_best',
+          score: 0,
+        },
+
+        {
+          text: txt(
+            'B. მაშინ გარიგება არ შედგება.',
+            'B. Then there is no deal.'
+          ),
+          next: 'failed',
+          score: -2,
+        },
+      ],
+    },
+
+    // ========================================
+    // C PATH — DEPOSIT NEGOTIATION
+    // ========================================
+
+    deposit_1: {
+      text: txt(
+        'დეპოზიტს ჩვეულებრივ სრულად ვიღებ. რატომ გინდა ორ ნაწილად გადახდა?',
+        'I normally require the full deposit. Why do you want to split it?'
+      ),
+
+      answers: [
+        {
+          text: txt(
+            'A. ახლა პირველი თვის ქირას ვიხდი და მინდა საწყისი ხარჯი შევამცირო.',
+            'A. I am paying the first month now and want to reduce my initial expense.'
+          ),
+          next: 'deposit_2',
+          score: 2,
+        },
+
+        {
+          text: txt(
+            'B. ნახევარს დღეს გადავიხდი და მეორე ნახევარს ზუსტად შემდეგ თვეში.',
+            'B. I will pay half today and the other half exactly next month.'
+          ),
+          next: 'deposit_2',
+          score: 3,
+        },
+
+        {
+          text: txt(
+            'C. უბრალოდ ახლა მთლიანი თანხა არ მაქვს.',
+            'C. I simply do not have the full amount right now.'
+          ),
+          next: 'deposit_2_weak',
+          score: 0,
+        },
+      ],
+    },
+
+    deposit_2: {
+      text: txt(
+        'თუ მეორე ნაწილის გადახდის თარიღს ხელშეკრულებაში ჩავწერთ, შეიძლება დავთანხმდე.',
+        'If we put the second payment date in the contract, I may agree.'
+      ),
+
+      answers: [
+        {
+          text: txt(
+            'A. თანახმა ვარ. ჩავწეროთ ხელშეკრულებაში.',
+            'A. Agreed. Put it in the contract.'
+          ),
+          next: 'deposit_3',
+          score: 2,
+        },
+
+        {
+          text: txt(
+            'B. კარგი. მაშინ ქირაზეც მცირე ფასდაკლება შეიძლება?',
+            'B. Good. Then can we also negotiate a small rent discount?'
+          ),
+          next: 'deposit_price_combo',
+          score: 2,
+        },
+
+        {
+          text: txt(
+            'C. სიტყვიერად შევთანხმდეთ, ხელშეკრულებაში არ გვინდა.',
+            'C. Let us agree verbally; there is no need to put it in the contract.'
+          ),
+          next: 'deposit_2_weak',
+          score: -1,
+        },
+      ],
+    },
+
+    deposit_2_weak: {
+      text: txt(
+        'ასეთ შემთხვევაში გარანტია მჭირდება. ზუსტი გადახდის გეგმის გარეშე დეპოზიტს ვერ გავყოფ.',
+        'In that case I need a guarantee. I cannot split the deposit without a clear payment plan.'
+      ),
+
+      answers: [
+        {
+          text: txt(
+            'A. მაშინ ნახევარი დღეს და მეორე ნახევარი შემდეგ თვეში ჩავწეროთ ხელშეკრულებაში.',
+            'A. Then let us put half today and half next month in the contract.'
+          ),
+          next: 'deposit_3',
+          score: 2,
+        },
+
+        {
+          text: txt(
+            'B. მაშინ სრულ დეპოზიტს გადავიხდი.',
+            'B. Then I will pay the full deposit.'
+          ),
+          next: 'direct_3',
+          score: 0,
+        },
+
+        {
+          text: txt(
+            'C. ამ პირობებზე ვერ შევთანხმდებით.',
+            'C. We cannot agree on these terms.'
+          ),
+          next: 'failed',
+          score: -2,
+        },
+      ],
+    },
+
+    deposit_price_combo: {
+      text:
+        isEconomy
+          ? txt(
+              'თუ დეპოზიტს ორ ნაწილად ვყოფთ, ქირას 630 ₾-მდე დაგიკლებ.',
+              'If we split the deposit, I can reduce the rent to 630 ₾.'
+            )
+          : txt(
+              'თუ დეპოზიტს ორ ნაწილად ვყოფთ, ქირას 875 ₾-მდე დაგიკლებ.',
+              'If we split the deposit, I can reduce the rent to 875 ₾.'
+            ),
+
+      answers: [
+        {
+          text: txt(
+            'A. ეს პირობები მაწყობს.',
+            'A. Those terms work for me.'
+          ),
+          next: 'combo_success',
+          score: 3,
+        },
+
+        {
+          text: txt(
+            'B. კიდევ ცოტა დააკელით.',
+            'B. Reduce the rent a little more.'
+          ),
+          next: 'price_overplay',
+          score: -1,
+        },
+      ],
+    },
+
+    deposit_3: {
+      text: txt(
+        'კარგი. დეპოზიტს ორ ნაწილად გავყოფთ და ორივე თარიღს ხელშეკრულებაში ჩავწერთ.',
+        'Good. We will split the deposit into two payments and put both dates in the contract.'
+      ),
+
+      answers: [
+        {
+          text: txt(
+            'შევთანხმდით →',
+            'Deal →'
+          ),
+          next: 'deposit_success',
+          score: 2,
+        },
+      ],
+    },
+
+    // ========================================
+    // D PATH — AGGRESSIVE NEGOTIATION
+    // ========================================
+
+    aggressive_1: {
+      text: txt(
+        'ასეთი ფასი ჩემთვის მიუღებელია. თუ რეალური შეთავაზება გაქვს, მოგისმენ.',
+        'That price is unacceptable to me. If you have a realistic offer, I will listen.'
+      ),
+
+      answers: [
+        {
+          text:
+            isEconomy
+              ? txt(
+                  'A. კარგი, 600 ₾ და დღესვე გავაფორმოთ.',
+                  'A. Okay, 600 ₾ and we sign today.'
+                )
+              : txt(
+                  'A. კარგი, 850 ₾ და დღესვე გავაფორმოთ.',
+                  'A. Okay, 850 ₾ and we sign today.'
+                ),
+
+          next: 'aggressive_2',
+          score: 2,
+        },
+
+        {
+          text: txt(
+            'B. მაშინ თქვენ მითხარით თქვენი მინიმალური ფასი.',
+            'B. Then tell me your minimum price.'
+          ),
+          next: 'aggressive_2',
+          score: 2,
+        },
+
+        {
+          text: txt(
+            'C. ჩემი ფასი არ იცვლება.',
+            'C. My offer does not change.'
+          ),
+          next: 'aggressive_fail_warning',
+          score: -2,
+        },
+      ],
+    },
+
+    aggressive_2: {
+      text:
+        isEconomy
+          ? txt(
+              '630 ₾ ჩემი მინიმალური ფასია. ამაზე ქვემოთ ვერ ჩამოვალ.',
+              '630 ₾ is my minimum price. I cannot go lower.'
+            )
+          : txt(
+              '875 ₾ ჩემი მინიმალური ფასია. ამაზე ქვემოთ ვერ ჩამოვალ.',
+              '875 ₾ is my minimum price. I cannot go lower.'
+            ),
+
+      answers: [
+        {
+          text: txt(
+            'A. კარგი, შევთანხმდით.',
+            'A. Okay, we have a deal.'
+          ),
+          next: 'aggressive_3',
+          score: 1,
+        },
+
+        {
+          text: txt(
+            'B. ფასს დავთანხმდები, თუ დეპოზიტს ორ ნაწილად გავყოფთ.',
+            'B. I will accept the price if we split the deposit.'
+          ),
+          next: 'aggressive_3_split',
+          score: 3,
+        },
+
+        {
+          text: txt(
+            'C. არა. ჩემი შეთავაზება საბოლოოა.',
+            'C. No. My offer is final.'
+          ),
+          next: 'aggressive_fail_warning',
+          score: -2,
+        },
+      ],
+    },
+
+    aggressive_fail_warning: {
+      text: txt(
+        'როგორც ჩანს, პირობებზე ძალიან შორს ვართ ერთმანეთისგან. ეს ჩემი ბოლო შეთავაზებაა.',
+        'It looks like we are too far apart on the terms. This is my final offer.'
+      ),
+
+      answers: [
+        {
+          text: txt(
+            'A. კარგი, თქვენს ბოლო შეთავაზებას დავთანხმდები.',
+            'A. Okay, I will accept your final offer.'
+          ),
+          next: 'aggressive_3',
+          score: 0,
+        },
+
+        {
+          text: txt(
+            'B. მაშინ მოლაპარაკებას ვწყვეტ.',
+            'B. Then I am ending the negotiation.'
+          ),
+          next: 'failed',
+          score: -3,
+        },
+      ],
+    },
+
+    aggressive_3: {
+      text: txt(
+        'კარგი. მაშინ შეგვიძლია ხელშეკრულებაზე გადავიდეთ.',
+        'Good. Then we can proceed to the agreement.'
+      ),
+
+      answers: [
+        {
+          text: txt(
+            'ხელშეკრულების გაფორმება →',
+            'Sign Agreement →'
+          ),
+          next: 'aggressive_success',
+          score: 1,
+        },
+      ],
+    },
+
+    aggressive_3_split: {
+      text: txt(
+        'კარგი. ფასს ვტოვებთ ჩემს ბოლო შეთავაზებაზე და დეპოზიტს ორ ნაწილად გავყოფთ.',
+        'Okay. We keep my final rent offer and split the deposit into two payments.'
+      ),
+
+      answers: [
+        {
+          text: txt(
+            'შევთანხმდით →',
+            'Deal →'
+          ),
+          next: 'combo_success',
+          score: 3,
+        },
+      ],
+    },
+  };
+
+  // ==========================================
+  // SUCCESS / FAILURE RESULTS
+  // ==========================================
+
+  const resultSteps = {
+    direct_success: {
+      title: txt(
+        '🤝 შეთანხმება შედგა',
+        '🤝 Deal Accepted'
+      ),
+
+      description: txt(
+        'ბინა აიღე საწყის ფასად, თუმცა დეპოზიტის გადახდის პირობებზე შეღავათი მიიღე.',
+        'You rented the apartment at the original price, but negotiated better deposit terms.'
+      ),
+
+      rent:
+        isEconomy ? 650 : 900,
+
+      deposit:
+        isEconomy ? 650 : 900,
+
+      level: 'accepted',
+    },
+
+    price_success: {
+      title: txt(
+        '✅ კარგი გარიგება',
+        '✅ Good Deal'
+      ),
+
+      description: txt(
+        'შენ მოახერხე ქირის ფასის შემცირება და შეთანხმება წარმატებით დახურე.',
+        'You successfully reduced the rent and closed the deal.'
+      ),
+
+      rent:
+        isEconomy ? 630 : 875,
+
+      deposit:
+        isEconomy ? 650 : 900,
+
+      level: 'good',
+    },
+
+    price_success_split: {
+      title: txt(
+        '🏆 ძალიან კარგი გარიგება',
+        '🏆 Great Deal'
+      ),
+
+      description: txt(
+        'შენ შეამცირე ქირა და დეპოზიტის გადახდაც ორ ნაწილად გადაანაწილე.',
+        'You reduced the rent and also split the deposit into two payments.'
+      ),
+
+      rent:
+        isEconomy ? 630 : 875,
+
+      deposit:
+        isEconomy ? 650 : 900,
+
+      level: 'great',
+    },
+
+    best_success: {
+      title: txt(
+        '🏆 შესანიშნავი მოლაპარაკება',
+        '🏆 Excellent Negotiation'
+      ),
+
+      description: txt(
+        'შენ გამოიყენე სწრაფი გადაწყვეტილება როგორც ბერკეტი და უკეთესი ფასი მიიღე.',
+        'You used immediate commitment as leverage and secured a better price.'
+      ),
+
+      rent:
+        isEconomy ? 620 : 860,
+
+      deposit:
+        isEconomy ? 650 : 900,
+
+      level: 'excellent',
+    },
+
+    best_split_success: {
+      title: txt(
+        '👑 იდეალური გარიგება',
+        '👑 Excellent Deal'
+      ),
+
+      description: txt(
+        'შენ მიიღე როგორც დაბალი ქირა, ასევე მოქნილი დეპოზიტის პირობები.',
+        'You secured both a lower rent and flexible deposit terms.'
+      ),
+
+      rent:
+        isEconomy ? 620 : 860,
+
+      deposit:
+        isEconomy ? 650 : 900,
+
+      level: 'excellent',
+    },
+
+    deposit_success: {
+      title: txt(
+        '✅ შეთანხმება შედგა',
+        '✅ Deal Closed'
+      ),
+
+      description: txt(
+        'ქირა უცვლელი დარჩა, მაგრამ დეპოზიტი ორ ნაწილად გაიყო.',
+        'The rent remained unchanged, but you successfully split the deposit.'
+      ),
+
+      rent:
+        isEconomy ? 650 : 900,
+
+      deposit:
+        isEconomy ? 650 : 900,
+
+      level: 'good',
+    },
+
+    combo_success: {
+      title: txt(
+        '👑 ძლიერი მოლაპარაკება',
+        '👑 Strong Negotiation'
+      ),
+
+      description: txt(
+        'შენ ერთდროულად მიიღე ფასდაკლება და უკეთესი გადახდის პირობები.',
+        'You secured both a discount and better payment terms.'
+      ),
+
+      rent:
+        isEconomy ? 630 : 875,
+
+      deposit:
+        isEconomy ? 650 : 900,
+
+      level: 'excellent',
+    },
+
+    aggressive_success: {
+      title: txt(
+        '🤝 შეთანხმება შედგა',
+        '🤝 Deal Closed'
+      ),
+
+      description: txt(
+        'რთული დასაწყისის მიუხედავად, მოლაპარაკება გადაარჩინე და შეთანხმებამდე მიხვედი.',
+        'Despite a difficult start, you recovered the negotiation and reached a deal.'
+      ),
+
+      rent:
+        isEconomy ? 630 : 875,
+
+      deposit:
+        isEconomy ? 650 : 900,
+
+      level: 'accepted',
+    },
+  };
+
+  // ==========================================
+  // FAILURE SCREEN
+  // ==========================================
+
+  if (negotiationStep === 'failed') {
+    return h(
+      React.Fragment,
+      null,
+
+      h(
+        'div',
+        {
+          style: {
+            padding: '24px',
+
+            borderRadius: '16px',
+
+            background:
+              'rgba(239,27,19,.08)',
+
+            border:
+              '1px solid rgba(239,27,19,.30)',
+          },
+        },
+
+        h(
+          'div',
+          {
+            style: {
+              marginBottom: '10px',
+
+              color: '#ef1b13',
+
+              fontSize: '25px',
+              fontWeight: '900',
+            },
+          },
+
+          txt(
+            '❌ შეთანხმება ვერ შედგა',
+            '❌ No Deal'
+          )
+        ),
+
+        h(
+          'div',
+          {
+            style: {
+              color:
+                'rgba(255,255,255,.75)',
+
+              fontSize: '15px',
+              lineHeight: '1.6',
+            },
+          },
+
+          isEconomy
+            ? txt(
+                'მეპატრონემ შენს პირობებზე უარი თქვა. შეგიძლია მოლაპარაკება თავიდან სცადო.',
+                'The landlord rejected your terms. You can restart the negotiation.'
+              )
+            : txt(
+                'Comfort ბინის მეპატრონესთან შეთანხმება ვერ შედგა. შეგიძლია სცადო უფრო ხელმისაწვდომი Economy ბინა.',
+                'You could not reach an agreement for the Comfort apartment. You can now try the more affordable Economy apartment.'
+              )
+        )
+      ),
+
+      h(
+        'div',
+        {
+          style: {
+            marginTop: '16px',
+
+            display: 'grid',
+            gap: '10px',
+          },
+        },
+
+        !isEconomy &&
+        h(
+          'button',
+          {
+            type: 'button',
+
+            onClick: function () {
+              const economyApartment =
+                apartments.find(
+                  function (item) {
+                    return item.id === 'economy';
+                  }
+                );
+
+              if (economyApartment) {
+                startNegotiation(
+                  economyApartment
+                );
+              }
+            },
+
+            style: {
+              width: '100%',
+
+              padding: '15px 18px',
+
+              border: 'none',
+              borderRadius: '12px',
+
+              background: '#ef1b13',
+              color: '#ffffff',
+
+              fontSize: '14px',
+              fontWeight: '900',
+
+              cursor: 'pointer',
+            },
+          },
+
+          txt(
+            '🏠 Economy ბინაზე მოლაპარაკება →',
+            '🏠 Negotiate Economy Apartment →'
+          )
+        ),
+
+        h(
+          'button',
+          {
+            type: 'button',
+
+            onClick: function () {
+              setNegotiationStep('q1');
+              setNegotiationScore(0);
+            },
+
+            style: negotiationAnswerStyle(),
+          },
+
+          txt(
+            '↻ მოლაპარაკების თავიდან დაწყება',
+            '↻ Restart Negotiation'
+          )
+        )
+      )
+    );
+  }
+
+  // ==========================================
+  // RESULT SCREEN
+  // ==========================================
+
+  const result =
+    resultSteps[negotiationStep];
+
+  if (result) {
+    return h(
+      React.Fragment,
+      null,
+
+      h(
+        'div',
+        {
+          style: {
+            padding: '26px',
+
+            borderRadius: '18px',
+
+            background:
+              'rgba(40,180,90,.08)',
+
+            border:
+              '1px solid rgba(40,180,90,.30)',
+          },
+        },
+
+        h(
+          'div',
+          {
+            style: {
+              marginBottom: '10px',
+
+              color: '#5be28c',
+
+              fontSize: '26px',
+              fontWeight: '900',
+            },
+          },
+
+          result.title
+        ),
+
+        h(
+          'div',
+          {
+            style: {
+              marginBottom: '20px',
+
+              color:
+                'rgba(255,255,255,.74)',
+
+              lineHeight: '1.6',
+            },
+          },
+
+          result.description
+        ),
+
+        h(
+          'div',
+          {
+            style: {
+              display: 'grid',
+
+              gridTemplateColumns:
+                'repeat(2, minmax(0, 1fr))',
+
+              gap: '12px',
+            },
+          },
+
+          h(
+            'div',
+            {
+              style: {
+                padding: '15px',
+
+                borderRadius: '12px',
+
+                background:
+                  'rgba(255,255,255,.05)',
+
+                border:
+                  '1px solid rgba(255,255,255,.08)',
+              },
+            },
+
+            h(
+              'div',
+              {
+                style: {
+                  marginBottom: '5px',
+
+                  color:
+                    'rgba(255,255,255,.55)',
+
+                  fontSize: '12px',
+                  fontWeight: '800',
+                },
+              },
+
+              txt(
+                'საბოლოო ქირა',
+                'FINAL RENT'
+              )
+            ),
+
+            h(
+              'div',
+              {
+                style: {
+                  fontSize: '22px',
+                  fontWeight: '900',
+                },
+              },
+
+              result.rent + ' ₾'
+            )
+          ),
+
+          h(
+            'div',
+            {
+              style: {
+                padding: '15px',
+
+                borderRadius: '12px',
+
+                background:
+                  'rgba(255,255,255,.05)',
+
+                border:
+                  '1px solid rgba(255,255,255,.08)',
+              },
+            },
+
+            h(
+              'div',
+              {
+                style: {
+                  marginBottom: '5px',
+
+                  color:
+                    'rgba(255,255,255,.55)',
+
+                  fontSize: '12px',
+                  fontWeight: '800',
+                },
+              },
+
+              txt(
+                'დეპოზიტი',
+                'DEPOSIT'
+              )
+            ),
+
+            h(
+              'div',
+              {
+                style: {
+                  fontSize: '22px',
+                  fontWeight: '900',
+                },
+              },
+
+              result.deposit + ' ₾'
+            )
+          )
+        )
+      ),
+
+      h(
+        'button',
+        {
+          type: 'button',
+
+          onClick: function () {
+            finishDeal(
+              result.rent,
+              result.deposit,
+              result.level
+            );
+
+            setNegotiationApartment(null);
+            setNegotiationStep('q1');
+            setNegotiationScore(0);
+          },
+
+          style: {
+            width: '100%',
+
+            marginTop: '18px',
+
+            padding: '16px 18px',
+
+            border: 'none',
+            borderRadius: '12px',
+
+            background: '#ef1b13',
+            color: '#ffffff',
+
+            fontSize: '15px',
+            fontWeight: '900',
+
+            cursor: 'pointer',
+          },
+        },
+
+        txt(
+          '🏠 ბინის არჩევის დადასტურება →',
+          '🏠 Confirm Apartment →'
+        )
+      )
+    );
+  }
+
+  // ==========================================
+  // NORMAL DIALOGUE
+  // ==========================================
+
+  const scene =
+    scenes[negotiationStep] ||
+    scenes.q1;
+
+  return h(
+    React.Fragment,
+    null,
 
     h(
       'div',
       {
         style: {
-          marginBottom: '8px',
+          marginBottom: '22px',
+          padding: '20px',
 
-          color: '#f6c744',
+          borderRadius: '16px',
 
-          fontSize: '13px',
-          fontWeight: '900',
+          background:
+            'rgba(255,255,255,.04)',
+
+          border:
+            '1px solid rgba(255,255,255,.08)',
         },
       },
 
-      isGeo
-        ? 'მეპატრონე'
-        : 'Landlord'
+      h(
+        'div',
+        {
+          style: {
+            marginBottom: '8px',
+
+            color: '#f6c744',
+
+            fontSize: '13px',
+            fontWeight: '900',
+          },
+        },
+
+        txt(
+          'მეპატრონე',
+          'Landlord'
+        )
+      ),
+
+      h(
+        'div',
+        {
+          style: {
+            fontSize: '17px',
+            lineHeight: '1.65',
+          },
+        },
+
+        scene.text
+      )
     ),
 
     h(
       'div',
       {
         style: {
-          fontSize: '17px',
-          lineHeight: '1.65',
+          display: 'grid',
+          gap: '12px',
         },
       },
 
-      negotiationApartment.id === 'economy'
-        ? (
-            isGeo
-              ? '600 ₾ ცოტაა. 630 ₾ შემიძლია შემოგთავაზო, თუ დღესვე გადავწყვეტთ.'
-              : '600 ₾ is too low. I can offer 630 ₾ if we close the deal today.'
-          )
-        : (
-            isGeo
-              ? '850 ₾ ცოტაა. 875 ₾ შემიძლია შემოგთავაზო, თუ დღესვე გადავწყვეტთ.'
-              : '850 ₾ is too low. I can offer 875 ₾ if we close the deal today.'
-          )
+      scene.answers.map(
+        function (answer, index) {
+          return h(
+            'button',
+            {
+              key:
+                negotiationStep +
+                '-' +
+                index,
+
+              type: 'button',
+
+              onClick: function () {
+                go(
+                  answer.next,
+                  answer.score
+                );
+              },
+
+              onMouseEnter:
+                function (event) {
+                  event.currentTarget.style.transform =
+                    'translateY(-2px)';
+
+                  event.currentTarget.style.borderColor =
+                    'rgba(239,27,19,.55)';
+
+                  event.currentTarget.style.background =
+                    'rgba(239,27,19,.08)';
+                },
+
+              onMouseLeave:
+                function (event) {
+                  event.currentTarget.style.transform =
+                    'translateY(0)';
+
+                  event.currentTarget.style.borderColor =
+                    'rgba(255,255,255,.10)';
+
+                  event.currentTarget.style.background =
+                    '#0d0f14';
+                },
+
+              style:
+                negotiationAnswerStyle(),
+            },
+
+            answer.text
+          );
+        }
+      )
     )
-  ),
-
-  h(
-    'div',
-    {
-      style: {
-        display: 'grid',
-        gap: '12px',
-      },
-    },
-
-    // ======================================
-    // ANSWER A
-    // ======================================
-
-    h(
-      'button',
-      {
-        type: 'button',
-
-        onClick: function () {
-          setNegotiationScore(
-            negotiationScore + 2
-          );
-
-          setNegotiationStep(
-            'price_success'
-          );
-        },
-
-        style:
-          negotiationAnswerStyle(),
-      },
-
-      negotiationApartment.id === 'economy'
-        ? (
-            isGeo
-              ? 'A. 630 ₾ მისაღებია. შევთანხმდით.'
-              : 'A. 630 ₾ works for me. We have a deal.'
-          )
-        : (
-            isGeo
-              ? 'A. 875 ₾ მისაღებია. შევთანხმდით.'
-              : 'A. 875 ₾ works for me. We have a deal.'
-          )
-    ),
-
-    // ======================================
-    // ANSWER B
-    // ======================================
-
-    h(
-      'button',
-      {
-        type: 'button',
-
-        onClick: function () {
-          setNegotiationScore(
-            negotiationScore + 3
-          );
-
-          setNegotiationStep(
-            'price_final'
-          );
-        },
-
-        style:
-          negotiationAnswerStyle(),
-      },
-
-      negotiationApartment.id === 'economy'
-        ? (
-            isGeo
-              ? 'B. თუ 620 ₾-ზე შევთანხმდებით, ახლავე გადავიხდი და დღესვე გავაფორმებთ.'
-              : 'B. If we agree on 620 ₾, I will pay now and sign today.'
-          )
-        : (
-            isGeo
-              ? 'B. თუ 860 ₾-ზე შევთანხმდებით, ახლავე გადავიხდი და დღესვე გავაფორმებთ.'
-              : 'B. If we agree on 860 ₾, I will pay now and sign today.'
-          )
-    ),
-
-    // ======================================
-    // ANSWER C
-    // ======================================
-
-    h(
-      'button',
-      {
-        type: 'button',
-
-        onClick: function () {
-          setNegotiationScore(
-            negotiationScore - 1
-          );
-
-          setNegotiationStep(
-            'price_failed'
-          );
-        },
-
-        style:
-          negotiationAnswerStyle(),
-      },
-
-      negotiationApartment.id === 'economy'
-        ? (
-            isGeo
-              ? 'C. არა, 600 ₾ ჩემი ბოლო ფასია.'
-              : 'C. No, 600 ₾ is my final offer.'
-          )
-        : (
-            isGeo
-              ? 'C. არა, 850 ₾ ჩემი ბოლო ფასია.'
-              : 'C. No, 850 ₾ is my final offer.'
-          )
-    )
-  )
-),
+  );
+})(),
               h(
                 'button',
                 {
