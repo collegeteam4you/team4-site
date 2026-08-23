@@ -2855,16 +2855,15 @@ h(
           type: 'button',
 
           onClick: function () {
-            finishDeal(
-              result.rent,
-              result.deposit,
-              result.level
-            );
+  finishDeal(
+    result.rent,
+    result.deposit,
+    result.level
+  );
 
-            setNegotiationApartment(null);
-            setNegotiationStep('q1');
-            setNegotiationScore(0);
-          },
+  window.location.href =
+    '/team4-lab/city';
+},
 
           style: {
             width: '100%',
