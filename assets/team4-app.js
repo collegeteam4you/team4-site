@@ -8760,13 +8760,27 @@ if (isTeam4ApartmentPage) {
     setLang,
   });
 }
-  // TEAM4 LAB
-  if (isTeam4LabPage) {
-    return h(Team4LabPage, {
-      lang,
-      setLang,
-    });
-  }
+
+// CITY
+if (
+  isTeam4CityPage &&
+  window.Team4CityPage
+) {
+  return h(window.Team4CityPage, {
+    lang,
+    setLang,
+    Header,
+    Footer,
+  });
+}
+
+// TEAM4 LAB
+if (isTeam4LabPage) {
+  return h(Team4LabPage, {
+    lang,
+    setLang,
+  });
+}
 
 
   // LIBRARY
