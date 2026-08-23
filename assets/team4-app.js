@@ -8673,12 +8673,14 @@ const isTeam4JobPage =
   const isTeam4InterviewPage =
   window.location.pathname === '/team4-lab/interview';
   const isTeam4ApartmentPage =
+  const isTeam4ApartmentPage =
   window.location.pathname === '/team4-lab/apartment';
-  const isTeam4LabPage =
-    const isTeam4CityPage =
-  window.location.pathname === '/team4-lab/city';
-    window.location.pathname.startsWith('/team4-lab');
 
+const isTeam4CityPage =
+  window.location.pathname === '/team4-lab/city';
+
+const isTeam4LabPage =
+  window.location.pathname.startsWith('/team4-lab');
 
   // PROGRAM PAGE
   if (isProgramPage) {
