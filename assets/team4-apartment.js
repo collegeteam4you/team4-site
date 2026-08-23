@@ -3024,9 +3024,10 @@ h(
                   type: 'button',
 
                   onClick: function () {
-                    setNegotiationApartment(null);
-                    setNegotiationStep('start');
-                  },
+  setNegotiationApartment(null);
+  setNegotiationStep('q1');
+  setNegotiationScore(0);
+},
 
                   style: {
                     marginTop: '20px',
