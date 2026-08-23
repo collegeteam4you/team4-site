@@ -1538,19 +1538,7 @@ h(
                   ? 'მოლაპარაკება მეპატრონესთან'
                   : 'Negotiate with the Landlord'
               ),
-h(
-  'div',
-  {
-    style: {
-      marginBottom: '16px',
-      color: '#ffcc00',
-      fontSize: '14px',
-      fontWeight: '900',
-    },
-  },
 
-  'DEBUG STEP: ' + negotiationStep
-),
              
 
                
