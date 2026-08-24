@@ -1,5 +1,6 @@
 // ==========================================
-// TEAM4 CITY — CITY ENGINE V1
+// TEAM4 CITY — ENGINE V2
+// TOP-DOWN PLAYABLE CITY
 // ==========================================
 
 (function () {
@@ -20,7 +21,7 @@
       return JSON.parse(raw);
     } catch (error) {
       console.error(
-        'TEAM4 CITY storage read error:',
+        'TEAM4 CITY storage error:',
         key,
         error
       );
@@ -45,32 +46,19 @@
     );
   }
 
-  function insideRect(
-    point,
-    rect,
-    margin
-  ) {
-    const safeMargin =
-      margin || 0;
+  function pointInsideRect(point, rect, margin) {
+    const m = margin || 0;
 
     return (
-      point.x >
-        rect.x - safeMargin &&
-      point.x <
-        rect.x +
-          rect.w +
-          safeMargin &&
-      point.y >
-        rect.y - safeMargin &&
-      point.y <
-        rect.y +
-          rect.h +
-          safeMargin
+      point.x > rect.x - m &&
+      point.x < rect.x + rect.w + m &&
+      point.y > rect.y - m &&
+      point.y < rect.y + rect.h + m
     );
   }
 
   // ==========================================
-  // CITY PAGE
+  // PAGE
   // ==========================================
 
   function Team4CityPage({
@@ -83,51 +71,24 @@
       lang === 'GEO';
 
     // ========================================
-    // APARTMENT DATA
+    // APARTMENT
     // ========================================
 
     const selectedApartment =
-      React.useMemo(
-        function () {
-          return readJSON(
-            'team4SelectedApartment',
-            null
-          );
-        },
-        []
-      );
+      React.useMemo(function () {
+        return readJSON(
+          'team4SelectedApartment',
+          null
+        );
+      }, []);
 
     const apartmentDeal =
-      React.useMemo(
-        function () {
-          return readJSON(
-            'team4ApartmentDeal',
-            null
-          );
-        },
-        []
-      );
-
-    // ========================================
-    // PLAYER NAME
-    // ========================================
-
-    const playerName =
-      localStorage.getItem(
-        'team4PlayerName'
-      ) ||
-      localStorage.getItem(
-        'team4LabPlayerName'
-      ) ||
-      (
-        isGeo
-          ? 'მოთამაშე'
-          : 'Player'
-      );
-
-    // ========================================
-    // APARTMENT CALCULATION
-    // ========================================
+      React.useMemo(function () {
+        return readJSON(
+          'team4ApartmentDeal',
+          null
+        );
+      }, []);
 
     const apartmentId =
       selectedApartment
@@ -143,64 +104,34 @@
       apartmentDeal &&
       Number(apartmentDeal.rent)
         ? Number(apartmentDeal.rent)
-
         : selectedApartment &&
-          Number(
-            selectedApartment.finalRent
-          )
-        ? Number(
-            selectedApartment.finalRent
-          )
-
+          Number(selectedApartment.finalRent)
+        ? Number(selectedApartment.finalRent)
         : selectedApartment &&
-          Number(
-            selectedApartment.rent
-          )
-        ? Number(
-            selectedApartment.rent
-          )
-
-        : (
-            isEconomy
-              ? 650
-              : 900
-          );
+          Number(selectedApartment.rent)
+        ? Number(selectedApartment.rent)
+        : isEconomy
+        ? 650
+        : 900;
 
     const totalDeposit =
       apartmentDeal &&
       Number(apartmentDeal.deposit)
-        ? Number(
-            apartmentDeal.deposit
-          )
-
+        ? Number(apartmentDeal.deposit)
         : selectedApartment &&
-          Number(
-            selectedApartment.finalDeposit
-          )
-        ? Number(
-            selectedApartment.finalDeposit
-          )
-
+          Number(selectedApartment.finalDeposit)
+        ? Number(selectedApartment.finalDeposit)
         : selectedApartment &&
-          Number(
-            selectedApartment.deposit
-          )
-        ? Number(
-            selectedApartment.deposit
-          )
-
-        : (
-            isEconomy
-              ? 650
-              : 900
-          );
+          Number(selectedApartment.deposit)
+        ? Number(selectedApartment.deposit)
+        : isEconomy
+        ? 650
+        : 900;
 
     const depositPaidNow =
       apartmentDeal &&
       apartmentDeal.depositPaidNow != null
-        ? Number(
-            apartmentDeal.depositPaidNow
-          )
+        ? Number(apartmentDeal.depositPaidNow)
         : totalDeposit;
 
     const startingCash = 2500;
@@ -232,40 +163,57 @@
         : 18;
 
     // ========================================
-    // CITY GEOMETRY
+    // PLAYER
     // ========================================
 
-    const homeBuilding =
+    const playerName =
+      localStorage.getItem(
+        'team4PlayerName'
+      ) ||
+      localStorage.getItem(
+        'team4LabPlayerName'
+      ) ||
+      (
+        isGeo
+          ? 'მოთამაშე'
+          : 'Player'
+      );
+
+    // ========================================
+    // BUILDINGS
+    // ========================================
+
+    const homeRect =
       isEconomy
         ? {
-            x: 3,
-            y: 69,
-            w: 20,
+            x: 5,
+            y: 64,
+            w: 21,
             h: 24,
           }
         : {
-            x: 4,
-            y: 57,
-            w: 20,
-            h: 24,
+            x: 5,
+            y: 58,
+            w: 21,
+            h: 25,
           };
 
     const homeEntrance =
       isEconomy
         ? {
-            x: 25.5,
-            y: 81,
+            x: 28,
+            y: 77,
           }
         : {
-            x: 26.5,
-            y: 69,
+            x: 28,
+            y: 71,
           };
 
     const buildings = [
       {
         id: 'home',
 
-        icon: '🏠',
+        type: 'residential',
 
         titleGeo: 'სახლი',
         titleEng: 'Home',
@@ -277,123 +225,27 @@
           homeDistrict,
 
         rect:
-          homeBuilding,
+          homeRect,
 
         entrance:
           homeEntrance,
 
         locked: false,
 
-        color:
-          '#33d17a',
-      },
-
-      {
-        id: 'bank',
-
-        icon: '🏦',
-
-        titleGeo: 'ბანკი',
-        titleEng: 'Bank',
-
-        subtitleGeo:
-          'ფინანსური ცენტრი',
-
-        subtitleEng:
-          'Financial Center',
-
-        rect: {
-          x: 36,
-          y: 5,
-          w: 20,
-          h: 23,
-        },
-
-        entrance: {
-          x: 46,
-          y: 31,
-        },
-
-        locked: true,
-
-        color:
-          '#f6c744',
-      },
-
-      {
-        id: 'office',
-
-        icon: '🏢',
-
-        titleGeo: 'ოფისი',
-        titleEng: 'Office',
-
-        subtitleGeo:
-          'სამუშაო ადგილი',
-
-        subtitleEng:
-          'Work Place',
-
-        rect: {
-          x: 67,
-          y: 4,
-          w: 27,
-          h: 29,
-        },
-
-        entrance: {
-          x: 70,
-          y: 36,
-        },
-
-        locked: false,
-
-        color:
-          '#ef1b13',
-      },
-
-      {
-        id: 'shop',
-
-        icon: '🛍️',
-
-        titleGeo: 'მაღაზია',
-        titleEng: 'Shop',
-
-        subtitleGeo:
-          'Shopping Center',
-
-        subtitleEng:
-          'Shopping Center',
-
-        rect: {
-          x: 73,
-          y: 49,
-          w: 23,
-          h: 22,
-        },
-
-        entrance: {
-          x: 70,
-          y: 60,
-        },
-
-        locked: true,
-
-        color:
-          '#7a68ff',
+        accent:
+          '#4bd17f',
       },
 
       {
         id: 'gym',
 
-        icon: '🏋️',
+        type: 'gym',
 
         titleGeo:
-          'ფიტნეს კლუბი',
+          'Team4 Gym',
 
         titleEng:
-          'Gym',
+          'Team4 Gym',
 
         subtitleGeo:
           'ენერგია და სტრესი',
@@ -402,121 +254,209 @@
           'Energy & Stress',
 
         rect: {
-          x: 6,
-          y: 8,
-          w: 21,
-          h: 19,
+          x: 4,
+          y: 5,
+          w: 23,
+          h: 22,
         },
 
         entrance: {
           x: 29,
-          y: 18,
+          y: 17,
         },
 
         locked: true,
 
-        color:
-          '#ff9f1c',
+        accent:
+          '#f0a027',
+      },
+
+      {
+        id: 'bank',
+
+        type: 'bank',
+
+        titleGeo:
+          'Team4 Bank',
+
+        titleEng:
+          'Team4 Bank',
+
+        subtitleGeo:
+          'ფინანსური ცენტრი',
+
+        subtitleEng:
+          'Financial Center',
+
+        rect: {
+          x: 38,
+          y: 5,
+          w: 20,
+          h: 24,
+        },
+
+        entrance: {
+          x: 48,
+          y: 32,
+        },
+
+        locked: true,
+
+        accent:
+          '#f0c64a',
+      },
+
+      {
+        id: 'office',
+
+        type: 'office',
+
+        titleGeo:
+          'Team4 Office',
+
+        titleEng:
+          'Team4 Office',
+
+        subtitleGeo:
+          'სამუშაო ადგილი',
+
+        subtitleEng:
+          'Work Place',
+
+        rect: {
+          x: 71,
+          y: 4,
+          w: 25,
+          h: 30,
+        },
+
+        entrance: {
+          x: 69,
+          y: 37,
+        },
+
+        locked: false,
+
+        accent:
+          '#ef1b13',
+      },
+
+      {
+        id: 'shop',
+
+        type: 'shop',
+
+        titleGeo:
+          'Team4 Shop',
+
+        titleEng:
+          'Team4 Shop',
+
+        subtitleGeo:
+          'Shopping Center',
+
+        subtitleEng:
+          'Shopping Center',
+
+        rect: {
+          x: 74,
+          y: 51,
+          w: 22,
+          h: 22,
+        },
+
+        entrance: {
+          x: 71,
+          y: 62,
+        },
+
+        locked: true,
+
+        accent:
+          '#766cff',
       },
 
       {
         id: 'dealer',
 
-        icon: '🚗',
+        type: 'dealer',
 
         titleGeo:
-          'ავტოსალონი',
+          'Team4 Motors',
 
         titleEng:
-          'Car Dealer',
+          'Team4 Motors',
 
         subtitleGeo:
-          'იყიდე მანქანა',
+          'ავტოსალონი',
 
         subtitleEng:
-          'Buy Your Car',
+          'Car Dealer',
 
         rect: {
-          x: 53,
-          y: 74,
+          x: 51,
+          y: 76,
           w: 28,
-          h: 21,
+          h: 20,
         },
 
         entrance: {
-          x: 52,
-          y: 84,
+          x: 49,
+          y: 85,
         },
 
         locked: true,
 
-        color:
-          '#ffc400',
+        accent:
+          '#ffbd22',
       },
     ];
 
     // ========================================
-    // START POSITION
+    // SAVED CITY STATE
     // ========================================
-
-    const defaultStartPosition =
-      {
-        x:
-          homeEntrance.x +
-          3,
-
-        y:
-          homeEntrance.y,
-      };
 
     const savedCityState =
-      React.useMemo(
-        function () {
-          return readJSON(
-            'team4CityState',
-            null
-          );
-        },
-        []
-      );
+      React.useMemo(function () {
+        return readJSON(
+          'team4CityState',
+          null
+        );
+      }, []);
 
-    // ========================================
-    // GAME STATE
-    // ========================================
+    const defaultPosition = {
+      x:
+        homeEntrance.x + 3,
+
+      y:
+        homeEntrance.y,
+    };
 
     const [
       playerPosition,
       setPlayerPosition,
     ] = React.useState(
-      function () {
-        if (
-          savedCityState &&
-          savedCityState.position
-        ) {
-          return {
+      savedCityState &&
+      savedCityState.position
+        ? {
             x:
               Number(
-                savedCityState
-                  .position.x
+                savedCityState.position.x
               ) ||
-              defaultStartPosition.x,
+              defaultPosition.x,
 
             y:
               Number(
-                savedCityState
-                  .position.y
+                savedCityState.position.y
               ) ||
-              defaultStartPosition.y,
-          };
-        }
-
-        return defaultStartPosition;
-      }
+              defaultPosition.y,
+          }
+        : defaultPosition
     );
 
     const [
-      playerDirection,
-      setPlayerDirection,
+      direction,
+      setDirection,
     ] = React.useState('right');
 
     const [
@@ -524,11 +464,7 @@
       setGameMinute,
     ] = React.useState(
       savedCityState &&
-      Number.isFinite(
-        Number(
-          savedCityState.gameMinute
-        )
-      )
+      savedCityState.gameMinute != null
         ? Number(
             savedCityState.gameMinute
           )
@@ -596,38 +532,24 @@
     );
 
     const [
-      moveCount,
-      setMoveCount,
-    ] = React.useState(
-      savedCityState &&
-      savedCityState.moveCount != null
-        ? Number(
-            savedCityState.moveCount
-          )
-        : 0
-    );
+      stepCount,
+      setStepCount,
+    ] = React.useState(0);
 
     const [
       message,
       setMessage,
     ] = React.useState(
       isGeo
-        ? '🎯 მიდი ოფისში. რუკაზე დააჭირე და იმოძრავე WASD-ით ან ისრებით.'
-        : '🎯 Go to the office. Click the map and move with WASD or arrow keys.'
-    );
-
-    const [
-      destination,
-      setDestination,
-    ] = React.useState(
-      'office'
+        ? '🎯 მიდი Team4 Office-ში 09:00-მდე.'
+        : '🎯 Get to Team4 Office before 09:00.'
     );
 
     const mapRef =
       React.useRef(null);
 
     // ========================================
-    // SAVE CITY STATE
+    // SAVE
     // ========================================
 
     React.useEffect(
@@ -656,9 +578,6 @@
             salesXP:
               salesXP,
 
-            moveCount:
-              moveCount,
-
             apartmentId:
               apartmentId,
           })
@@ -672,7 +591,6 @@
         cash,
         reputation,
         salesXP,
-        moveCount,
         apartmentId,
       ]
     );
@@ -681,11 +599,9 @@
     // TIME
     // ========================================
 
-    function formatGameTime() {
+    function gameTimeText() {
       const normalized =
-        ((gameMinute %
-          (24 * 60)) +
-          24 * 60) %
+        gameMinute %
         (24 * 60);
 
       const hour =
@@ -729,10 +645,10 @@
         i += 1
       ) {
         if (
-          insideRect(
+          pointInsideRect(
             next,
             buildings[i].rect,
-            1.1
+            1
           )
         ) {
           return false;
@@ -743,15 +659,54 @@
     }
 
     // ========================================
-    // MOVEMENT
+    // NEARBY
+    // ========================================
+
+    function getNearbyLocation(position) {
+      let nearest = null;
+
+      let nearestDistance =
+        Infinity;
+
+      buildings.forEach(
+        function (building) {
+          const d =
+            distance(
+              position,
+              building.entrance
+            );
+
+          if (
+            d <= 5 &&
+            d < nearestDistance
+          ) {
+            nearest =
+              building;
+
+            nearestDistance =
+              d;
+          }
+        }
+      );
+
+      return nearest;
+    }
+
+    const nearbyLocation =
+      getNearbyLocation(
+        playerPosition
+      );
+
+    // ========================================
+    // MOVE
     // ========================================
 
     function movePlayer(
       dx,
       dy,
-      direction
+      newDirection
     ) {
-      const speed = 1.7;
+      const speed = 1.45;
 
       const next = {
         x:
@@ -776,44 +731,42 @@
       ) {
         setMessage(
           isGeo
-            ? '🚧 აქ გზა არ არის. შენობის გარშემო უნდა შემოუარო.'
-            : '🚧 You cannot walk through the building. Go around it.'
+            ? '🚧 აქ შენობაა — შემოუარე.'
+            : '🚧 Building ahead — go around.'
         );
 
         return;
       }
 
-      setPlayerDirection(
-        direction
+      setDirection(
+        newDirection
       );
 
       setPlayerPosition(
         next
       );
 
-      const nextMoveCount =
-        moveCount + 1;
-
-      setMoveCount(
-        nextMoveCount
-      );
-
-      // ყოველი ნაბიჯი = 1 game minute
       setGameMinute(
-        function (current) {
-          return current + 1;
+        function (value) {
+          return value + 1;
         }
       );
 
-      // ყოველ 5 ნაბიჯზე Energy -1
+      const newStepCount =
+        stepCount + 1;
+
+      setStepCount(
+        newStepCount
+      );
+
       if (
-        nextMoveCount % 5 ===
+        newStepCount % 6 ===
         0
       ) {
         setEnergy(
-          function (current) {
+          function (value) {
             return clamp(
-              current - 1,
+              value - 1,
               0,
               100
             );
@@ -821,105 +774,44 @@
         );
       }
 
-      checkNearbyLocation(
-        next
-      );
-    }
-
-    // ========================================
-    // NEARBY LOCATION
-    // ========================================
-
-    function getNearbyLocation(
-      position
-    ) {
-      let closest = null;
-      let closestDistance =
-        Infinity;
-
-      buildings.forEach(
-        function (building) {
-          const currentDistance =
-            distance(
-              position,
-              building.entrance
-            );
-
-          if (
-            currentDistance <
-              closestDistance &&
-            currentDistance <= 5.5
-          ) {
-            closest =
-              building;
-
-            closestDistance =
-              currentDistance;
-          }
-        }
-      );
-
-      return closest;
-    }
-
-    const nearbyLocation =
-      getNearbyLocation(
-        playerPosition
-      );
-
-    function checkNearbyLocation(
-      position
-    ) {
       const nearby =
         getNearbyLocation(
-          position
+          next
         );
 
-      if (!nearby) {
-        setMessage(
-          destination === 'office'
-            ? (
-                isGeo
-                  ? '🎯 მიმდინარე მიზანი: მიდი ოფისის შესასვლელთან.'
-                  : '🎯 Current objective: reach the office entrance.'
-              )
-            : (
-                isGeo
-                  ? 'ქალაქში მოძრაობ.'
-                  : 'You are moving through the city.'
-              )
-        );
-
-        return;
-      }
-
-      if (nearby.locked) {
+      if (nearby) {
+        if (nearby.locked) {
+          setMessage(
+            isGeo
+              ? '🔒 ' +
+                nearby.titleGeo +
+                ' ჯერ ჩაკეტილია.'
+              : '🔒 ' +
+                nearby.titleEng +
+                ' is locked.'
+          );
+        } else {
+          setMessage(
+            isGeo
+              ? '📍 ' +
+                nearby.titleGeo +
+                ' — დააჭირე ENTER-ს.'
+              : '📍 ' +
+                nearby.titleEng +
+                ' — press ENTER.'
+          );
+        }
+      } else {
         setMessage(
           isGeo
-            ? '🔒 ' +
-              nearby.titleGeo +
-              ' ჯერ ჩაკეტილია.'
-            : '🔒 ' +
-              nearby.titleEng +
-              ' is currently locked.'
+            ? '🎯 მიდი ოფისის წითელ შესასვლელთან.'
+            : '🎯 Reach the red Office entrance.'
         );
-
-        return;
       }
-
-      setMessage(
-        isGeo
-          ? '📍 ' +
-            nearby.titleGeo +
-            ' — დააჭირე ENTER-ს.'
-          : '📍 ' +
-            nearby.titleEng +
-            ' — press ENTER.'
-      );
     }
 
     // ========================================
-    // INTERACT
+    // ENTER LOCATION
     // ========================================
 
     function interact() {
@@ -931,8 +823,8 @@
       if (!nearby) {
         setMessage(
           isGeo
-            ? 'ახლოს ინტერაქტიული ლოკაცია არ არის.'
-            : 'There is no interactive location nearby.'
+            ? 'ახლოს შესასვლელი არ არის.'
+            : 'No entrance nearby.'
         );
 
         return;
@@ -942,7 +834,7 @@
         setMessage(
           isGeo
             ? '🔒 ეს ლოკაცია ჯერ ჩაკეტილია.'
-            : '🔒 This location is still locked.'
+            : '🔒 This location is locked.'
         );
 
         return;
@@ -958,7 +850,7 @@
 
         localStorage.setItem(
           'team4OfficeArrivalTime',
-          formatGameTime()
+          gameTimeText()
         );
 
         window.location.href =
@@ -972,11 +864,9 @@
       ) {
         setMessage(
           isGeo
-            ? '🏠 სახლში ხარ. Home სისტემას შემდეგ ეტაპზე გავხსნით.'
-            : '🏠 You are home. The Home system will be added next.'
+            ? '🏠 შენს სახლთან ხარ.'
+            : '🏠 You are at home.'
         );
-
-        return;
       }
     }
 
@@ -984,9 +874,7 @@
     // KEYBOARD
     // ========================================
 
-    function handleMapKeyDown(
-      event
-    ) {
+    function handleKeyDown(event) {
       const key =
         event.key.toLowerCase();
 
@@ -1051,8 +939,8 @@
       }
 
       if (
-        key === 'enter' ||
-        key === 'e'
+        key === 'e' ||
+        key === 'enter'
       ) {
         event.preventDefault();
 
@@ -1060,21 +948,15 @@
       }
     }
 
-    // ========================================
-    // FOCUS MAP
-    // ========================================
-
     function focusMap() {
-      if (
-        mapRef.current
-      ) {
+      if (mapRef.current) {
         mapRef.current.focus();
       }
 
       setMessage(
         isGeo
-          ? '🚶 Walking Mode აქტიურია — გამოიყენე WASD ან ისრები.'
-          : '🚶 Walking Mode active — use WASD or arrow keys.'
+          ? '🚶 Walking Mode — WASD / ისრები.'
+          : '🚶 Walking Mode — WASD / arrow keys.'
       );
     }
 
@@ -1092,7 +974,7 @@
         {
           style: {
             minWidth:
-              '116px',
+              '118px',
 
             padding:
               '11px 13px',
@@ -1101,7 +983,7 @@
               '13px',
 
             background:
-              'rgba(255,255,255,.045)',
+              '#101217',
 
             border:
               '1px solid rgba(255,255,255,.08)',
@@ -1116,7 +998,7 @@
                 '4px',
 
               color:
-                'rgba(255,255,255,.48)',
+                'rgba(255,255,255,.45)',
 
               fontSize:
                 '9px',
@@ -1126,9 +1008,6 @@
 
               letterSpacing:
                 '.08em',
-
-              textTransform:
-                'uppercase',
             },
           },
 
@@ -1155,15 +1034,71 @@
     }
 
     // ========================================
+    // BUILDING WINDOWS
+    // ========================================
+
+    function buildingWindows(
+      count,
+      locked
+    ) {
+      const result = [];
+
+      for (
+        let i = 0;
+        i < count;
+        i += 1
+      ) {
+        result.push(
+          h(
+            'span',
+            {
+              key:
+                'window-' +
+                i,
+
+              style: {
+                height:
+                  '9px',
+
+                borderRadius:
+                  '2px',
+
+                background:
+                  locked
+                    ? 'rgba(255,255,255,.055)'
+                    : i % 3 === 0
+                    ? 'rgba(255,205,105,.44)'
+                    : 'rgba(135,174,210,.18)',
+
+                border:
+                  '1px solid rgba(255,255,255,.03)',
+              },
+            }
+          )
+        );
+      }
+
+      return result;
+    }
+
+    // ========================================
     // BUILDING
     // ========================================
 
     function renderBuilding(
       building
     ) {
+      const rect =
+        building.rect;
+
       const isOffice =
-        building.id ===
-        'office';
+        building.id === 'office';
+
+      const isDealer =
+        building.id === 'dealer';
+
+      const isBank =
+        building.id === 'bank';
 
       return h(
         'div',
@@ -1171,61 +1106,64 @@
           key:
             building.id,
 
-          className:
-            'team4-city-building',
-
           style: {
             position:
               'absolute',
 
             left:
-              building.rect.x +
-              '%',
+              rect.x + '%',
 
             top:
-              building.rect.y +
-              '%',
+              rect.y + '%',
 
             width:
-              building.rect.w +
-              '%',
+              rect.w + '%',
 
             height:
-              building.rect.h +
-              '%',
+              rect.h + '%',
 
             zIndex:
-              10,
+              20,
 
             borderRadius:
-              '12px',
+              isBank
+                ? '8px'
+                : '13px',
 
             overflow:
               'hidden',
 
+            background:
+              building.type ===
+              'residential'
+                ? 'linear-gradient(135deg,#262932,#16191f)'
+                : building.type ===
+                  'office'
+                ? 'linear-gradient(135deg,#252c34,#11151b)'
+                : building.type ===
+                  'shop'
+                ? 'linear-gradient(135deg,#202938,#11151d)'
+                : building.type ===
+                  'dealer'
+                ? 'linear-gradient(135deg,#292621,#141311)'
+                : 'linear-gradient(135deg,#282a2e,#15171b)',
+
             border:
               isOffice
-                ? '2px solid rgba(239,27,19,.65)'
-                : '1px solid rgba(255,255,255,.12)',
-
-            background:
-              building.locked
-                ? 'linear-gradient(145deg,#17191f,#0c0d10)'
-                : 'linear-gradient(145deg,#282c35,#101216)',
+                ? '2px solid rgba(239,27,19,.72)'
+                : '1px solid rgba(255,255,255,.11)',
 
             boxShadow:
-              isOffice
-                ? '0 0 0 5px rgba(239,27,19,.07), 0 20px 30px rgba(0,0,0,.45)'
-                : '0 18px 28px rgba(0,0,0,.42)',
+              '0 14px 25px rgba(0,0,0,.52)',
 
             opacity:
               building.locked
-                ? 0.76
+                ? .70
                 : 1,
           },
         },
 
-        // ROOF
+        // roof edge
         h(
           'div',
           {
@@ -1233,31 +1171,22 @@
               position:
                 'absolute',
 
-              left:
-                '8px',
-
-              right:
-                '8px',
-
-              top:
-                '8px',
-
-              height:
-                '22%',
+              inset:
+                '6px',
 
               borderRadius:
-                '7px',
-
-              background:
-                'linear-gradient(90deg,rgba(255,255,255,.08),rgba(255,255,255,.02))',
+                '8px',
 
               border:
                 '1px solid rgba(255,255,255,.06)',
+
+              boxShadow:
+                'inset 0 0 30px rgba(0,0,0,.35)',
             },
           }
         ),
 
-        // WINDOWS
+        // rooftop units
         h(
           'div',
           {
@@ -1272,7 +1201,7 @@
                 '10%',
 
               top:
-                '38%',
+                '12%',
 
               display:
                 'grid',
@@ -1285,41 +1214,109 @@
             },
           },
 
-          [
-            1,
-            2,
-            3,
-            4,
-            5,
-            6,
-            7,
-            8,
-          ].map(
-            function (n) {
-              return h(
-                'span',
-                {
-                  key: n,
-
-                  style: {
-                    height:
-                      '9px',
-
-                    borderRadius:
-                      '2px',
-
-                    background:
-                      building.locked
-                        ? 'rgba(255,255,255,.06)'
-                        : 'rgba(255,208,111,.30)',
-                  },
-                }
-              );
-            }
+          buildingWindows(
+            isDealer
+              ? 5
+              : 8,
+            building.locked
           )
         ),
 
-        // LABEL
+        // additional roof block
+        !isDealer
+          ? h(
+              'div',
+              {
+                style: {
+                  position:
+                    'absolute',
+
+                  right:
+                    '9%',
+
+                  top:
+                    '37%',
+
+                  width:
+                    '24%',
+
+                  height:
+                    '18%',
+
+                  borderRadius:
+                    '4px',
+
+                  background:
+                    'rgba(0,0,0,.20)',
+
+                  border:
+                    '1px solid rgba(255,255,255,.06)',
+                },
+              }
+            )
+          : null,
+
+        // dealer parking cars
+        isDealer
+          ? h(
+              'div',
+              {
+                style: {
+                  position:
+                    'absolute',
+
+                  left:
+                    '8%',
+
+                  right:
+                    '8%',
+
+                  top:
+                    '37%',
+
+                  display:
+                    'grid',
+
+                  gridTemplateColumns:
+                    'repeat(5,1fr)',
+
+                  gap:
+                    '6px',
+                },
+              },
+
+              [1,2,3,4,5].map(
+                function (item) {
+                  return h(
+                    'div',
+                    {
+                      key:
+                        'dealer-car-' +
+                        item,
+
+                      style: {
+                        height:
+                          '13px',
+
+                        borderRadius:
+                          '4px',
+
+                        background:
+                          item % 2
+                            ? '#343c48'
+                            : '#66211d',
+
+                        border:
+                          '1px solid rgba(255,255,255,.10)',
+                      },
+                    }
+                  );
+                }
+              )
+            )
+          : null,
+
+        // label
         h(
           'div',
           {
@@ -1328,25 +1325,22 @@
                 'absolute',
 
               left:
-                '8px',
+                '7px',
 
               right:
-                '8px',
+                '7px',
 
               bottom:
-                '8px',
+                '7px',
 
               padding:
-                '8px',
+                '7px 8px',
 
               borderRadius:
-                '8px',
+                '7px',
 
               background:
-                'rgba(0,0,0,.70)',
-
-              backdropFilter:
-                'blur(8px)',
+                'rgba(0,0,0,.78)',
 
               border:
                 '1px solid rgba(255,255,255,.08)',
@@ -1357,25 +1351,13 @@
             'div',
             {
               style: {
-                display:
-                  'flex',
-
-                alignItems:
-                  'center',
-
-                gap:
-                  '6px',
-
-                marginBottom:
-                  '2px',
-
                 color:
                   building.locked
-                    ? 'rgba(255,255,255,.55)'
-                    : '#fff',
+                    ? 'rgba(255,255,255,.50)'
+                    : '#ffffff',
 
                 fontSize:
-                  '12px',
+                  '11px',
 
                 fontWeight:
                   '900',
@@ -1383,8 +1365,8 @@
             },
 
             building.locked
-              ? '🔒'
-              : building.icon,
+              ? '🔒 '
+              : '',
 
             isGeo
               ? building.titleGeo
@@ -1395,13 +1377,16 @@
             'div',
             {
               style: {
+                marginTop:
+                  '2px',
+
                 color:
                   isOffice
-                    ? '#ff524a'
-                    : 'rgba(255,255,255,.48)',
+                    ? '#ff453d'
+                    : 'rgba(255,255,255,.43)',
 
                 fontSize:
-                  '9px',
+                  '8px',
 
                 fontWeight:
                   '800',
@@ -1425,12 +1410,16 @@
     }
 
     // ========================================
-    // ENTRANCE MARKER
+    // ENTRANCE
     // ========================================
 
     function renderEntrance(
       building
     ) {
+      const active =
+        building.id ===
+        'office';
+
       return h(
         'div',
         {
@@ -1451,16 +1440,14 @@
               '%',
 
             width:
-              building.id ===
-              'office'
-                ? '18px'
-                : '12px',
+              active
+                ? '16px'
+                : '11px',
 
             height:
-              building.id ===
-              'office'
-                ? '18px'
-                : '12px',
+              active
+                ? '16px'
+                : '11px',
 
             transform:
               'translate(-50%,-50%)',
@@ -1468,51 +1455,55 @@
             borderRadius:
               '50%',
 
+            zIndex:
+              70,
+
             background:
               building.locked
-                ? 'rgba(255,255,255,.15)'
-                : building.color,
+                ? '#555b64'
+                : building.accent,
 
             boxShadow:
-              building.id ===
-              destination
-                ? '0 0 0 8px rgba(239,27,19,.13), 0 0 20px rgba(239,27,19,.65)'
-                : '0 0 12px rgba(0,0,0,.5)',
-
-            zIndex:
-              30,
+              active
+                ? '0 0 0 8px rgba(239,27,19,.15),0 0 22px rgba(239,27,19,.75)'
+                : '0 0 10px rgba(0,0,0,.5)',
           },
         }
       );
     }
 
     // ========================================
-    // VEHICLE
+    // TOP VIEW CAR
     // ========================================
 
-    function vehicle(
-      icon,
+    function renderCar(
+      key,
       left,
       top,
       rotation,
       className,
-      label
+      bodyColor
     ) {
       return h(
         'div',
         {
+          key,
+
           className:
-            className || '',
+            className,
 
           style: {
             position:
               'absolute',
 
-            left:
-              left,
+            left,
+            top,
 
-            top:
-              top,
+            width:
+              '22px',
+
+            height:
+              '42px',
 
             transform:
               'translate(-50%,-50%) rotate(' +
@@ -1520,23 +1511,136 @@
               'deg)',
 
             zIndex:
-              7,
+              12,
 
-            fontSize:
-              '22px',
+            borderRadius:
+              '7px',
 
-            filter:
-              'drop-shadow(0 5px 4px rgba(0,0,0,.55))',
+            background:
+              bodyColor,
 
-            pointerEvents:
-              'none',
+            border:
+              '1px solid rgba(255,255,255,.20)',
+
+            boxShadow:
+              '0 5px 9px rgba(0,0,0,.55)',
           },
-
-          title:
-            label || '',
         },
 
-        icon
+        // windshield
+        h(
+          'div',
+          {
+            style: {
+              position:
+                'absolute',
+
+              left:
+                '4px',
+
+              right:
+                '4px',
+
+              top:
+                '7px',
+
+              height:
+                '9px',
+
+              borderRadius:
+                '3px',
+
+              background:
+                '#6e8796',
+            },
+          }
+        ),
+
+        // rear window
+        h(
+          'div',
+          {
+            style: {
+              position:
+                'absolute',
+
+              left:
+                '4px',
+
+              right:
+                '4px',
+
+              bottom:
+                '7px',
+
+              height:
+                '8px',
+
+              borderRadius:
+                '3px',
+
+              background:
+                '#455967',
+            },
+          }
+        ),
+
+        // headlights
+        h(
+          'div',
+          {
+            style: {
+              position:
+                'absolute',
+
+              left:
+                '3px',
+
+              top:
+                '1px',
+
+              width:
+                '5px',
+
+              height:
+                '3px',
+
+              borderRadius:
+                '2px',
+
+              background:
+                '#fff3b0',
+            },
+          }
+        ),
+
+        h(
+          'div',
+          {
+            style: {
+              position:
+                'absolute',
+
+              right:
+                '3px',
+
+              top:
+                '1px',
+
+              width:
+                '5px',
+
+              height:
+                '3px',
+
+              borderRadius:
+                '2px',
+
+              background:
+                '#fff3b0',
+            },
+          }
+        )
       );
     }
 
@@ -1545,25 +1649,23 @@
     // ========================================
 
     function renderPlayer() {
-      let rotation = 0;
+      let rotation =
+        0;
 
       if (
-        playerDirection ===
-        'right'
+        direction === 'right'
       ) {
         rotation = 90;
       }
 
       if (
-        playerDirection ===
-        'down'
+        direction === 'down'
       ) {
         rotation = 180;
       }
 
       if (
-        playerDirection ===
-        'left'
+        direction === 'left'
       ) {
         rotation = 270;
       }
@@ -1584,22 +1686,25 @@
               '%',
 
             width:
-              '34px',
+              '25px',
 
             height:
-              '34px',
+              '25px',
 
             transform:
-              'translate(-50%,-50%)',
+              'translate(-50%,-50%) rotate(' +
+              rotation +
+              'deg)',
 
             zIndex:
-              80,
+              100,
 
             transition:
-              'left .10s linear, top .10s linear',
+              'left .09s linear, top .09s linear',
           },
         },
 
+        // shadow
         h(
           'div',
           {
@@ -1608,46 +1713,30 @@
                 'absolute',
 
               left:
-                '50%',
+                '4px',
 
               top:
-                '50%',
+                '8px',
 
               width:
-                '31px',
+                '18px',
 
               height:
-                '31px',
-
-              transform:
-                'translate(-50%,-50%)',
+                '14px',
 
               borderRadius:
                 '50%',
 
-              display:
-                'grid',
-
-              placeItems:
-                'center',
-
               background:
-                '#ef1b13',
+                'rgba(0,0,0,.40)',
 
-              border:
-                '3px solid #ffffff',
-
-              boxShadow:
-                '0 0 0 5px rgba(239,27,19,.18), 0 10px 18px rgba(0,0,0,.55)',
-
-              fontSize:
-                '17px',
+              filter:
+                'blur(2px)',
             },
-          },
-
-          '🧍'
+          }
         ),
 
+        // body top-down
         h(
           'div',
           {
@@ -1656,21 +1745,80 @@
                 'absolute',
 
               left:
+                '7px',
+
+              top:
+                '7px',
+
+              width:
+                '12px',
+
+              height:
+                '17px',
+
+              borderRadius:
+                '6px',
+
+              background:
+                '#111',
+
+              border:
+                '2px solid #ef1b13',
+            },
+          }
+        ),
+
+        // head
+        h(
+          'div',
+          {
+            style: {
+              position:
+                'absolute',
+
+              left:
+                '8px',
+
+              top:
+                '0',
+
+              width:
+                '10px',
+
+              height:
+                '10px',
+
+              borderRadius:
                 '50%',
+
+              background:
+                '#d79a6e',
+
+              border:
+                '2px solid #fff',
+            },
+          }
+        ),
+
+        // direction arrow
+        h(
+          'div',
+          {
+            style: {
+              position:
+                'absolute',
+
+              left:
+                '8px',
 
               top:
                 '-12px',
 
-              transform:
-                'translateX(-50%) rotate(' +
-                rotation +
-                'deg)',
-
               color:
-                '#ff3b32',
+                '#ef1b13',
 
               fontSize:
-                '12px',
+                '11px',
 
               fontWeight:
                 '900',
@@ -1687,35 +1835,34 @@
               position:
                 'absolute',
 
+              top:
+                '30px',
+
               left:
                 '50%',
 
-              top:
-                '37px',
-
               transform:
-                'translateX(-50%)',
+                'translateX(-50%) rotate(' +
+                (-rotation) +
+                'deg)',
 
               whiteSpace:
                 'nowrap',
 
               padding:
-                '3px 7px',
+                '3px 6px',
 
               borderRadius:
                 '999px',
 
               background:
-                'rgba(0,0,0,.82)',
+                'rgba(0,0,0,.80)',
 
               border:
-                '1px solid rgba(255,255,255,.16)',
-
-              color:
-                '#ffffff',
+                '1px solid rgba(255,255,255,.15)',
 
               fontSize:
-                '9px',
+                '8px',
 
               fontWeight:
                 '900',
@@ -1728,7 +1875,7 @@
     }
 
     // ========================================
-    // MOBILE CONTROL
+    // CONTROL
     // ========================================
 
     function controlButton(
@@ -1746,25 +1893,25 @@
 
           style: {
             width:
-              '46px',
+              '44px',
 
             height:
-              '42px',
+              '40px',
+
+            borderRadius:
+              '9px',
 
             border:
               '1px solid rgba(255,255,255,.12)',
 
-            borderRadius:
-              '10px',
-
             background:
-              'rgba(12,14,18,.92)',
+              '#101217',
 
             color:
               '#fff',
 
             fontSize:
-              '18px',
+              '16px',
 
             fontWeight:
               '900',
@@ -1791,130 +1938,89 @@
         null,
 
         `
-          .team4-city-map:focus {
-            outline: 2px solid rgba(239,27,19,.65);
-            outline-offset: 3px;
+        .t4city-map:focus {
+          outline: 2px solid rgba(239,27,19,.70);
+          outline-offset: 3px;
+        }
+
+        .t4-car-east-1 {
+          animation: t4East1 15s linear infinite;
+        }
+
+        .t4-car-east-2 {
+          animation: t4East2 21s linear infinite;
+        }
+
+        .t4-car-west-1 {
+          animation: t4West1 18s linear infinite;
+        }
+
+        .t4-car-south {
+          animation: t4South 19s linear infinite;
+        }
+
+        .t4-car-north {
+          animation: t4North 23s linear infinite;
+        }
+
+        @keyframes t4East1 {
+          from { left: -3%; }
+          to   { left: 103%; }
+        }
+
+        @keyframes t4East2 {
+          from { left: -8%; }
+          to   { left: 105%; }
+        }
+
+        @keyframes t4West1 {
+          from { left: 104%; }
+          to   { left: -4%; }
+        }
+
+        @keyframes t4South {
+          from { top: -5%; }
+          to   { top: 105%; }
+        }
+
+        @keyframes t4North {
+          from { top: 105%; }
+          to   { top: -5%; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .t4-car-east-1,
+          .t4-car-east-2,
+          .t4-car-west-1,
+          .t4-car-south,
+          .t4-car-north {
+            animation: none !important;
+          }
+        }
+
+        @media (max-width: 980px) {
+          .t4-city-grid {
+            grid-template-columns: 1fr !important;
           }
 
-          .team4-city-building {
-            transition:
-              transform .18s ease,
-              filter .18s ease;
+          .t4city-map {
+            min-height: 640px !important;
           }
+        }
 
-          @media (hover:hover) and (pointer:fine) {
-            .team4-city-building:hover {
-              filter: brightness(1.08);
-            }
+        @media (max-width: 640px) {
+          .t4city-map {
+            min-height: 560px !important;
           }
-
-          .team4-city-car-east {
-            animation:
-              team4CarEast 13s linear infinite;
-          }
-
-          .team4-city-car-west {
-            animation:
-              team4CarWest 17s linear infinite;
-          }
-
-          .team4-city-bus {
-            animation:
-              team4Bus 22s linear infinite;
-          }
-
-          .team4-city-taxi {
-            animation:
-              team4Taxi 15s linear infinite;
-          }
-
-          @keyframes team4CarEast {
-            from {
-              left: 2%;
-            }
-
-            to {
-              left: 96%;
-            }
-          }
-
-          @keyframes team4CarWest {
-            from {
-              left: 95%;
-            }
-
-            to {
-              left: 2%;
-            }
-          }
-
-          @keyframes team4Bus {
-            from {
-              top: 3%;
-            }
-
-            to {
-              top: 95%;
-            }
-          }
-
-          @keyframes team4Taxi {
-            0% {
-              left: 10%;
-            }
-
-            50% {
-              left: 80%;
-            }
-
-            100% {
-              left: 10%;
-            }
-          }
-
-          @media (prefers-reduced-motion: reduce) {
-            .team4-city-car-east,
-            .team4-city-car-west,
-            .team4-city-bus,
-            .team4-city-taxi {
-              animation: none !important;
-            }
-          }
-
-          @media (max-width: 980px) {
-            .team4-city-main-grid {
-              grid-template-columns:
-                1fr !important;
-            }
-
-            .team4-city-map {
-              min-height:
-                620px !important;
-            }
-          }
-
-          @media (max-width: 640px) {
-            .team4-city-map {
-              min-height:
-                540px !important;
-            }
-
-            .team4-city-desktop-help {
-              display:
-                none !important;
-            }
-          }
+        }
         `
       ),
 
       Header
-        ? h(
-            Header,
-            {
-              lang,
-              setLang,
-            }
-          )
+        ? h(Header, {
+            lang,
+            setLang,
+          })
         : null,
 
       h(
@@ -1925,13 +2031,13 @@
               '100vh',
 
             padding:
-              '110px 22px 70px',
+              '105px 20px 70px',
 
             background:
               '#050507',
 
             color:
-              '#ffffff',
+              '#fff',
           },
         },
 
@@ -1940,7 +2046,7 @@
           {
             style: {
               maxWidth:
-                '1450px',
+                '1480px',
 
               margin:
                 '0 auto',
@@ -1948,7 +2054,7 @@
           },
 
           // ====================================
-          // TITLE + CLOCK
+          // HEADER AREA
           // ====================================
 
           h(
@@ -1968,10 +2074,10 @@
                   'wrap',
 
                 gap:
-                  '16px',
+                  '15px',
 
                 marginBottom:
-                  '18px',
+                  '17px',
               },
             },
 
@@ -1996,7 +2102,7 @@
                       '900',
 
                     letterSpacing:
-                      '.15em',
+                      '.14em',
                   },
                 },
 
@@ -2008,10 +2114,10 @@
                 {
                   style: {
                     margin:
-                      '0 0 7px',
+                      '0',
 
                     fontSize:
-                      'clamp(32px,5vw,55px)',
+                      'clamp(34px,5vw,55px)',
 
                     lineHeight:
                       '1',
@@ -2024,23 +2130,6 @@
                 isGeo
                   ? 'შენი ქალაქი'
                   : 'Your City'
-              ),
-
-              h(
-                'div',
-                {
-                  style: {
-                    color:
-                      'rgba(255,255,255,.55)',
-
-                    fontSize:
-                      '13px',
-                  },
-                },
-
-                isGeo
-                  ? 'ქალაქში უკვე შენ მართავ პროცესს.'
-                  : 'You are now in control of the city.'
               )
             ),
 
@@ -2049,13 +2138,13 @@
               {
                 style: {
                   padding:
-                    '10px 16px',
+                    '9px 15px',
 
                   borderRadius:
                     '999px',
 
                   background:
-                    '#111319',
+                    '#101217',
 
                   border:
                     '1px solid rgba(255,255,255,.10)',
@@ -2068,12 +2157,8 @@
                 },
               },
 
-              (
-                isGeo
-                  ? 'DAY 1 • '
-                  : 'DAY 1 • '
-              ) +
-                formatGameTime() +
+              'DAY 1 • ' +
+                gameTimeText() +
                 (
                   isGeo
                     ? ' • სექტემბერი'
@@ -2093,14 +2178,14 @@
                 display:
                   'flex',
 
+                gap:
+                  '8px',
+
                 flexWrap:
                   'wrap',
 
-                gap:
-                  '9px',
-
                 marginBottom:
-                  '18px',
+                  '17px',
               },
             },
 
@@ -2147,24 +2232,24 @@
           ),
 
           // ====================================
-          // MAIN GRID
+          // GRID
           // ====================================
 
           h(
             'div',
             {
               className:
-                'team4-city-main-grid',
+                't4-city-grid',
 
               style: {
                 display:
                   'grid',
 
                 gridTemplateColumns:
-                  'minmax(0,1fr) 320px',
+                  'minmax(0,1fr) 315px',
 
                 gap:
-                  '18px',
+                  '17px',
 
                 alignItems:
                   'start',
@@ -2181,50 +2266,39 @@
                 ref:
                   mapRef,
 
-                className:
-                  'team4-city-map',
-
                 tabIndex:
                   0,
 
-                role:
-                  'application',
-
                 onKeyDown:
-                  handleMapKeyDown,
+                  handleKeyDown,
 
                 onClick:
                   focusMap,
 
-                'aria-label':
-                  isGeo
-                    ? 'Team4 City ინტერაქტიული რუკა'
-                    : 'Team4 City interactive map',
+                className:
+                  't4city-map',
 
                 style: {
                   position:
                     'relative',
 
                   minHeight:
-                    '720px',
+                    '750px',
 
                   overflow:
                     'hidden',
 
                   borderRadius:
-                    '24px',
+                    '22px',
 
                   border:
-                    '1px solid rgba(255,255,255,.10)',
+                    '1px solid rgba(255,255,255,.12)',
 
                   background:
-                    'radial-gradient(circle at 50% 40%,rgba(28,34,46,.88),rgba(8,10,14,.98) 72%)',
+                    '#161a20',
 
                   boxShadow:
-                    '0 28px 75px rgba(0,0,0,.38)',
-
-                  cursor:
-                    'default',
+                    '0 25px 70px rgba(0,0,0,.45)',
 
                   userSelect:
                     'none',
@@ -2232,44 +2306,18 @@
               },
 
               // =================================
-              // CITY BLOCK BACKGROUND
+              // CITY BLOCKS / SIDEWALKS
               // =================================
 
               [
-                {
-                  left: '0%',
-                  top: '0%',
-                  w: '29%',
-                  h: '31%',
-                },
-
-                {
-                  left: '31%',
-                  top: '0%',
-                  w: '28%',
-                  h: '31%',
-                },
-
-                {
-                  left: '71%',
-                  top: '35%',
-                  w: '29%',
-                  h: '39%',
-                },
-
-                {
-                  left: '0%',
-                  top: '53%',
-                  w: '27%',
-                  h: '47%',
-                },
-
-                {
-                  left: '42%',
-                  top: '70%',
-                  w: '42%',
-                  h: '30%',
-                },
+                ['0%','0%','30%','33%'],
+                ['39%','0%','20%','33%'],
+                ['70%','0%','30%','35%'],
+                ['0%','49%','29%','51%'],
+                ['39%','49%','20%','23%'],
+                ['70%','49%','30%','25%'],
+                ['39%','86%','12%','14%'],
+                ['80%','86%','20%','14%'],
               ].map(
                 function (
                   block,
@@ -2279,7 +2327,7 @@
                     'div',
                     {
                       key:
-                        'city-block-' +
+                        'block-' +
                         index,
 
                       style: {
@@ -2287,22 +2335,22 @@
                           'absolute',
 
                         left:
-                          block.left,
+                          block[0],
 
                         top:
-                          block.top,
+                          block[1],
 
                         width:
-                          block.w,
+                          block[2],
 
                         height:
-                          block.h,
+                          block[3],
 
                         background:
-                          'linear-gradient(145deg,rgba(30,35,42,.80),rgba(14,16,20,.75))',
+                          '#20242b',
 
                         border:
-                          '1px solid rgba(255,255,255,.025)',
+                          '1px solid rgba(255,255,255,.035)',
 
                         zIndex:
                           1,
@@ -2313,7 +2361,7 @@
               ),
 
               // =================================
-              // ROADS
+              // MAIN HORIZONTAL ROAD 1
               // =================================
 
               h(
@@ -2330,19 +2378,19 @@
                       '0',
 
                     top:
-                      '34%',
+                      '35%',
 
                     height:
-                      '14%',
+                      '13%',
 
                     background:
-                      '#151820',
+                      '#11151b',
 
                     borderTop:
-                      '4px solid #262a33',
+                      '5px solid #30353e',
 
                     borderBottom:
-                      '4px solid #262a33',
+                      '5px solid #30353e',
 
                     zIndex:
                       3,
@@ -2350,6 +2398,7 @@
                 }
               ),
 
+              // horizontal road 2
               h(
                 'div',
                 {
@@ -2364,25 +2413,29 @@
                       '0',
 
                     top:
-                      '72%',
+                      '73%',
 
                     height:
                       '13%',
 
                     background:
-                      '#151820',
+                      '#11151b',
 
                     borderTop:
-                      '4px solid #262a33',
+                      '5px solid #30353e',
 
                     borderBottom:
-                      '4px solid #262a33',
+                      '5px solid #30353e',
 
                     zIndex:
                       3,
                   },
                 }
               ),
+
+              // =================================
+              // VERTICAL ROAD LEFT
+              // =================================
 
               h(
                 'div',
@@ -2392,25 +2445,25 @@
                       'absolute',
 
                     left:
-                      '28%',
+                      '29%',
 
                     top:
                       '0',
 
                     width:
-                      '11%',
+                      '10%',
 
                     height:
                       '100%',
 
                     background:
-                      '#151820',
+                      '#11151b',
 
                     borderLeft:
-                      '4px solid #262a33',
+                      '5px solid #30353e',
 
                     borderRight:
-                      '4px solid #262a33',
+                      '5px solid #30353e',
 
                     zIndex:
                       3,
@@ -2418,6 +2471,7 @@
                 }
               ),
 
+              // vertical road right
               h(
                 'div',
                 {
@@ -2438,13 +2492,13 @@
                       '100%',
 
                     background:
-                      '#151820',
+                      '#11151b',
 
                     borderLeft:
-                      '4px solid #262a33',
+                      '5px solid #30353e',
 
                     borderRight:
-                      '4px solid #262a33',
+                      '5px solid #30353e',
 
                     zIndex:
                       3,
@@ -2453,7 +2507,7 @@
               ),
 
               // =================================
-              // ROAD LANE MARKINGS
+              // LANE MARKINGS HORIZONTAL
               // =================================
 
               h(
@@ -2470,16 +2524,16 @@
                       '0',
 
                     top:
-                      '40.8%',
+                      '41.5%',
 
                     height:
                       '2px',
 
+                    background:
+                      'repeating-linear-gradient(90deg,rgba(255,255,255,.38) 0 24px,transparent 24px 52px)',
+
                     zIndex:
                       4,
-
-                    background:
-                      'repeating-linear-gradient(90deg,rgba(255,255,255,.35) 0 24px,transparent 24px 52px)',
                   },
                 }
               ),
@@ -2498,16 +2552,45 @@
                       '0',
 
                     top:
-                      '78.2%',
+                      '79.5%',
 
                     height:
                       '2px',
 
+                    background:
+                      'repeating-linear-gradient(90deg,rgba(255,255,255,.38) 0 24px,transparent 24px 52px)',
+
                     zIndex:
                       4,
+                  },
+                }
+              ),
+
+              // vertical lane lines
+              h(
+                'div',
+                {
+                  style: {
+                    position:
+                      'absolute',
+
+                    left:
+                      '34%',
+
+                    top:
+                      '0',
+
+                    width:
+                      '2px',
+
+                    bottom:
+                      '0',
 
                     background:
-                      'repeating-linear-gradient(90deg,rgba(255,255,255,.30) 0 24px,transparent 24px 52px)',
+                      'repeating-linear-gradient(180deg,rgba(255,255,255,.32) 0 24px,transparent 24px 50px)',
+
+                    zIndex:
+                      4,
                   },
                 }
               ),
@@ -2520,7 +2603,7 @@
                       'absolute',
 
                     left:
-                      '33.4%',
+                      '64.5%',
 
                     top:
                       '0',
@@ -2528,80 +2611,37 @@
                     width:
                       '2px',
 
-                    height:
-                      '100%',
-
-                    zIndex:
-                      4,
-
-                    background:
-                      'repeating-linear-gradient(180deg,rgba(255,255,255,.28) 0 24px,transparent 24px 52px)',
-                  },
-                }
-              ),
-
-              h(
-                'div',
-                {
-                  style: {
-                    position:
-                      'absolute',
-
-                    left:
-                      '64.4%',
-
-                    top:
+                    bottom:
                       '0',
 
-                    width:
-                      '2px',
-
-                    height:
-                      '100%',
+                    background:
+                      'repeating-linear-gradient(180deg,rgba(255,255,255,.32) 0 24px,transparent 24px 50px)',
 
                     zIndex:
                       4,
-
-                    background:
-                      'repeating-linear-gradient(180deg,rgba(255,255,255,.28) 0 24px,transparent 24px 52px)',
                   },
                 }
               ),
 
               // =================================
-              // CROSSWALKS
+              // ZEBRA CROSSINGS
               // =================================
 
               [
-                {
-                  left: '29%',
-                  top: '32%',
-                },
-
-                {
-                  left: '60%',
-                  top: '32%',
-                },
-
-                {
-                  left: '29%',
-                  top: '70%',
-                },
-
-                {
-                  left: '60%',
-                  top: '70%',
-                },
+                ['29%','33%'],
+                ['60%','33%'],
+                ['29%','71%'],
+                ['60%','71%'],
               ].map(
                 function (
-                  cross,
+                  crossing,
                   index
                 ) {
                   return h(
                     'div',
                     {
                       key:
-                        'cross-' +
+                        'zebra-' +
                         index,
 
                       style: {
@@ -2609,25 +2649,25 @@
                           'absolute',
 
                         left:
-                          cross.left,
+                          crossing[0],
 
                         top:
-                          cross.top,
+                          crossing[1],
 
                         width:
-                          '9%',
+                          '10%',
 
                         height:
-                          '18%',
+                          '17%',
+
+                        background:
+                          'repeating-linear-gradient(90deg,rgba(255,255,255,.58) 0 5px,transparent 5px 11px)',
+
+                        opacity:
+                          .62,
 
                         zIndex:
                           5,
-
-                        opacity:
-                          .35,
-
-                        background:
-                          'repeating-linear-gradient(90deg,#fff 0 5px,transparent 5px 11px)',
                       },
                     }
                   );
@@ -2635,7 +2675,7 @@
               ),
 
               // =================================
-              // PARK / GREEN SPACE
+              // PARK
               // =================================
 
               h(
@@ -2646,28 +2686,28 @@
                       'absolute',
 
                     left:
-                      '40%',
+                      '41%',
 
                     top:
-                      '50%',
+                      '51%',
 
                     width:
-                      '17%',
+                      '16%',
 
                     height:
                       '18%',
 
                     borderRadius:
-                      '16px',
-
-                    zIndex:
-                      2,
+                      '13px',
 
                     background:
-                      'radial-gradient(circle at 30% 30%,rgba(47,130,74,.38),rgba(16,53,29,.62))',
+                      '#163523',
 
                     border:
-                      '1px solid rgba(69,160,93,.18)',
+                      '3px solid #304738',
+
+                    zIndex:
+                      7,
                   },
                 },
 
@@ -2678,65 +2718,98 @@
                       position:
                         'absolute',
 
-                      inset:
-                        '10px',
+                      left:
+                        '8%',
 
-                      borderRadius:
-                        '12px',
+                      top:
+                        '43%',
 
-                      border:
-                        '1px dashed rgba(255,255,255,.10)',
+                      right:
+                        '8%',
+
+                      height:
+                        '3px',
+
+                      background:
+                        'rgba(255,255,255,.12)',
                     },
                   }
-                )
-              ),
+                ),
 
-              // TREES
-              [
-                ['42%', '52%'],
-                ['47%', '54%'],
-                ['52%', '52%'],
-                ['43%', '63%'],
-                ['50%', '64%'],
-                ['55%', '61%'],
-                ['16%', '49%'],
-                ['84%', '31%'],
-              ].map(
-                function (
-                  tree,
-                  index
-                ) {
-                  return h(
-                    'div',
-                    {
-                      key:
-                        'tree-' +
-                        index,
+                h(
+                  'div',
+                  {
+                    style: {
+                      position:
+                        'absolute',
 
-                      style: {
-                        position:
-                          'absolute',
+                      top:
+                        '8%',
 
-                        left:
-                          tree[0],
+                      bottom:
+                        '8%',
 
-                        top:
-                          tree[1],
+                      left:
+                        '48%',
 
-                        zIndex:
-                          6,
+                      width:
+                        '3px',
 
-                        fontSize:
-                          '21px',
-
-                        filter:
-                          'brightness(.65)',
-                      },
+                      background:
+                        'rgba(255,255,255,.12)',
                     },
+                  }
+                ),
 
-                    '🌳'
-                  );
-                }
+                [
+                  ['15%','15%'],
+                  ['68%','18%'],
+                  ['20%','68%'],
+                  ['70%','67%'],
+                ].map(
+                  function (
+                    tree,
+                    index
+                  ) {
+                    return h(
+                      'div',
+                      {
+                        key:
+                          'park-tree-' +
+                          index,
+
+                        style: {
+                          position:
+                            'absolute',
+
+                          left:
+                            tree[0],
+
+                          top:
+                            tree[1],
+
+                          width:
+                            '15px',
+
+                          height:
+                            '15px',
+
+                          borderRadius:
+                            '50%',
+
+                          background:
+                            '#346b42',
+
+                          border:
+                            '3px solid #21482d',
+
+                          boxShadow:
+                            '0 4px 4px rgba(0,0,0,.30)',
+                        },
+                      }
+                    );
+                  }
+                )
               ),
 
               // =================================
@@ -2752,47 +2825,7 @@
               ),
 
               // =================================
-              // TRANSPORT
-              // =================================
-
-              vehicle(
-                '🚗',
-                '8%',
-                '38%',
-                0,
-                'team4-city-car-east',
-                'Car'
-              ),
-
-              vehicle(
-                '🚙',
-                '88%',
-                '44%',
-                180,
-                'team4-city-car-west',
-                'Car'
-              ),
-
-              vehicle(
-                '🚕',
-                '14%',
-                '76%',
-                0,
-                'team4-city-taxi',
-                'Taxi'
-              ),
-
-              vehicle(
-                '🚌',
-                '63%',
-                '12%',
-                90,
-                'team4-city-bus',
-                'Bus'
-              ),
-
-              // =================================
-              // METRO STATION
+              // METRO
               // =================================
 
               h(
@@ -2803,43 +2836,43 @@
                       'absolute',
 
                     left:
-                      '41%',
+                      '42%',
 
                     top:
-                      '32%',
+                      '31%',
 
                     transform:
                       'translate(-50%,-50%)',
 
-                    zIndex:
-                      20,
-
                     padding:
-                      '7px 10px',
+                      '6px 9px',
 
                     borderRadius:
-                      '10px',
+                      '8px',
 
                     background:
-                      'rgba(25,18,38,.94)',
+                      '#201829',
 
                     border:
-                      '1px solid rgba(185,83,255,.45)',
+                      '1px solid rgba(190,80,255,.5)',
+
+                    color:
+                      '#cf9cff',
 
                     fontSize:
-                      '10px',
+                      '9px',
 
                     fontWeight:
                       '900',
+
+                    zIndex:
+                      30,
                   },
                 },
 
-                '🚇 ' +
-                  (
-                    isGeo
-                      ? 'მეტრო'
-                      : 'Metro'
-                  )
+                isGeo
+                  ? 'M • მეტრო'
+                  : 'M • Metro'
               ),
 
               // =================================
@@ -2857,39 +2890,39 @@
                       '61%',
 
                     top:
-                      '67%',
-
-                    zIndex:
-                      20,
+                      '68%',
 
                     padding:
                       '6px 9px',
 
                     borderRadius:
-                      '9px',
+                      '8px',
 
                     background:
-                      'rgba(8,10,14,.90)',
+                      '#10161f',
 
                     border:
-                      '1px solid rgba(95,155,255,.30)',
+                      '1px solid rgba(64,137,255,.35)',
 
                     color:
-                      'rgba(255,255,255,.72)',
+                      '#88b9ff',
 
                     fontSize:
                       '9px',
 
                     fontWeight:
                       '900',
+
+                    zIndex:
+                      30,
                   },
                 },
 
-                '🚏 BUS'
+                'BUS'
               ),
 
               // =================================
-              // TAXI POINT
+              // TAXI STAND
               // =================================
 
               h(
@@ -2900,93 +2933,139 @@
                       'absolute',
 
                     left:
-                      '43%',
+                      '42%',
 
                     top:
-                      '86%',
-
-                    zIndex:
-                      20,
+                      '88%',
 
                     padding:
                       '6px 10px',
 
                     borderRadius:
-                      '9px',
+                      '8px',
 
                     background:
-                      '#16130b',
+                      '#211b07',
 
                     border:
-                      '1px solid rgba(255,199,0,.35)',
+                      '1px solid rgba(255,201,33,.45)',
 
                     color:
-                      '#ffc400',
+                      '#ffc921',
 
                     fontSize:
                       '9px',
 
                     fontWeight:
                       '900',
+
+                    zIndex:
+                      30,
                   },
                 },
 
-                '🚕 TAXI'
+                'TAXI'
               ),
 
               // =================================
-              // DESTINATION LINE / MARKER
+              // MOVING TOP-DOWN CARS
               // =================================
 
-              destination ===
-                'office'
-                ? h(
-                    'div',
-                    {
-                      style: {
-                        position:
-                          'absolute',
+              renderCar(
+                'car1',
+                '5%',
+                '39%',
+                90,
+                't4-car-east-1',
+                '#34526e'
+              ),
 
-                        left:
-                          '70%',
+              renderCar(
+                'car2',
+                '23%',
+                '44%',
+                90,
+                't4-car-east-2',
+                '#7b2520'
+              ),
 
-                        top:
-                          '39%',
+              renderCar(
+                'car3',
+                '90%',
+                '82%',
+                -90,
+                't4-car-west-1',
+                '#d3d5d7'
+              ),
 
-                        transform:
-                          'translate(-50%,-50%)',
+              renderCar(
+                'car4',
+                '32%',
+                '10%',
+                180,
+                't4-car-south',
+                '#f0bd24'
+              ),
 
-                        zIndex:
-                          32,
+              renderCar(
+                'car5',
+                '66%',
+                '91%',
+                0,
+                't4-car-north',
+                '#20242d'
+              ),
 
-                        padding:
-                          '5px 9px',
+              // =================================
+              // OFFICE TARGET
+              // =================================
 
-                        borderRadius:
-                          '999px',
+              h(
+                'div',
+                {
+                  style: {
+                    position:
+                      'absolute',
 
-                        background:
-                          '#ef1b13',
+                    left:
+                      '69%',
 
-                        color:
-                          '#fff',
+                    top:
+                      '40%',
 
-                        fontSize:
-                          '9px',
+                    transform:
+                      'translate(-50%,-50%)',
 
-                        fontWeight:
-                          '900',
+                    padding:
+                      '5px 9px',
 
-                        boxShadow:
-                          '0 0 20px rgba(239,27,19,.55)',
-                      },
-                    },
+                    borderRadius:
+                      '999px',
 
-                    isGeo
-                      ? '🎯 მიზანი'
-                      : '🎯 TARGET'
-                  )
-                : null,
+                    background:
+                      '#ef1b13',
+
+                    color:
+                      '#fff',
+
+                    fontSize:
+                      '8px',
+
+                    fontWeight:
+                      '900',
+
+                    zIndex:
+                      80,
+
+                    boxShadow:
+                      '0 0 20px rgba(239,27,19,.55)',
+                  },
+                },
+
+                isGeo
+                  ? '🎯 ოფისი'
+                  : '🎯 OFFICE'
+              ),
 
               // =================================
               // PLAYER
@@ -2995,7 +3074,7 @@
               renderPlayer(),
 
               // =================================
-              // INTERACTION MESSAGE
+              // ENTER MESSAGE
               // =================================
 
               nearbyLocation &&
@@ -3015,7 +3094,7 @@
                           Math.max(
                             3,
                             playerPosition.y -
-                              8
+                              7
                           ) +
                           '%',
 
@@ -3023,10 +3102,10 @@
                           'translateX(-50%)',
 
                         zIndex:
-                          90,
+                          120,
 
                         padding:
-                          '6px 10px',
+                          '6px 9px',
 
                         borderRadius:
                           '999px',
@@ -3034,14 +3113,14 @@
                         background:
                           '#000',
 
-                        border:
-                          '1px solid rgba(255,255,255,.20)',
-
                         color:
                           '#fff',
 
+                        border:
+                          '1px solid rgba(255,255,255,.18)',
+
                         fontSize:
-                          '10px',
+                          '9px',
 
                         fontWeight:
                           '900',
@@ -3058,56 +3137,53 @@
                 : null,
 
               // =================================
-              // KEYBOARD HELP
+              // KEY HELP
               // =================================
 
               h(
                 'div',
                 {
-                  className:
-                    'team4-city-desktop-help',
-
                   style: {
                     position:
                       'absolute',
 
                     left:
-                      '16px',
+                      '14px',
 
                     bottom:
                       '14px',
 
-                    zIndex:
-                      100,
-
                     padding:
-                      '9px 11px',
+                      '8px 10px',
 
                     borderRadius:
-                      '10px',
+                      '9px',
 
                     background:
-                      'rgba(0,0,0,.72)',
+                      'rgba(0,0,0,.80)',
 
                     border:
                       '1px solid rgba(255,255,255,.10)',
 
                     color:
-                      'rgba(255,255,255,.60)',
+                      'rgba(255,255,255,.65)',
 
                     fontSize:
-                      '10px',
+                      '9px',
 
                     fontWeight:
-                      '800',
+                      '900',
+
+                    zIndex:
+                      130,
                   },
                 },
 
-                'WASD / ↑↓←→  •  ENTER / E'
+                'WASD / ↑ ↓ ← →  •  ENTER / E'
               ),
 
               // =================================
-              // MOBILE D-PAD
+              // D PAD
               // =================================
 
               h(
@@ -3123,20 +3199,20 @@
                     bottom:
                       '14px',
 
-                    zIndex:
-                      110,
-
                     display:
                       'grid',
 
                     gridTemplateColumns:
-                      '46px 46px 46px',
+                      '44px 44px 44px',
 
                     gridTemplateRows:
-                      '42px 42px 42px',
+                      '40px 40px 40px',
 
                     gap:
-                      '5px',
+                      '4px',
+
+                    zIndex:
+                      130,
                   },
                 },
 
@@ -3227,10 +3303,10 @@
                       '18px',
 
                     background:
-                      '#111319',
+                      '#101217',
 
                     border:
-                      '1px solid rgba(239,27,19,.30)',
+                      '1px solid rgba(239,27,19,.35)',
                   },
                 },
 
@@ -3268,7 +3344,7 @@
                         '0 0 10px',
 
                       fontSize:
-                        '28px',
+                        '27px',
 
                       lineHeight:
                         '1.05',
@@ -3288,22 +3364,22 @@
                   {
                     style: {
                       margin:
-                        '0 0 15px',
+                        '0 0 16px',
 
                       color:
-                        'rgba(255,255,255,.60)',
+                        'rgba(255,255,255,.62)',
 
                       fontSize:
-                        '13px',
+                        '12px',
 
                       lineHeight:
-                        '1.55',
+                        '1.6',
                     },
                   },
 
                   isGeo
-                    ? 'მიდი ოფისში 09:00-მდე. ამჯერად შენ თვითონ უნდა მიხვიდე.'
-                    : 'Get to the office before 09:00. This time you must travel there yourself.'
+                    ? 'ოფისში უნდა მიხვიდე 09:00-მდე. ახლა შენ თვითონ მართავ გადაადგილებას.'
+                    : 'Get to the office before 09:00. You now control the journey yourself.'
                 ),
 
                 h(
@@ -3320,7 +3396,7 @@
                         '100%',
 
                       padding:
-                        '13px 14px',
+                        '13px',
 
                       border:
                         'none',
@@ -3346,12 +3422,12 @@
                   },
 
                   isGeo
-                    ? '🚶 დაიწყე მოძრაობა →'
-                    : '🚶 Start Walking →'
+                    ? '🚶 დაიწყე გზა →'
+                    : '🚶 Start Journey →'
                 )
               ),
 
-              // LIVE STATUS
+              // STATUS
               h(
                 'div',
                 {
@@ -3360,10 +3436,10 @@
                       '18px',
 
                     borderRadius:
-                      '18px',
+                      '17px',
 
                     background:
-                      '#111319',
+                      '#101217',
 
                     border:
                       '1px solid rgba(255,255,255,.08)',
@@ -3375,10 +3451,10 @@
                   {
                     style: {
                       marginBottom:
-                        '9px',
+                        '8px',
 
                       fontSize:
-                        '13px',
+                        '12px',
 
                       fontWeight:
                         '900',
@@ -3386,7 +3462,7 @@
                   },
 
                   isGeo
-                    ? '📍 მიმდინარე მდგომარეობა'
+                    ? '📍 LIVE STATUS'
                     : '📍 LIVE STATUS'
                 ),
 
@@ -3395,13 +3471,13 @@
                   {
                     style: {
                       color:
-                        'rgba(255,255,255,.65)',
+                        'rgba(255,255,255,.63)',
 
                       fontSize:
                         '12px',
 
                       lineHeight:
-                        '1.6',
+                        '1.55',
                     },
                   },
 
@@ -3418,10 +3494,10 @@
                       '18px',
 
                     borderRadius:
-                      '18px',
+                      '17px',
 
                     background:
-                      '#111319',
+                      '#101217',
 
                     border:
                       '1px solid rgba(255,255,255,.08)',
@@ -3433,10 +3509,10 @@
                   {
                     style: {
                       marginBottom:
-                        '12px',
+                        '10px',
 
                       fontSize:
-                        '13px',
+                        '12px',
 
                       fontWeight:
                         '900',
@@ -3444,7 +3520,7 @@
                   },
 
                   isGeo
-                    ? '🚦 გადაადგილება'
+                    ? '🚦 ტრანსპორტი'
                     : '🚦 TRANSPORT'
                 ),
 
@@ -3456,7 +3532,7 @@
                         'grid',
 
                       gap:
-                        '8px',
+                        '7px',
                     },
                   },
 
@@ -3465,19 +3541,19 @@
                     {
                       style: {
                         padding:
-                          '10px',
+                          '9px',
 
                         borderRadius:
-                          '10px',
+                          '9px',
 
                         background:
-                          'rgba(51,209,122,.07)',
+                          'rgba(51,209,122,.08)',
 
                         border:
-                          '1px solid rgba(51,209,122,.22)',
+                          '1px solid rgba(51,209,122,.25)',
 
                         color:
-                          '#75e6a2',
+                          '#69db96',
 
                         fontSize:
                           '11px',
@@ -3497,13 +3573,13 @@
                     {
                       style: {
                         padding:
-                          '10px',
+                          '9px',
 
                         borderRadius:
-                          '10px',
+                          '9px',
 
                         background:
-                          'rgba(255,255,255,.035)',
+                          'rgba(255,255,255,.03)',
 
                         border:
                           '1px solid rgba(255,255,255,.06)',
@@ -3520,8 +3596,8 @@
                     },
 
                     isGeo
-                      ? '🚕 ტაქსი — შემდეგი განახლება'
-                      : '🚕 Taxi — Next Upgrade'
+                      ? '🚕 ტაქსი — შემდეგ ეტაპზე'
+                      : '🚕 Taxi — Next Step'
                   ),
 
                   h(
@@ -3529,13 +3605,13 @@
                     {
                       style: {
                         padding:
-                          '10px',
+                          '9px',
 
                         borderRadius:
-                          '10px',
+                          '9px',
 
                         background:
-                          'rgba(255,255,255,.035)',
+                          'rgba(255,255,255,.03)',
 
                         border:
                           '1px solid rgba(255,255,255,.06)',
@@ -3552,8 +3628,8 @@
                     },
 
                     isGeo
-                      ? '🚗 საკუთარი მანქანა — ჯერ არ გაქვს'
-                      : '🚗 Personal Car — Not Owned Yet'
+                      ? '🚗 მანქანა — ჯერ არ გაქვს'
+                      : '🚗 Personal Car — Not Owned'
                   )
                 )
               ),
@@ -3567,10 +3643,10 @@
                       '18px',
 
                     borderRadius:
-                      '18px',
+                      '17px',
 
                     background:
-                      '#111319',
+                      '#101217',
 
                     border:
                       '1px solid rgba(255,255,255,.08)',
@@ -3582,22 +3658,19 @@
                   {
                     style: {
                       marginBottom:
-                        '10px',
+                        '9px',
 
                       fontSize:
-                        '13px',
+                        '12px',
 
                       fontWeight:
                         '900',
                     },
                   },
 
-                  '🏠 ' +
-                    (
-                      isGeo
-                        ? 'შენი სახლი'
-                        : 'Your Home'
-                    )
+                  isGeo
+                    ? '🏠 შენი სახლი'
+                    : '🏠 YOUR HOME'
                 ),
 
                 h(
@@ -3611,7 +3684,7 @@
                         '6px',
 
                       color:
-                        'rgba(255,255,255,.60)',
+                        'rgba(255,255,255,.58)',
 
                       fontSize:
                         '11px',
@@ -3667,12 +3740,9 @@
       ),
 
       Footer
-        ? h(
-            Footer,
-            {
-              lang,
-            }
-          )
+        ? h(Footer, {
+            lang,
+          })
         : null
     );
   }
