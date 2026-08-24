@@ -8666,14 +8666,16 @@ function App() {
   const isTeam4RegisterPage =
     window.location.pathname === '/team4-lab/register';
 
-  const isTeam4AvatarPage =
-    window.location.pathname === '/team4-lab/avatar';
+ const isTeam4AvatarPage =
+  window.location.pathname === '/team4-lab/avatar';
+
 const isTeam4JobPage =
   window.location.pathname === '/team4-lab/job';
-  const isTeam4InterviewPage =
+
+const isTeam4InterviewPage =
   window.location.pathname === '/team4-lab/interview';
-  const isTeam4ApartmentPage =
-  const isTeam4ApartmentPage =
+
+const isTeam4ApartmentPage =
   window.location.pathname === '/team4-lab/apartment';
 
 const isTeam4CityPage =
@@ -8681,7 +8683,6 @@ const isTeam4CityPage =
 
 const isTeam4LabPage =
   window.location.pathname.startsWith('/team4-lab');
-
   // PROGRAM PAGE
   if (isProgramPage) {
     return h(ProgramDetailPage, {
