@@ -733,7 +733,101 @@
             // ==================================
             // BUILDING CREATOR
             // ==================================
+function createTextSign(
+  text,
+  width,
+  height,
+  bgColor,
+  textColor
+) {
+  const canvas =
+    document.createElement('canvas');
 
+  canvas.width = 1024;
+  canvas.height = 256;
+
+  const ctx =
+    canvas.getContext('2d');
+
+  ctx.clearRect(
+    0,
+    0,
+    canvas.width,
+    canvas.height
+  );
+
+  // background
+  ctx.fillStyle =
+    bgColor || '#111111';
+
+  ctx.fillRect(
+    0,
+    0,
+    canvas.width,
+    canvas.height
+  );
+
+  // subtle border
+  ctx.strokeStyle =
+    'rgba(255,255,255,.22)';
+
+  ctx.lineWidth = 10;
+
+  ctx.strokeRect(
+    5,
+    5,
+    canvas.width - 10,
+    canvas.height - 10
+  );
+
+  // text
+  ctx.fillStyle =
+    textColor || '#ffffff';
+
+  ctx.font =
+    '900 92px Arial';
+
+  ctx.textAlign =
+    'center';
+
+  ctx.textBaseline =
+    'middle';
+
+  ctx.fillText(
+    text,
+    canvas.width / 2,
+    canvas.height / 2 + 5
+  );
+
+  const texture =
+    new THREE.CanvasTexture(
+      canvas
+    );
+
+  texture.colorSpace =
+    THREE.SRGBColorSpace;
+
+  texture.anisotropy =
+    renderer.capabilities
+      .getMaxAnisotropy();
+
+  const signMaterial =
+    new THREE.MeshBasicMaterial({
+      map: texture,
+      transparent: true,
+    });
+
+  const sign =
+    new THREE.Mesh(
+      new THREE.PlaneGeometry(
+        width || 6,
+        height || 1.4
+      ),
+      signMaterial
+    );
+
+  return sign;
+}
             function createBuilding(
               config
             ) {
