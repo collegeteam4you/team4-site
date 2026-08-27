@@ -26,7 +26,7 @@ function loadThree() {
 function loadGLTFLoader() {
   if (!gltfLoaderPromise) {
     gltfLoaderPromise = import(
-      'https://cdn.jsdelivr.net/npm/three@0.185.1/examples/jsm/loaders/GLTFLoader.js'
+      'https://esm.sh/three@0.185.1/examples/jsm/loaders/GLTFLoader.js'
     );
   }
 
