@@ -1262,7 +1262,6 @@ signTextColor:
               roof:
                 0x393a3a,
 
-              signText:
   signText:
   'FITNESS',
 
