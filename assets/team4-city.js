@@ -1196,7 +1196,11 @@ signBackground:
 signTextColor:
   '#ffffff',
 
-            // ==================================
+           
+// ==================================
+// STREET LIGHTS
+// ==================================
+ // ==================================
             // SHOP
             // ==================================
 
@@ -1259,6 +1263,7 @@ signTextColor:
                 0x393a3a,
 
               signText:
+  signText:
   'FITNESS',
 
 signBackground:
@@ -1266,6 +1271,7 @@ signBackground:
 
 signTextColor:
   '#ffffff',
+});
 
             // ==================================
             // DEALERSHIP
@@ -1301,10 +1307,7 @@ signBackground:
 
 signTextColor:
   '#111111',
-// ==================================
-// STREET LIGHTS
-// ==================================
-
+});
 function createStreetLight(
   x,
   z,
