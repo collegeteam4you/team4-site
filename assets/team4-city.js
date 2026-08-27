@@ -1300,7 +1300,129 @@ signBackground:
 
 signTextColor:
   '#111111',
+// ==================================
+// STREET LIGHTS
+// ==================================
 
+function createStreetLight(
+  x,
+  z,
+  rotation
+) {
+  const group =
+    new THREE.Group();
+
+  group.position.set(
+    x,
+    0,
+    z
+  );
+
+  group.rotation.y =
+    rotation || 0;
+
+  // pole
+  const pole =
+    new THREE.Mesh(
+      new THREE.CylinderGeometry(
+        0.08,
+        0.11,
+        4.2,
+        10
+      ),
+      material(
+        0x30343a,
+        0.45
+      )
+    );
+
+  pole.position.y =
+    2.1;
+
+  pole.castShadow =
+    true;
+
+  group.add(
+    pole
+  );
+
+  // arm
+  const arm =
+    new THREE.Mesh(
+      new THREE.BoxGeometry(
+        0.9,
+        0.08,
+        0.08
+      ),
+      material(
+        0x30343a,
+        0.45
+      )
+    );
+
+  arm.position.set(
+    0.4,
+    4.05,
+    0
+  );
+
+  group.add(
+    arm
+  );
+
+  // lamp housing
+  const lamp =
+    new THREE.Mesh(
+      new THREE.BoxGeometry(
+        0.35,
+        0.18,
+        0.25
+      ),
+      material(
+        0x202327,
+        0.4
+      )
+    );
+
+  lamp.position.set(
+    0.82,
+    3.98,
+    0
+  );
+
+  group.add(
+    lamp
+  );
+
+  // glowing light
+  const glow =
+    new THREE.Mesh(
+      new THREE.SphereGeometry(
+        0.10,
+        10,
+        8
+      ),
+
+      new THREE.MeshBasicMaterial({
+        color:
+          0xffe6a8,
+      })
+    );
+
+  glow.position.set(
+    0.82,
+    3.88,
+    0
+  );
+
+  group.add(
+    glow
+  );
+
+  scene.add(
+    group
+  );
+}
             // ==================================
             // TREES
             // ==================================
