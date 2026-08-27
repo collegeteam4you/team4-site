@@ -490,19 +490,25 @@
             // MATERIAL HELPERS
             // ==================================
 
-            function material(
-              color,
-              roughness
-            ) {
-              return new THREE.MeshStandardMaterial({
-                color: color,
-                roughness:
-                  roughness == null
-                    ? 0.8
-                    : roughness,
-                metalness: 0,
-              });
-            }
+           function material(
+  color,
+  roughness,
+  metalness
+) {
+  return new THREE.MeshStandardMaterial({
+    color: color,
+
+    roughness:
+      roughness == null
+        ? 0.72
+        : roughness,
+
+    metalness:
+      metalness == null
+        ? 0.04
+        : metalness,
+  });
+}
 
             function addBox(
               w,
@@ -570,21 +576,48 @@
             scene.add(
               ground
             );
+function createRoadMaterial() {
+  const mat =
+    new THREE.MeshStandardMaterial({
+      color:
+        0x2f3235,
 
+      roughness:
+        0.92,
+
+      metalness:
+        0.02,
+    });
+
+  return mat;
+}
             // ==================================
             // ROADS
             // ==================================
 
-            addBox(
-              16,
-              0.08,
-              150,
-              0x34383d,
-              0,
-              0.04,
-              0,
-              false
-            );
+            const mainRoad =
+  new THREE.Mesh(
+    new THREE.BoxGeometry(
+      16,
+      0.08,
+      150
+    ),
+
+    createRoadMaterial()
+  );
+
+mainRoad.position.set(
+  0,
+  0.04,
+  0
+);
+
+mainRoad.receiveShadow =
+  true;
+
+scene.add(
+  mainRoad
+);
 
             addBox(
               140,
