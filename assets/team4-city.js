@@ -1230,6 +1230,7 @@ signBackground:
 
 signTextColor:
   '#ffffff',
+});
 
             // ==================================
             // GYM
