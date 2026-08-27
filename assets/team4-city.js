@@ -1,10 +1,26 @@
 // ==========================================
-// TEAM4 CITY — ENGINE V2
-// TOP-DOWN PLAYABLE CITY
+// TEAM4 CITY 3D — ENGINE V1
+// THIRD-PERSON LIFE SIMULATOR
 // ==========================================
 
 (function () {
   const { createElement: h } = React;
+
+  // ==========================================
+  // THREE.JS LOADER
+  // ==========================================
+
+  let threePromise = null;
+
+  function loadThree() {
+    if (!threePromise) {
+      threePromise = import(
+        'https://cdn.jsdelivr.net/npm/three@0.185.1/build/three.module.min.js'
+      );
+    }
+
+    return threePromise;
+  }
 
   // ==========================================
   // HELPERS
@@ -12,7 +28,8 @@
 
   function readJSON(key, fallback) {
     try {
-      const raw = localStorage.getItem(key);
+      const raw =
+        localStorage.getItem(key);
 
       if (!raw) {
         return fallback;
@@ -30,30 +47,17 @@
     }
   }
 
-  function clamp(value, min, max) {
+  function clamp(
+    value,
+    min,
+    max
+  ) {
     return Math.max(
       min,
-      Math.min(max, value)
-    );
-  }
-
-  function distance(a, b) {
-    const dx = a.x - b.x;
-    const dy = a.y - b.y;
-
-    return Math.sqrt(
-      dx * dx + dy * dy
-    );
-  }
-
-  function pointInsideRect(point, rect, margin) {
-    const m = margin || 0;
-
-    return (
-      point.x > rect.x - m &&
-      point.x < rect.x + rect.w + m &&
-      point.y > rect.y - m &&
-      point.y < rect.y + rect.h + m
+      Math.min(
+        max,
+        value
+      )
     );
   }
 
@@ -64,531 +68,229 @@
   function Team4CityPage({
     lang,
     setLang,
-    Header,
-    Footer,
   }) {
     const isGeo =
       lang === 'GEO';
 
+    const mountRef =
+      React.useRef(null);
+
+    const [
+      loading,
+      setLoading,
+    ] = React.useState(true);
+
+    const [
+      loadError,
+      setLoadError,
+    ] = React.useState('');
+
+    const [
+      gameTime,
+      setGameTime,
+    ] = React.useState(
+      '08:00'
+    );
+
+    const [
+      locationName,
+      setLocationName,
+    ] = React.useState(
+      isGeo
+        ? 'სახლთან'
+        : 'Near Home'
+    );
+
+    const [
+      interactionText,
+      setInteractionText,
+    ] = React.useState('');
+
     // ========================================
-    // APARTMENT
+    // PLAYER DATA
     // ========================================
+
+    const user =
+      React.useMemo(
+        function () {
+          return readJSON(
+            'team4LabUser',
+            {}
+          );
+        },
+        []
+      );
 
     const selectedApartment =
-      React.useMemo(function () {
-        return readJSON(
-          'team4SelectedApartment',
-          null
-        );
-      }, []);
+      React.useMemo(
+        function () {
+          return readJSON(
+            'team4SelectedApartment',
+            null
+          );
+        },
+        []
+      );
 
     const apartmentDeal =
-      React.useMemo(function () {
-        return readJSON(
-          'team4ApartmentDeal',
-          null
-        );
-      }, []);
+      React.useMemo(
+        function () {
+          return readJSON(
+            'team4ApartmentDeal',
+            null
+          );
+        },
+        []
+      );
+
+    const avatar =
+      user &&
+      user.avatar
+        ? user.avatar
+        : {
+            gender:
+              localStorage.getItem(
+                'team4AvatarGender'
+              ) || 'male',
+
+            look:
+              localStorage.getItem(
+                'team4AvatarLook'
+              ) || 'team4-look',
+
+            hair:
+              localStorage.getItem(
+                'team4AvatarHair'
+              ) || 'none',
+
+            beard:
+              localStorage.getItem(
+                'team4AvatarBeard'
+              ) || 'none',
+
+            accessory:
+              localStorage.getItem(
+                'team4AvatarAccessory'
+              ) || 'none',
+          };
+
+    const playerName =
+      user.name ||
+      localStorage.getItem(
+        'team4PlayerName'
+      ) ||
+      localStorage.getItem(
+        'team4LabPlayerName'
+      ) ||
+      (
+        isGeo
+          ? 'მოთამაშე'
+          : 'Player'
+      );
+
+    // ========================================
+    // APARTMENT / ECONOMY
+    // ========================================
 
     const apartmentId =
-      selectedApartment
+      selectedApartment &&
+      selectedApartment.id
         ? selectedApartment.id
-        : apartmentDeal
+        : apartmentDeal &&
+          apartmentDeal.apartmentId
         ? apartmentDeal.apartmentId
         : 'economy';
 
     const isEconomy =
-      apartmentId === 'economy';
+      apartmentId ===
+      'economy';
 
     const finalRent =
       apartmentDeal &&
-      Number(apartmentDeal.rent)
-        ? Number(apartmentDeal.rent)
+      Number(
+        apartmentDeal.rent
+      )
+        ? Number(
+            apartmentDeal.rent
+          )
         : selectedApartment &&
-          Number(selectedApartment.finalRent)
-        ? Number(selectedApartment.finalRent)
+          Number(
+            selectedApartment.finalRent
+          )
+        ? Number(
+            selectedApartment.finalRent
+          )
         : selectedApartment &&
-          Number(selectedApartment.rent)
-        ? Number(selectedApartment.rent)
+          Number(
+            selectedApartment.rent
+          )
+        ? Number(
+            selectedApartment.rent
+          )
         : isEconomy
         ? 650
         : 900;
 
-    const totalDeposit =
+    const deposit =
       apartmentDeal &&
-      Number(apartmentDeal.deposit)
-        ? Number(apartmentDeal.deposit)
-        : selectedApartment &&
-          Number(selectedApartment.finalDeposit)
-        ? Number(selectedApartment.finalDeposit)
-        : selectedApartment &&
-          Number(selectedApartment.deposit)
-        ? Number(selectedApartment.deposit)
+      Number(
+        apartmentDeal.depositPaidNow
+      )
+        ? Number(
+            apartmentDeal.depositPaidNow
+          )
+        : apartmentDeal &&
+          Number(
+            apartmentDeal.deposit
+          )
+        ? Number(
+            apartmentDeal.deposit
+          )
         : isEconomy
         ? 650
         : 900;
 
-    const depositPaidNow =
-      apartmentDeal &&
-      apartmentDeal.depositPaidNow != null
-        ? Number(apartmentDeal.depositPaidNow)
-        : totalDeposit;
+    const startingCash =
+      2500;
 
-    const startingCash = 2500;
-
-    const calculatedCash =
-      Math.max(
-        0,
-        startingCash -
-          finalRent -
-          depositPaidNow
+    const saved3DState =
+      React.useMemo(
+        function () {
+          return readJSON(
+            'team4City3DState',
+            null
+          );
+        },
+        []
       );
 
-    const homeDistrict =
-      isEconomy
-        ? (
-            isGeo
-              ? 'გლდანი'
-              : 'Gldani'
+    const startingBalance =
+      saved3DState &&
+      saved3DState.cash != null
+        ? Number(
+            saved3DState.cash
           )
-        : (
-            isGeo
-              ? 'საბურთალო'
-              : 'Saburtalo'
+        : Math.max(
+            0,
+            startingCash -
+              finalRent -
+              deposit
           );
 
-    const commuteMinutes =
-      isEconomy
-        ? 40
-        : 18;
-
-    // ========================================
-// PLAYER
-// ========================================
-
-const playerName =
-  localStorage.getItem(
-    'team4PlayerName'
-  ) ||
-  localStorage.getItem(
-    'team4LabPlayerName'
-  ) ||
-  (
-    isGeo
-      ? 'მოთამაშე'
-      : 'Player'
-  );
-
-// ========================================
-// SAVED AVATAR
-// ========================================
-
-const savedAvatar =
-  React.useMemo(function () {
-    const user =
-      readJSON(
-        'team4LabUser',
-        null
-      );
-
-    if (
-      user &&
-      user.avatar
-    ) {
-      return user.avatar;
-    }
-
-    return {
-      gender:
-        localStorage.getItem(
-          'team4AvatarGender'
-        ) || 'male',
-
-      look:
-        localStorage.getItem(
-          'team4AvatarLook'
-        ) || 'team4-look',
-
-      hair:
-        localStorage.getItem(
-          'team4AvatarHair'
-        ) || 'none',
-
-      beard:
-        localStorage.getItem(
-          'team4AvatarBeard'
-        ) || 'none',
-
-      accessory:
-        localStorage.getItem(
-          'team4AvatarAccessory'
-        ) || 'none',
-
-      hairX:
-        Number(
-          localStorage.getItem(
-            'team4AvatarHairX'
-          )
-        ) || 0,
-
-      hairY:
-        Number(
-          localStorage.getItem(
-            'team4AvatarHairY'
-          )
-        ) || 0,
-
-      hairScale:
-        Number(
-          localStorage.getItem(
-            'team4AvatarHairScale'
-          )
-        ) || 1,
-
-      beardX:
-        Number(
-          localStorage.getItem(
-            'team4AvatarBeardX'
-          )
-        ) || 0,
-
-      beardY:
-        Number(
-          localStorage.getItem(
-            'team4AvatarBeardY'
-          )
-        ) || 0,
-
-      beardScale:
-        Number(
-          localStorage.getItem(
-            'team4AvatarBeardScale'
-          )
-        ) || 1,
-
-      accessoryX:
-        Number(
-          localStorage.getItem(
-            'team4AvatarAccessoryX'
-          )
-        ) || 0,
-
-      accessoryY:
-        Number(
-          localStorage.getItem(
-            'team4AvatarAccessoryY'
-          )
-        ) || 0,
-
-      accessoryScale:
-        Number(
-          localStorage.getItem(
-            'team4AvatarAccessoryScale'
-          )
-        ) || 1,
-    };
-  }, []);
-
-// ========================================
-// BUILDINGS
-// ========================================
-    const homeRect =
-      isEconomy
-        ? {
-            x: 5,
-            y: 64,
-            w: 21,
-            h: 24,
-          }
-        : {
-            x: 5,
-            y: 58,
-            w: 21,
-            h: 25,
-          };
-
-    const homeEntrance =
-      isEconomy
-        ? {
-            x: 28,
-            y: 77,
-          }
-        : {
-            x: 28,
-            y: 71,
-          };
-
-    const buildings = [
-      {
-        id: 'home',
-
-        type: 'residential',
-
-        titleGeo: 'სახლი',
-        titleEng: 'Home',
-
-        subtitleGeo:
-          homeDistrict,
-
-        subtitleEng:
-          homeDistrict,
-
-        rect:
-          homeRect,
-
-        entrance:
-          homeEntrance,
-
-        locked: false,
-
-        accent:
-          '#4bd17f',
-      },
-
-      {
-        id: 'gym',
-
-        type: 'gym',
-
-        titleGeo:
-          'Team4 Gym',
-
-        titleEng:
-          'Team4 Gym',
-
-        subtitleGeo:
-          'ენერგია და სტრესი',
-
-        subtitleEng:
-          'Energy & Stress',
-
-        rect: {
-          x: 4,
-          y: 5,
-          w: 23,
-          h: 22,
-        },
-
-        entrance: {
-          x: 29,
-          y: 17,
-        },
-
-        locked: true,
-
-        accent:
-          '#f0a027',
-      },
-
-      {
-        id: 'bank',
-
-        type: 'bank',
-
-        titleGeo:
-          'Team4 Bank',
-
-        titleEng:
-          'Team4 Bank',
-
-        subtitleGeo:
-          'ფინანსური ცენტრი',
-
-        subtitleEng:
-          'Financial Center',
-
-        rect: {
-          x: 38,
-          y: 5,
-          w: 20,
-          h: 24,
-        },
-
-        entrance: {
-          x: 48,
-          y: 32,
-        },
-
-        locked: true,
-
-        accent:
-          '#f0c64a',
-      },
-
-      {
-        id: 'office',
-
-        type: 'office',
-
-        titleGeo:
-          'Team4 Office',
-
-        titleEng:
-          'Team4 Office',
-
-        subtitleGeo:
-          'სამუშაო ადგილი',
-
-        subtitleEng:
-          'Work Place',
-
-        rect: {
-          x: 71,
-          y: 4,
-          w: 25,
-          h: 30,
-        },
-
-        entrance: {
-          x: 69,
-          y: 37,
-        },
-
-        locked: false,
-
-        accent:
-          '#ef1b13',
-      },
-
-      {
-        id: 'shop',
-
-        type: 'shop',
-
-        titleGeo:
-          'Team4 Shop',
-
-        titleEng:
-          'Team4 Shop',
-
-        subtitleGeo:
-          'Shopping Center',
-
-        subtitleEng:
-          'Shopping Center',
-
-        rect: {
-          x: 74,
-          y: 51,
-          w: 22,
-          h: 22,
-        },
-
-        entrance: {
-          x: 71,
-          y: 62,
-        },
-
-        locked: true,
-
-        accent:
-          '#766cff',
-      },
-
-      {
-        id: 'dealer',
-
-        type: 'dealer',
-
-        titleGeo:
-          'Team4 Motors',
-
-        titleEng:
-          'Team4 Motors',
-
-        subtitleGeo:
-          'ავტოსალონი',
-
-        subtitleEng:
-          'Car Dealer',
-
-        rect: {
-          x: 51,
-          y: 76,
-          w: 28,
-          h: 20,
-        },
-
-        entrance: {
-          x: 49,
-          y: 85,
-        },
-
-        locked: true,
-
-        accent:
-          '#ffbd22',
-      },
-    ];
-
-    // ========================================
-    // SAVED CITY STATE
-    // ========================================
-
-    const savedCityState =
-      React.useMemo(function () {
-        return readJSON(
-          'team4CityState',
-          null
-        );
-      }, []);
-
-    const defaultPosition = {
-      x:
-        homeEntrance.x + 3,
-
-      y:
-        homeEntrance.y,
-    };
-
     const [
-      playerPosition,
-      setPlayerPosition,
+      cash,
+      setCash,
     ] = React.useState(
-      savedCityState &&
-      savedCityState.position
-        ? {
-            x:
-              Number(
-                savedCityState.position.x
-              ) ||
-              defaultPosition.x,
-
-            y:
-              Number(
-                savedCityState.position.y
-              ) ||
-              defaultPosition.y,
-          }
-        : defaultPosition
-    );
-
-    const [
-      direction,
-      setDirection,
-    ] = React.useState('right');
-
-    const [
-      gameMinute,
-      setGameMinute,
-    ] = React.useState(
-      savedCityState &&
-      savedCityState.gameMinute != null
-        ? Number(
-            savedCityState.gameMinute
-          )
-        : 8 * 60
+      startingBalance
     );
 
     const [
       energy,
       setEnergy,
     ] = React.useState(
-      savedCityState &&
-      savedCityState.energy != null
-        ? Number(
-            savedCityState.energy
-          )
+      saved3DState &&
+      saved3DState.energy != null
+        ? saved3DState.energy
         : 100
     );
 
@@ -596,35 +298,9 @@ const savedAvatar =
       stress,
       setStress,
     ] = React.useState(
-      savedCityState &&
-      savedCityState.stress != null
-        ? Number(
-            savedCityState.stress
-          )
-        : 0
-    );
-
-    const [
-      cash,
-      setCash,
-    ] = React.useState(
-      savedCityState &&
-      savedCityState.cash != null
-        ? Number(
-            savedCityState.cash
-          )
-        : calculatedCash
-    );
-
-    const [
-      reputation,
-      setReputation,
-    ] = React.useState(
-      savedCityState &&
-      savedCityState.reputation != null
-        ? Number(
-            savedCityState.reputation
-          )
+      saved3DState &&
+      saved3DState.stress != null
+        ? saved3DState.stress
         : 0
     );
 
@@ -632,449 +308,2427 @@ const savedAvatar =
       salesXP,
       setSalesXP,
     ] = React.useState(
-      savedCityState &&
-      savedCityState.salesXP != null
-        ? Number(
-            savedCityState.salesXP
-          )
+      saved3DState &&
+      saved3DState.salesXP != null
+        ? saved3DState.salesXP
         : 0
     );
 
-    const [
-      stepCount,
-      setStepCount,
-    ] = React.useState(0);
-
-    const [
-      message,
-      setMessage,
-    ] = React.useState(
-      isGeo
-        ? '🎯 მიდი Team4 Office-ში 09:00-მდე.'
-        : '🎯 Get to Team4 Office before 09:00.'
-    );
-
-    const mapRef =
-      React.useRef(null);
-
-    // ========================================
-    // SAVE
-    // ========================================
+    // ==========================================
+    // THREE SCENE
+    // ==========================================
 
     React.useEffect(
       function () {
-        localStorage.setItem(
-          'team4CityState',
-          JSON.stringify({
-            position:
-              playerPosition,
+        let destroyed = false;
 
-            gameMinute:
-              gameMinute,
+        let renderer = null;
 
-            energy:
-              energy,
+        let animationFrame = null;
 
-            stress:
-              stress,
+        let resizeObserver = null;
 
-            cash:
-              cash,
+        let cleanupEvents =
+          function () {};
 
-            reputation:
-              reputation,
+        async function startGame() {
+          try {
+            const THREE =
+              await loadThree();
 
-            salesXP:
-              salesXP,
+            if (
+              destroyed ||
+              !mountRef.current
+            ) {
+              return;
+            }
 
-            apartmentId:
-              apartmentId,
-          })
-        );
-      },
-      [
-        playerPosition,
-        gameMinute,
-        energy,
-        stress,
-        cash,
-        reputation,
-        salesXP,
-        apartmentId,
-      ]
-    );
+            // ==================================
+            // SCENE
+            // ==================================
 
-    // ========================================
-    // TIME
-    // ========================================
+            const scene =
+              new THREE.Scene();
 
-    function gameTimeText() {
-      const normalized =
-        gameMinute %
-        (24 * 60);
+            scene.background =
+              new THREE.Color(
+                0x93c7ef
+              );
 
-      const hour =
-        Math.floor(
-          normalized / 60
-        );
+            scene.fog =
+              new THREE.Fog(
+                0x93c7ef,
+                55,
+                145
+              );
 
-      const minute =
-        normalized % 60;
+            // ==================================
+            // CAMERA
+            // ==================================
 
-      return (
-        String(hour).padStart(
-          2,
-          '0'
-        ) +
-        ':' +
-        String(minute).padStart(
-          2,
-          '0'
-        )
-      );
-    }
+            const width =
+              mountRef.current.clientWidth;
 
-    // ========================================
-    // COLLISION
-    // ========================================
+            const height =
+              mountRef.current.clientHeight;
 
-    function canMoveTo(next) {
-      if (
-        next.x < 1 ||
-        next.x > 98 ||
-        next.y < 2 ||
-        next.y > 97
-      ) {
-        return false;
-      }
+            const camera =
+              new THREE.PerspectiveCamera(
+                58,
+                width / height,
+                0.1,
+                250
+              );
 
-      for (
-        let i = 0;
-        i < buildings.length;
-        i += 1
-      ) {
-        if (
-          pointInsideRect(
-            next,
-            buildings[i].rect,
-            1
-          )
-        ) {
-          return false;
-        }
-      }
+            // ==================================
+            // RENDERER
+            // ==================================
 
-      return true;
-    }
+            renderer =
+              new THREE.WebGLRenderer({
+                antialias: true,
+                powerPreference:
+                  'high-performance',
+              });
 
-    // ========================================
-    // NEARBY
-    // ========================================
-
-    function getNearbyLocation(position) {
-      let nearest = null;
-
-      let nearestDistance =
-        Infinity;
-
-      buildings.forEach(
-        function (building) {
-          const d =
-            distance(
-              position,
-              building.entrance
+            renderer.setSize(
+              width,
+              height
             );
+
+            renderer.setPixelRatio(
+              Math.min(
+                window.devicePixelRatio ||
+                  1,
+                1.7
+              )
+            );
+
+            renderer.shadowMap.enabled =
+              true;
+
+            renderer.shadowMap.type =
+              THREE.PCFSoftShadowMap;
+
+            renderer.outputColorSpace =
+              THREE.SRGBColorSpace;
+
+            renderer.toneMapping =
+              THREE.ACESFilmicToneMapping;
+
+            renderer.toneMappingExposure =
+              1.05;
+
+            renderer.domElement.style.display =
+              'block';
+
+            renderer.domElement.style.width =
+              '100%';
+
+            renderer.domElement.style.height =
+              '100%';
+
+            mountRef.current.innerHTML =
+              '';
+
+            mountRef.current.appendChild(
+              renderer.domElement
+            );
+
+            // ==================================
+            // LIGHTING
+            // ==================================
+
+            const hemisphere =
+              new THREE.HemisphereLight(
+                0xeaf6ff,
+                0x65704e,
+                2.25
+              );
+
+            scene.add(
+              hemisphere
+            );
+
+            const sunlight =
+              new THREE.DirectionalLight(
+                0xfff2d4,
+                3.6
+              );
+
+            sunlight.position.set(
+              -25,
+              45,
+              20
+            );
+
+            sunlight.castShadow =
+              true;
+
+            sunlight.shadow.mapSize.set(
+              2048,
+              2048
+            );
+
+            sunlight.shadow.camera.left =
+              -65;
+
+            sunlight.shadow.camera.right =
+              65;
+
+            sunlight.shadow.camera.top =
+              65;
+
+            sunlight.shadow.camera.bottom =
+              -65;
+
+            scene.add(
+              sunlight
+            );
+
+            // ==================================
+            // MATERIAL HELPERS
+            // ==================================
+
+            function material(
+              color,
+              roughness
+            ) {
+              return new THREE.MeshStandardMaterial({
+                color: color,
+                roughness:
+                  roughness == null
+                    ? 0.8
+                    : roughness,
+                metalness: 0,
+              });
+            }
+
+            function addBox(
+              w,
+              h,
+              d,
+              color,
+              x,
+              y,
+              z,
+              castShadow
+            ) {
+              const mesh =
+                new THREE.Mesh(
+                  new THREE.BoxGeometry(
+                    w,
+                    h,
+                    d
+                  ),
+                  material(
+                    color
+                  )
+                );
+
+              mesh.position.set(
+                x,
+                y,
+                z
+              );
+
+              mesh.castShadow =
+                castShadow !==
+                false;
+
+              mesh.receiveShadow =
+                true;
+
+              scene.add(
+                mesh
+              );
+
+              return mesh;
+            }
+
+            // ==================================
+            // WORLD
+            // ==================================
+
+            const ground =
+              new THREE.Mesh(
+                new THREE.PlaneGeometry(
+                  180,
+                  180
+                ),
+                material(
+                  0x6c9358
+                )
+              );
+
+            ground.rotation.x =
+              -Math.PI / 2;
+
+            ground.receiveShadow =
+              true;
+
+            scene.add(
+              ground
+            );
+
+            // ==================================
+            // ROADS
+            // ==================================
+
+            addBox(
+              16,
+              0.08,
+              150,
+              0x34383d,
+              0,
+              0.04,
+              0,
+              false
+            );
+
+            addBox(
+              140,
+              0.08,
+              16,
+              0x34383d,
+              0,
+              0.045,
+              -28,
+              false
+            );
+
+            // sidewalks
+
+            addBox(
+              4,
+              0.22,
+              150,
+              0xbec0bc,
+              -10,
+              0.11,
+              0,
+              false
+            );
+
+            addBox(
+              4,
+              0.22,
+              150,
+              0xbec0bc,
+              10,
+              0.11,
+              0,
+              false
+            );
+
+            addBox(
+              140,
+              0.22,
+              4,
+              0xbec0bc,
+              0,
+              0.115,
+              -38,
+              false
+            );
+
+            addBox(
+              140,
+              0.22,
+              4,
+              0xbec0bc,
+              0,
+              0.115,
+              -18,
+              false
+            );
+
+            // ==================================
+            // ROAD MARKINGS
+            // ==================================
+
+            for (
+              let z = -70;
+              z <= 70;
+              z += 9
+            ) {
+              addBox(
+                0.18,
+                0.03,
+                4.2,
+                0xf2f0d9,
+                0,
+                0.10,
+                z,
+                false
+              );
+            }
+
+            for (
+              let x = -65;
+              x <= 65;
+              x += 9
+            ) {
+              addBox(
+                4.2,
+                0.03,
+                0.18,
+                0xf2f0d9,
+                x,
+                0.10,
+                -28,
+                false
+              );
+            }
+
+            // ==================================
+            // COLLISION BOXES
+            // ==================================
+
+            const collisionBoxes =
+              [];
+
+            function addCollision(
+              x,
+              z,
+              width,
+              depth,
+              padding
+            ) {
+              collisionBoxes.push({
+                minX:
+                  x -
+                  width / 2 -
+                  (
+                    padding ||
+                    0
+                  ),
+
+                maxX:
+                  x +
+                  width / 2 +
+                  (
+                    padding ||
+                    0
+                  ),
+
+                minZ:
+                  z -
+                  depth / 2 -
+                  (
+                    padding ||
+                    0
+                  ),
+
+                maxZ:
+                  z +
+                  depth / 2 +
+                  (
+                    padding ||
+                    0
+                  ),
+              });
+            }
+
+            // ==================================
+            // BUILDING CREATOR
+            // ==================================
+
+            function createBuilding(
+              config
+            ) {
+              const group =
+                new THREE.Group();
+
+              group.position.set(
+                config.x,
+                0,
+                config.z
+              );
+
+              scene.add(
+                group
+              );
+
+              const body =
+                new THREE.Mesh(
+                  new THREE.BoxGeometry(
+                    config.w,
+                    config.h,
+                    config.d
+                  ),
+                  material(
+                    config.color
+                  )
+                );
+
+              body.position.y =
+                config.h / 2;
+
+              body.castShadow =
+                true;
+
+              body.receiveShadow =
+                true;
+
+              group.add(
+                body
+              );
+
+              // roof
+
+              const roof =
+                new THREE.Mesh(
+                  new THREE.BoxGeometry(
+                    config.w +
+                      0.45,
+                    0.35,
+                    config.d +
+                      0.45
+                  ),
+                  material(
+                    config.roof ||
+                      0x3f4247
+                  )
+                );
+
+              roof.position.y =
+                config.h +
+                0.18;
+
+              roof.castShadow =
+                true;
+
+              group.add(
+                roof
+              );
+
+              // front windows
+
+              const columns =
+                Math.max(
+                  2,
+                  Math.floor(
+                    config.w /
+                      2.4
+                  )
+                );
+
+              const floors =
+                Math.max(
+                  1,
+                  Math.floor(
+                    config.h /
+                      2.6
+                  )
+                );
+
+              const windowMat =
+                new THREE.MeshStandardMaterial({
+                  color:
+                    config.windowColor ||
+                    0x8fc9e8,
+
+                  roughness:
+                    0.25,
+
+                  metalness:
+                    0.1,
+
+                  emissive:
+                    0x18252d,
+
+                  emissiveIntensity:
+                    0.35,
+                });
+
+              for (
+                let floor = 0;
+                floor <
+                floors;
+                floor += 1
+              ) {
+                for (
+                  let col = 0;
+                  col <
+                  columns;
+                  col += 1
+                ) {
+                  const win =
+                    new THREE.Mesh(
+                      new THREE.BoxGeometry(
+                        1.05,
+                        1.15,
+                        0.08
+                      ),
+                      windowMat
+                    );
+
+                  win.position.x =
+                    (
+                      col -
+                      (
+                        columns -
+                        1
+                      ) /
+                        2
+                    ) *
+                    1.65;
+
+                  win.position.y =
+                    1.7 +
+                    floor *
+                      2.35;
+
+                  win.position.z =
+                    config.d /
+                      2 +
+                    0.045;
+
+                  group.add(
+                    win
+                  );
+                }
+              }
+
+              // entrance
+
+              const door =
+                new THREE.Mesh(
+                  new THREE.BoxGeometry(
+                    1.8,
+                    2.5,
+                    0.14
+                  ),
+                  material(
+                    config.doorColor ||
+                      0x20252c,
+                    0.3
+                  )
+                );
+
+              door.position.set(
+                0,
+                1.25,
+                config.d /
+                  2 +
+                  0.09
+              );
+
+              group.add(
+                door
+              );
+
+              // sign board
+
+              if (
+                config.signColor
+              ) {
+                const sign =
+                  new THREE.Mesh(
+                    new THREE.BoxGeometry(
+                      Math.min(
+                        config.w -
+                          1,
+                        7
+                      ),
+                      0.75,
+                      0.18
+                    ),
+                    material(
+                      config.signColor,
+                      0.35
+                    )
+                  );
+
+                sign.position.set(
+                  0,
+                  Math.min(
+                    config.h -
+                      0.8,
+                    3.7
+                  ),
+                  config.d /
+                    2 +
+                    0.15
+                );
+
+                group.add(
+                  sign
+                );
+              }
+
+              addCollision(
+                config.x,
+                config.z,
+                config.w,
+                config.d,
+                0.6
+              );
+
+              return {
+                group:
+                  group,
+
+                entrance: {
+                  x:
+                    config.x,
+
+                  z:
+                    config.z +
+                    config.d /
+                      2 +
+                    2.3,
+                },
+              };
+            }
+
+            // ==================================
+            // HOME
+            // ==================================
+
+            const home =
+              createBuilding({
+                x:
+                  -20,
+
+                z:
+                  isEconomy
+                    ? 24
+                    : 12,
+
+                w:
+                  13,
+
+                h:
+                  isEconomy
+                    ? 9
+                    : 13,
+
+                d:
+                  12,
+
+                color:
+                  isEconomy
+                    ? 0xb98a68
+                    : 0xc7b79d,
+
+                roof:
+                  0x555257,
+
+                doorColor:
+                  0x463529,
+
+                windowColor:
+                  0x91bed0,
+
+                signColor:
+                  0x4b8d66,
+              });
+
+            // ==================================
+            // TEAM4 OFFICE
+            // ==================================
+
+            const office =
+              createBuilding({
+                x:
+                  22,
+
+                z:
+                  -48,
+
+                w:
+                  18,
+
+                h:
+                  18,
+
+                d:
+                  15,
+
+                color:
+                  0x303942,
+
+                roof:
+                  0x1c2025,
+
+                doorColor:
+                  0x14191e,
+
+                windowColor:
+                  0x75a9c6,
+
+                signColor:
+                  0xef1b13,
+              });
+
+            // ==================================
+            // BANK
+            // ==================================
+
+            createBuilding({
+              x:
+                -24,
+
+              z:
+                -48,
+
+              w:
+                15,
+
+              h:
+                12,
+
+              d:
+                13,
+
+              color:
+                0xd0c4a4,
+
+              roof:
+                0x6a6254,
+
+              signColor:
+                0xd9b845,
+            });
+
+            // ==================================
+            // SHOP
+            // ==================================
+
+            createBuilding({
+              x:
+                24,
+
+              z:
+                25,
+
+              w:
+                18,
+
+              h:
+                10,
+
+              d:
+                15,
+
+              color:
+                0xc5a099,
+
+              roof:
+                0x5a4e50,
+
+              signColor:
+                0x8b6cec,
+            });
+
+            // ==================================
+            // GYM
+            // ==================================
+
+            createBuilding({
+              x:
+                -25,
+
+              z:
+                -5,
+
+              w:
+                15,
+
+              h:
+                9,
+
+              d:
+                13,
+
+              color:
+                0x7b746c,
+
+              roof:
+                0x393a3a,
+
+              signColor:
+                0xea9528,
+            });
+
+            // ==================================
+            // DEALERSHIP
+            // ==================================
+
+            createBuilding({
+              x:
+                25,
+
+              z:
+                3,
+
+              w:
+                19,
+
+              h:
+                7,
+
+              d:
+                14,
+
+              color:
+                0x676b71,
+
+              roof:
+                0x292c30,
+
+              signColor:
+                0xf2bb32,
+            });
+
+            // ==================================
+            // TREES
+            // ==================================
+
+            function createTree(
+              x,
+              z,
+              scale
+            ) {
+              const trunk =
+                new THREE.Mesh(
+                  new THREE.CylinderGeometry(
+                    0.22 *
+                      scale,
+                    0.32 *
+                      scale,
+                    2.1 *
+                      scale,
+                    8
+                  ),
+                  material(
+                    0x765239
+                  )
+                );
+
+              trunk.position.set(
+                x,
+                1.05 *
+                  scale,
+                z
+              );
+
+              trunk.castShadow =
+                true;
+
+              scene.add(
+                trunk
+              );
+
+              const leaves =
+                new THREE.Mesh(
+                  new THREE.SphereGeometry(
+                    1.15 *
+                      scale,
+                    10,
+                    8
+                  ),
+                  material(
+                    0x4f7f42
+                  )
+                );
+
+              leaves.scale.y =
+                1.18;
+
+              leaves.position.set(
+                x,
+                2.8 *
+                  scale,
+                z
+              );
+
+              leaves.castShadow =
+                true;
+
+              scene.add(
+                leaves
+              );
+            }
+
+            const treePositions = [
+              [-13, 33],
+              [-13, 16],
+              [14, 18],
+              [14, 33],
+              [-13, -18],
+              [13, -10],
+              [-14, -56],
+              [13, -59],
+              [34, 18],
+              [-36, -40],
+            ];
+
+            treePositions.forEach(
+              function (pos) {
+                createTree(
+                  pos[0],
+                  pos[1],
+                  0.85
+                );
+              }
+            );
+
+            // ==================================
+            // PARKED CARS
+            // decorative only
+            // ==================================
+
+            function createCar(
+              x,
+              z,
+              rotation,
+              color
+            ) {
+              const car =
+                new THREE.Group();
+
+              const body =
+                new THREE.Mesh(
+                  new THREE.BoxGeometry(
+                    1.7,
+                    0.55,
+                    3.4
+                  ),
+                  material(
+                    color,
+                    0.35
+                  )
+                );
+
+              body.position.y =
+                0.55;
+
+              body.castShadow =
+                true;
+
+              car.add(
+                body
+              );
+
+              const cabin =
+                new THREE.Mesh(
+                  new THREE.BoxGeometry(
+                    1.45,
+                    0.65,
+                    1.75
+                  ),
+                  material(
+                    0x7893a4,
+                    0.25
+                  )
+                );
+
+              cabin.position.set(
+                0,
+                1.05,
+                -0.1
+              );
+
+              cabin.castShadow =
+                true;
+
+              car.add(
+                cabin
+              );
+
+              car.position.set(
+                x,
+                0,
+                z
+              );
+
+              car.rotation.y =
+                rotation;
+
+              scene.add(
+                car
+              );
+            }
+
+            createCar(
+              5,
+              14,
+              0,
+              0x384f6c
+            );
+
+            createCar(
+              -5,
+              4,
+              Math.PI,
+              0xa33b35
+            );
+
+            createCar(
+              5,
+              -12,
+              0,
+              0xd4d4d4
+            );
+
+            createCar(
+              -5,
+              -54,
+              Math.PI,
+              0x2d3036
+            );
+
+            // ==================================
+            // PLAYER MODEL
+            // ==================================
+
+            function createPlayer() {
+              const root =
+                new THREE.Group();
+
+              // outfit color based on saved look
+
+              let outfitColor =
+                0x181818;
+
+              if (
+                avatar.look ===
+                'casual'
+              ) {
+                outfitColor =
+                  0x284d70;
+              }
+
+              if (
+                avatar.look ===
+                'smart-casual'
+              ) {
+                outfitColor =
+                  0x34383d;
+              }
+
+              if (
+                avatar.look ===
+                'business'
+              ) {
+                outfitColor =
+                  0x15171c;
+              }
+
+              const skin =
+                material(
+                  0xd49b78,
+                  0.75
+                );
+
+              const outfit =
+                material(
+                  outfitColor,
+                  0.85
+                );
+
+              const pantsMat =
+                material(
+                  0x202227,
+                  0.9
+                );
+
+              const shoeMat =
+                material(
+                  0xe9e9e7,
+                  0.65
+                );
+
+              // torso
+
+              const torso =
+                new THREE.Mesh(
+                  new THREE.CapsuleGeometry(
+                    avatar.gender ===
+                    'female'
+                      ? 0.38
+                      : 0.43,
+                    0.85,
+                    5,
+                    10
+                  ),
+                  outfit
+                );
+
+              torso.position.y =
+                1.55;
+
+              torso.castShadow =
+                true;
+
+              root.add(
+                torso
+              );
+
+              // head
+
+              const head =
+                new THREE.Mesh(
+                  new THREE.SphereGeometry(
+                    0.34,
+                    18,
+                    14
+                  ),
+                  skin
+                );
+
+              head.position.y =
+                2.65;
+
+              head.castShadow =
+                true;
+
+              root.add(
+                head
+              );
+
+              // legs
+
+              [
+                -0.19,
+                0.19,
+              ].forEach(
+                function (x) {
+                  const leg =
+                    new THREE.Mesh(
+                      new THREE.CapsuleGeometry(
+                        0.14,
+                        0.70,
+                        4,
+                        8
+                      ),
+                      pantsMat
+                    );
+
+                  leg.position.set(
+                    x,
+                    0.65,
+                    0
+                  );
+
+                  leg.castShadow =
+                    true;
+
+                  root.add(
+                    leg
+                  );
+
+                  const shoe =
+                    new THREE.Mesh(
+                      new THREE.BoxGeometry(
+                        0.32,
+                        0.18,
+                        0.55
+                      ),
+                      shoeMat
+                    );
+
+                  shoe.position.set(
+                    x,
+                    0.15,
+                    0.11
+                  );
+
+                  shoe.castShadow =
+                    true;
+
+                  root.add(
+                    shoe
+                  );
+                }
+              );
+
+              // arms
+
+              [
+                -1,
+                1,
+              ].forEach(
+                function (side) {
+                  const arm =
+                    new THREE.Mesh(
+                      new THREE.CapsuleGeometry(
+                        0.11,
+                        0.70,
+                        4,
+                        8
+                      ),
+                      outfit
+                    );
+
+                  arm.position.set(
+                    side *
+                      0.52,
+                    1.55,
+                    0
+                  );
+
+                  arm.rotation.z =
+                    side *
+                    -0.08;
+
+                  arm.castShadow =
+                    true;
+
+                  root.add(
+                    arm
+                  );
+                }
+              );
+
+              // HAIR PLACEHOLDER
+              // Uses chosen avatar state.
+              // Later replaced by real GLB hairstyle.
+
+              if (
+                avatar.hair &&
+                avatar.hair !==
+                  'none'
+              ) {
+                const hair =
+                  new THREE.Mesh(
+                    new THREE.SphereGeometry(
+                      0.36,
+                      14,
+                      10
+                    ),
+                    material(
+                      0x27201b
+                    )
+                  );
+
+                hair.scale.set(
+                  1.03,
+                  0.55,
+                  1.03
+                );
+
+                hair.position.y =
+                  2.90;
+
+                hair.castShadow =
+                  true;
+
+                root.add(
+                  hair
+                );
+              }
+
+              // beard placeholder
+
+              if (
+                avatar.gender ===
+                  'male' &&
+                avatar.beard &&
+                avatar.beard !==
+                  'none'
+              ) {
+                const beard =
+                  new THREE.Mesh(
+                    new THREE.BoxGeometry(
+                      0.37,
+                      0.22,
+                      0.10
+                    ),
+                    material(
+                      0x30251f
+                    )
+                  );
+
+                beard.position.set(
+                  0,
+                  2.48,
+                  0.30
+                );
+
+                root.add(
+                  beard
+                );
+              }
+
+              // glasses placeholder
+
+              if (
+                avatar.accessory ===
+                  'glasses' ||
+                avatar.accessory ===
+                  'sunglasses'
+              ) {
+                const glasses =
+                  new THREE.Mesh(
+                    new THREE.BoxGeometry(
+                      0.55,
+                      0.11,
+                      0.08
+                    ),
+                    material(
+                      avatar.accessory ===
+                        'sunglasses'
+                        ? 0x161719
+                        : 0x494949,
+                      0.25
+                    )
+                  );
+
+                glasses.position.set(
+                  0,
+                  2.69,
+                  0.31
+                );
+
+                root.add(
+                  glasses
+                );
+              }
+
+              return root;
+            }
+
+            const player =
+              createPlayer();
+
+            const savedPosition =
+              saved3DState &&
+              saved3DState.position;
+
+            if (
+              savedPosition &&
+              Number.isFinite(
+                Number(
+                  savedPosition.x
+                )
+              ) &&
+              Number.isFinite(
+                Number(
+                  savedPosition.z
+                )
+              )
+            ) {
+              player.position.set(
+                Number(
+                  savedPosition.x
+                ),
+                0,
+                Number(
+                  savedPosition.z
+                )
+              );
+            } else {
+              player.position.set(
+                home.entrance.x,
+                0,
+                home.entrance.z +
+                  2
+              );
+            }
+
+            scene.add(
+              player
+            );
+
+            // ==================================
+            // MOVEMENT
+            // ==================================
+
+            const keys = {};
+
+            let running =
+              false;
+
+            let yaw =
+              Math.PI;
+
+            let pitch =
+              0.28;
+
+            let dragging =
+              false;
+
+            let previousPointerX =
+              0;
+
+            let previousPointerY =
+              0;
+
+            let totalDistance =
+              0;
+
+            const clock =
+              new THREE.Clock();
+
+            function handleKeyDown(
+              event
+            ) {
+              const key =
+                event.key.toLowerCase();
+
+              keys[key] =
+                true;
+
+              if (
+                key === 'e'
+              ) {
+                attemptInteraction();
+              }
+
+              if (
+                [
+                  'w',
+                  'a',
+                  's',
+                  'd',
+                  'arrowup',
+                  'arrowdown',
+                  'arrowleft',
+                  'arrowright',
+                ].includes(
+                  key
+                )
+              ) {
+                event.preventDefault();
+              }
+            }
+
+            function handleKeyUp(
+              event
+            ) {
+              keys[
+                event.key.toLowerCase()
+              ] = false;
+            }
+
+            function pointerDown(
+              event
+            ) {
+              dragging =
+                true;
+
+              previousPointerX =
+                event.clientX;
+
+              previousPointerY =
+                event.clientY;
+            }
+
+            function pointerMove(
+              event
+            ) {
+              if (!dragging) {
+                return;
+              }
+
+              const dx =
+                event.clientX -
+                previousPointerX;
+
+              const dy =
+                event.clientY -
+                previousPointerY;
+
+              previousPointerX =
+                event.clientX;
+
+              previousPointerY =
+                event.clientY;
+
+              yaw -=
+                dx *
+                0.005;
+
+              pitch =
+                clamp(
+                  pitch +
+                    dy *
+                      0.003,
+                  0.05,
+                  0.72
+                );
+            }
+
+            function pointerUp() {
+              dragging =
+                false;
+            }
+
+            renderer.domElement.addEventListener(
+              'pointerdown',
+              pointerDown
+            );
+
+            window.addEventListener(
+              'pointermove',
+              pointerMove
+            );
+
+            window.addEventListener(
+              'pointerup',
+              pointerUp
+            );
+
+            window.addEventListener(
+              'keydown',
+              handleKeyDown
+            );
+
+            window.addEventListener(
+              'keyup',
+              handleKeyUp
+            );
+
+            // ==================================
+            // COLLISION
+            // ==================================
+
+            function canMoveTo(
+              x,
+              z
+            ) {
+              const radius =
+                0.55;
+
+              if (
+                x <
+                  -70 +
+                    radius ||
+                x >
+                  70 -
+                    radius ||
+                z <
+                  -72 +
+                    radius ||
+                z >
+                  72 -
+                    radius
+              ) {
+                return false;
+              }
+
+              for (
+                let i = 0;
+                i <
+                collisionBoxes.length;
+                i += 1
+              ) {
+                const box =
+                  collisionBoxes[i];
+
+                if (
+                  x +
+                    radius >
+                    box.minX &&
+                  x -
+                    radius <
+                    box.maxX &&
+                  z +
+                    radius >
+                    box.minZ &&
+                  z -
+                    radius <
+                    box.maxZ
+                ) {
+                  return false;
+                }
+              }
+
+              return true;
+            }
+
+            // ==================================
+            // INTERACTION
+            // ==================================
+
+            function planarDistance(
+              a,
+              b
+            ) {
+              const dx =
+                a.x -
+                b.x;
+
+              const dz =
+                a.z -
+                b.z;
+
+              return Math.sqrt(
+                dx * dx +
+                  dz * dz
+              );
+            }
+
+            function nearestInteraction() {
+              const officeDistance =
+                planarDistance(
+                  player.position,
+                  office.entrance
+                );
+
+              const homeDistance =
+                planarDistance(
+                  player.position,
+                  home.entrance
+                );
+
+              if (
+                officeDistance <
+                4.2
+              ) {
+                return {
+                  id:
+                    'office',
+
+                  distance:
+                    officeDistance,
+                };
+              }
+
+              if (
+                homeDistance <
+                4.2
+              ) {
+                return {
+                  id:
+                    'home',
+
+                  distance:
+                    homeDistance,
+                };
+              }
+
+              return null;
+            }
+
+            function attemptInteraction() {
+              const nearby =
+                nearestInteraction();
+
+              if (!nearby) {
+                return;
+              }
+
+              if (
+                nearby.id ===
+                'office'
+              ) {
+                localStorage.setItem(
+                  'team4ArrivedOffice',
+                  'true'
+                );
+
+                localStorage.setItem(
+                  'team4OfficeArrivalTime',
+                  gameTime
+                );
+
+                window.location.href =
+                  '/team4-lab/workday';
+
+                return;
+              }
+
+              if (
+                nearby.id ===
+                'home'
+              ) {
+                setLocationName(
+                  isGeo
+                    ? 'შენი სახლი'
+                    : 'Your Home'
+                );
+              }
+            }
+
+            // ==================================
+            // UPDATE PLAYER
+            // ==================================
+
+            const cameraForward =
+              new THREE.Vector3();
+
+            const cameraRight =
+              new THREE.Vector3();
+
+            const moveVector =
+              new THREE.Vector3();
+
+            function updatePlayer(
+              delta
+            ) {
+              let forward =
+                0;
+
+              let sideways =
+                0;
+
+              if (
+                keys.w ||
+                keys.arrowup
+              ) {
+                forward +=
+                  1;
+              }
+
+              if (
+                keys.s ||
+                keys.arrowdown
+              ) {
+                forward -=
+                  1;
+              }
+
+              if (
+                keys.d ||
+                keys.arrowright
+              ) {
+                sideways +=
+                  1;
+              }
+
+              if (
+                keys.a ||
+                keys.arrowleft
+              ) {
+                sideways -=
+                  1;
+              }
+
+              running =
+                !!keys.shift;
+
+              if (
+                forward ===
+                  0 &&
+                sideways ===
+                  0
+              ) {
+                return;
+              }
+
+              cameraForward.set(
+                -Math.sin(
+                  yaw
+                ),
+                0,
+                -Math.cos(
+                  yaw
+                )
+              );
+
+              cameraRight.set(
+                Math.cos(
+                  yaw
+                ),
+                0,
+                -Math.sin(
+                  yaw
+                )
+              );
+
+              moveVector
+                .set(
+                  0,
+                  0,
+                  0
+                )
+                .addScaledVector(
+                  cameraForward,
+                  forward
+                )
+                .addScaledVector(
+                  cameraRight,
+                  sideways
+                )
+                .normalize();
+
+              const speed =
+                running
+                  ? 7.2
+                  : 4.2;
+
+              const stepX =
+                moveVector.x *
+                speed *
+                delta;
+
+              const stepZ =
+                moveVector.z *
+                speed *
+                delta;
+
+              const nextX =
+                player.position.x +
+                stepX;
+
+              const nextZ =
+                player.position.z +
+                stepZ;
+
+              if (
+                canMoveTo(
+                  nextX,
+                  player.position.z
+                )
+              ) {
+                player.position.x =
+                  nextX;
+              }
+
+              if (
+                canMoveTo(
+                  player.position.x,
+                  nextZ
+                )
+              ) {
+                player.position.z =
+                  nextZ;
+              }
+
+              const targetRotation =
+                Math.atan2(
+                  moveVector.x,
+                  moveVector.z
+                );
+
+              let rotationDiff =
+                targetRotation -
+                player.rotation.y;
+
+              rotationDiff =
+                Math.atan2(
+                  Math.sin(
+                    rotationDiff
+                  ),
+                  Math.cos(
+                    rotationDiff
+                  )
+                );
+
+              player.rotation.y +=
+                rotationDiff *
+                Math.min(
+                  1,
+                  delta *
+                    12
+                );
+
+              totalDistance +=
+                Math.sqrt(
+                  stepX *
+                    stepX +
+                    stepZ *
+                      stepZ
+                );
+
+              if (
+                totalDistance >
+                12
+              ) {
+                totalDistance =
+                  0;
+
+                setEnergy(
+                  function (
+                    current
+                  ) {
+                    return Math.max(
+                      0,
+                      current -
+                        (
+                          running
+                            ? 2
+                            : 1
+                        )
+                    );
+                  }
+                );
+              }
+            }
+
+            // ==================================
+            // CAMERA
+            // ==================================
+
+            const cameraTarget =
+              new THREE.Vector3();
+
+            const desiredCamera =
+              new THREE.Vector3();
+
+            function updateCamera(
+              delta
+            ) {
+              const distance =
+                7.2;
+
+              const horizontal =
+                Math.cos(
+                  pitch
+                ) *
+                distance;
+
+              desiredCamera.set(
+                player.position.x +
+                  Math.sin(
+                    yaw
+                  ) *
+                    horizontal,
+
+                player.position.y +
+                  2.5 +
+                  Math.sin(
+                    pitch
+                  ) *
+                    distance,
+
+                player.position.z +
+                  Math.cos(
+                    yaw
+                  ) *
+                    horizontal
+              );
+
+              camera.position.lerp(
+                desiredCamera,
+                1 -
+                  Math.pow(
+                    0.001,
+                    delta
+                  )
+              );
+
+              cameraTarget.set(
+                player.position.x,
+                player.position.y +
+                  1.55,
+                player.position.z
+              );
+
+              camera.lookAt(
+                cameraTarget
+              );
+            }
+
+            // ==================================
+            // LOCATION / INTERACTION UI
+            // ==================================
+
+            let uiTimer =
+              0;
+
+            function updateUI(
+              delta
+            ) {
+              uiTimer +=
+                delta;
+
+              if (
+                uiTimer <
+                0.12
+              ) {
+                return;
+              }
+
+              uiTimer =
+                0;
+
+              const nearby =
+                nearestInteraction();
+
+              if (
+                nearby &&
+                nearby.id ===
+                  'office'
+              ) {
+                setLocationName(
+                  'Team4 Office'
+                );
+
+                setInteractionText(
+                  isGeo
+                    ? 'E — ოფისში შესვლა'
+                    : 'E — Enter Office'
+                );
+
+                return;
+              }
+
+              if (
+                nearby &&
+                nearby.id ===
+                  'home'
+              ) {
+                setLocationName(
+                  isGeo
+                    ? (
+                        isEconomy
+                          ? 'შენი სახლი • გლდანი'
+                          : 'შენი სახლი • საბურთალო'
+                      )
+                    : (
+                        isEconomy
+                          ? 'Your Home • Gldani'
+                          : 'Your Home • Saburtalo'
+                      )
+                );
+
+                setInteractionText(
+                  isGeo
+                    ? 'E — სახლში შესვლა'
+                    : 'E — Enter Home'
+                );
+
+                return;
+              }
+
+              setInteractionText(
+                ''
+              );
+
+              if (
+                player.position.z <
+                -33
+              ) {
+                setLocationName(
+                  isGeo
+                    ? 'ბიზნეს რაიონი'
+                    : 'Business District'
+                );
+              } else if (
+                player.position.z >
+                13
+              ) {
+                setLocationName(
+                  isGeo
+                    ? 'საცხოვრებელი რაიონი'
+                    : 'Residential District'
+                );
+              } else {
+                setLocationName(
+                  isGeo
+                    ? 'ქალაქის ცენტრი'
+                    : 'City Center'
+                );
+              }
+            }
+
+            // ==================================
+            // GAME TIME
+            // ==================================
+
+            let gameMinutes =
+              saved3DState &&
+              saved3DState.gameMinutes !=
+                null
+                ? Number(
+                    saved3DState.gameMinutes
+                  )
+                : 8 *
+                  60;
+
+            let timeAccumulator =
+              0;
+
+            function updateTime(
+              delta
+            ) {
+              timeAccumulator +=
+                delta;
+
+              if (
+                timeAccumulator >=
+                1.5
+              ) {
+                timeAccumulator -=
+                  1.5;
+
+                gameMinutes +=
+                  1;
+
+                const hValue =
+                  Math.floor(
+                    gameMinutes /
+                      60
+                  ) %
+                  24;
+
+                const mValue =
+                  gameMinutes %
+                  60;
+
+                setGameTime(
+                  String(
+                    hValue
+                  ).padStart(
+                    2,
+                    '0'
+                  ) +
+                    ':' +
+                    String(
+                      mValue
+                    ).padStart(
+                      2,
+                      '0'
+                    )
+                );
+              }
+            }
+
+            // ==================================
+            // SAVE
+            // ==================================
+
+            let saveAccumulator =
+              0;
+
+            function saveGame(
+              delta
+            ) {
+              saveAccumulator +=
+                delta;
+
+              if (
+                saveAccumulator <
+                2
+              ) {
+                return;
+              }
+
+              saveAccumulator =
+                0;
+
+              localStorage.setItem(
+                'team4City3DState',
+                JSON.stringify({
+                  position: {
+                    x:
+                      player.position.x,
+
+                    z:
+                      player.position.z,
+                  },
+
+                  cash:
+                    cash,
+
+                  energy:
+                    energy,
+
+                  stress:
+                    stress,
+
+                  salesXP:
+                    salesXP,
+
+                  gameMinutes:
+                    gameMinutes,
+
+                  apartmentId:
+                    apartmentId,
+                })
+              );
+            }
+
+            // ==================================
+            // LOOP
+            // ==================================
+
+            function animate() {
+              animationFrame =
+                requestAnimationFrame(
+                  animate
+                );
+
+              const delta =
+                Math.min(
+                  clock.getDelta(),
+                  0.05
+                );
+
+              updatePlayer(
+                delta
+              );
+
+              updateCamera(
+                delta
+              );
+
+              updateUI(
+                delta
+              );
+
+              updateTime(
+                delta
+              );
+
+              saveGame(
+                delta
+              );
+
+              renderer.render(
+                scene,
+                camera
+              );
+            }
+
+            camera.position.set(
+              player.position.x,
+              5,
+              player.position.z +
+                8
+            );
+
+            animate();
+
+            // ==================================
+            // RESIZE
+            // ==================================
+
+            resizeObserver =
+              new ResizeObserver(
+                function () {
+                  if (
+                    !mountRef.current
+                  ) {
+                    return;
+                  }
+
+                  const newWidth =
+                    mountRef.current.clientWidth;
+
+                  const newHeight =
+                    mountRef.current.clientHeight;
+
+                  if (
+                    !newWidth ||
+                    !newHeight
+                  ) {
+                    return;
+                  }
+
+                  camera.aspect =
+                    newWidth /
+                    newHeight;
+
+                  camera.updateProjectionMatrix();
+
+                  renderer.setSize(
+                    newWidth,
+                    newHeight
+                  );
+                }
+              );
+
+            resizeObserver.observe(
+              mountRef.current
+            );
+
+            cleanupEvents =
+              function () {
+                window.removeEventListener(
+                  'keydown',
+                  handleKeyDown
+                );
+
+                window.removeEventListener(
+                  'keyup',
+                  handleKeyUp
+                );
+
+                window.removeEventListener(
+                  'pointermove',
+                  pointerMove
+                );
+
+                window.removeEventListener(
+                  'pointerup',
+                  pointerUp
+                );
+
+                if (
+                  renderer &&
+                  renderer.domElement
+                ) {
+                  renderer.domElement.removeEventListener(
+                    'pointerdown',
+                    pointerDown
+                  );
+                }
+              };
+
+            setLoading(
+              false
+            );
+          } catch (error) {
+            console.error(
+              'TEAM4 CITY 3D ERROR:',
+              error
+            );
+
+            setLoadError(
+              isGeo
+                ? '3D ქალაქის ჩატვირთვა ვერ მოხერხდა.'
+                : 'Unable to load the 3D city.'
+            );
+
+            setLoading(
+              false
+            );
+          }
+        }
+
+        startGame();
+
+        return function () {
+          destroyed =
+            true;
+
+          cleanupEvents();
 
           if (
-            d <= 5 &&
-            d < nearestDistance
+            animationFrame
           ) {
-            nearest =
-              building;
-
-            nearestDistance =
-              d;
-          }
-        }
-      );
-
-      return nearest;
-    }
-
-    const nearbyLocation =
-      getNearbyLocation(
-        playerPosition
-      );
-
-    // ========================================
-    // MOVE
-    // ========================================
-
-    function movePlayer(
-      dx,
-      dy,
-      newDirection
-    ) {
-      const speed = 1.45;
-
-      const next = {
-        x:
-          clamp(
-            playerPosition.x +
-              dx * speed,
-            1,
-            98
-          ),
-
-        y:
-          clamp(
-            playerPosition.y +
-              dy * speed,
-            2,
-            97
-          ),
-      };
-
-      if (
-        !canMoveTo(next)
-      ) {
-        setMessage(
-          isGeo
-            ? '🚧 აქ შენობაა — შემოუარე.'
-            : '🚧 Building ahead — go around.'
-        );
-
-        return;
-      }
-
-      setDirection(
-        newDirection
-      );
-
-      setPlayerPosition(
-        next
-      );
-
-      setGameMinute(
-        function (value) {
-          return value + 1;
-        }
-      );
-
-      const newStepCount =
-        stepCount + 1;
-
-      setStepCount(
-        newStepCount
-      );
-
-      if (
-        newStepCount % 6 ===
-        0
-      ) {
-        setEnergy(
-          function (value) {
-            return clamp(
-              value - 1,
-              0,
-              100
+            cancelAnimationFrame(
+              animationFrame
             );
           }
-        );
-      }
 
-      const nearby =
-        getNearbyLocation(
-          next
-        );
+          if (
+            resizeObserver
+          ) {
+            resizeObserver.disconnect();
+          }
 
-      if (nearby) {
-        if (nearby.locked) {
-          setMessage(
-            isGeo
-              ? '🔒 ' +
-                nearby.titleGeo +
-                ' ჯერ ჩაკეტილია.'
-              : '🔒 ' +
-                nearby.titleEng +
-                ' is locked.'
-          );
-        } else {
-          setMessage(
-            isGeo
-              ? '📍 ' +
-                nearby.titleGeo +
-                ' — დააჭირე ENTER-ს.'
-              : '📍 ' +
-                nearby.titleEng +
-                ' — press ENTER.'
-          );
-        }
-      } else {
-        setMessage(
-          isGeo
-            ? '🎯 მიდი ოფისის წითელ შესასვლელთან.'
-            : '🎯 Reach the red Office entrance.'
-        );
-      }
-    }
+          if (
+            renderer
+          ) {
+            renderer.dispose();
 
-    // ========================================
-    // ENTER LOCATION
-    // ========================================
+            if (
+              renderer.domElement &&
+              renderer.domElement.parentNode
+            ) {
+              renderer.domElement.parentNode.removeChild(
+                renderer.domElement
+              );
+            }
+          }
+        };
+      },
+      []
+    );
 
-    function interact() {
-      const nearby =
-        getNearbyLocation(
-          playerPosition
-        );
+    // ==========================================
+    // RENDER UI
+    // ==========================================
 
-      if (!nearby) {
-        setMessage(
-          isGeo
-            ? 'ახლოს შესასვლელი არ არის.'
-            : 'No entrance nearby.'
-        );
-
-        return;
-      }
-
-      if (nearby.locked) {
-        setMessage(
-          isGeo
-            ? '🔒 ეს ლოკაცია ჯერ ჩაკეტილია.'
-            : '🔒 This location is locked.'
-        );
-
-        return;
-      }
-
-      if (
-        nearby.id === 'office'
-      ) {
-        localStorage.setItem(
-          'team4ArrivedOffice',
-          'true'
-        );
-
-        localStorage.setItem(
-          'team4OfficeArrivalTime',
-          gameTimeText()
-        );
-
-        window.location.href =
-          '/team4-lab/workday';
-
-        return;
-      }
-
-      if (
-        nearby.id === 'home'
-      ) {
-        setMessage(
-          isGeo
-            ? '🏠 შენს სახლთან ხარ.'
-            : '🏠 You are at home.'
-        );
-      }
-    }
-
-    // ========================================
-    // KEYBOARD
-    // ========================================
-
-    function handleKeyDown(event) {
-      const key =
-        event.key.toLowerCase();
-
-      if (
-        key === 'w' ||
-        key === 'arrowup'
-      ) {
-        event.preventDefault();
-
-        movePlayer(
-          0,
-          -1,
-          'up'
-        );
-
-        return;
-      }
-
-      if (
-        key === 's' ||
-        key === 'arrowdown'
-      ) {
-        event.preventDefault();
-
-        movePlayer(
-          0,
-          1,
-          'down'
-        );
-
-        return;
-      }
-
-      if (
-        key === 'a' ||
-        key === 'arrowleft'
-      ) {
-        event.preventDefault();
-
-        movePlayer(
-          -1,
-          0,
-          'left'
-        );
-
-        return;
-      }
-
-      if (
-        key === 'd' ||
-        key === 'arrowright'
-      ) {
-        event.preventDefault();
-
-        movePlayer(
-          1,
-          0,
-          'right'
-        );
-
-        return;
-      }
-
-      if (
-        key === 'e' ||
-        key === 'enter'
-      ) {
-        event.preventDefault();
-
-        interact();
-      }
-    }
-
-    function focusMap() {
-      if (mapRef.current) {
-        mapRef.current.focus();
-      }
-
-      setMessage(
-        isGeo
-          ? '🚶 Walking Mode — WASD / ისრები.'
-          : '🚶 Walking Mode — WASD / arrow keys.'
-      );
-    }
-
-    // ========================================
-    // HUD
-    // ========================================
-
-    function hudItem(
-      icon,
+    function statBox(
       label,
       value
     ) {
@@ -1083,19 +2737,22 @@ const savedAvatar =
         {
           style: {
             minWidth:
-              '118px',
+              '92px',
 
             padding:
-              '11px 13px',
+              '9px 12px',
 
             borderRadius:
-              '13px',
+              '12px',
 
             background:
-              '#101217',
+              'rgba(10,12,15,.72)',
+
+            backdropFilter:
+              'blur(10px)',
 
             border:
-              '1px solid rgba(255,255,255,.08)',
+              '1px solid rgba(255,255,255,.12)',
           },
         },
 
@@ -1103,11 +2760,8 @@ const savedAvatar =
           'div',
           {
             style: {
-              marginBottom:
-                '4px',
-
               color:
-                'rgba(255,255,255,.45)',
+                'rgba(255,255,255,.52)',
 
               fontSize:
                 '9px',
@@ -1116,21 +2770,22 @@ const savedAvatar =
                 '900',
 
               letterSpacing:
-                '.08em',
+                '.07em',
             },
           },
 
-          icon +
-            ' ' +
-            label
+          label
         ),
 
         h(
           'div',
           {
             style: {
+              marginTop:
+                '2px',
+
               fontSize:
-                '17px',
+                '15px',
 
               fontWeight:
                 '900',
@@ -1142,836 +2797,99 @@ const savedAvatar =
       );
     }
 
-    // ========================================
-    // BUILDING WINDOWS
-    // ========================================
+    return h(
+      'div',
+      {
+        style: {
+          position:
+            'fixed',
 
-    function buildingWindows(
-      count,
-      locked
-    ) {
-      const result = [];
+          inset:
+            0,
 
-      for (
-        let i = 0;
-        i < count;
-        i += 1
-      ) {
-        result.push(
-          h(
-            'span',
-            {
-              key:
-                'window-' +
-                i,
+          overflow:
+            'hidden',
 
-              style: {
-                height:
-                  '9px',
+          background:
+            '#111',
 
-                borderRadius:
-                  '2px',
+          color:
+            '#fff',
 
-                background:
-                  locked
-                    ? 'rgba(255,255,255,.055)'
-                    : i % 3 === 0
-                    ? 'rgba(255,205,105,.44)'
-                    : 'rgba(135,174,210,.18)',
+          fontFamily:
+            'Inter, sans-serif',
+        },
+      },
 
-                border:
-                  '1px solid rgba(255,255,255,.03)',
-              },
-            }
-          )
-        );
-      }
+      // ======================================
+      // 3D CANVAS
+      // ======================================
 
-      return result;
-    }
-
-    // ========================================
-    // BUILDING
-    // ========================================
-
-    function renderBuilding(
-      building
-    ) {
-      const rect =
-        building.rect;
-
-      const isOffice =
-        building.id === 'office';
-
-      const isDealer =
-        building.id === 'dealer';
-
-      const isBank =
-        building.id === 'bank';
-
-      return h(
+      h(
         'div',
         {
-          key:
-            building.id,
+          ref:
+            mountRef,
 
           style: {
             position:
               'absolute',
 
+            inset:
+              0,
+          },
+        }
+      ),
+
+      // ======================================
+      // TOP LEFT — PLAYER
+      // ======================================
+
+      h(
+        'div',
+        {
+          style: {
+            position:
+              'absolute',
+
             left:
-              rect.x + '%',
+              '22px',
 
             top:
-              rect.y + '%',
-
-            width:
-              rect.w + '%',
-
-            height:
-              rect.h + '%',
+              '20px',
 
             zIndex:
               20,
 
-            borderRadius:
-              isBank
-                ? '8px'
-                : '13px',
+            padding:
+              '15px 17px',
 
-            overflow:
-              'hidden',
+            minWidth:
+              '210px',
+
+            borderRadius:
+              '16px',
 
             background:
-              building.type ===
-              'residential'
-                ? 'linear-gradient(135deg,#262932,#16191f)'
-                : building.type ===
-                  'office'
-                ? 'linear-gradient(135deg,#252c34,#11151b)'
-                : building.type ===
-                  'shop'
-                ? 'linear-gradient(135deg,#202938,#11151d)'
-                : building.type ===
-                  'dealer'
-                ? 'linear-gradient(135deg,#292621,#141311)'
-                : 'linear-gradient(135deg,#282a2e,#15171b)',
+              'rgba(8,10,13,.74)',
+
+            backdropFilter:
+              'blur(12px)',
 
             border:
-              isOffice
-                ? '2px solid rgba(239,27,19,.72)'
-                : '1px solid rgba(255,255,255,.11)',
+              '1px solid rgba(255,255,255,.13)',
 
             boxShadow:
-              '0 14px 25px rgba(0,0,0,.52)',
-
-            opacity:
-              building.locked
-                ? .70
-                : 1,
+              '0 10px 35px rgba(0,0,0,.22)',
           },
         },
 
-        // roof edge
         h(
           'div',
           {
             style: {
-              position:
-                'absolute',
-
-              inset:
-                '6px',
-
-              borderRadius:
-                '8px',
-
-              border:
-                '1px solid rgba(255,255,255,.06)',
-
-              boxShadow:
-                'inset 0 0 30px rgba(0,0,0,.35)',
-            },
-          }
-        ),
-
-        // rooftop units
-        h(
-          'div',
-          {
-            style: {
-              position:
-                'absolute',
-
-              left:
-                '10%',
-
-              right:
-                '10%',
-
-              top:
-                '12%',
-
-              display:
-                'grid',
-
-              gridTemplateColumns:
-                'repeat(4,1fr)',
-
-              gap:
-                '5px',
-            },
-          },
-
-          buildingWindows(
-            isDealer
-              ? 5
-              : 8,
-            building.locked
-          )
-        ),
-
-        // additional roof block
-        !isDealer
-          ? h(
-              'div',
-              {
-                style: {
-                  position:
-                    'absolute',
-
-                  right:
-                    '9%',
-
-                  top:
-                    '37%',
-
-                  width:
-                    '24%',
-
-                  height:
-                    '18%',
-
-                  borderRadius:
-                    '4px',
-
-                  background:
-                    'rgba(0,0,0,.20)',
-
-                  border:
-                    '1px solid rgba(255,255,255,.06)',
-                },
-              }
-            )
-          : null,
-
-        // dealer parking cars
-        isDealer
-          ? h(
-              'div',
-              {
-                style: {
-                  position:
-                    'absolute',
-
-                  left:
-                    '8%',
-
-                  right:
-                    '8%',
-
-                  top:
-                    '37%',
-
-                  display:
-                    'grid',
-
-                  gridTemplateColumns:
-                    'repeat(5,1fr)',
-
-                  gap:
-                    '6px',
-                },
-              },
-
-              [1,2,3,4,5].map(
-                function (item) {
-                  return h(
-                    'div',
-                    {
-                      key:
-                        'dealer-car-' +
-                        item,
-
-                      style: {
-                        height:
-                          '13px',
-
-                        borderRadius:
-                          '4px',
-
-                        background:
-                          item % 2
-                            ? '#343c48'
-                            : '#66211d',
-
-                        border:
-                          '1px solid rgba(255,255,255,.10)',
-                      },
-                    }
-                  );
-                }
-              )
-            )
-          : null,
-
-        // label
-        h(
-          'div',
-          {
-            style: {
-              position:
-                'absolute',
-
-              left:
-                '7px',
-
-              right:
-                '7px',
-
-              bottom:
-                '7px',
-
-              padding:
-                '7px 8px',
-
-              borderRadius:
-                '7px',
-
-              background:
-                'rgba(0,0,0,.78)',
-
-              border:
-                '1px solid rgba(255,255,255,.08)',
-            },
-          },
-
-          h(
-            'div',
-            {
-              style: {
-                color:
-                  building.locked
-                    ? 'rgba(255,255,255,.50)'
-                    : '#ffffff',
-
-                fontSize:
-                  '11px',
-
-                fontWeight:
-                  '900',
-              },
-            },
-
-            building.locked
-              ? '🔒 '
-              : '',
-
-            isGeo
-              ? building.titleGeo
-              : building.titleEng
-          ),
-
-          h(
-            'div',
-            {
-              style: {
-                marginTop:
-                  '2px',
-
-                color:
-                  isOffice
-                    ? '#ff453d'
-                    : 'rgba(255,255,255,.43)',
-
-                fontSize:
-                  '8px',
-
-                fontWeight:
-                  '800',
-              },
-            },
-
-            building.locked
-              ? (
-                  isGeo
-                    ? 'ჯერ ჩაკეტილია'
-                    : 'Locked'
-                )
-              : (
-                  isGeo
-                    ? building.subtitleGeo
-                    : building.subtitleEng
-                )
-          )
-        )
-      );
-    }
-
-    // ========================================
-    // ENTRANCE
-    // ========================================
-
-    function renderEntrance(
-      building
-    ) {
-      const active =
-        building.id ===
-        'office';
-
-      return h(
-        'div',
-        {
-          key:
-            'entrance-' +
-            building.id,
-
-          style: {
-            position:
-              'absolute',
-
-            left:
-              building.entrance.x +
-              '%',
-
-            top:
-              building.entrance.y +
-              '%',
-
-            width:
-              active
-                ? '16px'
-                : '11px',
-
-            height:
-              active
-                ? '16px'
-                : '11px',
-
-            transform:
-              'translate(-50%,-50%)',
-
-            borderRadius:
-              '50%',
-
-            zIndex:
-              70,
-
-            background:
-              building.locked
-                ? '#555b64'
-                : building.accent,
-
-            boxShadow:
-              active
-                ? '0 0 0 8px rgba(239,27,19,.15),0 0 22px rgba(239,27,19,.75)'
-                : '0 0 10px rgba(0,0,0,.5)',
-          },
-        }
-      );
-    }
-
-    // ========================================
-    // TOP VIEW CAR
-    // ========================================
-
-    function renderCar(
-      key,
-      left,
-      top,
-      rotation,
-      className,
-      bodyColor
-    ) {
-      return h(
-        'div',
-        {
-          key,
-
-          className:
-            className,
-
-          style: {
-            position:
-              'absolute',
-
-            left,
-            top,
-
-            width:
-              '22px',
-
-            height:
-              '42px',
-
-            transform:
-              'translate(-50%,-50%) rotate(' +
-              rotation +
-              'deg)',
-
-            zIndex:
-              12,
-
-            borderRadius:
-              '7px',
-
-            background:
-              bodyColor,
-
-            border:
-              '1px solid rgba(255,255,255,.20)',
-
-            boxShadow:
-              '0 5px 9px rgba(0,0,0,.55)',
-          },
-        },
-
-        // windshield
-        h(
-          'div',
-          {
-            style: {
-              position:
-                'absolute',
-
-              left:
-                '4px',
-
-              right:
-                '4px',
-
-              top:
-                '7px',
-
-              height:
-                '9px',
-
-              borderRadius:
-                '3px',
-
-              background:
-                '#6e8796',
-            },
-          }
-        ),
-
-        // rear window
-        h(
-          'div',
-          {
-            style: {
-              position:
-                'absolute',
-
-              left:
-                '4px',
-
-              right:
-                '4px',
-
-              bottom:
-                '7px',
-
-              height:
-                '8px',
-
-              borderRadius:
-                '3px',
-
-              background:
-                '#455967',
-            },
-          }
-        ),
-
-        // headlights
-        h(
-          'div',
-          {
-            style: {
-              position:
-                'absolute',
-
-              left:
-                '3px',
-
-              top:
-                '1px',
-
-              width:
-                '5px',
-
-              height:
-                '3px',
-
-              borderRadius:
-                '2px',
-
-              background:
-                '#fff3b0',
-            },
-          }
-        ),
-
-        h(
-          'div',
-          {
-            style: {
-              position:
-                'absolute',
-
-              right:
-                '3px',
-
-              top:
-                '1px',
-
-              width:
-                '5px',
-
-              height:
-                '3px',
-
-              borderRadius:
-                '2px',
-
-              background:
-                '#fff3b0',
-            },
-          }
-        )
-      );
-    }
-
-    // ========================================
-    // PLAYER
-    // ========================================
-
-    function renderPlayer() {
-      let rotation =
-        0;
-
-      if (
-        direction === 'right'
-      ) {
-        rotation = 90;
-      }
-
-      if (
-        direction === 'down'
-      ) {
-        rotation = 180;
-      }
-
-      if (
-        direction === 'left'
-      ) {
-        rotation = 270;
-      }
-
-      return h(
-        'div',
-        {
-          style: {
-            position:
-              'absolute',
-
-            left:
-              playerPosition.x +
-              '%',
-
-            top:
-              playerPosition.y +
-              '%',
-
-            width:
-              '25px',
-
-            height:
-              '25px',
-
-            transform:
-              'translate(-50%,-50%) rotate(' +
-              rotation +
-              'deg)',
-
-            zIndex:
-              100,
-
-            transition:
-              'left .09s linear, top .09s linear',
-          },
-        },
-
-        // shadow
-        h(
-          'div',
-          {
-            style: {
-              position:
-                'absolute',
-
-              left:
-                '4px',
-
-              top:
-                '8px',
-
-              width:
+              fontSize:
                 '18px',
-
-              height:
-                '14px',
-
-              borderRadius:
-                '50%',
-
-              background:
-                'rgba(0,0,0,.40)',
-
-              filter:
-                'blur(2px)',
-            },
-          }
-        ),
-
-        // body top-down
-        h(
-          'div',
-          {
-            style: {
-              position:
-                'absolute',
-
-              left:
-                '7px',
-
-              top:
-                '7px',
-
-              width:
-                '12px',
-
-              height:
-                '17px',
-
-              borderRadius:
-                '6px',
-
-              background:
-                '#111',
-
-              border:
-                '2px solid #ef1b13',
-            },
-          }
-        ),
-
-        // head
-        h(
-          'div',
-          {
-            style: {
-              position:
-                'absolute',
-
-              left:
-                '8px',
-
-              top:
-                '0',
-
-              width:
-                '10px',
-
-              height:
-                '10px',
-
-              borderRadius:
-                '50%',
-
-              background:
-                '#d79a6e',
-
-              border:
-                '2px solid #fff',
-            },
-          }
-        ),
-
-        // direction arrow
-        h(
-          'div',
-          {
-            style: {
-              position:
-                'absolute',
-
-              left:
-                '8px',
-
-              top:
-                '-12px',
-
-              color:
-                '#ef1b13',
-
-              fontSize:
-                '11px',
-
-              fontWeight:
-                '900',
-            },
-          },
-
-          '▲'
-        ),
-
-        h(
-          'div',
-          {
-            style: {
-              position:
-                'absolute',
-
-              top:
-                '30px',
-
-              left:
-                '50%',
-
-              transform:
-                'translateX(-50%) rotate(' +
-                (-rotation) +
-                'deg)',
-
-              whiteSpace:
-                'nowrap',
-
-              padding:
-                '3px 6px',
-
-              borderRadius:
-                '999px',
-
-              background:
-                'rgba(0,0,0,.80)',
-
-              border:
-                '1px solid rgba(255,255,255,.15)',
-
-              fontSize:
-                '8px',
 
               fontWeight:
                 '900',
@@ -1979,1879 +2897,455 @@ const savedAvatar =
           },
 
           playerName
-        )
-      );
-    }
+        ),
 
-    // ========================================
-    // CONTROL
-    // ========================================
+        h(
+          'div',
+          {
+            style: {
+              marginTop:
+                '3px',
 
-    function controlButton(
-      label,
-      action
-    ) {
-      return h(
-        'button',
-        {
-          type:
-            'button',
+              color:
+                '#ef4136',
 
-          onClick:
-            action,
+              fontSize:
+                '10px',
 
-          style: {
-            width:
-              '44px',
+              fontWeight:
+                '900',
 
-            height:
-              '40px',
-
-            borderRadius:
-              '9px',
-
-            border:
-              '1px solid rgba(255,255,255,.12)',
-
-            background:
-              '#101217',
-
-            color:
-              '#fff',
-
-            fontSize:
-              '16px',
-
-            fontWeight:
-              '900',
-
-            cursor:
-              'pointer',
+              letterSpacing:
+                '.08em',
+            },
           },
-        },
 
-        label
-      );
-    }
+          'TEAM4 • SALES CAREER'
+        ),
 
-    // ========================================
-    // RENDER
-    // ========================================
+        h(
+          'div',
+          {
+            style: {
+              marginTop:
+                '10px',
 
-    return h(
-      React.Fragment,
-      null,
+              color:
+                'rgba(255,255,255,.65)',
 
-      h(
-        'style',
-        null,
+              fontSize:
+                '11px',
+            },
+          },
 
-        `
-        .t4city-map:focus {
-          outline: 2px solid rgba(239,27,19,.70);
-          outline-offset: 3px;
-        }
-
-        .t4-car-east-1 {
-          animation: t4East1 15s linear infinite;
-        }
-
-        .t4-car-east-2 {
-          animation: t4East2 21s linear infinite;
-        }
-
-        .t4-car-west-1 {
-          animation: t4West1 18s linear infinite;
-        }
-
-        .t4-car-south {
-          animation: t4South 19s linear infinite;
-        }
-
-        .t4-car-north {
-          animation: t4North 23s linear infinite;
-        }
-
-        @keyframes t4East1 {
-          from { left: -3%; }
-          to   { left: 103%; }
-        }
-
-        @keyframes t4East2 {
-          from { left: -8%; }
-          to   { left: 105%; }
-        }
-
-        @keyframes t4West1 {
-          from { left: 104%; }
-          to   { left: -4%; }
-        }
-
-        @keyframes t4South {
-          from { top: -5%; }
-          to   { top: 105%; }
-        }
-
-        @keyframes t4North {
-          from { top: 105%; }
-          to   { top: -5%; }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-          .t4-car-east-1,
-          .t4-car-east-2,
-          .t4-car-west-1,
-          .t4-car-south,
-          .t4-car-north {
-            animation: none !important;
-          }
-        }
-
-        @media (max-width: 980px) {
-          .t4-city-grid {
-            grid-template-columns: 1fr !important;
-          }
-
-          .t4city-map {
-            min-height: 640px !important;
-          }
-        }
-
-        @media (max-width: 640px) {
-          .t4city-map {
-            min-height: 560px !important;
-          }
-        }
-        `
+          '📍 ' +
+            locationName
+        )
       ),
 
-      Header
-        ? h(Header, {
-            lang,
-            setLang,
-          })
-        : null,
+      // ======================================
+      // TOP RIGHT — TIME
+      // ======================================
 
       h(
-        'main',
+        'div',
         {
           style: {
-            minHeight:
-              '100vh',
+            position:
+              'absolute',
+
+            right:
+              '22px',
+
+            top:
+              '20px',
+
+            zIndex:
+              20,
 
             padding:
-              '105px 20px 70px',
+              '12px 16px',
+
+            borderRadius:
+              '15px',
 
             background:
-              '#050507',
+              'rgba(8,10,13,.74)',
 
-            color:
-              '#fff',
+            backdropFilter:
+              'blur(12px)',
+
+            border:
+              '1px solid rgba(255,255,255,.13)',
+
+            textAlign:
+              'right',
           },
         },
 
         h(
-          'section',
+          'div',
           {
             style: {
-              maxWidth:
-                '1480px',
+              color:
+                'rgba(255,255,255,.55)',
 
-              margin:
-                '0 auto',
+              fontSize:
+                '9px',
+
+              fontWeight:
+                '900',
             },
           },
 
-          // ====================================
-          // HEADER AREA
-          // ====================================
+          'DAY 1'
+        ),
 
-          h(
-            'div',
-            {
-              style: {
-                display:
-                  'flex',
+        h(
+          'div',
+          {
+            style: {
+              fontSize:
+                '22px',
 
-                justifyContent:
-                  'space-between',
-
-                alignItems:
-                  'flex-end',
-
-                flexWrap:
-                  'wrap',
-
-                gap:
-                  '15px',
-
-                marginBottom:
-                  '17px',
-              },
+              fontWeight:
+                '900',
             },
+          },
 
-            h(
-              'div',
-              null,
-
-              h(
-                'div',
-                {
-                  style: {
-                    marginBottom:
-                      '5px',
-
-                    color:
-                      '#ef1b13',
-
-                    fontSize:
-                      '11px',
-
-                    fontWeight:
-                      '900',
-
-                    letterSpacing:
-                      '.14em',
-                  },
-                },
-
-                'TEAM4 CITY'
-              ),
-
-              h(
-                'h1',
-                {
-                  style: {
-                    margin:
-                      '0',
-
-                    fontSize:
-                      'clamp(34px,5vw,55px)',
-
-                    lineHeight:
-                      '1',
-
-                    fontWeight:
-                      '900',
-                  },
-                },
-
-                isGeo
-                  ? 'შენი ქალაქი'
-                  : 'Your City'
-              )
-            ),
-
-            h(
-              'div',
-              {
-                style: {
-                  padding:
-                    '9px 15px',
-
-                  borderRadius:
-                    '999px',
-
-                  background:
-                    '#101217',
-
-                  border:
-                    '1px solid rgba(255,255,255,.10)',
-
-                  fontSize:
-                    '12px',
-
-                  fontWeight:
-                    '900',
-                },
-              },
-
-              'DAY 1 • ' +
-                gameTimeText() +
-                (
-                  isGeo
-                    ? ' • სექტემბერი'
-                    : ' • September'
-                )
-            )
-          ),
-
-          // ====================================
-          // HUD
-          // ====================================
-
-          h(
-            'div',
-            {
-              style: {
-                display:
-                  'flex',
-
-                gap:
-                  '8px',
-
-                flexWrap:
-                  'wrap',
-
-                marginBottom:
-                  '17px',
-              },
-            },
-
-            hudItem(
-              '💰',
-              isGeo
-                ? 'ფული'
-                : 'Cash',
-              cash +
-                ' ₾'
-            ),
-
-            hudItem(
-              '⚡',
-              isGeo
-                ? 'ენერგია'
-                : 'Energy',
-              energy +
-                '/100'
-            ),
-
-            hudItem(
-              '🧠',
-              isGeo
-                ? 'სტრესი'
-                : 'Stress',
-              stress +
-                '/100'
-            ),
-
-            hudItem(
-              '⭐',
-              isGeo
-                ? 'რეპუტაცია'
-                : 'Reputation',
-              reputation
-            ),
-
-            hudItem(
-              '🏆',
-              'Sales XP',
-              salesXP
-            )
-          ),
-
-          // ====================================
-          // GRID
-          // ====================================
-
-          h(
-            'div',
-            {
-              className:
-                't4-city-grid',
-
-              style: {
-                display:
-                  'grid',
-
-                gridTemplateColumns:
-                  'minmax(0,1fr) 315px',
-
-                gap:
-                  '17px',
-
-                alignItems:
-                  'start',
-              },
-            },
-
-            // ==================================
-            // MAP
-            // ==================================
-
-            h(
-              'div',
-              {
-                ref:
-                  mapRef,
-
-                tabIndex:
-                  0,
-
-                onKeyDown:
-                  handleKeyDown,
-
-                onClick:
-                  focusMap,
-
-                className:
-                  't4city-map',
-
-                style: {
-                  position:
-                    'relative',
-
-                  minHeight:
-                    '750px',
-
-                  overflow:
-                    'hidden',
-
-                  borderRadius:
-                    '22px',
-
-                  border:
-                    '1px solid rgba(255,255,255,.12)',
-
-                  background:
-                    '#161a20',
-
-                  boxShadow:
-                    '0 25px 70px rgba(0,0,0,.45)',
-
-                  userSelect:
-                    'none',
-                },
-              },
-
-              // =================================
-              // CITY BLOCKS / SIDEWALKS
-              // =================================
-
-              [
-                ['0%','0%','30%','33%'],
-                ['39%','0%','20%','33%'],
-                ['70%','0%','30%','35%'],
-                ['0%','49%','29%','51%'],
-                ['39%','49%','20%','23%'],
-                ['70%','49%','30%','25%'],
-                ['39%','86%','12%','14%'],
-                ['80%','86%','20%','14%'],
-              ].map(
-                function (
-                  block,
-                  index
-                ) {
-                  return h(
-                    'div',
-                    {
-                      key:
-                        'block-' +
-                        index,
-
-                      style: {
-                        position:
-                          'absolute',
-
-                        left:
-                          block[0],
-
-                        top:
-                          block[1],
-
-                        width:
-                          block[2],
-
-                        height:
-                          block[3],
-
-                        background:
-                          '#20242b',
-
-                        border:
-                          '1px solid rgba(255,255,255,.035)',
-
-                        zIndex:
-                          1,
-                      },
-                    }
-                  );
-                }
-              ),
-
-              // =================================
-              // MAIN HORIZONTAL ROAD 1
-              // =================================
-
-              h(
-                'div',
-                {
-                  style: {
-                    position:
-                      'absolute',
-
-                    left:
-                      '0',
-
-                    right:
-                      '0',
-
-                    top:
-                      '35%',
-
-                    height:
-                      '13%',
-
-                    background:
-                      '#11151b',
-
-                    borderTop:
-                      '5px solid #30353e',
-
-                    borderBottom:
-                      '5px solid #30353e',
-
-                    zIndex:
-                      3,
-                  },
-                }
-              ),
-
-              // horizontal road 2
-              h(
-                'div',
-                {
-                  style: {
-                    position:
-                      'absolute',
-
-                    left:
-                      '0',
-
-                    right:
-                      '0',
-
-                    top:
-                      '73%',
-
-                    height:
-                      '13%',
-
-                    background:
-                      '#11151b',
-
-                    borderTop:
-                      '5px solid #30353e',
-
-                    borderBottom:
-                      '5px solid #30353e',
-
-                    zIndex:
-                      3,
-                  },
-                }
-              ),
-
-              // =================================
-              // VERTICAL ROAD LEFT
-              // =================================
-
-              h(
-                'div',
-                {
-                  style: {
-                    position:
-                      'absolute',
-
-                    left:
-                      '29%',
-
-                    top:
-                      '0',
-
-                    width:
-                      '10%',
-
-                    height:
-                      '100%',
-
-                    background:
-                      '#11151b',
-
-                    borderLeft:
-                      '5px solid #30353e',
-
-                    borderRight:
-                      '5px solid #30353e',
-
-                    zIndex:
-                      3,
-                  },
-                }
-              ),
-
-              // vertical road right
-              h(
-                'div',
-                {
-                  style: {
-                    position:
-                      'absolute',
-
-                    left:
-                      '59%',
-
-                    top:
-                      '0',
-
-                    width:
-                      '11%',
-
-                    height:
-                      '100%',
-
-                    background:
-                      '#11151b',
-
-                    borderLeft:
-                      '5px solid #30353e',
-
-                    borderRight:
-                      '5px solid #30353e',
-
-                    zIndex:
-                      3,
-                  },
-                }
-              ),
-
-              // =================================
-              // LANE MARKINGS HORIZONTAL
-              // =================================
-
-              h(
-                'div',
-                {
-                  style: {
-                    position:
-                      'absolute',
-
-                    left:
-                      '0',
-
-                    right:
-                      '0',
-
-                    top:
-                      '41.5%',
-
-                    height:
-                      '2px',
-
-                    background:
-                      'repeating-linear-gradient(90deg,rgba(255,255,255,.38) 0 24px,transparent 24px 52px)',
-
-                    zIndex:
-                      4,
-                  },
-                }
-              ),
-
-              h(
-                'div',
-                {
-                  style: {
-                    position:
-                      'absolute',
-
-                    left:
-                      '0',
-
-                    right:
-                      '0',
-
-                    top:
-                      '79.5%',
-
-                    height:
-                      '2px',
-
-                    background:
-                      'repeating-linear-gradient(90deg,rgba(255,255,255,.38) 0 24px,transparent 24px 52px)',
-
-                    zIndex:
-                      4,
-                  },
-                }
-              ),
-
-              // vertical lane lines
-              h(
-                'div',
-                {
-                  style: {
-                    position:
-                      'absolute',
-
-                    left:
-                      '34%',
-
-                    top:
-                      '0',
-
-                    width:
-                      '2px',
-
-                    bottom:
-                      '0',
-
-                    background:
-                      'repeating-linear-gradient(180deg,rgba(255,255,255,.32) 0 24px,transparent 24px 50px)',
-
-                    zIndex:
-                      4,
-                  },
-                }
-              ),
-
-              h(
-                'div',
-                {
-                  style: {
-                    position:
-                      'absolute',
-
-                    left:
-                      '64.5%',
-
-                    top:
-                      '0',
-
-                    width:
-                      '2px',
-
-                    bottom:
-                      '0',
-
-                    background:
-                      'repeating-linear-gradient(180deg,rgba(255,255,255,.32) 0 24px,transparent 24px 50px)',
-
-                    zIndex:
-                      4,
-                  },
-                }
-              ),
-
-              // =================================
-              // ZEBRA CROSSINGS
-              // =================================
-
-              [
-                ['29%','33%'],
-                ['60%','33%'],
-                ['29%','71%'],
-                ['60%','71%'],
-              ].map(
-                function (
-                  crossing,
-                  index
-                ) {
-                  return h(
-                    'div',
-                    {
-                      key:
-                        'zebra-' +
-                        index,
-
-                      style: {
-                        position:
-                          'absolute',
-
-                        left:
-                          crossing[0],
-
-                        top:
-                          crossing[1],
-
-                        width:
-                          '10%',
-
-                        height:
-                          '17%',
-
-                        background:
-                          'repeating-linear-gradient(90deg,rgba(255,255,255,.58) 0 5px,transparent 5px 11px)',
-
-                        opacity:
-                          .62,
-
-                        zIndex:
-                          5,
-                      },
-                    }
-                  );
-                }
-              ),
-
-              // =================================
-              // PARK
-              // =================================
-
-              h(
-                'div',
-                {
-                  style: {
-                    position:
-                      'absolute',
-
-                    left:
-                      '41%',
-
-                    top:
-                      '51%',
-
-                    width:
-                      '16%',
-
-                    height:
-                      '18%',
-
-                    borderRadius:
-                      '13px',
-
-                    background:
-                      '#163523',
-
-                    border:
-                      '3px solid #304738',
-
-                    zIndex:
-                      7,
-                  },
-                },
-
-                h(
-                  'div',
-                  {
-                    style: {
-                      position:
-                        'absolute',
-
-                      left:
-                        '8%',
-
-                      top:
-                        '43%',
-
-                      right:
-                        '8%',
-
-                      height:
-                        '3px',
-
-                      background:
-                        'rgba(255,255,255,.12)',
-                    },
-                  }
-                ),
-
-                h(
-                  'div',
-                  {
-                    style: {
-                      position:
-                        'absolute',
-
-                      top:
-                        '8%',
-
-                      bottom:
-                        '8%',
-
-                      left:
-                        '48%',
-
-                      width:
-                        '3px',
-
-                      background:
-                        'rgba(255,255,255,.12)',
-                    },
-                  }
-                ),
-
-                [
-                  ['15%','15%'],
-                  ['68%','18%'],
-                  ['20%','68%'],
-                  ['70%','67%'],
-                ].map(
-                  function (
-                    tree,
-                    index
-                  ) {
-                    return h(
-                      'div',
-                      {
-                        key:
-                          'park-tree-' +
-                          index,
-
-                        style: {
-                          position:
-                            'absolute',
-
-                          left:
-                            tree[0],
-
-                          top:
-                            tree[1],
-
-                          width:
-                            '15px',
-
-                          height:
-                            '15px',
-
-                          borderRadius:
-                            '50%',
-
-                          background:
-                            '#346b42',
-
-                          border:
-                            '3px solid #21482d',
-
-                          boxShadow:
-                            '0 4px 4px rgba(0,0,0,.30)',
-                        },
-                      }
-                    );
-                  }
-                )
-              ),
-
-              // =================================
-              // BUILDINGS
-              // =================================
-
-              buildings.map(
-                renderBuilding
-              ),
-
-              buildings.map(
-                renderEntrance
-              ),
-
-              // =================================
-              // METRO
-              // =================================
-
-              h(
-                'div',
-                {
-                  style: {
-                    position:
-                      'absolute',
-
-                    left:
-                      '42%',
-
-                    top:
-                      '31%',
-
-                    transform:
-                      'translate(-50%,-50%)',
-
-                    padding:
-                      '6px 9px',
-
-                    borderRadius:
-                      '8px',
-
-                    background:
-                      '#201829',
-
-                    border:
-                      '1px solid rgba(190,80,255,.5)',
-
-                    color:
-                      '#cf9cff',
-
-                    fontSize:
-                      '9px',
-
-                    fontWeight:
-                      '900',
-
-                    zIndex:
-                      30,
-                  },
-                },
-
-                isGeo
-                  ? 'M • მეტრო'
-                  : 'M • Metro'
-              ),
-
-              // =================================
-              // BUS STOP
-              // =================================
-
-              h(
-                'div',
-                {
-                  style: {
-                    position:
-                      'absolute',
-
-                    left:
-                      '61%',
-
-                    top:
-                      '68%',
-
-                    padding:
-                      '6px 9px',
-
-                    borderRadius:
-                      '8px',
-
-                    background:
-                      '#10161f',
-
-                    border:
-                      '1px solid rgba(64,137,255,.35)',
-
-                    color:
-                      '#88b9ff',
-
-                    fontSize:
-                      '9px',
-
-                    fontWeight:
-                      '900',
-
-                    zIndex:
-                      30,
-                  },
-                },
-
-                'BUS'
-              ),
-
-              // =================================
-              // TAXI STAND
-              // =================================
-
-              h(
-                'div',
-                {
-                  style: {
-                    position:
-                      'absolute',
-
-                    left:
-                      '42%',
-
-                    top:
-                      '88%',
-
-                    padding:
-                      '6px 10px',
-
-                    borderRadius:
-                      '8px',
-
-                    background:
-                      '#211b07',
-
-                    border:
-                      '1px solid rgba(255,201,33,.45)',
-
-                    color:
-                      '#ffc921',
-
-                    fontSize:
-                      '9px',
-
-                    fontWeight:
-                      '900',
-
-                    zIndex:
-                      30,
-                  },
-                },
-
-                'TAXI'
-              ),
-
-              // =================================
-              // MOVING TOP-DOWN CARS
-              // =================================
-
-              renderCar(
-                'car1',
-                '5%',
-                '39%',
-                90,
-                't4-car-east-1',
-                '#34526e'
-              ),
-
-              renderCar(
-                'car2',
-                '23%',
-                '44%',
-                90,
-                't4-car-east-2',
-                '#7b2520'
-              ),
-
-              renderCar(
-                'car3',
-                '90%',
-                '82%',
-                -90,
-                't4-car-west-1',
-                '#d3d5d7'
-              ),
-
-              renderCar(
-                'car4',
-                '32%',
-                '10%',
-                180,
-                't4-car-south',
-                '#f0bd24'
-              ),
-
-              renderCar(
-                'car5',
-                '66%',
-                '91%',
-                0,
-                't4-car-north',
-                '#20242d'
-              ),
-
-              // =================================
-              // OFFICE TARGET
-              // =================================
-
-              h(
-                'div',
-                {
-                  style: {
-                    position:
-                      'absolute',
-
-                    left:
-                      '69%',
-
-                    top:
-                      '40%',
-
-                    transform:
-                      'translate(-50%,-50%)',
-
-                    padding:
-                      '5px 9px',
-
-                    borderRadius:
-                      '999px',
-
-                    background:
-                      '#ef1b13',
-
-                    color:
-                      '#fff',
-
-                    fontSize:
-                      '8px',
-
-                    fontWeight:
-                      '900',
-
-                    zIndex:
-                      80,
-
-                    boxShadow:
-                      '0 0 20px rgba(239,27,19,.55)',
-                  },
-                },
-
-                isGeo
-                  ? '🎯 ოფისი'
-                  : '🎯 OFFICE'
-              ),
-
-              // =================================
-              // PLAYER
-              // =================================
-
-              renderPlayer(),
-
-              // =================================
-              // ENTER MESSAGE
-              // =================================
-
-              nearbyLocation &&
-              !nearbyLocation.locked
-                ? h(
-                    'div',
-                    {
-                      style: {
-                        position:
-                          'absolute',
-
-                        left:
-                          playerPosition.x +
-                          '%',
-
-                        top:
-                          Math.max(
-                            3,
-                            playerPosition.y -
-                              7
-                          ) +
-                          '%',
-
-                        transform:
-                          'translateX(-50%)',
-
-                        zIndex:
-                          120,
-
-                        padding:
-                          '6px 9px',
-
-                        borderRadius:
-                          '999px',
-
-                        background:
-                          '#000',
-
-                        color:
-                          '#fff',
-
-                        border:
-                          '1px solid rgba(255,255,255,.18)',
-
-                        fontSize:
-                          '9px',
-
-                        fontWeight:
-                          '900',
-
-                        whiteSpace:
-                          'nowrap',
-                      },
-                    },
-
-                    isGeo
-                      ? 'ENTER — შესვლა'
-                      : 'ENTER — Enter'
-                  )
-                : null,
-
-              // =================================
-              // KEY HELP
-              // =================================
-
-              h(
-                'div',
-                {
-                  style: {
-                    position:
-                      'absolute',
-
-                    left:
-                      '14px',
-
-                    bottom:
-                      '14px',
-
-                    padding:
-                      '8px 10px',
-
-                    borderRadius:
-                      '9px',
-
-                    background:
-                      'rgba(0,0,0,.80)',
-
-                    border:
-                      '1px solid rgba(255,255,255,.10)',
-
-                    color:
-                      'rgba(255,255,255,.65)',
-
-                    fontSize:
-                      '9px',
-
-                    fontWeight:
-                      '900',
-
-                    zIndex:
-                      130,
-                  },
-                },
-
-                'WASD / ↑ ↓ ← →  •  ENTER / E'
-              ),
-
-              // =================================
-              // D PAD
-              // =================================
-
-              h(
-                'div',
-                {
-                  style: {
-                    position:
-                      'absolute',
-
-                    right:
-                      '14px',
-
-                    bottom:
-                      '14px',
-
-                    display:
-                      'grid',
-
-                    gridTemplateColumns:
-                      '44px 44px 44px',
-
-                    gridTemplateRows:
-                      '40px 40px 40px',
-
-                    gap:
-                      '4px',
-
-                    zIndex:
-                      130,
-                  },
-                },
-
-                h('div'),
-
-                controlButton(
-                  '↑',
-                  function () {
-                    movePlayer(
-                      0,
-                      -1,
-                      'up'
-                    );
-                  }
-                ),
-
-                h('div'),
-
-                controlButton(
-                  '←',
-                  function () {
-                    movePlayer(
-                      -1,
-                      0,
-                      'left'
-                    );
-                  }
-                ),
-
-                controlButton(
-                  'E',
-                  interact
-                ),
-
-                controlButton(
-                  '→',
-                  function () {
-                    movePlayer(
-                      1,
-                      0,
-                      'right'
-                    );
-                  }
-                ),
-
-                h('div'),
-
-                controlButton(
-                  '↓',
-                  function () {
-                    movePlayer(
-                      0,
-                      1,
-                      'down'
-                    );
-                  }
-                ),
-
-                h('div')
-              )
-            ),
-
-            // ==================================
-            // RIGHT PANEL
-            // ==================================
-
-            h(
-              'aside',
-              {
-                style: {
-                  display:
-                    'grid',
-
-                  gap:
-                    '12px',
-                },
-              },
-
-              // MISSION
-              h(
-                'div',
-                {
-                  style: {
-                    padding:
-                      '20px',
-
-                    borderRadius:
-                      '18px',
-
-                    background:
-                      '#101217',
-
-                    border:
-                      '1px solid rgba(239,27,19,.35)',
-                  },
-                },
-
-                h(
-                  'div',
-                  {
-                    style: {
-                      marginBottom:
-                        '7px',
-
-                      color:
-                        '#ef1b13',
-
-                      fontSize:
-                        '10px',
-
-                      fontWeight:
-                        '900',
-
-                      letterSpacing:
-                        '.12em',
-                    },
-                  },
-
-                  isGeo
-                    ? 'მიმდინარე მისია'
-                    : 'CURRENT MISSION'
-                ),
-
-                h(
-                  'h2',
-                  {
-                    style: {
-                      margin:
-                        '0 0 10px',
-
-                      fontSize:
-                        '27px',
-
-                      lineHeight:
-                        '1.05',
-
-                      fontWeight:
-                        '900',
-                    },
-                  },
-
-                  isGeo
-                    ? 'პირველი სამუშაო დღე'
-                    : 'First Workday'
-                ),
-
-                h(
-                  'p',
-                  {
-                    style: {
-                      margin:
-                        '0 0 16px',
-
-                      color:
-                        'rgba(255,255,255,.62)',
-
-                      fontSize:
-                        '12px',
-
-                      lineHeight:
-                        '1.6',
-                    },
-                  },
-
-                  isGeo
-                    ? 'ოფისში უნდა მიხვიდე 09:00-მდე. ახლა შენ თვითონ მართავ გადაადგილებას.'
-                    : 'Get to the office before 09:00. You now control the journey yourself.'
-                ),
-
-                h(
-                  'button',
-                  {
-                    type:
-                      'button',
-
-                    onClick:
-                      focusMap,
-
-                    style: {
-                      width:
-                        '100%',
-
-                      padding:
-                        '13px',
-
-                      border:
-                        'none',
-
-                      borderRadius:
-                        '11px',
-
-                      background:
-                        '#ef1b13',
-
-                      color:
-                        '#fff',
-
-                      fontSize:
-                        '13px',
-
-                      fontWeight:
-                        '900',
-
-                      cursor:
-                        'pointer',
-                    },
-                  },
-
-                  isGeo
-                    ? '🚶 დაიწყე გზა →'
-                    : '🚶 Start Journey →'
-                )
-              ),
-
-              // STATUS
-              h(
-                'div',
-                {
-                  style: {
-                    padding:
-                      '18px',
-
-                    borderRadius:
-                      '17px',
-
-                    background:
-                      '#101217',
-
-                    border:
-                      '1px solid rgba(255,255,255,.08)',
-                  },
-                },
-
-                h(
-                  'div',
-                  {
-                    style: {
-                      marginBottom:
-                        '8px',
-
-                      fontSize:
-                        '12px',
-
-                      fontWeight:
-                        '900',
-                    },
-                  },
-
-                  isGeo
-                    ? '📍 LIVE STATUS'
-                    : '📍 LIVE STATUS'
-                ),
-
-                h(
-                  'div',
-                  {
-                    style: {
-                      color:
-                        'rgba(255,255,255,.63)',
-
-                      fontSize:
-                        '12px',
-
-                      lineHeight:
-                        '1.55',
-                    },
-                  },
-
-                  message
-                )
-              ),
-
-              // TRANSPORT
-              h(
-                'div',
-                {
-                  style: {
-                    padding:
-                      '18px',
-
-                    borderRadius:
-                      '17px',
-
-                    background:
-                      '#101217',
-
-                    border:
-                      '1px solid rgba(255,255,255,.08)',
-                  },
-                },
-
-                h(
-                  'div',
-                  {
-                    style: {
-                      marginBottom:
-                        '10px',
-
-                      fontSize:
-                        '12px',
-
-                      fontWeight:
-                        '900',
-                    },
-                  },
-
-                  isGeo
-                    ? '🚦 ტრანსპორტი'
-                    : '🚦 TRANSPORT'
-                ),
-
-                h(
-                  'div',
-                  {
-                    style: {
-                      display:
-                        'grid',
-
-                      gap:
-                        '7px',
-                    },
-                  },
-
-                  h(
-                    'div',
-                    {
-                      style: {
-                        padding:
-                          '9px',
-
-                        borderRadius:
-                          '9px',
-
-                        background:
-                          'rgba(51,209,122,.08)',
-
-                        border:
-                          '1px solid rgba(51,209,122,.25)',
-
-                        color:
-                          '#69db96',
-
-                        fontSize:
-                          '11px',
-
-                        fontWeight:
-                          '900',
-                      },
-                    },
-
-                    isGeo
-                      ? '🚶 ფეხით — აქტიური'
-                      : '🚶 Walking — Active'
-                  ),
-
-                  h(
-                    'div',
-                    {
-                      style: {
-                        padding:
-                          '9px',
-
-                        borderRadius:
-                          '9px',
-
-                        background:
-                          'rgba(255,255,255,.03)',
-
-                        border:
-                          '1px solid rgba(255,255,255,.06)',
-
-                        color:
-                          'rgba(255,255,255,.40)',
-
-                        fontSize:
-                          '11px',
-
-                        fontWeight:
-                          '800',
-                      },
-                    },
-
-                    isGeo
-                      ? '🚕 ტაქსი — შემდეგ ეტაპზე'
-                      : '🚕 Taxi — Next Step'
-                  ),
-
-                  h(
-                    'div',
-                    {
-                      style: {
-                        padding:
-                          '9px',
-
-                        borderRadius:
-                          '9px',
-
-                        background:
-                          'rgba(255,255,255,.03)',
-
-                        border:
-                          '1px solid rgba(255,255,255,.06)',
-
-                        color:
-                          'rgba(255,255,255,.40)',
-
-                        fontSize:
-                          '11px',
-
-                        fontWeight:
-                          '800',
-                      },
-                    },
-
-                    isGeo
-                      ? '🚗 მანქანა — ჯერ არ გაქვს'
-                      : '🚗 Personal Car — Not Owned'
-                  )
-                )
-              ),
-
-              // HOME
-              h(
-                'div',
-                {
-                  style: {
-                    padding:
-                      '18px',
-
-                    borderRadius:
-                      '17px',
-
-                    background:
-                      '#101217',
-
-                    border:
-                      '1px solid rgba(255,255,255,.08)',
-                  },
-                },
-
-                h(
-                  'div',
-                  {
-                    style: {
-                      marginBottom:
-                        '9px',
-
-                      fontSize:
-                        '12px',
-
-                      fontWeight:
-                        '900',
-                    },
-                  },
-
-                  isGeo
-                    ? '🏠 შენი სახლი'
-                    : '🏠 YOUR HOME'
-                ),
-
-                h(
-                  'div',
-                  {
-                    style: {
-                      display:
-                        'grid',
-
-                      gap:
-                        '6px',
-
-                      color:
-                        'rgba(255,255,255,.58)',
-
-                      fontSize:
-                        '11px',
-                    },
-                  },
-
-                  h(
-                    'div',
-                    null,
-
-                    (
-                      isGeo
-                        ? 'ლოკაცია: '
-                        : 'Location: '
-                    ) +
-                      homeDistrict
-                  ),
-
-                  h(
-                    'div',
-                    null,
-
-                    (
-                      isGeo
-                        ? 'ქირა: '
-                        : 'Rent: '
-                    ) +
-                      finalRent +
-                      ' ₾'
-                  ),
-
-                  h(
-                    'div',
-                    null,
-
-                    (
-                      isGeo
-                        ? 'ოფისამდე საბაზო დრო: '
-                        : 'Base commute: '
-                    ) +
-                      commuteMinutes +
-                      (
-                        isGeo
-                          ? ' წუთი'
-                          : ' min'
-                      )
-                  )
-                )
-              )
-            )
-          )
+          gameTime
         )
       ),
 
-      Footer
-        ? h(Footer, {
-            lang,
-          })
+      // ======================================
+      // STATS
+      // ======================================
+
+      h(
+        'div',
+        {
+          style: {
+            position:
+              'absolute',
+
+            left:
+              '22px',
+
+            bottom:
+              '22px',
+
+            display:
+              'flex',
+
+            gap:
+              '8px',
+
+            flexWrap:
+              'wrap',
+
+            zIndex:
+              20,
+          },
+        },
+
+        statBox(
+          isGeo
+            ? 'ფული'
+            : 'CASH',
+
+          cash +
+            ' ₾'
+        ),
+
+        statBox(
+          isGeo
+            ? 'ენერგია'
+            : 'ENERGY',
+
+          energy +
+            '/100'
+        ),
+
+        statBox(
+          isGeo
+            ? 'სტრესი'
+            : 'STRESS',
+
+          stress +
+            '/100'
+        ),
+
+        statBox(
+          'SALES XP',
+
+          salesXP
+        )
+      ),
+
+      // ======================================
+      // MISSION
+      // ======================================
+
+      h(
+        'div',
+        {
+          style: {
+            position:
+              'absolute',
+
+            right:
+              '22px',
+
+            bottom:
+              '22px',
+
+            width:
+              '290px',
+
+            maxWidth:
+              'calc(100vw - 44px)',
+
+            zIndex:
+              20,
+
+            padding:
+              '16px',
+
+            borderRadius:
+              '16px',
+
+            background:
+              'rgba(8,10,13,.76)',
+
+            backdropFilter:
+              'blur(12px)',
+
+            border:
+              '1px solid rgba(239,27,19,.35)',
+          },
+        },
+
+        h(
+          'div',
+          {
+            style: {
+              color:
+                '#ef4136',
+
+              fontSize:
+                '9px',
+
+              fontWeight:
+                '900',
+
+              letterSpacing:
+                '.10em',
+            },
+          },
+
+          isGeo
+            ? 'მიმდინარე მისია'
+            : 'CURRENT MISSION'
+        ),
+
+        h(
+          'div',
+          {
+            style: {
+              marginTop:
+                '5px',
+
+              fontSize:
+                '17px',
+
+              fontWeight:
+                '900',
+            },
+          },
+
+          isGeo
+            ? 'პირველი სამუშაო დღე'
+            : 'First Workday'
+        ),
+
+        h(
+          'div',
+          {
+            style: {
+              marginTop:
+                '6px',
+
+              color:
+                'rgba(255,255,255,.68)',
+
+              fontSize:
+                '11px',
+
+              lineHeight:
+                '1.5',
+            },
+          },
+
+          isGeo
+            ? 'მიდი Team4 Office-ში 09:00-მდე.'
+            : 'Get to Team4 Office before 09:00.'
+        ),
+
+        h(
+          'div',
+          {
+            style: {
+              marginTop:
+                '10px',
+
+              color:
+                'rgba(255,255,255,.48)',
+
+              fontSize:
+                '10px',
+
+              fontWeight:
+                '800',
+            },
+          },
+
+          isGeo
+            ? 'WASD — მოძრაობა • SHIFT — სირბილი • მაუსი — კამერა'
+            : 'WASD — Move • SHIFT — Run • Mouse — Camera'
+        )
+      ),
+
+      // ======================================
+      // INTERACTION PROMPT
+      // ======================================
+
+      interactionText
+        ? h(
+            'div',
+            {
+              style: {
+                position:
+                  'absolute',
+
+                left:
+                  '50%',
+
+                bottom:
+                  '85px',
+
+                transform:
+                  'translateX(-50%)',
+
+                zIndex:
+                  30,
+
+                padding:
+                  '11px 18px',
+
+                borderRadius:
+                  '999px',
+
+                background:
+                  'rgba(0,0,0,.82)',
+
+                border:
+                  '1px solid rgba(255,255,255,.18)',
+
+                boxShadow:
+                  '0 8px 30px rgba(0,0,0,.3)',
+
+                fontSize:
+                  '12px',
+
+                fontWeight:
+                  '900',
+              },
+            },
+
+            interactionText
+          )
+        : null,
+
+      // ======================================
+      // LOADING
+      // ======================================
+
+      loading
+        ? h(
+            'div',
+            {
+              style: {
+                position:
+                  'absolute',
+
+                inset:
+                  0,
+
+                display:
+                  'flex',
+
+                alignItems:
+                  'center',
+
+                justifyContent:
+                  'center',
+
+                zIndex:
+                  100,
+
+                background:
+                  '#090b0e',
+
+                fontSize:
+                  '18px',
+
+                fontWeight:
+                  '900',
+              },
+            },
+
+            isGeo
+              ? 'TEAM4 CITY იტვირთება...'
+              : 'Loading TEAM4 CITY...'
+          )
+        : null,
+
+      loadError
+        ? h(
+            'div',
+            {
+              style: {
+                position:
+                  'absolute',
+
+                inset:
+                  0,
+
+                display:
+                  'flex',
+
+                alignItems:
+                  'center',
+
+                justifyContent:
+                  'center',
+
+                zIndex:
+                  110,
+
+                background:
+                  '#090b0e',
+
+                color:
+                  '#ff665e',
+
+                fontWeight:
+                  '900',
+              },
+            },
+
+            loadError
+          )
         : null
     );
   }
