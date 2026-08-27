@@ -346,6 +346,12 @@ function loadGLTFLoader() {
           try {
             const THREE =
               await loadThree();
+            const {
+  GLTFLoader,
+} = await loadGLTFLoader();
+
+const gltfLoader =
+  new GLTFLoader();
 
             if (
               destroyed ||
