@@ -1013,44 +1013,48 @@ function createTextSign(
                 door
               );
 
-              // sign board
+              // ==================================
+// BUILDING SIGN
+// ==================================
 
-              if (
-                config.signColor
-              ) {
-                const sign =
-                  new THREE.Mesh(
-                    new THREE.BoxGeometry(
-                      Math.min(
-                        config.w -
-                          1,
-                        7
-                      ),
-                      0.75,
-                      0.18
-                    ),
-                    material(
-                      config.signColor,
-                      0.35
-                    )
-                  );
+if (
+  config.signText
+) {
+  const sign =
+    createTextSign(
+      config.signText,
 
-                sign.position.set(
-                  0,
-                  Math.min(
-                    config.h -
-                      0.8,
-                    3.7
-                  ),
-                  config.d /
-                    2 +
-                    0.15
-                );
+      Math.min(
+        config.w - 2,
+        config.signWidth || 8
+      ),
 
-                group.add(
-                  sign
-                );
-              }
+      config.signHeight || 1.25,
+
+      config.signBackground ||
+        '#15171a',
+
+      config.signTextColor ||
+        '#ffffff'
+    );
+
+  sign.position.set(
+    0,
+
+    config.signY ||
+      Math.min(
+        config.h - 1.2,
+        4.8
+      ),
+
+    config.d / 2 +
+      0.12
+  );
+
+  group.add(
+    sign
+  );
+}
 
               addCollision(
                 config.x,
