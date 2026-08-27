@@ -1222,9 +1222,14 @@ signTextColor:
               roof:
                 0x5a4e50,
 
-              signColor:
-                0x8b6cec,
-            });
+              signText:
+  'CITY SHOP',
+
+signBackground:
+  '#7654d8',
+
+signTextColor:
+  '#ffffff',
 
             // ==================================
             // GYM
@@ -1252,9 +1257,14 @@ signTextColor:
               roof:
                 0x393a3a,
 
-              signColor:
-                0xea9528,
-            });
+              signText:
+  'FITNESS',
+
+signBackground:
+  '#e58a22',
+
+signTextColor:
+  '#ffffff',
 
             // ==================================
             // DEALERSHIP
@@ -1282,9 +1292,14 @@ signTextColor:
               roof:
                 0x292c30,
 
-              signColor:
-                0xf2bb32,
-            });
+              signText:
+  'AUTO',
+
+signBackground:
+  '#d7a51d',
+
+signTextColor:
+  '#111111',
 
             // ==================================
             // TREES
