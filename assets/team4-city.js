@@ -1187,9 +1187,14 @@ if (
               roof:
                 0x6a6254,
 
-              signColor:
-                0xd9b845,
-            });
+             signText:
+  'BANK',
+
+signBackground:
+  '#b89522',
+
+signTextColor:
+  '#ffffff',
 
             // ==================================
             // SHOP
