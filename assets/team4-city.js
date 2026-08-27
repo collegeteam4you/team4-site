@@ -11,16 +11,27 @@
   // ==========================================
 
   let threePromise = null;
+let gltfLoaderPromise = null;
 
-  function loadThree() {
-    if (!threePromise) {
-      threePromise = import(
-        'https://cdn.jsdelivr.net/npm/three@0.185.1/build/three.module.min.js'
-      );
-    }
-
-    return threePromise;
+function loadThree() {
+  if (!threePromise) {
+    threePromise = import(
+      'https://cdn.jsdelivr.net/npm/three@0.185.1/build/three.module.min.js'
+    );
   }
+
+  return threePromise;
+}
+
+function loadGLTFLoader() {
+  if (!gltfLoaderPromise) {
+    gltfLoaderPromise = import(
+      'https://cdn.jsdelivr.net/npm/three@0.185.1/examples/jsm/loaders/GLTFLoader.js'
+    );
+  }
+
+  return gltfLoaderPromise;
+}
 
   // ==========================================
   // HELPERS
