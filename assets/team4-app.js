@@ -8757,9 +8757,15 @@ if (isTeam4InterviewPage) {
     setLang,
   });
 }
-  // APARTMENT
-if (isTeam4ApartmentPage) {
+ if (isTeam4ApartmentPage) {
   return h(window.Team4ApartmentPage, {
+    lang,
+    setLang,
+  });
+}
+
+if (isTeam4CityPage) {
+  return h(window.Team4CityPage, {
     lang,
     setLang,
   });
