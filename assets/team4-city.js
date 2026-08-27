@@ -1776,24 +1776,34 @@ function createStreetLight(
             );
 
             // ==================================
-            // PLAYER MODEL
+            // PLAYER MODEL — V2
+            // More human proportions + simple facial detail
             // ==================================
 
             function createPlayer() {
               const root =
                 new THREE.Group();
 
-              // outfit color based on saved look
+              const visual =
+                new THREE.Group();
+
+              root.add(
+                visual
+              );
+
+              const isFemale =
+                avatar.gender ===
+                'female';
 
               let outfitColor =
-                0x181818;
+                0x1b1d20;
 
               if (
                 avatar.look ===
                 'casual'
               ) {
                 outfitColor =
-                  0x284d70;
+                  0x315f89;
               }
 
               if (
@@ -1801,7 +1811,7 @@ function createStreetLight(
                 'smart-casual'
               ) {
                 outfitColor =
-                  0x34383d;
+                  0x3b4047;
               }
 
               if (
@@ -1814,274 +1824,793 @@ function createStreetLight(
 
               const skin =
                 material(
-                  0xd49b78,
-                  0.75
+                  0xd29a78,
+                  0.72,
+                  0.0
+                );
+
+              const skinDark =
+                material(
+                  0xb8795c,
+                  0.76,
+                  0.0
                 );
 
               const outfit =
                 material(
                   outfitColor,
-                  0.85
+                  0.78,
+                  0.02
+                );
+
+              const shirtMat =
+                material(
+                  0xe8e6e1,
+                  0.82,
+                  0.0
                 );
 
               const pantsMat =
                 material(
-                  0x202227,
-                  0.9
+                  0x24272c,
+                  0.86,
+                  0.01
                 );
 
               const shoeMat =
                 material(
-                  0xe9e9e7,
-                  0.65
+                  avatar.look ===
+                  'business'
+                    ? 0x111214
+                    : 0xe4e4e1,
+                  0.50,
+                  0.05
                 );
 
-              // torso
+              const hairMat =
+                material(
+                  0x241d19,
+                  0.88,
+                  0.0
+                );
+
+              const eyeMat =
+                material(
+                  0x1b1715,
+                  0.45,
+                  0.0
+                );
+
+              function shadow(mesh) {
+                mesh.castShadow =
+                  true;
+
+                mesh.receiveShadow =
+                  true;
+
+                return mesh;
+              }
+
+              // hips / pelvis
+              const hips =
+                new THREE.Group();
+
+              hips.position.y =
+                1.06;
+
+              visual.add(
+                hips
+              );
+
+              const pelvis =
+                shadow(
+                  new THREE.Mesh(
+                    new THREE.CapsuleGeometry(
+                      isFemale
+                        ? 0.30
+                        : 0.32,
+                      0.24,
+                      6,
+                      12
+                    ),
+                    pantsMat
+                  )
+                );
+
+              pelvis.scale.set(
+                isFemale
+                  ? 1.10
+                  : 1.0,
+                0.82,
+                0.76
+              );
+
+              hips.add(
+                pelvis
+              );
+
+              // torso — tapered shape gives shoulders/waist
+              const torsoGroup =
+                new THREE.Group();
+
+              torsoGroup.position.y =
+                1.66;
+
+              visual.add(
+                torsoGroup
+              );
 
               const torso =
-                new THREE.Mesh(
-                  new THREE.CapsuleGeometry(
-                    avatar.gender ===
-                    'female'
-                      ? 0.38
-                      : 0.43,
-                    0.85,
-                    5,
-                    10
-                  ),
-                  outfit
+                shadow(
+                  new THREE.Mesh(
+                    new THREE.CylinderGeometry(
+                      isFemale
+                        ? 0.40
+                        : 0.46,
+                      isFemale
+                        ? 0.31
+                        : 0.35,
+                      1.02,
+                      18,
+                      1
+                    ),
+                    outfit
+                  )
                 );
 
-              torso.position.y =
-                1.55;
+              torso.scale.z =
+                isFemale
+                  ? 0.70
+                  : 0.72;
 
-              torso.castShadow =
-                true;
-
-              root.add(
+              torsoGroup.add(
                 torso
               );
 
-              // head
+              // shirt opening for smarter looks
+              if (
+                avatar.look ===
+                  'business' ||
+                avatar.look ===
+                  'smart-casual'
+              ) {
+                const shirt =
+                  shadow(
+                    new THREE.Mesh(
+                      new THREE.BoxGeometry(
+                        0.20,
+                        0.68,
+                        0.035
+                      ),
+                      shirtMat
+                    )
+                  );
 
-              const head =
-                new THREE.Mesh(
-                  new THREE.SphereGeometry(
-                    0.34,
-                    18,
-                    14
-                  ),
-                  skin
+                shirt.position.set(
+                  0,
+                  0.02,
+                  0.275
                 );
 
-              head.position.y =
-                2.65;
+                torsoGroup.add(
+                  shirt
+                );
 
-              head.castShadow =
-                true;
+                if (
+                  avatar.look ===
+                  'business'
+                ) {
+                  const tie =
+                    shadow(
+                      new THREE.Mesh(
+                        new THREE.BoxGeometry(
+                          0.055,
+                          0.45,
+                          0.045
+                        ),
+                        material(
+                          0x651f23,
+                          0.72,
+                          0.0
+                        )
+                      )
+                    );
 
-              root.add(
+                  tie.position.set(
+                    0,
+                    -0.01,
+                    0.305
+                  );
+
+                  torsoGroup.add(
+                    tie
+                  );
+                }
+              }
+
+              // neck
+              const neck =
+                shadow(
+                  new THREE.Mesh(
+                    new THREE.CylinderGeometry(
+                      0.13,
+                      0.15,
+                      0.24,
+                      14
+                    ),
+                    skin
+                  )
+                );
+
+              neck.position.y =
+                2.26;
+
+              visual.add(
+                neck
+              );
+
+              // head + face
+              const headGroup =
+                new THREE.Group();
+
+              headGroup.position.y =
+                2.63;
+
+              visual.add(
+                headGroup
+              );
+
+              const head =
+                shadow(
+                  new THREE.Mesh(
+                    new THREE.SphereGeometry(
+                      0.34,
+                      24,
+                      18
+                    ),
+                    skin
+                  )
+                );
+
+              head.scale.set(
+                0.92,
+                1.10,
+                0.94
+              );
+
+              headGroup.add(
                 head
               );
 
-              // legs
-
-              [
-                -0.19,
-                0.19,
-              ].forEach(
-                function (x) {
-                  const leg =
-                    new THREE.Mesh(
-                      new THREE.CapsuleGeometry(
-                        0.14,
-                        0.70,
-                        4,
-                        8
-                      ),
-                      pantsMat
+              // ears
+              [-1, 1].forEach(
+                function (side) {
+                  const ear =
+                    shadow(
+                      new THREE.Mesh(
+                        new THREE.SphereGeometry(
+                          0.065,
+                          12,
+                          10
+                        ),
+                        skinDark
+                      )
                     );
 
-                  leg.position.set(
-                    x,
+                  ear.scale.set(
                     0.65,
+                    1.0,
+                    0.45
+                  );
+
+                  ear.position.set(
+                    side * 0.315,
+                    0,
                     0
                   );
 
-                  leg.castShadow =
-                    true;
+                  headGroup.add(
+                    ear
+                  );
+                }
+              );
 
-                  root.add(
-                    leg
+              // eyes + brows
+              [-1, 1].forEach(
+                function (side) {
+                  const eye =
+                    new THREE.Mesh(
+                      new THREE.SphereGeometry(
+                        0.034,
+                        12,
+                        8
+                      ),
+                      eyeMat
+                    );
+
+                  eye.scale.z =
+                    0.45;
+
+                  eye.position.set(
+                    side * 0.115,
+                    0.055,
+                    0.306
                   );
 
-                  const shoe =
+                  headGroup.add(
+                    eye
+                  );
+
+                  const brow =
                     new THREE.Mesh(
                       new THREE.BoxGeometry(
-                        0.32,
-                        0.18,
-                        0.55
+                        0.13,
+                        0.025,
+                        0.022
                       ),
-                      shoeMat
+                      hairMat
                     );
 
-                  shoe.position.set(
-                    x,
-                    0.15,
-                    0.11
+                  brow.position.set(
+                    side * 0.115,
+                    0.13,
+                    0.302
                   );
 
-                  shoe.castShadow =
-                    true;
+                  brow.rotation.z =
+                    side * -0.08;
 
-                  root.add(
-                    shoe
+                  headGroup.add(
+                    brow
                   );
                 }
               );
 
-              // arms
+              // nose
+              const nose =
+                shadow(
+                  new THREE.Mesh(
+                    new THREE.ConeGeometry(
+                      0.055,
+                      0.15,
+                      10
+                    ),
+                    skinDark
+                  )
+                );
 
-              [
-                -1,
-                1,
-              ].forEach(
-                function (side) {
-                  const arm =
-                    new THREE.Mesh(
-                      new THREE.CapsuleGeometry(
-                        0.11,
-                        0.70,
-                        4,
-                        8
-                      ),
-                      outfit
-                    );
+              nose.rotation.x =
+                Math.PI / 2;
 
-                  arm.position.set(
-                    side *
-                      0.52,
-                    1.55,
-                    0
-                  );
-
-                  arm.rotation.z =
-                    side *
-                    -0.08;
-
-                  arm.castShadow =
-                    true;
-
-                  root.add(
-                    arm
-                  );
-                }
+              nose.position.set(
+                0,
+                -0.01,
+                0.345
               );
 
-              // HAIR PLACEHOLDER
-              // Uses chosen avatar state.
-              // Later replaced by real GLB hairstyle.
+              headGroup.add(
+                nose
+              );
 
+              // mouth
+              const mouth =
+                new THREE.Mesh(
+                  new THREE.BoxGeometry(
+                    0.13,
+                    0.025,
+                    0.018
+                  ),
+                  material(
+                    0x7a3e3c,
+                    0.68,
+                    0.0
+                  )
+                );
+
+              mouth.position.set(
+                0,
+                -0.145,
+                0.314
+              );
+
+              headGroup.add(
+                mouth
+              );
+
+              // hair
               if (
                 avatar.hair &&
                 avatar.hair !==
                   'none'
               ) {
                 const hair =
-                  new THREE.Mesh(
-                    new THREE.SphereGeometry(
-                      0.36,
-                      14,
-                      10
-                    ),
-                    material(
-                      0x27201b
+                  shadow(
+                    new THREE.Mesh(
+                      new THREE.SphereGeometry(
+                        0.355,
+                        20,
+                        14
+                      ),
+                      hairMat
                     )
                   );
 
                 hair.scale.set(
-                  1.03,
-                  0.55,
-                  1.03
+                  isFemale
+                    ? 1.02
+                    : 1.04,
+                  isFemale
+                    ? 0.72
+                    : 0.48,
+                  1.02
                 );
 
                 hair.position.y =
-                  2.90;
+                  isFemale
+                    ? 0.20
+                    : 0.245;
 
-                hair.castShadow =
-                  true;
-
-                root.add(
+                headGroup.add(
                   hair
                 );
+
+                if (isFemale) {
+                  const backHair =
+                    shadow(
+                      new THREE.Mesh(
+                        new THREE.CapsuleGeometry(
+                          0.22,
+                          0.42,
+                          6,
+                          12
+                        ),
+                        hairMat
+                      )
+                    );
+
+                  backHair.position.set(
+                    0,
+                    -0.07,
+                    -0.22
+                  );
+
+                  headGroup.add(
+                    backHair
+                  );
+                }
               }
 
-              // beard placeholder
-
+              // beard
               if (
-                avatar.gender ===
-                  'male' &&
+                !isFemale &&
                 avatar.beard &&
                 avatar.beard !==
                   'none'
               ) {
                 const beard =
-                  new THREE.Mesh(
-                    new THREE.BoxGeometry(
-                      0.37,
-                      0.22,
-                      0.10
-                    ),
-                    material(
-                      0x30251f
+                  shadow(
+                    new THREE.Mesh(
+                      new THREE.SphereGeometry(
+                        0.27,
+                        18,
+                        12,
+                        0,
+                        Math.PI * 2,
+                        Math.PI * 0.50,
+                        Math.PI * 0.50
+                      ),
+                      material(
+                        0x30251f,
+                        0.90,
+                        0.0
+                      )
                     )
                   );
 
-                beard.position.set(
-                  0,
-                  2.48,
-                  0.30
+                beard.scale.set(
+                  0.95,
+                  0.66,
+                  0.92
                 );
 
-                root.add(
+                beard.position.set(
+                  0,
+                  -0.13,
+                  0.10
+                );
+
+                headGroup.add(
                   beard
                 );
               }
 
-              // glasses placeholder
-
+              // glasses
               if (
                 avatar.accessory ===
                   'glasses' ||
                 avatar.accessory ===
                   'sunglasses'
               ) {
-                const glasses =
+                const glassesMat =
+                  material(
+                    avatar.accessory ===
+                      'sunglasses'
+                      ? 0x151719
+                      : 0x3b4045,
+                    0.25,
+                    0.10
+                  );
+
+                [-1, 1].forEach(
+                  function (side) {
+                    const lens =
+                      new THREE.Mesh(
+                        new THREE.BoxGeometry(
+                          0.18,
+                          0.10,
+                          0.024
+                        ),
+                        glassesMat
+                      );
+
+                    lens.position.set(
+                      side * 0.105,
+                      0.055,
+                      0.332
+                    );
+
+                    headGroup.add(
+                      lens
+                    );
+                  }
+                );
+
+                const bridge =
                   new THREE.Mesh(
                     new THREE.BoxGeometry(
-                      0.55,
-                      0.11,
-                      0.08
+                      0.06,
+                      0.02,
+                      0.025
                     ),
-                    material(
-                      avatar.accessory ===
-                        'sunglasses'
-                        ? 0x161719
-                        : 0x494949,
-                      0.25
+                    glassesMat
+                  );
+
+                bridge.position.set(
+                  0,
+                  0.055,
+                  0.334
+                );
+
+                headGroup.add(
+                  bridge
+                );
+              }
+
+              function createArm(side) {
+                const pivot =
+                  new THREE.Group();
+
+                pivot.position.set(
+                  side *
+                    (isFemale
+                      ? 0.42
+                      : 0.47),
+                  2.02,
+                  0
+                );
+
+                visual.add(
+                  pivot
+                );
+
+                const upperArm =
+                  shadow(
+                    new THREE.Mesh(
+                      new THREE.CapsuleGeometry(
+                        0.105,
+                        0.43,
+                        6,
+                        10
+                      ),
+                      outfit
                     )
                   );
 
-                glasses.position.set(
-                  0,
-                  2.69,
-                  0.31
+                upperArm.position.y =
+                  -0.29;
+
+                pivot.add(
+                  upperArm
                 );
 
-                root.add(
-                  glasses
+                const elbow =
+                  new THREE.Group();
+
+                elbow.position.y =
+                  -0.60;
+
+                pivot.add(
+                  elbow
                 );
+
+                const forearm =
+                  shadow(
+                    new THREE.Mesh(
+                      new THREE.CapsuleGeometry(
+                        0.09,
+                        0.36,
+                        6,
+                        10
+                      ),
+                      outfit
+                    )
+                  );
+
+                forearm.position.y =
+                  -0.25;
+
+                elbow.add(
+                  forearm
+                );
+
+                const hand =
+                  shadow(
+                    new THREE.Mesh(
+                      new THREE.SphereGeometry(
+                        0.105,
+                        12,
+                        10
+                      ),
+                      skin
+                    )
+                  );
+
+                hand.scale.set(
+                  0.80,
+                  1.10,
+                  0.70
+                );
+
+                hand.position.y =
+                  -0.50;
+
+                elbow.add(
+                  hand
+                );
+
+                pivot.rotation.z =
+                  side * 0.06;
+
+                return {
+                  pivot: pivot,
+                  elbow: elbow,
+                };
               }
+
+              function createLeg(side) {
+                const pivot =
+                  new THREE.Group();
+
+                pivot.position.set(
+                  side *
+                    (isFemale
+                      ? 0.17
+                      : 0.18),
+                  1.03,
+                  0
+                );
+
+                visual.add(
+                  pivot
+                );
+
+                const thigh =
+                  shadow(
+                    new THREE.Mesh(
+                      new THREE.CapsuleGeometry(
+                        0.135,
+                        0.48,
+                        6,
+                        10
+                      ),
+                      pantsMat
+                    )
+                  );
+
+                thigh.position.y =
+                  -0.34;
+
+                pivot.add(
+                  thigh
+                );
+
+                const knee =
+                  new THREE.Group();
+
+                knee.position.y =
+                  -0.68;
+
+                pivot.add(
+                  knee
+                );
+
+                const calf =
+                  shadow(
+                    new THREE.Mesh(
+                      new THREE.CapsuleGeometry(
+                        0.115,
+                        0.43,
+                        6,
+                        10
+                      ),
+                      pantsMat
+                    )
+                  );
+
+                calf.position.y =
+                  -0.30;
+
+                knee.add(
+                  calf
+                );
+
+                const shoe =
+                  shadow(
+                    new THREE.Mesh(
+                      new THREE.BoxGeometry(
+                        0.27,
+                        0.15,
+                        0.48
+                      ),
+                      shoeMat
+                    )
+                  );
+
+                shoe.position.set(
+                  0,
+                  -0.58,
+                  0.09
+                );
+
+                shoe.rotation.x =
+                  -0.04;
+
+                knee.add(
+                  shoe
+                );
+
+                return {
+                  pivot: pivot,
+                  knee: knee,
+                };
+              }
+
+              const leftArm =
+                createArm(-1);
+
+              const rightArm =
+                createArm(1);
+
+              const leftLeg =
+                createLeg(-1);
+
+              const rightLeg =
+                createLeg(1);
+
+              root.userData.rig = {
+                visual: visual,
+                torso: torsoGroup,
+                head: headGroup,
+                hips: hips,
+                leftArm: leftArm.pivot,
+                rightArm: rightArm.pivot,
+                leftElbow: leftArm.elbow,
+                rightElbow: rightArm.elbow,
+                leftLeg: leftLeg.pivot,
+                rightLeg: rightLeg.pivot,
+                leftKnee: leftLeg.knee,
+                rightKnee: rightLeg.knee,
+              };
 
               return root;
             }
@@ -2127,6 +2656,146 @@ function createStreetLight(
             scene.add(
               player
             );
+
+            const playerRig =
+              player.userData.rig ||
+              {};
+
+            let walkTime =
+              0;
+
+            function animatePlayer(
+              delta,
+              isMoving,
+              isRunning
+            ) {
+              if (
+                !playerRig.visual
+              ) {
+                return;
+              }
+
+              const blend =
+                Math.min(
+                  1,
+                  delta * 12
+                );
+
+              if (!isMoving) {
+                playerRig.leftArm.rotation.x +=
+                  (0 -
+                    playerRig.leftArm.rotation.x) *
+                  blend;
+
+                playerRig.rightArm.rotation.x +=
+                  (0 -
+                    playerRig.rightArm.rotation.x) *
+                  blend;
+
+                playerRig.leftLeg.rotation.x +=
+                  (0 -
+                    playerRig.leftLeg.rotation.x) *
+                  blend;
+
+                playerRig.rightLeg.rotation.x +=
+                  (0 -
+                    playerRig.rightLeg.rotation.x) *
+                  blend;
+
+                playerRig.leftKnee.rotation.x +=
+                  (0 -
+                    playerRig.leftKnee.rotation.x) *
+                  blend;
+
+                playerRig.rightKnee.rotation.x +=
+                  (0 -
+                    playerRig.rightKnee.rotation.x) *
+                  blend;
+
+                playerRig.visual.position.y +=
+                  (0 -
+                    playerRig.visual.position.y) *
+                  blend;
+
+                playerRig.torso.rotation.z +=
+                  (0 -
+                    playerRig.torso.rotation.z) *
+                  blend;
+
+                return;
+              }
+
+              walkTime +=
+                delta *
+                (isRunning
+                  ? 11.5
+                  : 7.5);
+
+              const swing =
+                Math.sin(
+                  walkTime
+                );
+
+              const legAmount =
+                isRunning
+                  ? 0.62
+                  : 0.40;
+
+              const armAmount =
+                isRunning
+                  ? 0.68
+                  : 0.46;
+
+              playerRig.leftLeg.rotation.x =
+                swing *
+                legAmount;
+
+              playerRig.rightLeg.rotation.x =
+                -swing *
+                legAmount;
+
+              playerRig.leftArm.rotation.x =
+                -swing *
+                armAmount;
+
+              playerRig.rightArm.rotation.x =
+                swing *
+                armAmount;
+
+              playerRig.leftKnee.rotation.x =
+                Math.max(
+                  0,
+                  -swing
+                ) *
+                (isRunning
+                  ? 0.50
+                  : 0.28);
+
+              playerRig.rightKnee.rotation.x =
+                Math.max(
+                  0,
+                  swing
+                ) *
+                (isRunning
+                  ? 0.50
+                  : 0.28);
+
+              playerRig.visual.position.y =
+                Math.abs(
+                  Math.sin(
+                    walkTime * 2
+                  )
+                ) *
+                (isRunning
+                  ? 0.055
+                  : 0.028);
+
+              playerRig.torso.rotation.z =
+                swing *
+                (isRunning
+                  ? 0.045
+                  : 0.025);
+            }
 
             // ==================================
             // MOVEMENT
@@ -2496,12 +3165,17 @@ function createStreetLight(
               running =
                 !!keys.shift;
 
-              if (
-                forward ===
-                  0 &&
-                sideways ===
-                  0
-              ) {
+              const isMoving =
+                forward !== 0 ||
+                sideways !== 0;
+
+              if (!isMoving) {
+                animatePlayer(
+                  delta,
+                  false,
+                  false
+                );
+
                 return;
               }
 
@@ -2543,8 +3217,8 @@ function createStreetLight(
 
               const speed =
                 running
-                  ? 7.2
-                  : 4.2;
+                  ? 6.4
+                  : 3.8;
 
               const stepX =
                 moveVector.x *
@@ -2608,9 +3282,14 @@ function createStreetLight(
                 rotationDiff *
                 Math.min(
                   1,
-                  delta *
-                    12
+                  delta * 11
                 );
+
+              animatePlayer(
+                delta,
+                true,
+                running
+              );
 
               totalDistance +=
                 Math.sqrt(
@@ -2659,7 +3338,7 @@ function createStreetLight(
               delta
             ) {
               const distance =
-                7.2;
+                6.1;
 
               const horizontal =
                 Math.cos(
@@ -2675,7 +3354,7 @@ function createStreetLight(
                     horizontal,
 
                 player.position.y +
-                  2.5 +
+                  2.05 +
                   Math.sin(
                     pitch
                   ) *
@@ -2700,7 +3379,7 @@ function createStreetLight(
               cameraTarget.set(
                 player.position.x,
                 player.position.y +
-                  1.55,
+                  1.72,
                 player.position.z
               );
 
@@ -2973,9 +3652,9 @@ function createStreetLight(
 
             camera.position.set(
               player.position.x,
-              5,
+              4.2,
               player.position.z +
-                8
+                6.5
             );
 
             animate();
