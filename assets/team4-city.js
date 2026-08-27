@@ -568,7 +568,79 @@ const gltfLoader =
 
               return mesh;
             }
+function loadGLB(
+  url,
+  options
+) {
+  const settings =
+    options || {};
 
+  gltfLoader.load(
+    url,
+
+    function (gltf) {
+      const model =
+        gltf.scene;
+
+      model.position.set(
+        settings.x || 0,
+        settings.y || 0,
+        settings.z || 0
+      );
+
+      const scale =
+        settings.scale == null
+          ? 1
+          : settings.scale;
+
+      model.scale.set(
+        scale,
+        scale,
+        scale
+      );
+
+      model.rotation.y =
+        settings.rotation || 0;
+
+      model.traverse(
+        function (child) {
+          if (
+            child.isMesh
+          ) {
+            child.castShadow =
+              true;
+
+            child.receiveShadow =
+              true;
+          }
+        }
+      );
+
+      scene.add(
+        model
+      );
+
+      if (
+        settings.onLoad
+      ) {
+        settings.onLoad(
+          model,
+          gltf
+        );
+      }
+    },
+
+    undefined,
+
+    function (error) {
+      console.error(
+        'TEAM4 GLB load error:',
+        url,
+        error
+      );
+    }
+  );
+}
             // ==================================
             // WORLD
             // ==================================
