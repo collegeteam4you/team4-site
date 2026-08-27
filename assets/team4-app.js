@@ -8657,6 +8657,9 @@ function App() {
   const isLibraryPage =
     window.location.pathname.startsWith('/library');
 
+  const isTeam4CityPage =
+  window.location.pathname === '/team4-lab/city';
+
   const isTeam4MissionOnePage =
     window.location.pathname === '/team4-lab/missions/mission-1';
 
