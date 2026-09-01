@@ -2616,20 +2616,23 @@ function createStreetLight(
             }
 
             // ==========================================
-// TEAM4 3D PLAYER — GLB TEST
+// TEAM4 3D PLAYER — RIGGED + WALK ANIMATION
 // ==========================================
 
 const player = new THREE.Group();
 
-player.userData.rig = {};
+let playerModel = null;
+let playerMixer = null;
+let walkAction = null;
 
 await new Promise(function (resolve, reject) {
   gltfLoader.load(
-    '/assets/team4-lab/avatar-3d/male-base.glb',
+    '/assets/team4-lab/avatar-3d/team4_walk.glb',
 
     function (gltf) {
       const model = gltf.scene;
 
+      // Shadows
       model.traverse(function (child) {
         if (child.isMesh) {
           child.castShadow = true;
@@ -2637,6 +2640,7 @@ await new Promise(function (resolve, reject) {
         }
       });
 
+      // Auto scale
       const firstBox =
         new THREE.Box3().setFromObject(model);
 
@@ -2660,6 +2664,7 @@ await new Promise(function (resolve, reject) {
 
       model.updateMatrixWorld(true);
 
+      // Center + put feet on ground
       const box =
         new THREE.Box3().setFromObject(model);
 
@@ -2672,14 +2677,54 @@ await new Promise(function (resolve, reject) {
       model.position.z -= center.z;
       model.position.y -= box.min.y;
 
+      // Facing direction
       model.rotation.y = 0;
 
       player.add(model);
 
+      playerModel = model;
+
       player.userData.model = model;
 
+      // ======================================
+      // ANIMATION
+      // ======================================
+
+      if (
+        gltf.animations &&
+        gltf.animations.length > 0
+      ) {
+        playerMixer =
+          new THREE.AnimationMixer(model);
+
+        walkAction =
+          playerMixer.clipAction(
+            gltf.animations[0]
+          );
+
+        walkAction.enabled = true;
+        walkAction.setLoop(
+          THREE.LoopRepeat,
+          Infinity
+        );
+
+        walkAction.play();
+
+        // Start paused
+        walkAction.paused = true;
+
+        console.log(
+          'TEAM4 WALK ANIMATION LOADED',
+          gltf.animations
+        );
+      } else {
+        console.warn(
+          'NO ANIMATION FOUND IN team4_walk.glb'
+        );
+      }
+
       console.log(
-        'TEAM4 GLB PLAYER LOADED',
+        'TEAM4 RIGGED PLAYER LOADED',
         model
       );
 
@@ -2699,185 +2744,73 @@ await new Promise(function (resolve, reject) {
   );
 });
 
-            const savedPosition =
-              saved3DState &&
-              saved3DState.position;
+const savedPosition =
+  saved3DState &&
+  saved3DState.position;
 
-            if (
-              savedPosition &&
-              Number.isFinite(
-                Number(
-                  savedPosition.x
-                )
-              ) &&
-              Number.isFinite(
-                Number(
-                  savedPosition.z
-                )
-              )
-            ) {
-              player.position.set(
-                Number(
-                  savedPosition.x
-                ),
-                0,
-                Number(
-                  savedPosition.z
-                )
-              );
-            } else {
-              player.position.set(
-                home.entrance.x,
-                0,
-                home.entrance.z +
-                  2
-              );
-            }
+if (
+  savedPosition &&
+  Number.isFinite(
+    Number(
+      savedPosition.x
+    )
+  ) &&
+  Number.isFinite(
+    Number(
+      savedPosition.z
+    )
+  )
+) {
+  player.position.set(
+    Number(
+      savedPosition.x
+    ),
+    0,
+    Number(
+      savedPosition.z
+    )
+  );
+} else {
+  player.position.set(
+    home.entrance.x,
+    0,
+    home.entrance.z + 2
+  );
+}
 
-            scene.add(
-              player
-            );
+scene.add(
+  player
+);
 
-            const playerRig =
-              player.userData.rig ||
-              {};
+let walkTime = 0;
 
-            let walkTime =
-              0;
+function animatePlayer(
+  delta,
+  isMoving,
+  isRunning
+) {
+  if (playerMixer) {
+    playerMixer.update(delta);
+  }
 
-            function animatePlayer(
-              delta,
-              isMoving,
-              isRunning
-            ) {
-              if (
-                !playerRig.visual
-              ) {
-                return;
-              }
+  if (!walkAction) {
+    return;
+  }
 
-              const blend =
-                Math.min(
-                  1,
-                  delta * 12
-                );
+  if (isMoving) {
+    walkAction.paused = false;
 
-              if (!isMoving) {
-                playerRig.leftArm.rotation.x +=
-                  (0 -
-                    playerRig.leftArm.rotation.x) *
-                  blend;
+    walkAction.timeScale =
+      isRunning
+        ? 1.6
+        : 1.0;
+  } else {
+    walkAction.paused = true;
 
-                playerRig.rightArm.rotation.x +=
-                  (0 -
-                    playerRig.rightArm.rotation.x) *
-                  blend;
-
-                playerRig.leftLeg.rotation.x +=
-                  (0 -
-                    playerRig.leftLeg.rotation.x) *
-                  blend;
-
-                playerRig.rightLeg.rotation.x +=
-                  (0 -
-                    playerRig.rightLeg.rotation.x) *
-                  blend;
-
-                playerRig.leftKnee.rotation.x +=
-                  (0 -
-                    playerRig.leftKnee.rotation.x) *
-                  blend;
-
-                playerRig.rightKnee.rotation.x +=
-                  (0 -
-                    playerRig.rightKnee.rotation.x) *
-                  blend;
-
-                playerRig.visual.position.y +=
-                  (0 -
-                    playerRig.visual.position.y) *
-                  blend;
-
-                playerRig.torso.rotation.z +=
-                  (0 -
-                    playerRig.torso.rotation.z) *
-                  blend;
-
-                return;
-              }
-
-              walkTime +=
-                delta *
-                (isRunning
-                  ? 11.5
-                  : 7.5);
-
-              const swing =
-                Math.sin(
-                  walkTime
-                );
-
-              const legAmount =
-                isRunning
-                  ? 0.62
-                  : 0.40;
-
-              const armAmount =
-                isRunning
-                  ? 0.68
-                  : 0.46;
-
-              playerRig.leftLeg.rotation.x =
-                swing *
-                legAmount;
-
-              playerRig.rightLeg.rotation.x =
-                -swing *
-                legAmount;
-
-              playerRig.leftArm.rotation.x =
-                -swing *
-                armAmount;
-
-              playerRig.rightArm.rotation.x =
-                swing *
-                armAmount;
-
-              playerRig.leftKnee.rotation.x =
-                Math.max(
-                  0,
-                  -swing
-                ) *
-                (isRunning
-                  ? 0.50
-                  : 0.28);
-
-              playerRig.rightKnee.rotation.x =
-                Math.max(
-                  0,
-                  swing
-                ) *
-                (isRunning
-                  ? 0.50
-                  : 0.28);
-
-              playerRig.visual.position.y =
-                Math.abs(
-                  Math.sin(
-                    walkTime * 2
-                  )
-                ) *
-                (isRunning
-                  ? 0.055
-                  : 0.028);
-
-              playerRig.torso.rotation.z =
-                swing *
-                (isRunning
-                  ? 0.045
-                  : 0.025);
-            }
-
+    // optional:
+    // keeps character at current frame when stopped
+  }
+}
             // ==================================
             // MOVEMENT
             // ==================================
