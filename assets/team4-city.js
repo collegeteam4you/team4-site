@@ -2615,8 +2615,89 @@ function createStreetLight(
               return root;
             }
 
-            const player =
-              createPlayer();
+            // ==========================================
+// TEAM4 3D PLAYER — GLB TEST
+// ==========================================
+
+const player = new THREE.Group();
+
+player.userData.rig = {};
+
+await new Promise(function (resolve, reject) {
+  gltfLoader.load(
+    '/assets/team4-lab/avatar-3d/male-base.glb',
+
+    function (gltf) {
+      const model = gltf.scene;
+
+      model.traverse(function (child) {
+        if (child.isMesh) {
+          child.castShadow = true;
+          child.receiveShadow = true;
+        }
+      });
+
+      const firstBox =
+        new THREE.Box3().setFromObject(model);
+
+      const firstSize =
+        new THREE.Vector3();
+
+      firstBox.getSize(firstSize);
+
+      const targetHeight = 2.9;
+
+      if (firstSize.y > 0) {
+        const scale =
+          targetHeight / firstSize.y;
+
+        model.scale.set(
+          scale,
+          scale,
+          scale
+        );
+      }
+
+      model.updateMatrixWorld(true);
+
+      const box =
+        new THREE.Box3().setFromObject(model);
+
+      const center =
+        new THREE.Vector3();
+
+      box.getCenter(center);
+
+      model.position.x -= center.x;
+      model.position.z -= center.z;
+      model.position.y -= box.min.y;
+
+      model.rotation.y = 0;
+
+      player.add(model);
+
+      player.userData.model = model;
+
+      console.log(
+        'TEAM4 GLB PLAYER LOADED',
+        model
+      );
+
+      resolve();
+    },
+
+    undefined,
+
+    function (error) {
+      console.error(
+        'TEAM4 PLAYER GLB ERROR:',
+        error
+      );
+
+      reject(error);
+    }
+  );
+});
 
             const savedPosition =
               saved3DState &&
