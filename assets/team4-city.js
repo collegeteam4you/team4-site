@@ -2649,7 +2649,7 @@ await new Promise(function (resolve, reject) {
 
       firstBox.getSize(firstSize);
 
-      const targetHeight = 2.9;
+      const targetHeight = 2.3;
 
       if (firstSize.y > 0) {
         const scale =
