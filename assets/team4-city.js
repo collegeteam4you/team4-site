@@ -2627,7 +2627,7 @@ let walkAction = null;
 
 await new Promise(function (resolve, reject) {
   gltfLoader.load(
-    '/assets/team4-lab/avatar-3d/TEAM4_WALK.glb',
+  '/assets/team4-lab/avatar-3d/TEAM4_MALE_MASTER.glb',
 
     function (gltf) {
       const model = gltf.scene;
