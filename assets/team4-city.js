@@ -2649,7 +2649,7 @@ await new Promise(function (resolve, reject) {
 
       firstBox.getSize(firstSize);
 
-      const targetHeight = 2.3;
+      const targetHeight = 2.0;
 
       if (firstSize.y > 0) {
         const scale =
@@ -2673,10 +2673,12 @@ await new Promise(function (resolve, reject) {
 
       box.getCenter(center);
 
-      model.position.x -= center.x;
-      model.position.z -= center.z;
-      model.position.y -= box.min.y;
-      model.position.y -= 0.32;
+     model.position.x -= center.x;
+model.position.z -= center.z;
+model.position.y -= box.min.y;
+
+// ჩამოვწიოთ მიწაზე
+model.position.y -= 0.65;
 
       // Facing direction
       model.rotation.y = 0;
