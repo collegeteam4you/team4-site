@@ -2676,6 +2676,7 @@ await new Promise(function (resolve, reject) {
       model.position.x -= center.x;
       model.position.z -= center.z;
       model.position.y -= box.min.y;
+      model.position.y -= 0.32;
 
       // Facing direction
       model.rotation.y = 0;
