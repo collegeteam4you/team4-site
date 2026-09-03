@@ -46,23 +46,66 @@
     </script>
     <!-- End Google Tag Manager -->
 
+    <!-- TAILWIND -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script crossorigin="anonymous" src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin="anonymous" src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+
+    <!-- REACT -->
+    <script
+      crossorigin="anonymous"
+      src="https://unpkg.com/react@18/umd/react.production.min.js">
+    </script>
+
+    <script
+      crossorigin="anonymous"
+      src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js">
+    </script>
+
+    <!-- EMAIL JS -->
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
-    <link rel="preload" as="image" href="/assets/lasha-hero-training-room.jpg" type="image/jpeg" fetchpriority="high" />
-    <link rel="preload" as="image" href="/assets/team4-logo-hero.webp" type="image/webp" fetchpriority="high" />
+    <!-- ==========================================
+         TEAM4 3D AVATAR - MODEL VIEWER
+         ========================================== -->
+    <script
+      type="module"
+      src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.1.0/model-viewer.min.js">
+    </script>
+
+    <!-- PRELOAD -->
+    <link
+      rel="preload"
+      as="image"
+      href="/assets/lasha-hero-training-room.jpg"
+      type="image/jpeg"
+      fetchpriority="high"
+    />
+
+    <link
+      rel="preload"
+      as="image"
+      href="/assets/team4-logo-hero.webp"
+      type="image/webp"
+      fetchpriority="high"
+    />
+
+    <!-- FONTS -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="/assets/site/styles.css?v=20260627-vercel-safe" />
+
+    <!-- MAIN CSS -->
+    <link
+      rel="stylesheet"
+      href="/assets/site/styles.css?v=20260627-vercel-safe"
+    />
   </head>
 
   <body class="bg-ink text-softWhite antialiased">
+
     <!-- Google Tag Manager (noscript) -->
     <noscript>
       <iframe
@@ -74,52 +117,71 @@
     </noscript>
     <!-- End Google Tag Manager (noscript) -->
 
+    <!-- REACT ROOT -->
     <div id="root"></div>
 
+    <!-- FACEBOOK -->
     <div id="fb-root"></div>
     <div id="fb-customer-chat" class="fb-customerchat"></div>
-    <button id="team4CoachButton" class="team4-coach-button">
-  💬 Team4 Coach
-</button>
 
-<div id="team4CoachWindow" class="team4-coach-window">
-  <div class="team4-coach-header">
-    <div>
-      <strong>Team4 Coach</strong>
-      <small>გაყიდვების პერსონალური ასისტენტი</small>
+    <!-- TEAM4 COACH BUTTON -->
+    <button
+      id="team4CoachButton"
+      class="team4-coach-button">
+      💬 Team4 Coach
+    </button>
+
+    <!-- TEAM4 COACH WINDOW -->
+    <div
+      id="team4CoachWindow"
+      class="team4-coach-window">
+
+      <div class="team4-coach-header">
+        <div>
+          <strong>Team4 Coach</strong>
+          <small>გაყიდვების პერსონალური ასისტენტი</small>
+        </div>
+
+        <button
+          id="team4CoachClose"
+          class="team4-coach-close"
+          type="button">
+          ×
+        </button>
+      </div>
+
+      <div
+        id="team4CoachContent"
+        class="team4-coach-content">
+      </div>
+
     </div>
 
-    <button
-      id="team4CoachClose"
-      class="team4-coach-close"
-      type="button"
-    >
-      ×
-    </button>
-  </div>
-
-  <div
-    id="team4CoachContent"
-    class="team4-coach-content"
-  ></div>
-</div>
-
+    <!-- SITE SCRIPTS -->
     <script src="/assets/site/facebook-chat.js?v=20260627-vercel-safe"></script>
-<script src="/assets/site/book-content.js?v=20260627-vercel-safe"></script>
-<script src="/assets/site/why-others-get-rich-content.js?v=20260718-second-book"></script>
-<script src="/assets/site/library.js?v=20260718-second-book"></script>
-<script src="/assets/site/library-page.js?v=20260718-second-book"></script>
 
-<!-- TEAM4 INTERVIEW RETRY VIDEOS -->
-<script src="/assets/team4-interview-videos.js?v=20260821-1"></script>
+    <script src="/assets/site/book-content.js?v=20260627-vercel-safe"></script>
 
-<!-- TEAM4 APARTMENT -->
-<script src="/assets/team4-apartment.js?v=20260820-1"></script>
+    <script src="/assets/site/why-others-get-rich-content.js?v=20260718-second-book"></script>
 
-<!-- TEAM4 CITY -->
-<script src="/assets/team4-city.js?v=20260824-1"></script>
+    <script src="/assets/site/library.js?v=20260718-second-book"></script>
 
-<!-- MAIN TEAM4 APP -->
-<script src="/assets/team4-app.js?v=20260824-1"></script>
+    <script src="/assets/site/library-page.js?v=20260718-second-book"></script>
 
-<script src="/assets/site/team4-coach.js?v=20260718-2"></script>
+    <!-- TEAM4 INTERVIEW RETRY VIDEOS -->
+    <script src="/assets/team4-interview-videos.js?v=20260821-1"></script>
+
+    <!-- TEAM4 APARTMENT -->
+    <script src="/assets/team4-apartment.js?v=20260820-1"></script>
+
+    <!-- TEAM4 CITY -->
+    <script src="/assets/team4-city.js?v=20260824-1"></script>
+
+    <!-- MAIN TEAM4 APP -->
+    <script src="/assets/team4-app.js?v=20260824-1"></script>
+
+    <!-- TEAM4 COACH -->
+    <script src="/assets/site/team4-coach.js?v=20260718-2"></script>
+
+  </body>
+</html>
