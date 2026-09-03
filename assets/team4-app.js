@@ -2532,6 +2532,95 @@ function Team4LabPage({ lang, setLang }) {
   );
 }
 // ==========================================
+// TEAM4 3D AVATAR VIEWER
+// ==========================================
+
+function Team4Avatar3DViewer({ gender }) {
+  const viewerRef = React.useRef(null);
+
+  React.useEffect(function () {
+    const viewer = viewerRef.current;
+
+    if (!viewer) return;
+
+    const modelSrc =
+      gender === 'female'
+        ? '/assets/team4-lab/avatar-3d/TEAM4_FEMALE_MASTER.glb'
+        : '/assets/team4-lab/avatar-3d/TEAM4_MALE_MASTER.glb';
+
+    viewer.setAttribute('src', modelSrc);
+  }, [gender]);
+
+  return h(
+    'div',
+    {
+      style: {
+        width: '100%',
+        maxWidth: '520px',
+        height: '650px',
+        margin: '0 auto',
+        position: 'relative',
+        overflow: 'hidden',
+        borderRadius: '24px',
+        background:
+          'radial-gradient(circle at 50% 35%, #ffffff 0%, #e9e9e9 55%, #cfcfcf 100%)',
+        border: '1px solid rgba(255,255,255,.12)',
+        boxShadow: '0 30px 80px rgba(0,0,0,.45)',
+      },
+    },
+
+    h('model-viewer', {
+      ref: viewerRef,
+
+      src:
+        gender === 'female'
+          ? '/assets/team4-lab/avatar-3d/TEAM4_FEMALE_MASTER.glb'
+          : '/assets/team4-lab/avatar-3d/TEAM4_MALE_MASTER.glb',
+
+      alt: 'Team4 3D Avatar',
+
+      'camera-controls': true,
+      'disable-pan': true,
+      'shadow-intensity': '1',
+      'shadow-softness': '0.8',
+      exposure: '1',
+      'environment-image': 'neutral',
+
+      'camera-orbit': '0deg 80deg 3.2m',
+      'field-of-view': '30deg',
+
+      style: {
+        width: '100%',
+        height: '100%',
+        background: 'transparent',
+        cursor: 'grab',
+      },
+    }),
+
+    h(
+      'div',
+      {
+        style: {
+          position: 'absolute',
+          left: '50%',
+          bottom: '18px',
+          transform: 'translateX(-50%)',
+          padding: '8px 14px',
+          borderRadius: '20px',
+          background: 'rgba(0,0,0,.55)',
+          color: '#fff',
+          fontSize: '11px',
+          fontWeight: '800',
+          letterSpacing: '.08em',
+          pointerEvents: 'none',
+          whiteSpace: 'nowrap',
+        },
+      },
+      '↔ ROTATE AVATAR'
+    )
+  );
+}
+// ==========================================
 // TEAM4 AVATAR PAGE
 // ==========================================
 function Team4AvatarPage({ lang, setLang }) {
