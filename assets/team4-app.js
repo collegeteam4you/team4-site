@@ -3801,433 +3801,53 @@ return imageOption(
           },
 
           // =================================
-          // LEFT PREVIEW
-          // =================================
+// LEFT PREVIEW — 3D
+// =================================
 
-          h(
-            'div',
-            {
-              style: {
-                minHeight:
-                  '820px',
-
-                background:
-                  '#ffffff',
-
-                borderRadius:
-                  '26px',
-
-                position:
-                  'relative',
-
-                display:
-                  'flex',
-
-                alignItems:
-                  'center',
-
-                justifyContent:
-                  'center',
-
-                overflow:
-                  'hidden',
-
-                padding:
-                  '24px',
-              },
-            },
-
-            h(
+h(
   'div',
   {
- onMouseMove: function (event) {
-  moveHair(event);
-  moveBeard(event);
-  moveAccessory(event);
-},
-
-onMouseUp: function () {
-  stopHairDrag();
-  stopBeardDrag();
-  stopAccessoryDrag();
-},
-
-onMouseLeave: function () {
-  stopHairDrag();
-  stopBeardDrag();
-  stopAccessoryDrag();
-},
-
     style: {
-      width:
-        '460px',
-
-      height:
-        '680px',
-
-      position:
-        'relative',
+      minHeight: '820px',
+      background: '#ffffff',
+      borderRadius: '26px',
+      position: 'relative',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      overflow: 'hidden',
+      padding: '24px',
     },
   },
 
-           avatarLayer(
-  gender === 'male'
-    ? '/assets/avatar-v2/looks/male/' + look + '.png'
-    : '/assets/avatar-v2/looks/female/' + look + '.png',
-  1
-),
-
-beard !== 'none' &&
-gender === 'male' &&
-  h('img', {
-    src:
-      '/assets/avatar-v2/beard/' +
-      beard +
-      '.png',
-
-    alt: '',
-    draggable: false,
-
-    onMouseDown: startBeardDrag,
-    onWheel: resizeBeard,
-
-    style: {
-      position: 'absolute',
-
-      width: currentBeardStyle.width,
-      height: 'auto',
-
-      left: '50%',
-      right: 'auto',
-
-      top: currentBeardStyle.top,
-      bottom: 'auto',
-
-      transform:
-        'translateX(calc(-50% + ' +
-        currentBeardStyle.x +
-        ')) ' +
-        'translate(' +
-        beardX +
-        'px, ' +
-        beardY +
-        'px) ' +
-        'scale(' +
-        beardScale +
-        ')',
-
-      transformOrigin: 'center top',
-
-      objectFit: 'contain',
-
-      zIndex: 7,
-
-      cursor:
-        isDraggingBeard
-          ? 'grabbing'
-          : 'grab',
-
-      userSelect: 'none',
-      pointerEvents: 'auto',
-    },
-  }),
-hair !== 'none' &&
-  h('img', {
-    src:
-      gender === 'male'
-        ? '/assets/avatar-v2/hair/male/' +
-          hair +
-          '.png'
-        : '/assets/avatar-v2/hair/female/' +
-          hair +
-          '.png',
-
-    alt: '',
-
-    draggable: false,
-
-   onMouseDown: startHairDrag,
-onWheel: resizeHair,
-
-style: {
-      position: 'absolute',
-
-      width: currentHairStyle.width,
-      height: 'auto',
-
-      left: '50%',
-      right: 'auto',
-
-      top: currentHairStyle.top,
-      bottom: 'auto',
-
-      transform:
-  'translateX(calc(-50% + ' +
-  currentHairStyle.x +
-  ')) ' +
-  'translate(' +
-  hairX +
-  'px, ' +
-  hairY +
-  'px) ' +
-  'scale(' +
-  hairScale +
-  ')',
-
-transformOrigin: 'center top',
-
-      objectFit: 'contain',
-
-      zIndex: 8,
-
-      cursor:
-        isDraggingHair
-          ? 'grabbing'
-          : 'grab',
-
-      userSelect: 'none',
-
-      pointerEvents: 'auto',
-    },
+  h(Team4Avatar3DViewer, {
+    gender: gender,
   }),
 
-accessory !== 'none' &&
-  h('img', {
-    src:
-      '/assets/avatar-v2/accessories/' +
-      accessory +
-      '.png',
-
-    alt: '',
-    draggable: false,
-
-    onMouseDown: startAccessoryDrag,
-    onWheel: resizeAccessory,
-
-    style: {
-      position: 'absolute',
-
-      width: '24%',
-      height: 'auto',
-
-      left: '50%',
-      right: 'auto',
-
-      top: '16%',
-      bottom: 'auto',
-
-      transform:
-        'translateX(-50%) ' +
-        'translate(' +
-        accessoryX +
-        'px, ' +
-        accessoryY +
-        'px) ' +
-        'scale(' +
-        accessoryScale +
-        ')',
-
-      transformOrigin: 'center center',
-
-      objectFit: 'contain',
-
-      zIndex: 12,
-
-      cursor:
-        isDraggingAccessory
-          ? 'grabbing'
-          : 'grab',
-
-      userSelect: 'none',
-      pointerEvents: 'auto',
-    },
-   }),
-
-(
-  activeCategory === 'hair' ||
-  activeCategory === 'accessory' ||
-  (activeCategory === 'beard' &&
-    gender === 'male')
-) &&
   h(
-    'div',
+    'button',
     {
+      type: 'button',
+      onClick: randomAvatar,
+
       style: {
         position: 'absolute',
-        top: '18px',
-        right: '18px',
-
-        display: 'flex',
-        alignItems: 'center',
-        gap: '8px',
-
-        zIndex: 50,
-
-        padding: '8px',
-
-        borderRadius: '12px',
-
-        background:
-          'rgba(0,0,0,0.82)',
-
-        boxShadow:
-          '0 8px 24px rgba(0,0,0,0.20)',
+        bottom: '22px',
+        left: '22px',
+        padding: '12px 18px',
+        border: 'none',
+        borderRadius: '11px',
+        background: '#111',
+        color: '#fff',
+        fontWeight: '900',
+        cursor: 'pointer',
+        zIndex: 20,
       },
     },
 
-    h(
-      'button',
-      {
-        type: 'button',
-
-        onClick: function () {
-  if (activeCategory === 'hair') {
-    makeHairSmaller();
-  }
-
-  if (activeCategory === 'beard') {
-    makeBeardSmaller();
-  }
-
-  if (activeCategory === 'accessory') {
-    makeAccessorySmaller();
-  }
-},
-
-        style: {
-          width: '38px',
-          height: '38px',
-          border: 'none',
-          borderRadius: '9px',
-          background: '#202228',
-          color: '#fff',
-          fontSize: '22px',
-          fontWeight: '900',
-          cursor: 'pointer',
-        },
-      },
-
-      '−'
-    ),
-
-    h(
-      'button',
-      {
-        type: 'button',
-
-       onClick: function () {
-  if (activeCategory === 'hair') {
-    makeHairBigger();
-  }
-
-  if (activeCategory === 'beard') {
-    makeBeardBigger();
-  }
-
-  if (activeCategory === 'accessory') {
-    makeAccessoryBigger();
-  }
-},
-
-        style: {
-          width: '38px',
-          height: '38px',
-          border: 'none',
-          borderRadius: '9px',
-          background: '#202228',
-          color: '#fff',
-          fontSize: '20px',
-          fontWeight: '900',
-          cursor: 'pointer',
-        },
-      },
-
-      '+'
-    ),
-
-    h(
-      'button',
-      {
-        type: 'button',
-
-        onClick: function () {
-  if (activeCategory === 'hair') {
-    resetHairPosition();
-  }
-
-  if (activeCategory === 'beard') {
-    resetBeardPosition();
-  }
-
-  if (activeCategory === 'accessory') {
-    resetAccessoryPosition();
-  }
-},
-
-        style: {
-          height: '38px',
-          padding: '0 12px',
-          border: 'none',
-          borderRadius: '9px',
-          background: '#ef1b13',
-          color: '#fff',
-          fontSize: '12px',
-          fontWeight: '900',
-          cursor: 'pointer',
-        },
-      },
-
-      'Reset'
-    )
+    '↻ ' + text.random
   )
 ),
-
-            h(
-              'button',
-              {
-                type:
-                  'button',
-
-                onClick:
-                  randomAvatar,
-
-                style: {
-                  position:
-                    'absolute',
-
-                  bottom:
-                    '22px',
-
-                  left:
-                    '22px',
-
-                  padding:
-                    '12px 18px',
-
-                  border:
-                    'none',
-
-                  borderRadius:
-                    '11px',
-
-                  background:
-                    '#111',
-
-                  color:
-                    '#fff',
-
-                  fontWeight:
-                    '900',
-
-                  cursor:
-                    'pointer',
-                },
-              },
-
-              '↻ ' + text.random
-            )
-          ),
-
           // =================================
           // RIGHT BUILDER
           // =================================
