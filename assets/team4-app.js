@@ -7539,7 +7539,7 @@ overflow: 'hidden',
           {
             style: {
               margin: '0 0 10px',
-              fontSize: 'clamp(34px,5vw,58px)',
+             fontSize: 'clamp(26px, 3vw, 38px)',
               fontWeight: '900',
             },
           },
