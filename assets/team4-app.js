@@ -3818,7 +3818,9 @@ h(
                   'grid',
 
                 gridTemplateColumns:
-                  '190px 1fr',
+  window.innerWidth <= 768
+    ? '1fr'
+    : '150px 1fr',
 
                 minHeight:
                   '720px',
