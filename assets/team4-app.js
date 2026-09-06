@@ -3748,7 +3748,9 @@ return imageOption(
                 'grid',
 
               gridTemplateColumns:
-  'minmax(360px, .8fr) minmax(520px, 1.2fr)',
+  window.innerWidth <= 768
+    ? '1fr'
+    : 'minmax(420px, 520px) minmax(0, 1fr)',
 
 gap:
   '16px',
