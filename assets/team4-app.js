@@ -4096,7 +4096,8 @@ const mission1Completed =
       {
         style: {
           minHeight: '100vh',
-          padding: '150px 24px 80px',
+          padding:
+  '105px 24px 24px',
           background:
             'radial-gradient(circle at 20% 20%, rgba(239,27,19,0.18), transparent 35%), #030305',
           color: '#ffffff',
