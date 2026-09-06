@@ -3726,9 +3726,8 @@ return imageOption(
         style: {
           minHeight: '100vh',
 
-          padding:
-            '120px 24px 70px',
-
+         padding:
+  '95px 20px 20px',
           background:
             '#050507',
 
