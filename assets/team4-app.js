@@ -3807,17 +3807,18 @@ gap:
 h(
   'div',
   {
-    style: {
-      minHeight: '820px',
-      background: '#ffffff',
-      borderRadius: '26px',
-      position: 'relative',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      overflow: 'hidden',
-      padding: '24px',
-    },
+   style: {
+  height: '540px',
+  minHeight: '540px',
+  background: '#ffffff',
+  borderRadius: '20px',
+  position: 'relative',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  overflow: 'hidden',
+  padding: '12px',
+},
   },
 
   h(Team4Avatar3DViewer, {
