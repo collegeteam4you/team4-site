@@ -3793,10 +3793,10 @@ return imageOption(
                 'grid',
 
               gridTemplateColumns:
-                'minmax(420px, .9fr) minmax(600px, 1.35fr)',
+  'minmax(360px, .8fr) minmax(520px, 1.2fr)',
 
-              gap:
-                '22px',
+gap:
+  '16px',
             },
           },
 
