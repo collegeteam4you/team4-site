@@ -3829,8 +3829,15 @@ minHeight:
     ? '1fr'
     : '150px 1fr',
 
-                minHeight:
-                  '720px',
+               height:
+  window.innerWidth <= 768
+    ? 'auto'
+    : '500px',
+
+minHeight:
+  window.innerWidth <= 768
+    ? '0'
+    : '500px',
 
                 border:
                   '1px solid rgba(255,255,255,.10)',
