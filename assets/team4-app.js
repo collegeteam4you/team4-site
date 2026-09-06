@@ -2544,9 +2544,9 @@ function Team4Avatar3DViewer({ gender }) {
     if (!viewer) return;
 
     const modelSrc =
-      gender === 'female'
-        ? '/assets/team4-lab/avatar-3d/TEAM4_FEMALE_MASTER.glb'
-        : '/assets/team4-lab/avatar-3d/TEAM4_MALE_MASTER.glb';
+  gender === 'female'
+    ? '/assets/team4-lab/avatar-3d/TEAM4_FEMALE_MASTER.glb'
+    : '/assets/team4-lab/avatar-3d/TEAM4_MALE_WALK.glb';
 
     viewer.setAttribute('src', modelSrc);
   }, [gender]);
