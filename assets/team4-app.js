@@ -2573,9 +2573,9 @@ function Team4Avatar3DViewer({ gender }) {
       ref: viewerRef,
 
       src:
-        gender === 'female'
-          ? '/assets/team4-lab/avatar-3d/TEAM4_FEMALE_MASTER.glb'
-          : '/assets/team4-lab/avatar-3d/TEAM4_MALE_MASTER.glb',
+  gender === 'female'
+    ? '/assets/team4-lab/avatar-3d/TEAM4_FEMALE_MASTER.glb'
+    : '/assets/team4-lab/avatar-3d/TEAM4_MALE_WALK.glb',
 
       alt: 'Team4 3D Avatar',
 
