@@ -2395,7 +2395,8 @@ function Team4LabPage({ lang, setLang }) {
           'h1',
           {
             style: {
-              margin: '0 0 26px',
+             margin:
+  '0 0 14px',
 
               fontSize:
                 'clamp(42px, 7vw, 88px)',
