@@ -2556,8 +2556,8 @@ function Team4Avatar3DViewer({ gender }) {
     {
       style: {
         width: '100%',
-        maxWidth: '520px',
-        height: '650px',
+        maxWidth: '400px',
+        height: '500px',
         margin: '0 auto',
         position: 'relative',
         overflow: 'hidden',
