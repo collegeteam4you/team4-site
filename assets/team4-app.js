@@ -2294,89 +2294,63 @@ function LibraryPage({ lang, setLang }) {
 function Team4LabPage({ lang, setLang }) {
   const isGeo = lang === 'GEO';
 
-  // ==========================================
-  // LANGUAGE IMAGE
-  // ==========================================
-
   const labIntroImage =
     isGeo
       ? '/assets/team4-lab/team4-lab-intro-geo.jpg'
       : '/assets/team4-lab/team4-lab-intro-eng.jpg';
 
-  // ==========================================
-  // RENDER
-  // ==========================================
-
   return h(
     React.Fragment,
     null,
-
-    // ========================================
-    // BACKGROUND
-    // ========================================
 
     h('div', {
       className: 'luxury-light-field',
       'aria-hidden': 'true',
     }),
 
-    // ========================================
-    // HEADER
-    // ========================================
-
     h(Header, {
       lang,
       setLang,
     }),
-
-    // ========================================
-    // MAIN
-    // ========================================
 
     h(
       'main',
       {
         style: {
           minHeight: '100vh',
-padding:
-  '105px 24px 24px',
+          padding:
+            'clamp(88px, 10vh, 105px) clamp(12px, 3vw, 24px) 24px',
+
           background:
             'radial-gradient(circle at 20% 20%, rgba(239,27,19,0.18), transparent 35%), radial-gradient(circle at 80% 30%, rgba(29,92,255,0.18), transparent 35%), #030305',
 
           color: '#ffffff',
+          boxSizing: 'border-box',
         },
       },
-
-      // ======================================
-      // CONTENT
-      // ======================================
 
       h(
         'section',
         {
           style: {
             width: '100%',
-            maxWidth: '1180px',
+            maxWidth: '1040px',
             margin: '0 auto',
           },
         },
-
-        // ====================================
-        // BADGE
-        // ====================================
 
         h(
           'div',
           {
             style: {
-              marginBottom: '12px',
-
+              marginBottom: '8px',
               color: '#ef1b13',
 
-              fontSize: '13px',
-              fontWeight: '900',
+              fontSize:
+                'clamp(10px, 1.2vw, 13px)',
 
-              letterSpacing: '.18em',
+              fontWeight: '900',
+              letterSpacing: '.16em',
               textTransform: 'uppercase',
             },
           },
@@ -2386,32 +2360,22 @@ padding:
             : 'TEAM4 SALES INTELLIGENCE'
         ),
 
-        // ====================================
-        // TITLE
-        // ====================================
-
         h(
           'h1',
           {
             style: {
-             margin:
-  '0 0 14px',
+              margin: '0 0 12px',
 
-             fontSize:
-  'clamp(34px, 5vw, 64px)',
+              fontSize:
+                'clamp(32px, 5vw, 58px)',
 
               lineHeight: '.98',
-
               fontWeight: '900',
             },
           },
 
           'Team4 Lab'
         ),
-
-        // ====================================
-        // INTRO IMAGE
-        // ====================================
 
         h('img', {
           src: labIntroImage,
@@ -2423,9 +2387,17 @@ padding:
 
           style: {
             width: '100%',
+            height: 'auto',
+
+            maxHeight:
+              'min(56vh, 430px)',
+
+            aspectRatio: '16 / 7.3',
+
             display: 'block',
 
-            borderRadius: '22px',
+            borderRadius:
+              'clamp(12px, 2vw, 18px)',
 
             objectFit: 'cover',
 
@@ -2433,13 +2405,9 @@ padding:
               '1px solid rgba(255,255,255,.08)',
 
             boxShadow:
-              '0 24px 70px rgba(0,0,0,.45)',
+              '0 18px 50px rgba(0,0,0,.42)',
           },
         }),
-
-        // ====================================
-        // START GAME
-        // ====================================
 
         h(
           'div',
@@ -2448,7 +2416,8 @@ padding:
               display: 'flex',
               justifyContent: 'center',
 
-              marginTop: '34px',
+              marginTop:
+                'clamp(12px, 2vw, 18px)',
             },
           },
 
@@ -2465,10 +2434,10 @@ padding:
               onMouseEnter:
                 function (event) {
                   event.currentTarget.style.transform =
-                    'translateY(-4px) scale(1.03)';
+                    'translateY(-2px) scale(1.02)';
 
                   event.currentTarget.style.boxShadow =
-                    '0 20px 60px rgba(239,27,19,.45)';
+                    '0 14px 35px rgba(239,27,19,.38)';
 
                   event.currentTarget.style.background =
                     '#ff241b';
@@ -2480,7 +2449,7 @@ padding:
                     'translateY(0) scale(1)';
 
                   event.currentTarget.style.boxShadow =
-                    '0 14px 40px rgba(239,27,19,.25)';
+                    '0 10px 28px rgba(239,27,19,.22)';
 
                   event.currentTarget.style.background =
                     '#ef1b13';
@@ -2488,26 +2457,29 @@ padding:
 
               style: {
                 width: '100%',
-                maxWidth: '420px',
 
-                padding: '20px 30px',
+                maxWidth:
+                  'min(360px, 100%)',
+
+                padding:
+                  'clamp(12px, 2vw, 15px) 22px',
 
                 border:
                   '1px solid rgba(255,255,255,.12)',
 
-                borderRadius: '16px',
+                borderRadius: '14px',
 
                 background: '#ef1b13',
-
                 color: '#ffffff',
 
-                fontSize: '19px',
-                fontWeight: '900',
+                fontSize:
+                  'clamp(14px, 1.8vw, 17px)',
 
+                fontWeight: '900',
                 cursor: 'pointer',
 
                 boxShadow:
-                  '0 14px 40px rgba(239,27,19,.25)',
+                  '0 10px 28px rgba(239,27,19,.22)',
 
                 transition:
                   'transform .2s ease, background .2s ease, box-shadow .2s ease',
@@ -2520,15 +2492,7 @@ padding:
           )
         )
       )
-    ),
-
-    // ========================================
-    // FOOTER
-    // ========================================
-
-    h(Footer, {
-      lang,
-    })
+    )
   );
 }
 // ==========================================
