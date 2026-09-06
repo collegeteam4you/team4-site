@@ -2397,8 +2397,8 @@ padding:
              margin:
   '0 0 14px',
 
-              fontSize:
-                'clamp(42px, 7vw, 88px)',
+             fontSize:
+  'clamp(34px, 5vw, 64px)',
 
               lineHeight: '.98',
 
