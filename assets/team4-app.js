@@ -3808,8 +3808,8 @@ h(
   'div',
   {
    style: {
-  height: '540px',
-  minHeight: '540px',
+  height: '500px',
+  minHeight: '500px',
   background: '#ffffff',
   borderRadius: '20px',
   position: 'relative',
