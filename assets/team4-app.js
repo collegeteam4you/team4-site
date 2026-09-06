@@ -2586,8 +2586,8 @@ function Team4Avatar3DViewer({ gender }) {
       exposure: '1',
       'environment-image': 'neutral',
 
-      'camera-orbit': '0deg 80deg 3.2m',
-      'field-of-view': '30deg',
+      'camera-orbit': '0deg 80deg 4.2m',
+'field-of-view': '30deg',
 
       style: {
         width: '100%',
