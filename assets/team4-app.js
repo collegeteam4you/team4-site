@@ -2829,18 +2829,10 @@ const currentBeardStyle =
   // CATEGORIES
   // ==========================================
 
-  const categories = [
+ const categories = [
   ['character', '👤', text.character],
   ['look', '👔', text.look],
-  ['hair', '💇', text.hair],
-
-  ...(gender === 'male'
-    ? [['beard', '🧔', text.beard]]
-    : []),
-
-  ['accessory', '🕶️', text.accessory],
 ];
-
 
   // ==========================================
   // OPTIONS
