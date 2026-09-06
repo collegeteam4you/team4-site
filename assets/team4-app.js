@@ -3756,7 +3756,7 @@ return imageOption(
                 '0 0 10px',
 
               fontSize:
-                'clamp(34px,5vw,58px)',
+  'clamp(26px,3vw,38px)',
 
               fontWeight:
                 '900',
