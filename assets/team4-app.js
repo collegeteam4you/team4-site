@@ -3765,8 +3765,15 @@ h(
   'div',
   {
    style: {
-  height: '500px',
-  minHeight: '500px',
+  height:
+  window.innerWidth <= 768
+    ? '420px'
+    : '500px',
+
+minHeight:
+  window.innerWidth <= 768
+    ? '420px'
+    : '500px',
   background: '#ffffff',
   borderRadius: '20px',
   position: 'relative',
