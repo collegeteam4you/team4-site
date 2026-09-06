@@ -3772,7 +3772,7 @@ return imageOption(
           {
             style: {
               margin:
-                '0 0 26px',
+                '0 0 14px',
 
               color:
                 'rgba(255,255,255,.62)',
