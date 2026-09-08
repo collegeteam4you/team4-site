@@ -7270,10 +7270,10 @@ return h(
       'main',
       {
         style: {
-          minHeight: 'calc(100vh - 95px)',
-height: 'calc(100vh - 95px)',
-padding: '18px 24px',
-overflow: 'hidden',
+         minHeight: 'calc(100vh - 95px)',
+height: 'auto',
+padding: '18px 24px 40px',
+overflow: 'visible',
           background: '#050507',
           color: '#ffffff',
         },
