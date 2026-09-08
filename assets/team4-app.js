@@ -5452,10 +5452,10 @@ function renderJobAvatar() {
       'main',
       {
         style: {
-          minHeight: 'calc(100vh - 95px)',
-height: 'calc(100vh - 95px)',
-padding: '18px 24px',
-overflow: 'hidden',
+          minHeight: 'auto',
+padding: '18px 24px 60px',
+overflow: 'visible',
+boxSizing: 'border-box',
           background: '#050507',
           color: '#ffffff',
         },
