@@ -5597,7 +5597,7 @@ renderJobAvatar(),
           width: '100%',
 
           padding: '12px 14px',
-          marginBottom: '22px',
+          marginBottom: '16px',
 
           border: 'none',
           borderRadius: '10px',
