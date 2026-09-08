@@ -5404,11 +5404,38 @@ function renderJobAvatar() {
         alignItems: 'center',
         justifyContent: 'center',
         overflow: 'hidden',
+        borderRadius: '16px',
+        background:
+          'radial-gradient(circle at 50% 35%, #ffffff 0%, #e9e9e9 55%, #cfcfcf 100%)',
       },
     },
 
-    h(Team4Avatar3DViewer, {
-      gender: avatar.gender || 'male',
+    h('model-viewer', {
+      src:
+        avatar.gender === 'female'
+          ? '/assets/team4-lab/avatar-3d/TEAM4_FEMALE_MASTER.glb'
+          : '/assets/team4-lab/avatar-3d/TEAM4_MALE_WALK.glb',
+
+      alt: 'Team4 Avatar',
+
+      'camera-controls': true,
+      'disable-pan': true,
+
+      'shadow-intensity': '1',
+      'shadow-softness': '0.8',
+
+      exposure: '1',
+
+      'environment-image': 'neutral',
+
+      'camera-orbit': '0deg 80deg 5.6m',
+      'field-of-view': '30deg',
+
+      style: {
+        width: '100%',
+        height: '100%',
+        background: 'transparent',
+      },
     })
   );
 }
