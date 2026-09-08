@@ -2509,10 +2509,10 @@ function Team4Avatar3DViewer({ gender }) {
 
     const modelSrc =
   gender === 'female'
-    '/assets/team4-lab/avatar-3d/TEAM4_FEMALE_WALK.glb'
+    ? '/assets/team4-lab/avatar-3d/TEAM4_FEMALE_WALK.glb'
     : '/assets/team4-lab/avatar-3d/TEAM4_MALE_WALK.glb';
 
-    viewer.setAttribute('src', modelSrc);
+viewer.setAttribute('src', modelSrc);
   }, [gender]);
 
   return h(
