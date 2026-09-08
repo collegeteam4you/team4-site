@@ -5413,7 +5413,7 @@ function renderJobAvatar() {
     h('model-viewer', {
       src:
         avatar.gender === 'female'
-          ? '/assets/team4-lab/avatar-3d/TEAM4_FEMALE_MASTER.glb'
+         '/assets/team4-lab/avatar-3d/TEAM4_FEMALE_WALK.glb'
           : '/assets/team4-lab/avatar-3d/TEAM4_MALE_WALK.glb',
 
       alt: 'Team4 Avatar',
