@@ -5520,13 +5520,16 @@ overflow: 'hidden',
     'div',
     {
       style: {
-        padding: '22px',
-        borderRadius: '22px',
-        background: '#111319',
+  padding: '22px',
+  paddingBottom: '34px',
+  marginBottom: '24px',
 
-        border:
-          '1px solid rgba(255,255,255,.10)',
-      },
+  borderRadius: '22px',
+  background: '#111319',
+
+  border:
+    '1px solid rgba(255,255,255,.10)',
+},
     },
 
     h(
