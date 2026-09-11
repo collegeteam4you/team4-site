@@ -4341,3 +4341,234 @@ body .library-book-body {
 
   cursor: pointer;
 }
+
+
+/* Team4 trusted manual checkout */
+.library-checkout-panel {
+  overflow: hidden;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: #09090c;
+}
+
+.library-checkout-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 22px 24px;
+  background: linear-gradient(120deg, #08080a, #260807);
+}
+
+.library-checkout-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.library-checkout-brand > span {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border-radius: 10px;
+  background: #e10600;
+  color: #fff;
+  font-weight: 900;
+}
+
+.library-checkout-brand strong,
+.library-checkout-brand small {
+  display: block;
+}
+
+.library-checkout-brand small {
+  margin-top: 3px;
+  color: rgba(255, 255, 255, 0.64);
+}
+
+.library-checkout-secure {
+  color: rgba(255, 255, 255, 0.78);
+  font-weight: 800;
+}
+
+.library-checkout-steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  padding: 18px 24px 8px;
+}
+
+.library-checkout-step {
+  color: rgba(255, 255, 255, 0.38);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.library-checkout-step i {
+  display: block;
+  height: 4px;
+  margin-bottom: 8px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.library-checkout-step.is-active {
+  color: #fff;
+}
+
+.library-checkout-step.is-active i {
+  background: #e10600;
+}
+
+.library-checkout-summary,
+.library-checkout-panel > .library-checkout-intro,
+.library-checkout-panel > .library-order-status,
+.library-checkout-panel > .library-order-form,
+.library-checkout-panel > .library-bank-heading,
+.library-checkout-panel > .library-bank-choice,
+.library-checkout-panel > .library-bank-details,
+.library-checkout-panel > .library-payment-notice,
+.library-checkout-panel > .library-error,
+.library-checkout-panel > .library-success {
+  margin-right: 24px;
+  margin-left: 24px;
+}
+
+.library-checkout-summary {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 16px 0 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.library-checkout-summary h2 {
+  margin: 4px 0 6px;
+}
+
+.library-checkout-summary span {
+  color: rgba(255, 255, 255, 0.58);
+}
+
+.library-checkout-summary > strong {
+  flex: 0 0 auto;
+  color: #fff;
+  font-size: 28px;
+}
+
+.library-checkout-intro {
+  margin-top: 18px;
+}
+
+.library-bank-heading {
+  margin-top: 22px;
+  margin-bottom: 12px;
+  color: #fff;
+}
+
+.library-bank-choice {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.library-bank-choice button {
+  min-height: 50px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  background: #17171c;
+  color: #fff;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.library-bank-choice button.is-selected {
+  border-color: #e10600;
+  background: #e10600;
+}
+
+.library-checkout-panel .library-bank-details {
+  margin-top: 18px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.library-payment-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 15px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.library-payment-row > span {
+  color: rgba(255, 255, 255, 0.56);
+}
+
+.library-payment-row > strong {
+  max-width: 70%;
+  overflow-wrap: anywhere;
+  text-align: right;
+  color: #fff;
+}
+
+.library-copy-button {
+  margin-left: 10px;
+  border: 0;
+  background: transparent;
+  color: #ff5751;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.library-payment-notice {
+  margin-top: 18px;
+  padding: 14px 16px;
+  border-left: 3px solid #e10600;
+  background: rgba(255, 255, 255, 0.055);
+  color: rgba(255, 255, 255, 0.76);
+}
+
+.library-checkout-panel > .library-order-form {
+  margin-top: 20px;
+  margin-bottom: 24px;
+}
+
+.library-receipt-button {
+  min-height: 56px;
+}
+
+@media (max-width: 680px) {
+  .library-checkout-header,
+  .library-checkout-summary,
+  .library-payment-row {
+    align-items: flex-start;
+  }
+
+  .library-checkout-header,
+  .library-checkout-summary,
+  .library-payment-row {
+    flex-direction: column;
+  }
+
+  .library-bank-choice {
+    grid-template-columns: 1fr;
+  }
+
+  .library-payment-row {
+    gap: 6px;
+  }
+
+  .library-payment-row > strong {
+    max-width: 100%;
+    text-align: left;
+  }
+
+  .library-checkout-secure {
+    align-self: flex-start;
+  }
+}
