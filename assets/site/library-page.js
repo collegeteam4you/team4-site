@@ -63,6 +63,8 @@
     const [receiptFile, setReceiptFile] = React.useState(null);
     const [status, setStatus] = React.useState(null);
     const [isSubmitting, setIsSubmitting] = React.useState(false);
+    const [selectedBank, setSelectedBank] = React.useState('bog');
+    const [copiedField, setCopiedField] = React.useState('');
     const activeOrder =
   createdOrder ||
   orders.find(
@@ -73,6 +75,16 @@
   null;
 
     const updateField = (key, value) => setForm((current) => ({ ...current, [key]: value }));
+
+    const copyPaymentValue = async (field, value) => {
+      try {
+        await navigator.clipboard.writeText(String(value || ''));
+        setCopiedField(field);
+        window.setTimeout(() => setCopiedField(''), 1600);
+      } catch (error) {
+        setStatus({ type: 'error', text: 'კოპირება ვერ მოხერხდა. მონიშნე და დააკოპირე ხელით.' });
+      }
+    };
 
     const submitOrder = async (event) => {
       event.preventDefault();
@@ -116,10 +128,27 @@
 
     return h(
       'section',
-      { className: 'library-order-panel' },
-      h('p', { className: 'library-kicker' }, 'Manual Payment'),
-      h('h2', null, `${item.title} — ${item.price.toFixed(2)} ლარი`),
-      h('p', { className: 'library-muted' }, 'შეკვეთის შემდეგ გამოჩნდება საბანკო რეკვიზიტები და უნიკალური გადახდის კოდი. ქვითრის ატვირთვის შემდეგ შეკვეთა Pending სტატუსით გადავა ადმინისტრატორთან.'),
+      { className: 'library-order-panel library-checkout-panel' },
+      h(
+        'div',
+        { className: 'library-checkout-header' },
+        h('div', { className: 'library-checkout-brand' }, h('span', null, 'T4'), h('div', null, h('strong', null, 'Team4'), h('small', null, 'უსაფრთხო გადახდა'))),
+        h('div', { className: 'library-checkout-secure' }, '✓ დაცული შეკვეთა')
+      ),
+      h(
+        'div',
+        { className: 'library-checkout-steps', 'aria-label': 'გადახდის ეტაპები' },
+        ['1. შეკვეთა', '2. გადახდა', '3. წვდომა'].map((label, index) =>
+          h('div', { key: label, className: `library-checkout-step ${index < (activeOrder ? 2 : 1) ? 'is-active' : ''}` }, h('i', null), h('span', null, label))
+        )
+      ),
+      h(
+        'div',
+        { className: 'library-checkout-summary' },
+        h('div', null, h('p', { className: 'library-kicker' }, 'შენი შეკვეთა'), h('h2', null, item.title), h('span', null, item.type === 'bundle' ? 'ორი ციფრული წიგნი' : 'ციფრული წიგნი')),
+        h('strong', null, `${item.price.toFixed(2)} ₾`)
+      ),
+      h('p', { className: 'library-muted library-checkout-intro' }, activeOrder ? 'აირჩიე ბანკი, დააკოპირე რეკვიზიტები და გადახდის შემდეგ ატვირთე ქვითარი.' : 'შეავსე მონაცემები. შემდეგ გამოჩნდება საბანკო რეკვიზიტები და უნიკალური გადახდის კოდი.'),
       activeOrder &&
         h(
           'div',
@@ -151,26 +180,48 @@
         ),
       (bankDetails || activeOrder) &&
         h(
-          'div',
-          { className: 'library-bank-details' },
-          h('p', null, h('strong', null, 'მიმღები: '), bankDetails?.receiver || 'ლაშა ხურციძე'),
-          h('p', null, h('strong', null, 'საქართველოს ბანკი: '), bankDetails?.bogAccount || 'GE12BG0000000536600132'),
-
-h('p', null, h('strong', null, 'TBC ბანკი: '), bankDetails?.tbcAccount || 'GE96TB7044645064300059'),
+          React.Fragment,
+          null,
+          h('h3', { className: 'library-bank-heading' }, 'აირჩიე შენი ბანკი'),
           h(
-  'p',
-  null,
-  h('strong', null, 'თანხა: '),
-  `${bankDetails?.amount || item.price} ლარი`
-),
-          h('p', null, h('strong', null, 'დანიშნულება: '), bankDetails?.purpose || activeOrder?.paymentCode)
+            'div',
+            { className: 'library-bank-choice', role: 'group', 'aria-label': 'ბანკის არჩევა' },
+            h('button', { type: 'button', className: selectedBank === 'bog' ? 'is-selected' : '', 'aria-pressed': selectedBank === 'bog', onClick: () => setSelectedBank('bog') }, 'საქართველოს ბანკი'),
+            h('button', { type: 'button', className: selectedBank === 'tbc' ? 'is-selected' : '', 'aria-pressed': selectedBank === 'tbc', onClick: () => setSelectedBank('tbc') }, 'TBC ბანკი')
+          ),
+          h(
+            'div',
+            { className: 'library-bank-details' },
+            h('div', { className: 'library-payment-row' }, h('span', null, 'მიმღები'), h('strong', null, bankDetails?.receiver || 'ლაშა ხურციძე · Team4')),
+            h(
+              'div',
+              { className: 'library-payment-row' },
+              h('span', null, 'ანგარიშის ნომერი'),
+              h(
+                'strong',
+                null,
+                selectedBank === 'bog'
+                  ? bankDetails?.bogAccount || 'GE12BG0000000536600132'
+                  : bankDetails?.tbcAccount || 'GE96TB7044645064300059',
+                h('button', { type: 'button', className: 'library-copy-button', onClick: () => copyPaymentValue('account', selectedBank === 'bog' ? bankDetails?.bogAccount || 'GE12BG0000000536600132' : bankDetails?.tbcAccount || 'GE96TB7044645064300059') }, copiedField === 'account' ? 'დაკოპირდა ✓' : 'კოპირება')
+              )
+            ),
+            h('div', { className: 'library-payment-row' }, h('span', null, 'გადასახდელი თანხა'), h('strong', null, `${bankDetails?.amount || item.price} ₾`)),
+            h(
+              'div',
+              { className: 'library-payment-row' },
+              h('span', null, 'დანიშნულება'),
+              h('strong', null, bankDetails?.purpose || activeOrder?.paymentCode, h('button', { type: 'button', className: 'library-copy-button', onClick: () => copyPaymentValue('purpose', bankDetails?.purpose || activeOrder?.paymentCode) }, copiedField === 'purpose' ? 'დაკოპირდა ✓' : 'კოპირება'))
+            )
+          ),
+          h('div', { className: 'library-payment-notice' }, h('strong', null, 'მნიშვნელოვანია: '), 'გადარიცხვის დანიშნულებაში აუცილებლად მიუთითე შეკვეთის კოდი.')
         ),
       activeOrder &&
         h(
           'form',
           { className: 'library-order-form', onSubmit: uploadReceipt },
-          h('label', { className: 'library-file-label' }, 'ქვითრის ატვირთვა', h('input', { type: 'file', accept: 'image/png,image/jpeg,image/webp,application/pdf', onChange: (event) => setReceiptFile(event.target.files?.[0] || null), required: true })),
-          h('button', { className: 'library-action library-action-primary', disabled: isSubmitting, type: 'submit' }, isSubmitting ? 'იტვირთება...' : 'ქვითრის გაგზავნა')
+          h('label', { className: 'library-file-label' }, 'ქვითრის ფაილი', h('input', { type: 'file', accept: 'image/png,image/jpeg,image/webp,application/pdf', onChange: (event) => setReceiptFile(event.target.files?.[0] || null), required: true })),
+          h('button', { className: 'library-action library-action-primary library-receipt-button', disabled: isSubmitting, type: 'submit' }, isSubmitting ? 'იტვირთება...' : 'გადავიხადე — ქვითრის გაგზავნა')
         ),
       status && h('p', { className: status.type === 'error' ? 'library-error' : 'library-success' }, status.text)
     );
