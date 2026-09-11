@@ -2844,7 +2844,7 @@ header nav a {
   margin: 0 !important;
   color: #fff !important;
   font-family: "Playfair Display", Inter, Arial, sans-serif !important;
-  font-size: clamp(38px, 4.6vw, 68px) !important;
+  font-size: clamp(34px, 4.1vw, 60px) !important;
   font-weight: 800 !important;
   line-height: 1.05 !important;
   letter-spacing: -0.5px !important;
@@ -3272,7 +3272,7 @@ button.site-cta:hover,
   .hero-title-ka {
     max-width: 100% !important;
     margin: 32px auto 0 !important;
-    font-size: clamp(40px, 13vw, 58px) !important;
+    font-size: clamp(34px, 10.5vw, 50px) !important;
     line-height: 1.08 !important;
     text-align: center !important;
     letter-spacing: 0 !important;
@@ -3335,7 +3335,7 @@ button.site-cta:hover,
   .hero-video-container .main-title,
   .hero-video-container h1,
   .hero-title-ka {
-    font-size: clamp(36px, 12vw, 50px) !important;
+    font-size: clamp(32px, 10vw, 44px) !important;
   }
 
   .hero-left > p.mt-7.text-lg.leading-8 {
