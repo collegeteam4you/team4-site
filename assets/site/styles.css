@@ -4092,9 +4092,9 @@ body .library-book-body {
   border: 1px solid rgba(255, 50, 45, 0.75);
   background: #e10600;
   color: #ffffff;
-  opacity: 0;
-  transform: translateY(18px);
-  pointer-events: none;
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
   transition:
     opacity 0.3s ease,
     transform 0.3s ease,
