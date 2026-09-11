@@ -1,6 +1,19 @@
 (function () {
   const { createElement: h } = React;
 
+  function trackCommerceEvent(eventName, item, extra) {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: eventName,
+      content_id: item?.id || '',
+      content_name: item?.title || '',
+      content_type: item?.type || 'book',
+      value: Number(item?.price || 0),
+      currency: 'GEL',
+      ...(extra || {}),
+    });
+  }
+
   function LibraryLogin({ onLogin }) {
     const [firstName, setFirstName] = React.useState('');
     const [lastName, setLastName] = React.useState('');
@@ -72,6 +85,9 @@
 });
         setCreatedOrder(result.order);
         setBankDetails(result.bankDetails);
+        trackCommerceEvent('checkout_start', item, {
+          payment_method: 'bank_transfer',
+        });
         setStatus({ type: 'success', text: 'შეკვეთა შეიქმნა. გადარიცხვისას დანიშნულებაში მიუთითე გადახდის კოდი.' });
         onChanged();
       } catch (error) {
@@ -259,6 +275,30 @@ h('p', null, h('strong', null, 'TBC ბანკი: '), bankDetails?.tbcAccount
   const [isLoading, setIsLoading] = React.useState(false);
   const [refreshKey, setRefreshKey] = React.useState(0);
    const [showLogin, setShowLogin] = React.useState(false);
+
+  React.useEffect(() => {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: 'book_view',
+      content_ids: catalog.map((item) => item.id),
+      content_type: 'product_group',
+    });
+  }, []);
+
+  React.useEffect(() => {
+    orders.forEach((order) => {
+      if (String(order.status || '').toLowerCase() !== 'approved') return;
+
+      const purchaseKey = 'team4_purchase_tracked_' + order.paymentCode;
+      if (window.localStorage.getItem(purchaseKey)) return;
+
+      const orderedItem = catalog.find((item) => item.id === order.itemId);
+      trackCommerceEvent('purchase', orderedItem, {
+        transaction_id: order.paymentCode,
+      });
+      window.localStorage.setItem(purchaseKey, '1');
+    });
+  }, [orders]);
 
 const selectedItem =
   catalog.find((item) => item.id === selectedItemId) ||
@@ -453,6 +493,7 @@ selectedBookHasAccess
         ? 'library-action library-action-primary'
         : 'library-action',
     onClick: () => {
+  trackCommerceEvent('buy_button_click', item);
   setSelectedItemId(item.id);
 
   setTimeout(() => {
@@ -557,6 +598,7 @@ selectedBookHasAccess
                     : 'library-action',
 
                 onClick: () => {
+                  trackCommerceEvent('buy_button_click', item);
                   setSelectedItemId(item.id);
                   setShowLogin(true);
 
