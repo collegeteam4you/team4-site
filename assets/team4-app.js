@@ -81,7 +81,7 @@ let copy = {
     errorMessage: 'Message could not be sent. Check EmailJS configuration.',
   },
   GEO: {
-    heroTitle: 'გაყიდვები ტალანტი არ არის — ეს ფსიქოლოგიაა.',
+    heroTitle: 'გაყიდვები ტალანტი არ არის - ეს ფსიქოლოგიაა.',
     heroSubtitle: 'გაყიდვები • მოლაპარაკება • NLP • ციფრული მარკეტინგი',
     heroText:
       'თუ შენი გუნდი ბევრს მუშაობს, მაგრამ გაყიდვები მაინც არ იზრდება —\nპრობლემა პროდუქტში არა, კომუნიკაციაშია.\n\nდაჯავშნე უფასო კონსულტაცია და ნახე სად კარგავ გაყიდვებს.',
@@ -1230,7 +1230,7 @@ function Hero({ lang }) {
             { className: 'hero-title hero-title-ka main-title' },
             lang === 'GEO'
               ? [
-                  h('span', { key: 'geo-title-1' }, 'გაყიდვები ტალანტი არ არის —'),
+                  h('span', { key: 'geo-title-1' }, 'გაყიდვები ტალანტი არ არის -'),
                   h('span', { key: 'geo-title-2' }, 'ეს ფსიქოლოგია'),
                 ]
               : h('span', null, heroTitle)
