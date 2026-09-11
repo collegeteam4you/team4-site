@@ -14,49 +14,77 @@
     });
   }
 
-  function LibraryLogin({ onLogin }) {
-    const [firstName, setFirstName] = React.useState('');
-    const [lastName, setLastName] = React.useState('');
+  function LibraryLogin({ onLogin, item }) {
     const [email, setEmail] = React.useState('');
-    const [phone, setPhone] = React.useState('');
     const [message, setMessage] = React.useState('');
+    const [isSubmitting, setIsSubmitting] = React.useState(false);
 
-    const submit = (event) => {
+    const submit = async (event) => {
       event.preventDefault();
-      const result = window.Team4Library.login({ firstName, lastName, email, phone });
-      if (!result.ok) {
-        setMessage(result.message);
-        return;
-      }
+      setIsSubmitting(true);
       setMessage('');
-      onLogin(result.user);
+
+      try {
+        const result = window.Team4Library.login({ email });
+        if (!result.ok) {
+          setMessage(result.message);
+          return;
+        }
+
+        const ordersResult = await window.Team4Library.fetchUserOrders(result.user.email);
+        const existingOrder = (ordersResult.orders || []).some(
+          (order) => order.itemId === item?.id
+        );
+
+        if (item && !existingOrder) {
+          await window.Team4Library.createManualOrder({
+            email: result.user.email,
+            itemId: item.id,
+          });
+          trackCommerceEvent('checkout_start', item, {
+            payment_method: 'bank_transfer',
+          });
+        }
+
+        onLogin(result.user);
+      } catch (error) {
+        setMessage(error.message || 'შეკვეთის შექმნა ვერ მოხერხდა.');
+      } finally {
+        setIsSubmitting(false);
+      }
     };
 
     return h(
       'form',
       { className: 'library-login-panel', onSubmit: submit },
-      h('p', { className: 'library-kicker' }, 'Team4 Library'),
-      h('h1', { className: 'library-title' }, 'Login / Register'),
-      h('p', { className: 'library-muted' }, 'წიგნის სანახავად შედი ან დარეგისტრირდი ელფოსტით. დამტკიცებული გადახდის შემდეგ წიგნი გამოჩნდება გვერდზე „ჩემი წიგნები“.'),
+      h('p', { className: 'library-kicker' }, 'Team4 · უსაფრთხო გადახდა'),
+      h('h1', { className: 'library-title' }, 'სად გამოგიგზავნოთ წიგნი?'),
+      h('p', { className: 'library-muted' }, 'შეიყვანე მხოლოდ ელფოსტა. გადახდის დადასტურების შემდეგ წიგნზე წვდომას ამავე ელფოსტით მიიღებ.'),
+      h('input', {
+        className: 'library-input',
+        value: email,
+        placeholder: 'ელფოსტა',
+        type: 'email',
+        onChange: (event) => setEmail(event.target.value),
+        autoComplete: 'email',
+        required: true,
+      }),
       h(
-        'div',
-        { className: 'library-two' },
-        h('input', { className: 'library-input', value: firstName, placeholder: 'სახელი', onChange: (event) => setFirstName(event.target.value), autoComplete: 'given-name', required: true }),
-        h('input', { className: 'library-input', value: lastName, placeholder: 'გვარი', onChange: (event) => setLastName(event.target.value), autoComplete: 'family-name', required: true })
+        'button',
+        {
+          className: 'library-action library-action-primary',
+          type: 'submit',
+          disabled: isSubmitting,
+        },
+        isSubmitting ? 'იტვირთება...' : 'გადახდაზე გადასვლა'
       ),
-      h('input', { className: 'library-input', value: email, placeholder: 'ელფოსტა', type: 'email', onChange: (event) => setEmail(event.target.value), autoComplete: 'email', required: true }),
-      h('input', { className: 'library-input', value: phone, placeholder: 'ტელეფონი', type: 'tel', onChange: (event) => setPhone(event.target.value), autoComplete: 'tel', required: true }),
-      h('button', { className: 'library-action library-action-primary', type: 'submit' }, 'შესვლა / რეგისტრაცია'),
       message && h('p', { className: 'library-error' }, message)
     );
   }
 
   function OrderPanel({ user, orders, item, onChanged }) {
-    const [form, setForm] = React.useState({
-      firstName: user?.firstName || '',
-      lastName: user?.lastName || '',
+    const [form] = React.useState({
       email: user?.email || '',
-      phone: user?.phone || '',
     });
     const [createdOrder, setCreatedOrder] = React.useState(null);
     const [bankDetails, setBankDetails] = React.useState(null);
@@ -73,8 +101,6 @@
       order.status !== 'Approved'
   ) ||
   null;
-
-    const updateField = (key, value) => setForm((current) => ({ ...current, [key]: value }));
 
     const copyPaymentValue = async (field, value) => {
       try {
@@ -148,7 +174,7 @@
         h('div', null, h('p', { className: 'library-kicker' }, 'შენი შეკვეთა'), h('h2', null, item.title), h('span', null, item.type === 'bundle' ? 'ორი ციფრული წიგნი' : 'ციფრული წიგნი')),
         h('strong', null, `${item.price.toFixed(2)} ₾`)
       ),
-      h('p', { className: 'library-muted library-checkout-intro' }, activeOrder ? 'აირჩიე ბანკი, დააკოპირე რეკვიზიტები და გადახდის შემდეგ ატვირთე ქვითარი.' : 'შეავსე მონაცემები. შემდეგ გამოჩნდება საბანკო რეკვიზიტები და უნიკალური გადახდის კოდი.'),
+      h('p', { className: 'library-muted library-checkout-intro' }, activeOrder ? 'აირჩიე ბანკი, დააკოპირე რეკვიზიტები და გადახდის შემდეგ ატვირთე ქვითარი.' : 'დაადასტურე ელფოსტა და შემდეგ გამოჩნდება საბანკო რეკვიზიტები და უნიკალური გადახდის კოდი.'),
       activeOrder &&
         h(
           'div',
@@ -160,12 +186,14 @@
         h(
           'form',
           { className: 'library-order-form', onSubmit: submitOrder },
-          h('div', { className: 'library-two' },
-            h('input', { className: 'library-input', required: true, placeholder: 'სახელი', value: form.firstName, onChange: (event) => updateField('firstName', event.target.value) }),
-            h('input', { className: 'library-input', required: true, placeholder: 'გვარი', value: form.lastName, onChange: (event) => updateField('lastName', event.target.value) })
-          ),
-          h('input', { className: 'library-input', required: true, type: 'email', placeholder: 'ელფოსტა', value: form.email, onChange: (event) => updateField('email', event.target.value) }),
-          h('input', { className: 'library-input', required: true, type: 'tel', placeholder: 'ტელეფონი', value: form.phone, onChange: (event) => updateField('phone', event.target.value) }),
+          h('input', {
+            className: 'library-input',
+            required: true,
+            readOnly: true,
+            type: 'email',
+            'aria-label': 'ელფოსტა',
+            value: form.email,
+          }),
           h(
   'button',
   {
@@ -442,14 +470,14 @@ const hasAccess = (itemId) =>
             h(
               'div',
               { className: 'library-userbar' },
-              h('span', null, `${user.name} / ${user.email}`),
+              h('span', null, user.email),
               h(
                 'button',
                 {
                   type: 'button',
                   onClick: logout,
                 },
-                'გასვლა'
+                'ელფოსტის შეცვლა'
               )
             ),
 
@@ -677,6 +705,7 @@ selectedBookHasAccess
 
     showLogin &&
       h(LibraryLogin, {
+        item: selectedItem,
         onLogin: (loggedUser) => {
           setUser(loggedUser);
           setShowLogin(false);
