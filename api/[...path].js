@@ -1,6 +1,5 @@
 const crypto = require('crypto');
 const { sql } = require('@vercel/postgres');
-const { put } = require('@vercel/blob');
 
 const adminUsername = process.env.ADMIN_USERNAME || 'TEAM4ADMIN';
 const adminPassword = process.env.ADMIN_PASSWORD || '123456789ns@';
@@ -143,6 +142,7 @@ const ensureSchema = async () => {
       updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
     )
   `;
+  await sql`ALTER TABLE manual_orders ADD COLUMN IF NOT EXISTS receipt_data TEXT`;
   await sql`CREATE INDEX IF NOT EXISTS manual_orders_email_idx ON manual_orders (email)`;
 };
 
@@ -185,7 +185,9 @@ const rowToOrder = (row) => ({
   createdAt: row.created_at ? new Date(row.created_at).toISOString() : '',
   approvedAt: row.approved_at ? new Date(row.approved_at).toISOString() : '',
   rejectedAt: row.rejected_at ? new Date(row.rejected_at).toISOString() : '',
-  receiptUrl: row.receipt_url || '',
+  receiptUrl: row.receipt_data || row.receipt_url
+    ? `/api/admin/orders/receipt?orderCode=${encodeURIComponent(row.payment_code)}`
+    : '',
 });
 
 const generatePaymentCode = async () => {
@@ -233,15 +235,11 @@ const saveReceipt = async (order, receipt) => {
   const ext = allowed[mimeType];
   if (!ext) throw new Error('Receipt must be a PNG, JPG, WEBP, or PDF file.');
   const bytes = Buffer.from(match[2], 'base64');
-  if (!bytes.length || bytes.length > 4 * 1024 * 1024) throw new Error('Receipt file must be smaller than 4MB on Vercel.');
-  const fileName = `receipts/${order.payment_code}-${Date.now()}.${ext}`;
-  const blob = await put(fileName, bytes, {
-    access: 'public',
-    contentType: mimeType,
-    addRandomSuffix: false,
-  });
+  if (!bytes.length || bytes.length > 2 * 1024 * 1024) {
+    throw new Error('ქვითრის ფაილი უნდა იყოს 2MB-ზე ნაკლები.');
+  }
   return {
-    url: blob.url,
+    data: match[2],
     mimeType,
     size: bytes.length,
     originalName: String(receipt?.name || `receipt.${ext}`).slice(0, 160),
@@ -286,6 +284,45 @@ const handleAdminApi = async (req, res, pathname) => {
     }
     await updateAuthPassword(String(body.newPassword));
     sendJson(res, 200, { ok: true, message: 'Password changed successfully. Please log in again.' }, { 'Set-Cookie': sessionCookie('', 0) });
+    return;
+  }
+
+  if (pathname === '/api/admin/orders/receipt' && req.method === 'GET') {
+    if (!requireSession(req, res)) return;
+    await ensureSchema();
+    const requestUrl = new URL(req.url, `https://${req.headers.host || 'localhost'}`);
+    const orderCode = String(requestUrl.searchParams.get('orderCode') || '').trim();
+    const result = await sql`
+      SELECT payment_code, receipt_data, receipt_url, receipt_mime_type, receipt_name
+      FROM manual_orders
+      WHERE payment_code = ${orderCode} OR order_number = ${orderCode}
+      LIMIT 1
+    `;
+    const receipt = result.rows[0];
+    if (!receipt || (!receipt.receipt_data && !receipt.receipt_url)) {
+      sendJson(res, 404, { ok: false, message: 'Receipt not found.' });
+      return;
+    }
+
+    let bytes;
+    let contentType = receipt.receipt_mime_type || 'application/octet-stream';
+    if (receipt.receipt_data) {
+      bytes = Buffer.from(receipt.receipt_data, 'base64');
+    } else {
+      const legacyResponse = await fetch(receipt.receipt_url);
+      if (!legacyResponse.ok) {
+        sendJson(res, 404, { ok: false, message: 'Receipt not found.' });
+        return;
+      }
+      bytes = Buffer.from(await legacyResponse.arrayBuffer());
+      contentType = legacyResponse.headers.get('content-type') || contentType;
+    }
+
+    res.setHeader('Content-Type', contentType);
+    res.setHeader('Content-Disposition', `inline; filename="${String(receipt.receipt_name || 'receipt').replace(/["\\]/g, '_')}"`);
+    res.setHeader('Cache-Control', 'private, no-store');
+    res.setHeader('X-Content-Type-Options', 'nosniff');
+    res.status(200).send(bytes);
     return;
   }
 
@@ -367,7 +404,7 @@ const requestedItemId = String(
 
 const product = PRODUCTS[requestedItemId];
 
-const firstName = String(body.firstName || '').trim();
+const firstName = String(body.firstName || 'მომხმარებელი').trim();
     const lastName = String(body.lastName || '').trim();
     const email = normalizeEmail(body.email);
     const phone = String(body.phone || '').trim();
@@ -378,8 +415,8 @@ const firstName = String(body.firstName || '').trim();
   });
   return;
 }
-    if (!firstName || !lastName || !email || !email.includes('@') || !phone) {
-      sendJson(res, 400, { ok: false, message: 'Please fill in first name, last name, email, and phone.' });
+    if (!email || !email.includes('@')) {
+      sendJson(res, 400, { ok: false, message: 'შეიყვანე სწორი ელფოსტა.' });
       return;
     }
     const paymentCode = await generatePaymentCode();
@@ -432,7 +469,7 @@ bankDetails: {
     const receipt = await saveReceipt(found.rows[0], req.body?.receipt);
     const result = await sql`
       UPDATE manual_orders
-      SET receipt_url = ${receipt.url}, receipt_name = ${receipt.originalName},
+      SET receipt_data = ${receipt.data}, receipt_url = NULL, receipt_name = ${receipt.originalName},
         receipt_mime_type = ${receipt.mimeType}, receipt_size = ${receipt.size}, updated_at = NOW()
       WHERE id = ${found.rows[0].id}
       RETURNING *
