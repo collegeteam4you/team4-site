@@ -14,66 +14,49 @@
     });
   }
 
-  function LibraryLogin({ onLogin, item }) {
+  function LibraryLogin({ onLogin }) {
+    const [firstName, setFirstName] = React.useState('');
+    const [lastName, setLastName] = React.useState('');
     const [email, setEmail] = React.useState('');
+    const [phone, setPhone] = React.useState('');
     const [message, setMessage] = React.useState('');
-    const [isSubmitting, setIsSubmitting] = React.useState(false);
 
-    const submit = async (event) => {
+    const submit = (event) => {
       event.preventDefault();
-      const result = window.Team4Library.login({ email });
+      const result = window.Team4Library.login({ firstName, lastName, email, phone });
       if (!result.ok) {
         setMessage(result.message);
         return;
       }
-
-      setIsSubmitting(true);
       setMessage('');
-      try {
-        const existing = await window.Team4Library.fetchUserOrders(result.user.email).catch(() => ({ orders: [] }));
-        const hasItemOrder = (existing.orders || []).some((order) => order.itemId === item?.id);
-
-        if (item && !hasItemOrder) {
-          await window.Team4Library.createManualOrder({
-            email: result.user.email,
-            itemId: item.id,
-          });
-          trackCommerceEvent('checkout_start', item, {
-            payment_method: 'bank_transfer',
-          });
-        }
-
-        onLogin(result.user);
-      } catch (error) {
-        setMessage(error.message || 'გადახდის დაწყება ვერ მოხერხდა.');
-      } finally {
-        setIsSubmitting(false);
-      }
+      onLogin(result.user);
     };
 
     return h(
       'form',
-      { className: 'library-login-panel library-email-checkout', onSubmit: submit },
-      h('p', { className: 'library-kicker' }, 'Team4 · უსაფრთხო გადახდა'),
-      h('h1', { className: 'library-title' }, 'სად გამოგიგზავნოთ წიგნი?'),
-      h('p', { className: 'library-muted' }, 'შეიყვანე მხოლოდ ელფოსტა. გადახდის დადასტურების შემდეგ წიგნი ამ ელფოსტაზე გაგეხსნება.'),
-      h('input', {
-        className: 'library-input',
-        value: email,
-        placeholder: 'შენი ელფოსტა',
-        type: 'email',
-        onChange: (event) => setEmail(event.target.value),
-        autoComplete: 'email',
-        required: true,
-      }),
-      h('button', { className: 'library-action library-action-primary', type: 'submit', disabled: isSubmitting }, isSubmitting ? 'იტვირთება...' : 'გადახდაზე გადასვლა'),
-      message && h('p', { className: 'library-error', role: 'alert' }, message)
+      { className: 'library-login-panel', onSubmit: submit },
+      h('p', { className: 'library-kicker' }, 'Team4 Library'),
+      h('h1', { className: 'library-title' }, 'Login / Register'),
+      h('p', { className: 'library-muted' }, 'წიგნის სანახავად შედი ან დარეგისტრირდი ელფოსტით. დამტკიცებული გადახდის შემდეგ წიგნი გამოჩნდება გვერდზე „ჩემი წიგნები“.'),
+      h(
+        'div',
+        { className: 'library-two' },
+        h('input', { className: 'library-input', value: firstName, placeholder: 'სახელი', onChange: (event) => setFirstName(event.target.value), autoComplete: 'given-name', required: true }),
+        h('input', { className: 'library-input', value: lastName, placeholder: 'გვარი', onChange: (event) => setLastName(event.target.value), autoComplete: 'family-name', required: true })
+      ),
+      h('input', { className: 'library-input', value: email, placeholder: 'ელფოსტა', type: 'email', onChange: (event) => setEmail(event.target.value), autoComplete: 'email', required: true }),
+      h('input', { className: 'library-input', value: phone, placeholder: 'ტელეფონი', type: 'tel', onChange: (event) => setPhone(event.target.value), autoComplete: 'tel', required: true }),
+      h('button', { className: 'library-action library-action-primary', type: 'submit' }, 'შესვლა / რეგისტრაცია'),
+      message && h('p', { className: 'library-error' }, message)
     );
   }
 
   function OrderPanel({ user, orders, item, onChanged }) {
     const [form, setForm] = React.useState({
+      firstName: user?.firstName || '',
+      lastName: user?.lastName || '',
       email: user?.email || '',
+      phone: user?.phone || '',
     });
     const [createdOrder, setCreatedOrder] = React.useState(null);
     const [bankDetails, setBankDetails] = React.useState(null);
@@ -177,7 +160,12 @@
         h(
           'form',
           { className: 'library-order-form', onSubmit: submitOrder },
-          h('input', { className: 'library-input', required: true, readOnly: true, type: 'email', placeholder: 'ელფოსტა', value: form.email, onChange: (event) => updateField('email', event.target.value) }),
+          h('div', { className: 'library-two' },
+            h('input', { className: 'library-input', required: true, placeholder: 'სახელი', value: form.firstName, onChange: (event) => updateField('firstName', event.target.value) }),
+            h('input', { className: 'library-input', required: true, placeholder: 'გვარი', value: form.lastName, onChange: (event) => updateField('lastName', event.target.value) })
+          ),
+          h('input', { className: 'library-input', required: true, type: 'email', placeholder: 'ელფოსტა', value: form.email, onChange: (event) => updateField('email', event.target.value) }),
+          h('input', { className: 'library-input', required: true, type: 'tel', placeholder: 'ტელეფონი', value: form.phone, onChange: (event) => updateField('phone', event.target.value) }),
           h(
   'button',
   {
@@ -454,14 +442,14 @@ const hasAccess = (itemId) =>
             h(
               'div',
               { className: 'library-userbar' },
-              h('span', null, user.email),
+              h('span', null, `${user.name} / ${user.email}`),
               h(
                 'button',
                 {
                   type: 'button',
                   onClick: logout,
                 },
-                'ელფოსტის შეცვლა'
+                'გასვლა'
               )
             ),
 
@@ -689,7 +677,6 @@ selectedBookHasAccess
 
     showLogin &&
       h(LibraryLogin, {
-        item: selectedItem,
         onLogin: (loggedUser) => {
           setUser(loggedUser);
           setShowLogin(false);
