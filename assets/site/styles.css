@@ -4660,3 +4660,48 @@ body .library-book-body {
     min-height: 44px;
   }
 }
+
+
+/* ===== LIBRARY MOBILE CTA ABOVE FOLD ===== */
+@media (max-width: 680px) {
+  .library-cabinet-shell .library-books-panel {
+    gap: 16px;
+  }
+
+  .library-cabinet-shell .library-catalog-title {
+    margin: 0 0 4px;
+    font-size: 28px;
+    line-height: 1.08;
+  }
+
+  .library-cabinet-shell .library-book-cover {
+    height: 260px;
+    max-height: none;
+    object-fit: contain;
+  }
+
+  .library-cabinet-shell .library-book-card > div {
+    min-height: 116px;
+    padding: 14px 16px 10px;
+  }
+
+  .library-cabinet-shell .library-book-card h2 {
+    margin-bottom: 8px;
+    font-size: 22px;
+    line-height: 1.12;
+  }
+
+  .library-cabinet-shell .library-book-card p {
+    display: none;
+  }
+
+  .library-cabinet-shell .library-book-card strong {
+    font-size: 18px;
+  }
+
+  .library-cabinet-shell .library-book-card > .library-action {
+    width: calc(100% - 32px);
+    min-height: 48px;
+    margin: 0 16px 16px;
+  }
+}
