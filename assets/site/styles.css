@@ -4705,3 +4705,83 @@ body .library-book-body {
     margin: 0 16px 16px;
   }
 }
+
+
+/* ===== LIBRARY CONVERSION COPY ===== */
+.library-cabinet-shell .library-catalog-subtitle {
+  grid-column: 1 / -1;
+  max-width: 920px;
+  margin: -4px 0 6px;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 16px;
+  line-height: 1.55;
+}
+
+.library-cabinet-shell .library-catalog-subtitle::after {
+  content: "მხოლოდ ელფოსტა  •  უსაფრთხო გადახდა  •  ონლაინ წვდომა";
+  display: block;
+  margin-top: 8px;
+  color: rgba(255, 255, 255, 0.52);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.library-cabinet-shell .library-card-benefit {
+  display: block;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.library-cabinet-shell .library-book-card:last-of-type::before {
+  content: "საუკეთესო არჩევანი • დაზოგე 4.90 ₾";
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 4;
+  padding: 8px 11px;
+  background: #d9a514;
+  color: #090909;
+  font-size: 11px;
+  font-weight: 950;
+  letter-spacing: 0.02em;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+@media (min-width: 1051px) {
+  .library-cabinet-shell .library-book-cover {
+    height: 230px;
+  }
+
+  .library-cabinet-shell .library-book-card > div {
+    min-height: 180px;
+  }
+}
+
+@media (max-width: 680px) {
+  .library-cabinet-shell .library-catalog-subtitle {
+    margin-top: -2px;
+    font-size: 14px;
+    line-height: 1.45;
+  }
+
+  .library-cabinet-shell .library-catalog-subtitle::after {
+    line-height: 1.5;
+  }
+
+  .library-cabinet-shell .library-book-cover {
+    height: 220px;
+  }
+
+  .library-cabinet-shell .library-book-card > div {
+    min-height: 148px;
+  }
+
+  .library-cabinet-shell .library-card-benefit {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 13px;
+    line-height: 1.4;
+  }
+}
