@@ -45,7 +45,7 @@
             email: result.user.email,
             itemId: item.id,
           });
-          trackCommerceEvent('email_submitted', item, {
+          trackCommerceEvent('order_created', item, {
             payment_method: 'bank_transfer',
           });
         }
@@ -127,7 +127,7 @@
 });
         setCreatedOrder(result.order);
         setBankDetails(result.bankDetails);
-        trackCommerceEvent('email_submitted', item, {
+        trackCommerceEvent('order_created', item, {
           payment_method: 'bank_transfer',
         });
         setStatus({ type: 'success', text: 'შეკვეთა შეიქმნა. გადარიცხვისას დანიშნულებაში მიუთითე გადახდის კოდი.' });
