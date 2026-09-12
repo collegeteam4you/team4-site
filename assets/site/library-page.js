@@ -31,6 +31,10 @@
           return;
         }
 
+        trackCommerceEvent('email_submitted', item, {
+          checkout_step: 'email',
+        });
+
         const ordersResult = await window.Team4Library.fetchUserOrders(result.user.email);
         const existingOrder = (ordersResult.orders || []).some(
           (order) => order.itemId === item?.id
@@ -41,7 +45,7 @@
             email: result.user.email,
             itemId: item.id,
           });
-          trackCommerceEvent('checkout_start', item, {
+          trackCommerceEvent('email_submitted', item, {
             payment_method: 'bank_transfer',
           });
         }
@@ -123,7 +127,7 @@
 });
         setCreatedOrder(result.order);
         setBankDetails(result.bankDetails);
-        trackCommerceEvent('checkout_start', item, {
+        trackCommerceEvent('email_submitted', item, {
           payment_method: 'bank_transfer',
         });
         setStatus({ type: 'success', text: 'შეკვეთა შეიქმნა. გადარიცხვისას დანიშნულებაში მიუთითე გადახდის კოდი.' });
@@ -572,7 +576,7 @@ selectedBookHasAccess
         ? 'library-action library-action-primary'
         : 'library-action',
     onClick: () => {
-  trackCommerceEvent('buy_button_click', item);
+  trackCommerceEvent('begin_checkout', item);
   setSelectedItemId(item.id);
 
   setTimeout(() => {
@@ -677,7 +681,7 @@ selectedBookHasAccess
                     : 'library-action',
 
                 onClick: () => {
-                  trackCommerceEvent('buy_button_click', item);
+                  trackCommerceEvent('begin_checkout', item);
                   setSelectedItemId(item.id);
                   setShowLogin(true);
 
