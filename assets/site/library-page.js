@@ -624,9 +624,9 @@ selectedBookHasAccess
         { className: 'library-books-panel' },
 
         h(
-          'p',
-          { className: 'library-kicker' },
-          'წიგნები და პაკეტები'
+          'h1',
+          { className: 'library-catalog-title' },
+          'აირჩიე წიგნი, რომელიც შენს აზროვნებას შეცვლის'
         ),
 
         catalog.map((item) =>
