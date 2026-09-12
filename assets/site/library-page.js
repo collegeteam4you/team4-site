@@ -14,6 +14,22 @@
     });
   }
 
+  function getBookBenefit(item) {
+    if (item?.id === 'i-am-the-answer') {
+      return 'იპოვე ძალა საკუთარ თავში და დაიწყე მოქმედება.';
+    }
+    if (item?.id === 'why-others-get-rich') {
+      return 'შეცვალე ფულზე აზროვნება და დაინახე ახალი შესაძლებლობები.';
+    }
+    return 'ორი წიგნი, ორი ძლიერი ცვლილება — საკუთარ თავთან და ფულთან.';
+  }
+
+  function getPurchaseLabel(item) {
+    return item?.type === 'bundle'
+      ? `მიიღე ორივე — ${item.price.toFixed(2)} ₾`
+      : `დაიწყე კითხვა — ${item.price.toFixed(2)} ₾`;
+  }
+
   function LibraryLogin({ onLogin, item }) {
     const [email, setEmail] = React.useState('');
     const [message, setMessage] = React.useState('');
@@ -322,7 +338,7 @@
         'aside',
         { className: 'library-books-panel' },
         h('p', { className: 'library-kicker' }, 'ჩემი წიგნები'),
-        h('article', { className: 'library-book-card' }, h('img', { src: item.cover, alt: item.title, className: 'library-book-cover', loading: 'lazy' }), h('div', null, h('h2', null, item.title), h('p', null, item.description)), h('span', { className: 'library-status is-open' }, 'წვდომა აქტიურია')),
+        h('article', { className: 'library-book-card' }, h('img', { src: item.cover, alt: item.title, className: 'library-book-cover', loading: 'lazy' }), h('div', null, h('h2', null, item.title), h('p', { className: 'library-card-benefit' }, getBookBenefit(item))), h('span', { className: 'library-status is-open' }, 'წვდომა აქტიურია')),
         h('div', { className: 'library-progress' }, h('span', null, `წაკითხულია ${progress}%`), h('div', null, h('i', { style: { width: `${progress}%` } }))),
         chapters.length > 0 &&
           h('nav', { className: 'library-chapters' }, h('strong', null, 'თავები'), chapters.map((chapter) => h('button', { key: `chapter-${chapter.index}`, type: 'button', onClick: () => jumpToBlock(chapter.index) }, chapter.text)))
@@ -508,6 +524,11 @@ selectedBookHasAccess
                       { className: 'library-catalog-title' },
                       'აირჩიე წიგნი, რომელიც შენს აზროვნებას შეცვლის'
                     ),
+                    h(
+                      'p',
+                      { className: 'library-catalog-subtitle' },
+                      'აირჩიე არა უბრალოდ წიგნი — აირჩიე აზროვნება, რომელიც სხვა შედეგამდე მიგიყვანს.'
+                    ),
 
                     catalog.map((item) => {
                       const itemHasAccess =
@@ -532,7 +553,7 @@ selectedBookHasAccess
                           'div',
                           null,
                           h('h2', null, item.title),
-                          h('p', null, item.description),
+                          h('p', { className: 'library-card-benefit' }, getBookBenefit(item)),
                           h(
                             'strong',
                             null,
@@ -576,7 +597,7 @@ selectedBookHasAccess
   }, 150);
 },
   },
-  'შეძენა'
+  getPurchaseLabel(item)
 )
                       );
                     }),
@@ -628,6 +649,11 @@ selectedBookHasAccess
           { className: 'library-catalog-title' },
           'აირჩიე წიგნი, რომელიც შენს აზროვნებას შეცვლის'
         ),
+        h(
+          'p',
+          { className: 'library-catalog-subtitle' },
+          'აირჩიე არა უბრალოდ წიგნი — აირჩიე აზროვნება, რომელიც სხვა შედეგამდე მიგიყვანს.'
+        ),
 
         catalog.map((item) =>
           h(
@@ -648,7 +674,7 @@ selectedBookHasAccess
               'div',
               null,
               h('h2', null, item.title),
-              h('p', null, item.description),
+              h('p', { className: 'library-card-benefit' }, getBookBenefit(item)),
               h(
                 'strong',
                 null,
@@ -685,7 +711,7 @@ selectedBookHasAccess
                   }, 150);
                 },
               },
-              'შეძენა'
+              getPurchaseLabel(item)
             )
           )
         )
