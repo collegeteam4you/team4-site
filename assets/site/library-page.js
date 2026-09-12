@@ -368,21 +368,6 @@
     });
   }, []);
 
-  React.useEffect(() => {
-    orders.forEach((order) => {
-      if (String(order.status || '').toLowerCase() !== 'approved') return;
-
-      const purchaseKey = 'team4_purchase_tracked_' + order.paymentCode;
-      if (window.localStorage.getItem(purchaseKey)) return;
-
-      const orderedItem = catalog.find((item) => item.id === order.itemId);
-      trackCommerceEvent('purchase', orderedItem, {
-        transaction_id: order.paymentCode,
-      });
-      window.localStorage.setItem(purchaseKey, '1');
-    });
-  }, [orders]);
-
 const selectedItem =
   catalog.find((item) => item.id === selectedItemId) ||
   null;
