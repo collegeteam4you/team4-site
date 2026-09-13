@@ -324,17 +324,17 @@ if hasattr(glass, "surface_render_method"):
 door_x = 4.055
 door_y = -0.92
 door_half_width = 0.76
-door_height = 2.48
+door_height = 3.05
 rounded_cube("TEAM4_Glass_Door", (door_x, door_y, door_height / 2), (0.025, door_half_width, door_height / 2), glass, 0.012)
 rounded_cube("TEAM4_Door_Frame_Top", (door_x, door_y, door_height + 0.055), (0.065, door_half_width + 0.08, 0.055), frame_mat, 0.012)
 rounded_cube("TEAM4_Door_Frame_Bottom", (door_x, door_y, 0.055), (0.065, door_half_width + 0.08, 0.055), frame_mat, 0.012)
 rounded_cube("TEAM4_Door_Frame_Left", (door_x, door_y - door_half_width - 0.055, door_height / 2), (0.065, 0.055, door_height / 2), frame_mat, 0.012)
 rounded_cube("TEAM4_Door_Frame_Right", (door_x, door_y + door_half_width + 0.055, door_height / 2), (0.065, 0.055, door_height / 2), frame_mat, 0.012)
 # Vertical pull handle on both sides of the glass.
-rounded_cube("TEAM4_Door_Handle_Inside", (3.985, door_y + 0.47, 1.18), (0.035, 0.025, 0.23), frame_mat, 0.018)
-rounded_cube("TEAM4_Door_Handle_Outside", (4.125, door_y + 0.47, 1.18), (0.035, 0.025, 0.23), frame_mat, 0.018)
+rounded_cube("TEAM4_Door_Handle_Inside", (3.985, door_y + 0.47, 1.42), (0.035, 0.025, 0.23), frame_mat, 0.018)
+rounded_cube("TEAM4_Door_Handle_Outside", (4.125, door_y + 0.47, 1.42), (0.035, 0.025, 0.23), frame_mat, 0.018)
 # Header closes the wall cleanly above the door.
-rounded_cube("TEAM4_Door_Header", (4.18, door_y, 3.39), (0.10, door_half_width + 0.10, 0.81), wall_mat, 0.025)
+rounded_cube("TEAM4_Door_Header", (4.18, door_y, 3.64), (0.10, door_half_width + 0.10, 0.54), wall_mat, 0.025)
 
 # Acoustic panels around the central logo area.
 for i, x in enumerate((-2.75, -2.25, 2.25, 2.75), 1):
@@ -429,5 +429,5 @@ bpy.ops.object.select_all(action="DESELECT")
 left.select_set(True)
 right.select_set(True)
 bpy.context.view_layer.objects.active = left
-bpy.context.scene["team4_last_command"] = "complete_interview_room_v9_custom_logo_fixed_door"
+bpy.context.scene["team4_last_command"] = "complete_interview_room_v10_tall_door"
 print("Team4: armchairs positioned at the table ends and turned toward the table.")
