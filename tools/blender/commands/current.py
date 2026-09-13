@@ -320,11 +320,21 @@ if gbsdf:
     gbsdf.inputs["Alpha"].default_value = 0.28
 if hasattr(glass, "surface_render_method"):
     glass.surface_render_method = "DITHERED"
-rounded_cube("TEAM4_Glass_Door", (4.05, -0.92, 1.18), (0.035, 0.73, 1.18), glass, 0.018)
-rounded_cube("TEAM4_Door_Frame_Top", (4.05, -0.92, 2.39), (0.055, 0.79, 0.045), frame_mat, 0.012)
-rounded_cube("TEAM4_Door_Frame_Left", (4.05, -1.69, 1.18), (0.055, 0.045, 1.18), frame_mat, 0.012)
-rounded_cube("TEAM4_Door_Frame_Right", (4.05, -0.15, 1.18), (0.055, 0.045, 1.18), frame_mat, 0.012)
-rounded_cube("TEAM4_Door_Handle", (3.96, -0.36, 1.12), (0.035, 0.16, 0.025), frame_mat, 0.018)
+# Properly aligned full-height framed glass door, flush with the room opening.
+door_x = 4.055
+door_y = -0.92
+door_half_width = 0.76
+door_height = 2.48
+rounded_cube("TEAM4_Glass_Door", (door_x, door_y, door_height / 2), (0.025, door_half_width, door_height / 2), glass, 0.012)
+rounded_cube("TEAM4_Door_Frame_Top", (door_x, door_y, door_height + 0.055), (0.065, door_half_width + 0.08, 0.055), frame_mat, 0.012)
+rounded_cube("TEAM4_Door_Frame_Bottom", (door_x, door_y, 0.055), (0.065, door_half_width + 0.08, 0.055), frame_mat, 0.012)
+rounded_cube("TEAM4_Door_Frame_Left", (door_x, door_y - door_half_width - 0.055, door_height / 2), (0.065, 0.055, door_height / 2), frame_mat, 0.012)
+rounded_cube("TEAM4_Door_Frame_Right", (door_x, door_y + door_half_width + 0.055, door_height / 2), (0.065, 0.055, door_height / 2), frame_mat, 0.012)
+# Vertical pull handle on both sides of the glass.
+rounded_cube("TEAM4_Door_Handle_Inside", (3.985, door_y + 0.47, 1.18), (0.035, 0.025, 0.23), frame_mat, 0.018)
+rounded_cube("TEAM4_Door_Handle_Outside", (4.125, door_y + 0.47, 1.18), (0.035, 0.025, 0.23), frame_mat, 0.018)
+# Header closes the wall cleanly above the door.
+rounded_cube("TEAM4_Door_Header", (4.18, door_y, 3.39), (0.10, door_half_width + 0.10, 0.81), wall_mat, 0.025)
 
 # Acoustic panels around the central logo area.
 for i, x in enumerate((-2.75, -2.25, 2.25, 2.75), 1):
@@ -334,11 +344,11 @@ for i, x in enumerate((-2.75, -2.25, 2.25, 2.75), 1):
 rounded_cube("TEAM4_Logo_Backplate", (0, 3.255, 2.55), (1.78, 0.025, 0.92), panel_mat, 0.07)
 
 # TEAM4 logo image plane on the middle of the back wall.
-logo_path = bpy.path.abspath(str((__import__("pathlib").Path(__file__).parents[3] / "assets" / "team4-logo-hero.webp")))
+logo_path = bpy.path.abspath(str((__import__("pathlib").Path(__file__).parents[3] / "assets" / "team4-wall-logo.webp")))
 if __import__("pathlib").Path(logo_path).is_file():
     mesh = bpy.data.meshes.new("TEAM4_Logo_Mesh")
     mesh.from_pydata(
-        [(-1.25, 0, -0.72), (1.25, 0, -0.72), (1.25, 0, 0.72), (-1.25, 0, 0.72)],
+        [(-1.35, 0, -0.95), (1.35, 0, -0.95), (1.35, 0, 0.95), (-1.35, 0, 0.95)],
         [],
         [(0, 1, 2, 3)],
     )
@@ -347,8 +357,8 @@ if __import__("pathlib").Path(logo_path).is_file():
     for loop, uv in zip(uv_layer.data, ((0,0), (1,0), (1,1), (0,1))):
         loop.uv = uv
     logo = bpy.data.objects.new("TEAM4_Wall_Logo", mesh)
-    logo.location = (0, 3.215, 2.55)
-    logo.scale = (2.65, 1.0, 2.65)
+    logo.location = (0, 3.205, 2.55)
+    logo.scale = (0.92, 1.0, 0.92)
     collection.objects.link(logo)
     logo_mat = bpy.data.materials.get("TEAM4_Logo_Material") or bpy.data.materials.new("TEAM4_Logo_Material")
     logo_mat.use_nodes = True
@@ -419,5 +429,5 @@ bpy.ops.object.select_all(action="DESELECT")
 left.select_set(True)
 right.select_set(True)
 bpy.context.view_layer.objects.active = left
-bpy.context.scene["team4_last_command"] = "complete_interview_room_v8"
+bpy.context.scene["team4_last_command"] = "complete_interview_room_v9_custom_logo_fixed_door"
 print("Team4: armchairs positioned at the table ends and turned toward the table.")
