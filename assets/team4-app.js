@@ -6003,6 +6003,168 @@ h(
 
 
 // ==========================================
+// 3D INTERVIEW ROOM VIEWER
+// ==========================================
+
+function Team4InterviewRoom3D({ isGeo }) {
+  const mountRef = React.useRef(null);
+  const [status, setStatus] = React.useState('loading');
+
+  React.useEffect(function () {
+    const mount = mountRef.current;
+    if (!mount) return undefined;
+
+    let disposed = false;
+    let frameId = 0;
+    let renderer = null;
+    let resizeObserver = null;
+
+    Promise.all([
+      import('https://cdn.jsdelivr.net/npm/three@0.185.1/build/three.module.min.js'),
+      import('https://esm.sh/three@0.185.1/examples/jsm/loaders/GLTFLoader.js'),
+    ]).then(function (modules) {
+      if (disposed) return;
+
+      const THREE = modules[0];
+      const GLTFLoader = modules[1].GLTFLoader;
+      const scene = new THREE.Scene();
+      scene.background = new THREE.Color(0x11151b);
+
+      const camera = new THREE.PerspectiveCamera(42, 16 / 9, 0.05, 500);
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75));
+      renderer.shadowMap.enabled = true;
+      renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+      renderer.outputColorSpace = THREE.SRGBColorSpace;
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 1.15;
+      renderer.domElement.style.width = '100%';
+      renderer.domElement.style.height = '100%';
+      renderer.domElement.style.display = 'block';
+      mount.appendChild(renderer.domElement);
+
+      scene.add(new THREE.HemisphereLight(0xeaf3ff, 0x24201c, 1.65));
+      const keyLight = new THREE.DirectionalLight(0xffead2, 2.25);
+      keyLight.position.set(-4, 7, 5);
+      keyLight.castShadow = true;
+      scene.add(keyLight);
+
+      const fillLight = new THREE.DirectionalLight(0xb8d7ff, 1.15);
+      fillLight.position.set(5, 4, 2);
+      scene.add(fillLight);
+
+      function resize() {
+        if (!mount || !renderer) return;
+        const width = Math.max(1, mount.clientWidth);
+        const height = Math.max(1, mount.clientHeight);
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+        renderer.setSize(width, height, false);
+      }
+
+      resizeObserver = new ResizeObserver(resize);
+      resizeObserver.observe(mount);
+      resize();
+
+      const loader = new GLTFLoader();
+      loader.load(
+        '/assets/team4-lab/interview/team4-interview-room.glb',
+        function (gltf) {
+          if (disposed) return;
+          const room = gltf.scene;
+          scene.add(room);
+
+          room.traverse(function (object) {
+            if (object.isMesh) {
+              object.castShadow = true;
+              object.receiveShadow = true;
+            }
+          });
+
+          const box = new THREE.Box3().setFromObject(room);
+          const center = box.getCenter(new THREE.Vector3());
+          const size = box.getSize(new THREE.Vector3());
+          const span = Math.max(size.x, size.y, size.z, 1);
+
+          // Front-facing interview composition; the whole room remains visible.
+          camera.position.set(
+            center.x,
+            center.y + span * 0.08,
+            center.z + span * 1.05
+          );
+          camera.lookAt(center.x, center.y + size.y * 0.04, center.z);
+          camera.near = Math.max(span / 1000, 0.03);
+          camera.far = span * 20;
+          camera.updateProjectionMatrix();
+          setStatus('ready');
+        },
+        undefined,
+        function (error) {
+          console.error('TEAM4 interview room GLB load error:', error);
+          if (!disposed) setStatus('error');
+        }
+      );
+
+      function animate() {
+        if (disposed) return;
+        frameId = requestAnimationFrame(animate);
+        renderer.render(scene, camera);
+      }
+      animate();
+    }).catch(function (error) {
+      console.error('TEAM4 interview 3D viewer error:', error);
+      if (!disposed) setStatus('error');
+    });
+
+    return function () {
+      disposed = true;
+      cancelAnimationFrame(frameId);
+      if (resizeObserver) resizeObserver.disconnect();
+      if (renderer) {
+        renderer.dispose();
+        if (renderer.domElement.parentNode === mount) {
+          mount.removeChild(renderer.domElement);
+        }
+      }
+    };
+  }, []);
+
+  return h(
+    'div',
+    {
+      ref: mountRef,
+      style: {
+        position: 'absolute',
+        inset: 0,
+        zIndex: 1,
+        background: '#11151b',
+      },
+    },
+    status !== 'ready' && h(
+      'div',
+      {
+        style: {
+          position: 'absolute',
+          inset: 0,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '24px',
+          color: status === 'error' ? '#ff8c8c' : 'rgba(255,255,255,.72)',
+          background: '#11151b',
+          fontWeight: '800',
+          textAlign: 'center',
+          zIndex: 2,
+        },
+      },
+      status === 'error'
+        ? (isGeo ? '3D ოთახი ვერ ჩაიტვირთა.' : 'The 3D room could not be loaded.')
+        : (isGeo ? 'გასაუბრების ოთახი იტვირთება…' : 'Loading the interview room…')
+    )
+  );
+}
+
+// ==========================================
 // INTERVIEW PAGE
 // ==========================================
 
@@ -7394,14 +7556,7 @@ h(
 
       borderRadius: '26px',
 
-      backgroundImage:
-        'url("/assets/team4-lab/interview/interview-room-bg.png")',
-
-      backgroundSize: 'cover',
-
-      backgroundPosition: 'center',
-
-      backgroundRepeat: 'no-repeat',
+      background: '#11151b',
 
       border:
         '1px solid rgba(255,255,255,.10)',
@@ -7410,6 +7565,8 @@ h(
         '0 30px 80px rgba(0,0,0,.50)',
     },
   },
+
+  h(Team4InterviewRoom3D, { isGeo: isGeo }),
 
  // ========================================
 // SELECTED PLAYER AVATAR — SEATED
