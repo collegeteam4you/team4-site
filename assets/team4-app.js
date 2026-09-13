@@ -6003,12 +6003,15 @@ h(
 
 
 // ==========================================
-// 3D INTERVIEW ROOM VIEWER
+// 3D INTERVIEW ROOM — FIRST-PERSON EXPLORATION
 // ==========================================
 
-function Team4InterviewRoom3D({ isGeo }) {
+function Team4InterviewRoom3D({ isGeo, fullScreen, onInterviewStart }) {
   const mountRef = React.useRef(null);
+  const inputRef = React.useRef({ forward: false, back: false, left: false, right: false });
   const [status, setStatus] = React.useState('loading');
+  const [prompt, setPrompt] = React.useState('');
+  const [seated, setSeated] = React.useState(false);
 
   React.useEffect(function () {
     const mount = mountRef.current;
@@ -6018,149 +6021,310 @@ function Team4InterviewRoom3D({ isGeo }) {
     let frameId = 0;
     let renderer = null;
     let resizeObserver = null;
+    let door = null;
+    let doorOpen = false;
+    let doorTarget = 0;
+    let chairPoints = [];
+    let seatedNow = false;
+    let lastTime = performance.now();
+    let yaw = Math.PI;
+    let pitch = -0.06;
+    let dragging = false;
+    let pointerX = 0;
+    let pointerY = 0;
+    let roomCenter = null;
+    let roomSize = null;
+    let THREE = null;
+    let camera = null;
+    const keys = inputRef.current;
+
+    function keyState(event, value) {
+      const key = event.key.toLowerCase();
+      if (key === 'w' || key === 'arrowup') keys.forward = value;
+      if (key === 's' || key === 'arrowdown') keys.back = value;
+      if (key === 'a' || key === 'arrowleft') keys.left = value;
+      if (key === 'd' || key === 'arrowright') keys.right = value;
+      if (value && key === 'e') interact();
+    }
+
+    function onKeyDown(event) {
+      if (['w','a','s','d','arrowup','arrowdown','arrowleft','arrowright','e'].includes(event.key.toLowerCase())) {
+        event.preventDefault();
+      }
+      keyState(event, true);
+    }
+
+    function onKeyUp(event) {
+      keyState(event, false);
+    }
+
+    function onPointerDown(event) {
+      dragging = true;
+      pointerX = event.clientX;
+      pointerY = event.clientY;
+    }
+
+    function onPointerMove(event) {
+      if (!dragging || seatedNow) return;
+      const dx = event.clientX - pointerX;
+      const dy = event.clientY - pointerY;
+      pointerX = event.clientX;
+      pointerY = event.clientY;
+      yaw -= dx * 0.0045;
+      pitch = Math.max(-0.55, Math.min(0.42, pitch - dy * 0.0035));
+    }
+
+    function onPointerUp() {
+      dragging = false;
+    }
+
+    function distanceXZ(a, b) {
+      const dx = a.x - b.x;
+      const dz = a.z - b.z;
+      return Math.sqrt(dx * dx + dz * dz);
+    }
+
+    function nearestChair() {
+      if (!camera || !chairPoints.length) return null;
+      let nearest = chairPoints[0];
+      for (let i = 1; i < chairPoints.length; i += 1) {
+        if (distanceXZ(camera.position, chairPoints[i]) < distanceXZ(camera.position, nearest)) nearest = chairPoints[i];
+      }
+      return nearest;
+    }
+
+    function updatePrompt() {
+      if (!camera || seatedNow) return;
+      let next = '';
+      if (door) {
+        const point = new THREE.Vector3();
+        door.getWorldPosition(point);
+        if (distanceXZ(camera.position, point) < 3.0) {
+          next = isGeo ? 'E — კარის გაღება / დახურვა' : 'E — Open / close door';
+        }
+      }
+      const chair = nearestChair();
+      if (chair && distanceXZ(camera.position, chair) < 2.5) {
+        next = isGeo ? 'E — დაჯდომა' : 'E — Sit down';
+      }
+      setPrompt(function (current) { return current === next ? current : next; });
+    }
+
+    function interact() {
+      if (!camera || !THREE || seatedNow) return;
+      const chair = nearestChair();
+      if (chair && distanceXZ(camera.position, chair) < 2.5) {
+        seatedNow = true;
+        setSeated(true);
+        camera.position.set(chair.x, Math.max(chair.y + 1.15, 1.25), chair.z);
+        if (roomCenter) {
+          const dx = roomCenter.x - camera.position.x;
+          const dz = roomCenter.z - camera.position.z;
+          yaw = Math.atan2(-dx, -dz);
+          pitch = -0.04;
+        }
+        setPrompt('');
+        return;
+      }
+
+      if (door) {
+        const point = new THREE.Vector3();
+        door.getWorldPosition(point);
+        if (distanceXZ(camera.position, point) < 3.0) {
+          doorOpen = !doorOpen;
+          doorTarget = doorOpen ? -Math.PI * 0.48 : 0;
+        }
+      }
+    }
+
+    mount.__team4Interact = interact;
 
     Promise.all([
       import('https://cdn.jsdelivr.net/npm/three@0.185.1/build/three.module.min.js'),
       import('https://esm.sh/three@0.185.1/examples/jsm/loaders/GLTFLoader.js'),
     ]).then(function (modules) {
       if (disposed) return;
-
-      const THREE = modules[0];
+      THREE = modules[0];
       const GLTFLoader = modules[1].GLTFLoader;
       const scene = new THREE.Scene();
-      scene.background = new THREE.Color(0x11151b);
+      scene.background = new THREE.Color(0x0c1117);
+      scene.fog = new THREE.Fog(0x0c1117, 18, 48);
 
-      const camera = new THREE.PerspectiveCamera(42, 16 / 9, 0.05, 500);
+      camera = new THREE.PerspectiveCamera(68, 16 / 9, 0.05, 150);
       renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75));
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.6));
       renderer.shadowMap.enabled = true;
       renderer.shadowMap.type = THREE.PCFSoftShadowMap;
       renderer.outputColorSpace = THREE.SRGBColorSpace;
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
-      renderer.toneMappingExposure = 1.15;
+      renderer.toneMappingExposure = 1.18;
       renderer.domElement.style.width = '100%';
       renderer.domElement.style.height = '100%';
       renderer.domElement.style.display = 'block';
+      renderer.domElement.style.cursor = 'grab';
       mount.appendChild(renderer.domElement);
 
-      scene.add(new THREE.HemisphereLight(0xeaf3ff, 0x24201c, 1.65));
-      const keyLight = new THREE.DirectionalLight(0xffead2, 2.25);
+      scene.add(new THREE.HemisphereLight(0xeaf3ff, 0x29231f, 1.7));
+      const keyLight = new THREE.DirectionalLight(0xffe8ce, 2.1);
       keyLight.position.set(-4, 7, 5);
       keyLight.castShadow = true;
       scene.add(keyLight);
-
-      const fillLight = new THREE.DirectionalLight(0xb8d7ff, 1.15);
-      fillLight.position.set(5, 4, 2);
+      const fillLight = new THREE.DirectionalLight(0xb9d8ff, 1.15);
+      fillLight.position.set(5, 4, -2);
       scene.add(fillLight);
 
       function resize() {
-        if (!mount || !renderer) return;
+        if (!renderer || !camera) return;
         const width = Math.max(1, mount.clientWidth);
         const height = Math.max(1, mount.clientHeight);
         camera.aspect = width / height;
         camera.updateProjectionMatrix();
         renderer.setSize(width, height, false);
       }
-
       resizeObserver = new ResizeObserver(resize);
       resizeObserver.observe(mount);
       resize();
 
-      const loader = new GLTFLoader();
-      loader.load(
+      new GLTFLoader().load(
         '/assets/team4-lab/interview/team4-interview-room.glb',
         function (gltf) {
           if (disposed) return;
           const room = gltf.scene;
           scene.add(room);
-
           room.traverse(function (object) {
             if (object.isMesh) {
               object.castShadow = true;
               object.receiveShadow = true;
             }
+            const name = String(object.name || '').toLowerCase();
+            if (!door && name.includes('glass_door')) door = object;
+            if (name === 'team4_armchair_left' || name === 'team4_armchair_right') {
+              const point = new THREE.Vector3();
+              object.getWorldPosition(point);
+              chairPoints.push(point);
+            }
           });
 
           const box = new THREE.Box3().setFromObject(room);
-          const center = box.getCenter(new THREE.Vector3());
-          const size = box.getSize(new THREE.Vector3());
-          const span = Math.max(size.x, size.y, size.z, 1);
+          roomCenter = box.getCenter(new THREE.Vector3());
+          roomSize = box.getSize(new THREE.Vector3());
+          camera.position.set(roomCenter.x, 1.68, box.max.z - Math.max(roomSize.z * 0.13, 0.8));
+          yaw = Math.PI;
+          pitch = -0.04;
 
-          // Front-facing interview composition; the whole room remains visible.
-          camera.position.set(
-            center.x,
-            center.y + span * 0.08,
-            center.z + span * 1.05
-          );
-          camera.lookAt(center.x, center.y + size.y * 0.04, center.z);
-          camera.near = Math.max(span / 1000, 0.03);
-          camera.far = span * 20;
-          camera.updateProjectionMatrix();
+          if (!chairPoints.length) {
+            chairPoints = [
+              new THREE.Vector3(roomCenter.x - 2.75, 0, roomCenter.z),
+              new THREE.Vector3(roomCenter.x + 2.75, 0, roomCenter.z),
+            ];
+          }
           setStatus('ready');
         },
         undefined,
         function (error) {
-          console.error('TEAM4 interview room GLB load error:', error);
+          console.error('TEAM4 interactive room load error:', error);
           if (!disposed) setStatus('error');
         }
       );
 
-      function animate() {
+      window.addEventListener('keydown', onKeyDown, { passive: false });
+      window.addEventListener('keyup', onKeyUp);
+      mount.addEventListener('pointerdown', onPointerDown);
+      window.addEventListener('pointermove', onPointerMove);
+      window.addEventListener('pointerup', onPointerUp);
+
+      function animate(now) {
         if (disposed) return;
         frameId = requestAnimationFrame(animate);
+        const delta = Math.min((now - lastTime) / 1000, 0.05);
+        lastTime = now;
+
+        if (door) door.rotation.y += (doorTarget - door.rotation.y) * Math.min(1, delta * 7);
+
+        if (camera && roomCenter && roomSize) {
+          if (!seatedNow) {
+            const forward = (keys.forward ? 1 : 0) - (keys.back ? 1 : 0);
+            const side = (keys.right ? 1 : 0) - (keys.left ? 1 : 0);
+            if (forward || side) {
+              const speed = 2.35 * delta;
+              const dx = (-Math.sin(yaw) * forward + Math.cos(yaw) * side) * speed;
+              const dz = (-Math.cos(yaw) * forward - Math.sin(yaw) * side) * speed;
+              camera.position.x = Math.max(roomCenter.x - roomSize.x * 0.43, Math.min(roomCenter.x + roomSize.x * 0.43, camera.position.x + dx));
+              camera.position.z = Math.max(roomCenter.z - roomSize.z * 0.43, Math.min(roomCenter.z + roomSize.z * 0.43, camera.position.z + dz));
+            }
+          }
+          camera.rotation.order = 'YXZ';
+          camera.rotation.y = yaw;
+          camera.rotation.x = pitch;
+          updatePrompt();
+        }
         renderer.render(scene, camera);
       }
-      animate();
+      frameId = requestAnimationFrame(animate);
     }).catch(function (error) {
-      console.error('TEAM4 interview 3D viewer error:', error);
+      console.error('TEAM4 interactive room viewer error:', error);
       if (!disposed) setStatus('error');
     });
 
     return function () {
       disposed = true;
       cancelAnimationFrame(frameId);
+      window.removeEventListener('keydown', onKeyDown);
+      window.removeEventListener('keyup', onKeyUp);
+      window.removeEventListener('pointermove', onPointerMove);
+      window.removeEventListener('pointerup', onPointerUp);
       if (resizeObserver) resizeObserver.disconnect();
-      if (renderer) {
-        renderer.dispose();
-        if (renderer.domElement.parentNode === mount) {
-          mount.removeChild(renderer.domElement);
-        }
-      }
+      if (renderer) renderer.dispose();
     };
-  }, []);
+  }, [isGeo]);
 
-  return h(
-    'div',
-    {
-      ref: mountRef,
+  function mobileMove(direction, value) {
+    inputRef.current[direction] = value;
+  }
+
+  const controlButton = function (label, direction) {
+    return h('button', {
+      type: 'button',
+      onPointerDown: function (event) { event.preventDefault(); mobileMove(direction, true); },
+      onPointerUp: function () { mobileMove(direction, false); },
+      onPointerCancel: function () { mobileMove(direction, false); },
       style: {
-        position: 'absolute',
-        inset: 0,
-        zIndex: 1,
-        background: '#11151b',
+        width: '48px', height: '48px', borderRadius: '14px',
+        border: '1px solid rgba(255,255,255,.3)', background: 'rgba(0,0,0,.62)',
+        color: '#fff', fontSize: '20px', fontWeight: '900', touchAction: 'none',
       },
+    }, label);
+  };
+
+  return h('div', {
+    style: fullScreen ? {
+      position: 'fixed', inset: 0, zIndex: 9999, background: '#0c1117', overflow: 'hidden',
+    } : {
+      position: 'absolute', inset: 0, zIndex: 1, background: '#0c1117',
     },
-    status !== 'ready' && h(
-      'div',
-      {
-        style: {
-          position: 'absolute',
-          inset: 0,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: '24px',
-          color: status === 'error' ? '#ff8c8c' : 'rgba(255,255,255,.72)',
-          background: '#11151b',
-          fontWeight: '800',
-          textAlign: 'center',
-          zIndex: 2,
-        },
-      },
-      status === 'error'
-        ? (isGeo ? '3D ოთახი ვერ ჩაიტვირთა.' : 'The 3D room could not be loaded.')
-        : (isGeo ? 'გასაუბრების ოთახი იტვირთება…' : 'Loading the interview room…')
-    )
+  },
+    h('div', { ref: mountRef, style: { position: 'absolute', inset: 0 } }),
+    status !== 'ready' && h('div', {
+      style: { position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', color: status === 'error' ? '#ff8c8c' : '#fff', background: '#0c1117', zIndex: 4, fontWeight: '900' },
+    }, status === 'error' ? (isGeo ? '3D ოთახი ვერ ჩაიტვირთა.' : 'The 3D room could not be loaded.') : (isGeo ? '3D ოთახი იტვირთება…' : 'Loading 3D room…')),
+    fullScreen && status === 'ready' && h('div', {
+      style: { position: 'absolute', top: '18px', left: '50%', transform: 'translateX(-50%)', zIndex: 6, padding: '10px 16px', borderRadius: '999px', background: 'rgba(0,0,0,.66)', color: '#fff', fontSize: '13px', fontWeight: '900', textAlign: 'center' },
+    }, isGeo ? 'WASD / ისრები — მოძრაობა • მაუსით — გახედვა • E — მოქმედება' : 'WASD / arrows — move • mouse — look • E — interact'),
+    fullScreen && prompt && h('div', {
+      style: { position: 'absolute', left: '50%', bottom: '105px', transform: 'translateX(-50%)', zIndex: 7, padding: '13px 20px', borderRadius: '14px', background: 'rgba(239,27,19,.9)', color: '#fff', fontWeight: '900', whiteSpace: 'nowrap' },
+    }, prompt),
+    fullScreen && h('div', {
+      style: { position: 'absolute', left: '18px', bottom: '18px', zIndex: 8, display: 'grid', gridTemplateColumns: '48px 48px 48px', gap: '6px' },
+    }, h('span'), controlButton('▲','forward'), h('span'), controlButton('◀','left'), controlButton('▼','back'), controlButton('▶','right')),
+    fullScreen && h('button', {
+      type: 'button',
+      onClick: function () { if (mountRef.current && mountRef.current.__team4Interact) mountRef.current.__team4Interact(); },
+      style: { position: 'absolute', right: '22px', bottom: '24px', zIndex: 8, width: '74px', height: '74px', borderRadius: '50%', border: '2px solid rgba(255,255,255,.65)', background: '#ef1b13', color: '#fff', fontWeight: '1000', fontSize: '17px' },
+    }, 'E'),
+    fullScreen && seated && h('button', {
+      type: 'button', onClick: onInterviewStart,
+      style: { position: 'absolute', left: '50%', bottom: '28px', transform: 'translateX(-50%)', zIndex: 10, padding: '16px 26px', border: 0, borderRadius: '14px', background: '#ef1b13', color: '#fff', fontSize: '16px', fontWeight: '1000', cursor: 'pointer' },
+    }, isGeo ? 'გასაუბრების დაწყება →' : 'Start Interview →')
   );
 }
 
@@ -6170,6 +6334,7 @@ function Team4InterviewRoom3D({ isGeo }) {
 
 function Team4InterviewPage({ lang, setLang }) {
   const isGeo = lang === 'GEO';
+  const [roomExplored, setRoomExplored] = React.useState(false);
     const interviewRetryVideos =
     window.Team4InterviewVideos || [];
 
@@ -7566,63 +7731,13 @@ h(
     },
   },
 
-  h(Team4InterviewRoom3D, { isGeo: isGeo }),
+  h(Team4InterviewRoom3D, {
+    isGeo: isGeo,
+    fullScreen: !roomExplored,
+    onInterviewStart: function () { setRoomExplored(true); },
+  }),
 
- // ========================================
-// SELECTED PLAYER AVATAR — SEATED
-// ========================================
-
-h(
-  'div',
-  {
-    style: {
-      position: 'absolute',
-
-      // სკამის ცენტრი
-      left: '54%',
-
-      // ავატარის თავი TEAM4-ის წარწერის ქვემოთ იწყება
-      top: '27%',
-
-      transform: 'translateX(-50%)',
-
-      width: '220px',
-
-      // აქ ვწყვეტთ ავატარს მაგიდის უკანა ზოლზე
-      height: '230px',
-
-      // ქვედა ნაწილი აღარ გადმოვა მაგიდაზე
-      overflow: 'visible',
-clipPath: 'inset(-120px 0 40px 0)',
-
-      zIndex: 20,
-
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'flex-start',
-
-      pointerEvents: 'none',
-    },
-  },
-
-  h(
-    'div',
-    {
-      style: {
-        width: '230px',
-        height: '340px',
-
-        transform: 'scale(1.42)',
-        transformOrigin: 'top center',
-
-        position: 'relative',
-        top: 0,
-      },
-    },
-
-    renderInterviewAvatar()
-  )
-),
+ // First-person mode uses the selected player's viewpoint.
   // ========================================
   // PLAYER NAME
   // ========================================
