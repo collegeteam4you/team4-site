@@ -6452,7 +6452,7 @@ const [interviewFinished, setInterviewFinished] =
 function saveInterviewProgress() {
   const progress = { roomExplored, selectedAnswer, playerSpeech, currentQuestion, correctAnswers, interviewFinished, savedAt: Date.now() };
   localStorage.setItem('team4InterviewProgress', JSON.stringify(progress));
-  const data = {}; for (let i = 0; i < localStorage.length; i += 1) { const key = localStorage.key(i); if (key && key.startsWith('team4')) data[key]] = localStorage.getItem(key); }
+  const data = {}; for (let i = 0; i < localStorage.length; i += 1) { const key = localStorage.key(i); if (key && key.startsWith('team4')) data[key] = localStorage.getItem(key); }
   localStorage.setItem('team4GameSave', JSON.stringify({ version: 1, savedAt: Date.now(), data }));
 }
   const [retryUntil, setRetryUntil] =
