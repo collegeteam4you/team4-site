@@ -345,7 +345,6 @@ if __import__("pathlib").Path(logo_path).is_file():
         loop.uv = uv
     logo = bpy.data.objects.new("TEAM4_Wall_Logo", mesh)
     logo.location = (0, 3.245, 2.45)
-    logo.rotation_euler.x = math.radians(90)
     collection.objects.link(logo)
     logo_mat = bpy.data.materials.get("TEAM4_Logo_Material") or bpy.data.materials.new("TEAM4_Logo_Material")
     logo_mat.use_nodes = True
