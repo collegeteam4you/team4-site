@@ -111,13 +111,13 @@ remove_collection(COLLECTION_NAME)
 collection = bpy.data.collections.new(COLLECTION_NAME)
 bpy.context.scene.collection.children.link(collection)
 
-# Positioned beside the interview table and slightly turned toward its centre.
-left = create_armchair("TEAM4_Armchair_Left", -1.72, -0.28, -5)
-right = create_armchair("TEAM4_Armchair_Right", 1.72, -0.28, 5)
+# Positioned at opposite ends of the table, facing each other across it.
+left = create_armchair("TEAM4_Armchair_Left", -2.05, 0.10, 90)
+right = create_armchair("TEAM4_Armchair_Right", 2.05, 0.10, -90)
 
 bpy.ops.object.select_all(action="DESELECT")
 left.select_set(True)
 right.select_set(True)
 bpy.context.view_layer.objects.active = left
 bpy.context.scene["team4_last_command"] = "realistic_interview_armchairs_v3_table_ends"
-print("Team4: realistic armchairs positioned beside the interview table.")
+print("Team4: armchairs positioned at the table ends and turned toward the table.")
