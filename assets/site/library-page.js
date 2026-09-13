@@ -793,17 +793,7 @@ selectedBookHasAccess
               loading: 'lazy',
             }),
 
-            item.type === 'book'
-              ? h(
-                  'button',
-                  {
-                    type: 'button',
-                    className: 'library-action library-action-primary',
-                    onClick: () => setSampleItemId(item.id),
-                  },
-                  'დაიწყე უფასოდ კითხვა'
-                )
-              : h(
+            h(
               'div',
               null,
               h('h2', null, item.title),
@@ -815,35 +805,28 @@ selectedBookHasAccess
               )
             ),
 
-            h(
-              'button',
-              {
-                type: 'button',
-                className:
-                  selectedItemId === item.id
-                    ? 'library-action library-action-primary'
-                    : 'library-action',
-
-                onClick: () => {
-                  beginPurchase(item);
-
-                  setTimeout(() => {
-                    const loginPanel =
-                      document.querySelector(
-                        '.library-login-panel'
-                      );
-
-                    if (loginPanel) {
-                      loginPanel.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'center',
-                      });
-                    }
-                  }, 150);
-                },
-              },
-              getPurchaseLabel(item)
-            )
+            item.type === 'book'
+              ? h(
+                  'button',
+                  {
+                    type: 'button',
+                    className: 'library-action library-action-primary',
+                    onClick: () => setSampleItemId(item.id),
+                  },
+                  'დაიწყე უფასოდ კითხვა'
+                )
+              : h(
+                  'button',
+                  {
+                    type: 'button',
+                    className:
+                      selectedItemId === item.id
+                        ? 'library-action library-action-primary'
+                        : 'library-action',
+                    onClick: () => beginPurchase(item),
+                  },
+                  getPurchaseLabel(item)
+                )
           )
         )
       )
