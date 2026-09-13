@@ -330,6 +330,9 @@ rounded_cube("TEAM4_Door_Handle", (3.96, -0.36, 1.12), (0.035, 0.16, 0.025), fra
 for i, x in enumerate((-2.75, -2.25, 2.25, 2.75), 1):
     rounded_cube(f"TEAM4_Acoustic_Panel_{i}", (x, 3.245, 2.25), (0.18, 0.035, 0.72), panel_mat, 0.035)
 
+# Dark feature plaque makes the colorful logo readable from across the room.
+rounded_cube("TEAM4_Logo_Backplate", (0, 3.255, 2.55), (1.78, 0.025, 0.92), panel_mat, 0.07)
+
 # TEAM4 logo image plane on the middle of the back wall.
 logo_path = bpy.path.abspath(str((__import__("pathlib").Path(__file__).parents[3] / "assets" / "team4-logo-hero.webp")))
 if __import__("pathlib").Path(logo_path).is_file():
@@ -344,7 +347,8 @@ if __import__("pathlib").Path(logo_path).is_file():
     for loop, uv in zip(uv_layer.data, ((0,0), (1,0), (1,1), (0,1))):
         loop.uv = uv
     logo = bpy.data.objects.new("TEAM4_Wall_Logo", mesh)
-    logo.location = (0, 3.245, 2.45)
+    logo.location = (0, 3.215, 2.55)
+    logo.scale = (2.65, 1.0, 2.65)
     collection.objects.link(logo)
     logo_mat = bpy.data.materials.get("TEAM4_Logo_Material") or bpy.data.materials.new("TEAM4_Logo_Material")
     logo_mat.use_nodes = True
@@ -415,5 +419,5 @@ bpy.ops.object.select_all(action="DESELECT")
 left.select_set(True)
 right.select_set(True)
 bpy.context.view_layer.objects.active = left
-bpy.context.scene["team4_last_command"] = "complete_interview_room_v7"
+bpy.context.scene["team4_last_command"] = "complete_interview_room_v8"
 print("Team4: armchairs positioned at the table ends and turned toward the table.")
