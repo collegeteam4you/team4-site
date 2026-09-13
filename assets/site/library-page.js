@@ -30,6 +30,95 @@
       : `დაიწყე კითხვა — ${item.price.toFixed(2)} ₾`;
   }
 
+  function getPreviewBlocks(item) {
+    if (!item || item.type !== 'book' || !Array.isArray(item.blocks)) return [];
+
+    if (item.id === 'i-am-the-answer') {
+      return item.blocks.slice(12, 26);
+    }
+
+    if (item.id === 'why-others-get-rich') {
+      return item.blocks.slice(0, 27);
+    }
+
+    return item.blocks.slice(0, 18);
+  }
+
+  function SampleReader({ item, onClose, onContinue }) {
+    const previewBlocks = getPreviewBlocks(item);
+    const endRef = React.useRef(null);
+    const completionTracked = React.useRef(false);
+
+    React.useEffect(() => {
+      trackCommerceEvent('sample_start', item, {
+        sample_pages: 2,
+      });
+
+      const previousOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          if (!entries.some((entry) => entry.isIntersecting) || completionTracked.current) return;
+          completionTracked.current = true;
+          trackCommerceEvent('sample_complete', item, {
+            sample_pages: 2,
+          });
+        },
+        { threshold: 0.35 }
+      );
+
+      if (endRef.current) observer.observe(endRef.current);
+
+      return () => {
+        observer.disconnect();
+        document.body.style.overflow = previousOverflow;
+      };
+    }, [item]);
+
+    return h(
+      'section',
+      { className: 'library-sample-overlay', role: 'dialog', 'aria-modal': 'true', 'aria-label': `${item.title} — უფასო ნაწყვეტი` },
+      h(
+        'div',
+        { className: 'library-sample-shell' },
+        h(
+          'header',
+          { className: 'library-sample-header' },
+          h('div', null, h('span', null, 'უფასო ნაწყვეტი · 2 გვერდი'), h('strong', null, item.title)),
+          h('button', { type: 'button', onClick: onClose, 'aria-label': 'დახურვა' }, '×')
+        ),
+        h(
+          'div',
+          { className: 'library-sample-scroll' },
+          h(
+            'article',
+            { className: 'library-sample-pages' },
+            previewBlocks.map((block, index) =>
+              block.type === 'heading'
+                ? h('h2', { key: `sample-heading-${index}` }, block.text)
+                : block.type === 'image'
+                  ? h('figure', { key: `sample-image-${index}` }, h('img', { src: block.src, alt: block.alt || item.title }))
+                  : h('p', { key: `sample-paragraph-${index}` }, block.text)
+            )
+          ),
+          h(
+            'div',
+            { className: 'library-sample-offer', ref: endRef },
+            h('span', null, 'ნაწყვეტი აქ სრულდება'),
+            h('h2', null, 'გინდა გაიგო, რა მოხდა შემდეგ?'),
+            h('p', null, `გააგრძელე სრული წიგნის კითხვა — ${item.price.toFixed(2)} ₾`),
+            h(
+              'button',
+              { type: 'button', className: 'library-action library-action-primary', onClick: onContinue },
+              `გააგრძელე კითხვა — ${item.price.toFixed(2)} ₾`
+            )
+          )
+        )
+      )
+    );
+  }
+
   function LibraryLogin({ onLogin, item }) {
     const [email, setEmail] = React.useState('');
     const [message, setMessage] = React.useState('');
@@ -374,6 +463,7 @@
   const [isLoading, setIsLoading] = React.useState(false);
   const [refreshKey, setRefreshKey] = React.useState(0);
    const [showLogin, setShowLogin] = React.useState(false);
+  const [sampleItemId, setSampleItemId] = React.useState('');
 
   React.useEffect(() => {
     window.dataLayer = window.dataLayer || [];
@@ -387,6 +477,30 @@
 const selectedItem =
   catalog.find((item) => item.id === selectedItemId) ||
   null;
+
+  const sampleItem =
+    catalog.find((item) => item.id === sampleItemId) ||
+    null;
+
+  const beginPurchase = (item) => {
+    trackCommerceEvent('begin_checkout', item, {
+      source: sampleItemId ? 'free_sample' : 'catalog',
+    });
+    setSampleItemId('');
+    setSelectedItemId(item.id);
+
+    if (!user) {
+      setShowLogin(true);
+    }
+
+    setTimeout(() => {
+      const panel = document.querySelector(
+        user ? '.library-order-panel' : '.library-login-panel'
+      );
+
+      if (panel) panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 180);
+  };
 
   const hasApprovedOrder = (itemId) =>
   orders.some((order) => {
@@ -527,7 +641,7 @@ selectedBookHasAccess
                     h(
                       'p',
                       { className: 'library-catalog-subtitle' },
-                      'ამ წიგნებში გიზიარებ, რა შევცვალე აზროვნებაში, გადაწყვეტილებებსა და მოქმედებაში ამ გზის გასავლელად.'
+                      'ჯერ უფასოდ წაიკითხე პირველი ორი გვერდი. თუ საკუთარ თავს ამოიცნობ, შემდეგ გააგრძელე.'
                     ),
 
                     catalog.map((item) => {
@@ -573,7 +687,17 @@ selectedBookHasAccess
                               },
                               'წაკითხვა'
                             )
-                          : h(
+                          : item.type === 'book'
+                            ? h(
+                                'button',
+                                {
+                                  type: 'button',
+                                  className: 'library-action library-action-primary',
+                                  onClick: () => setSampleItemId(item.id),
+                                },
+                                'დაიწყე უფასოდ კითხვა'
+                              )
+                            : h(
   'button',
   {
     type: 'button',
@@ -582,8 +706,7 @@ selectedBookHasAccess
         ? 'library-action library-action-primary'
         : 'library-action',
     onClick: () => {
-  trackCommerceEvent('begin_checkout', item);
-  setSelectedItemId(item.id);
+  beginPurchase(item);
 
   setTimeout(() => {
     const panel = document.querySelector('.library-order-panel');
@@ -652,7 +775,7 @@ selectedBookHasAccess
         h(
           'p',
           { className: 'library-catalog-subtitle' },
-          'ამ წიგნებში გიზიარებ, რა შევცვალე აზროვნებაში, გადაწყვეტილებებსა და მოქმედებაში ამ გზის გასავლელად.'
+          'ჯერ უფასოდ წაიკითხე პირველი ორი გვერდი. თუ საკუთარ თავს ამოიცნობ, შემდეგ გააგრძელე.'
         ),
 
         catalog.map((item) =>
@@ -670,7 +793,17 @@ selectedBookHasAccess
               loading: 'lazy',
             }),
 
-            h(
+            item.type === 'book'
+              ? h(
+                  'button',
+                  {
+                    type: 'button',
+                    className: 'library-action library-action-primary',
+                    onClick: () => setSampleItemId(item.id),
+                  },
+                  'დაიწყე უფასოდ კითხვა'
+                )
+              : h(
               'div',
               null,
               h('h2', null, item.title),
@@ -692,9 +825,7 @@ selectedBookHasAccess
                     : 'library-action',
 
                 onClick: () => {
-                  trackCommerceEvent('begin_checkout', item);
-                  setSelectedItemId(item.id);
-                  setShowLogin(true);
+                  beginPurchase(item);
 
                   setTimeout(() => {
                     const loginPanel =
@@ -742,6 +873,12 @@ selectedBookHasAccess
       })
   )
     ),
+    sampleItem &&
+      h(SampleReader, {
+        item: sampleItem,
+        onClose: () => setSampleItemId(''),
+        onContinue: () => beginPurchase(sampleItem),
+      }),
     h(Footer, { lang })
   );
 }
