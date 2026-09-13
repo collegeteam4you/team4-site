@@ -112,12 +112,38 @@ collection = bpy.data.collections.new(COLLECTION_NAME)
 bpy.context.scene.collection.children.link(collection)
 
 # Positioned at opposite ends of the table, facing each other across it.
-left = create_armchair("TEAM4_Armchair_Left", -2.65, 0.10, 90)
-right = create_armchair("TEAM4_Armchair_Right", 2.65, 0.10, -90)
+left = create_armchair("TEAM4_Armchair_Left", -2.95, 0.10, 90)
+right = create_armchair("TEAM4_Armchair_Right", 2.95, 0.10, -90)
+
+# Replace the generated table on every run.
+remove_collection("TEAM4_REALISTIC_TABLE")
+collection = bpy.data.collections.new("TEAM4_REALISTIC_TABLE")
+bpy.context.scene.collection.children.link(collection)
+
+wood = material("TEAM4_Walnut_Wood", (0.20, 0.075, 0.035), roughness=0.38)
+edge = material("TEAM4_Walnut_Edge", (0.09, 0.025, 0.012), roughness=0.30)
+table_metal = material("TEAM4_Table_Metal", (0.012, 0.014, 0.018), metallic=0.88, roughness=0.20)
+
+# Warm walnut top with softly rounded edges.
+top = rounded_cube("TEAM4_Table_Top", (0, 0.10, 1.36), (1.62, 0.66, 0.10), wood, 0.09)
+top["team4_asset"] = "interview_table"
+apron = rounded_cube("TEAM4_Table_Apron", (0, 0.10, 1.20), (1.43, 0.53, 0.08), edge, 0.035)
+apron["team4_asset"] = "interview_table"
+
+# Slim, sturdy powder-coated metal legs.
+for index, (x, y) in enumerate(((-1.30,-0.46), (1.30,-0.46), (-1.30,0.66), (1.30,0.66)), 1):
+    table_leg = rounded_cube(
+        f"TEAM4_Table_Leg_{index}",
+        (x, y, 0.66),
+        (0.075, 0.075, 0.60),
+        table_metal,
+        0.025,
+    )
+    table_leg["team4_asset"] = "interview_table"
 
 bpy.ops.object.select_all(action="DESELECT")
 left.select_set(True)
 right.select_set(True)
 bpy.context.view_layer.objects.active = left
-bpy.context.scene["team4_last_command"] = "realistic_interview_armchairs_v4_more_space"
+bpy.context.scene["team4_last_command"] = "realistic_interview_furniture_v5"
 print("Team4: armchairs positioned at the table ends and turned toward the table.")
