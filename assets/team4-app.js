@@ -6014,6 +6014,22 @@ function Team4InterviewRoom3D({ isGeo, fullScreen, onInterviewStart }) {
   const [seated, setSeated] = React.useState(false);
 
   React.useEffect(function () {
+    const coachButton = document.getElementById('team4CoachButton');
+    const coachWindow = document.getElementById('team4CoachWindow');
+    if (!fullScreen) return undefined;
+
+    const oldButtonDisplay = coachButton ? coachButton.style.display : '';
+    const oldWindowDisplay = coachWindow ? coachWindow.style.display : '';
+    if (coachButton) coachButton.style.display = 'none';
+    if (coachWindow) coachWindow.style.display = 'none';
+
+    return function () {
+      if (coachButton) coachButton.style.display = oldButtonDisplay;
+      if (coachWindow) coachWindow.style.display = oldWindowDisplay;
+    };
+  }, [fullScreen]);
+
+  React.useEffect(function () {
     const mount = mountRef.current;
     if (!mount) return undefined;
 
@@ -6027,7 +6043,7 @@ function Team4InterviewRoom3D({ isGeo, fullScreen, onInterviewStart }) {
     let chairPoints = [];
     let seatedNow = false;
     let lastTime = performance.now();
-    let yaw = Math.PI;
+    let yaw = 0;
     let pitch = -0.06;
     let dragging = false;
     let pointerX = 0;
@@ -6209,7 +6225,7 @@ function Team4InterviewRoom3D({ isGeo, fullScreen, onInterviewStart }) {
           roomCenter = box.getCenter(new THREE.Vector3());
           roomSize = box.getSize(new THREE.Vector3());
           camera.position.set(roomCenter.x, 1.68, box.max.z - Math.max(roomSize.z * 0.13, 0.8));
-          yaw = Math.PI;
+          yaw = 0;
           pitch = -0.04;
 
           if (!chairPoints.length) {
