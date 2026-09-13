@@ -668,11 +668,12 @@ selectedBookHasAccess
                           null,
                           h('h2', null, item.title),
                           h('p', { className: 'library-card-benefit' }, getBookBenefit(item)),
-                          h(
-                            'strong',
-                            null,
-                            `${item.price.toFixed(2)} ლარი`
-                          )
+                          item.type !== 'book' &&
+                            h(
+                              'strong',
+                              null,
+                              `${item.price.toFixed(2)} ლარი`
+                            )
                         ),
 
                         itemHasAccess
@@ -798,11 +799,12 @@ selectedBookHasAccess
               null,
               h('h2', null, item.title),
               h('p', { className: 'library-card-benefit' }, getBookBenefit(item)),
-              h(
-                'strong',
-                null,
-                `${item.price.toFixed(2)} ლარი`
-              )
+              item.type !== 'book' &&
+                h(
+                  'strong',
+                  null,
+                  `${item.price.toFixed(2)} ლარი`
+                )
             ),
 
             item.type === 'book'
