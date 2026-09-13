@@ -119,5 +119,5 @@ bpy.ops.object.select_all(action="DESELECT")
 left.select_set(True)
 right.select_set(True)
 bpy.context.view_layer.objects.active = left
-bpy.context.scene["team4_last_command"] = "realistic_interview_armchairs_v2"
+bpy.context.scene["team4_last_command"] = "realistic_interview_armchairs_v3_table_ends"
 print("Team4: realistic armchairs positioned beside the interview table.")
