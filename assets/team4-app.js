@@ -6043,6 +6043,7 @@ function Team4InterviewRoom3D({ isGeo, fullScreen, onInterviewStart, onSaveProgr
     let chairPoints = [];
     let seatedNow = false;
     let lastTime = performance.now();
+    let lastAutoSave = performance.now();
     let yaw = 0;
     let pitch = -0.06;
     let dragging = false;
@@ -6160,7 +6161,7 @@ function Team4InterviewRoom3D({ isGeo, fullScreen, onInterviewStart, onSaveProgr
     function saveRoomState(showFeedback) {
       if (!camera) return;
       localStorage.setItem('team4InterviewRoomState', JSON.stringify({ x: camera.position.x, y: camera.position.y, z: camera.position.z, yaw, pitch, fov: camera.fov, doorOpen, seated: seatedNow, savedAt: Date.now() }));
-      if (typeof onSaveProgress === 'function') onSaveProgress();
+      if (showFeedback && typeof onSaveProgress === 'function') onSaveProgress();
       if (showFeedback) setPrompt(isGeo ? '✓ თამაში შენახულია' : '✓ Game saved');
     }
     function changeZoom(amount) { if (!camera) return; camera.fov = Math.max(42, Math.min(92, camera.fov + amount)); camera.updateProjectionMatrix(); }
@@ -6294,6 +6295,10 @@ function Team4InterviewRoom3D({ isGeo, fullScreen, onInterviewStart, onSaveProgr
           camera.rotation.y = yaw;
           camera.rotation.x = pitch;
           updatePrompt();
+          if (now - lastAutoSave >= 3000) {
+            saveRoomState(false);
+            lastAutoSave = now;
+          }
         }
         renderer.render(scene, camera);
       }
@@ -6310,6 +6315,7 @@ function Team4InterviewRoom3D({ isGeo, fullScreen, onInterviewStart, onSaveProgr
       window.removeEventListener('keyup', onKeyUp);
       window.removeEventListener('pointermove', onPointerMove);
       window.removeEventListener('pointerup', onPointerUp);
+      if (camera) saveRoomState(false);
       if (resizeObserver) resizeObserver.disconnect();
       if (renderer) renderer.dispose();
     };
@@ -6455,6 +6461,12 @@ function saveInterviewProgress() {
   const data = {}; for (let i = 0; i < localStorage.length; i += 1) { const key = localStorage.key(i); if (key && key.startsWith('team4')) data[key] = localStorage.getItem(key); }
   localStorage.setItem('team4GameSave', JSON.stringify({ version: 1, savedAt: Date.now(), data }));
 }
+
+React.useEffect(function () {
+  const autoSaveTimer = window.setTimeout(saveInterviewProgress, 150);
+  return function () { window.clearTimeout(autoSaveTimer); };
+}, [roomExplored, selectedAnswer, playerSpeech, currentQuestion, correctAnswers, interviewFinished]);
+
   const [retryUntil, setRetryUntil] =
   React.useState(
     () =>
