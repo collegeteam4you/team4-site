@@ -177,9 +177,117 @@ carpet = rounded_cube(
 )
 carpet["team4_asset"] = "interview_room_carpet"
 
+# Build a complete modern interview-room shell and details.
+remove_collection("TEAM4_INTERVIEW_ROOM")
+collection = bpy.data.collections.new("TEAM4_INTERVIEW_ROOM")
+bpy.context.scene.collection.children.link(collection)
+
+wall_mat = material("TEAM4_Wall_WarmWhite", (0.72, 0.70, 0.66), roughness=0.82)
+ceiling_mat = material("TEAM4_Ceiling", (0.88, 0.87, 0.83), roughness=0.88)
+panel_mat = material("TEAM4_Acoustic_Dark", (0.035, 0.045, 0.055), roughness=0.90)
+frame_mat = material("TEAM4_Frame_Black", (0.012, 0.014, 0.018), metallic=0.72, roughness=0.28)
+pot_mat = material("TEAM4_Pot_Matte", (0.075, 0.082, 0.088), roughness=0.72)
+green_mat = material("TEAM4_Plant_Green", (0.045, 0.18, 0.075), roughness=0.78)
+paper_mat = material("TEAM4_Paper", (0.82, 0.80, 0.72), roughness=0.82)
+screen_mat = material("TEAM4_Laptop_Screen", (0.018, 0.055, 0.085), metallic=0.10, roughness=0.22)
+
+# Back wall, left wall, segmented right wall and ceiling.
+rounded_cube("TEAM4_Back_Wall", (0, 3.38, 1.62), (4.18, 0.10, 1.62), wall_mat, 0.025)
+rounded_cube("TEAM4_Left_Wall", (-4.18, 0.20, 1.62), (0.10, 3.18, 1.62), wall_mat, 0.025)
+rounded_cube("TEAM4_Right_Wall_Back", (4.18, 1.65, 1.62), (0.10, 1.73, 1.62), wall_mat, 0.025)
+rounded_cube("TEAM4_Right_Wall_Front", (4.18, -2.55, 1.62), (0.10, 0.63, 1.62), wall_mat, 0.025)
+rounded_cube("TEAM4_Ceiling", (0, 0.20, 3.26), (4.18, 3.18, 0.08), ceiling_mat, 0.025)
+
+# Glass entrance door in the right-side opening.
+glass = bpy.data.materials.get("TEAM4_Glass") or bpy.data.materials.new("TEAM4_Glass")
+glass.use_nodes = True
+glass.diffuse_color = (0.15, 0.22, 0.26, 0.22)
+gbsdf = glass.node_tree.nodes.get("Principled BSDF")
+if gbsdf:
+    gbsdf.inputs["Base Color"].default_value = (0.12, 0.19, 0.23, 1.0)
+    gbsdf.inputs["Roughness"].default_value = 0.12
+    if "Transmission Weight" in gbsdf.inputs:
+        gbsdf.inputs["Transmission Weight"].default_value = 0.78
+    elif "Transmission" in gbsdf.inputs:
+        gbsdf.inputs["Transmission"].default_value = 0.78
+    gbsdf.inputs["Alpha"].default_value = 0.28
+glass.surface_render_method = "DITHERED"
+rounded_cube("TEAM4_Glass_Door", (4.05, -0.92, 1.18), (0.035, 0.73, 1.18), glass, 0.018)
+rounded_cube("TEAM4_Door_Frame_Top", (4.05, -0.92, 2.39), (0.055, 0.79, 0.045), frame_mat, 0.012)
+rounded_cube("TEAM4_Door_Frame_Left", (4.05, -1.69, 1.18), (0.055, 0.045, 1.18), frame_mat, 0.012)
+rounded_cube("TEAM4_Door_Frame_Right", (4.05, -0.15, 1.18), (0.055, 0.045, 1.18), frame_mat, 0.012)
+handle = rounded_cube("TEAM4_Door_Handle", (3.96, -0.36, 1.12), (0.035, 0.16, 0.025), frame_mat, 0.018)
+
+# Symmetrical acoustic panels leave the center free for the existing TEAM4 logo.
+for i, x in enumerate((-2.70, -2.15, 2.15, 2.70), 1):
+    rounded_cube(f"TEAM4_Acoustic_Panel_{i}", (x, 3.245, 1.83), (0.20, 0.035, 0.78), panel_mat, 0.035)
+
+# Low side cabinet.
+rounded_cube("TEAM4_Sideboard", (-3.30, 2.64, 0.48), (0.62, 0.34, 0.46), frame_mat, 0.055)
+rounded_cube("TEAM4_Sideboard_Top", (-3.30, 2.64, 0.97), (0.66, 0.37, 0.045), wood, 0.025)
+
+# Potted plant with a compact leafy crown.
+bpy.ops.mesh.primitive_cylinder_add(vertices=32, radius=0.30, depth=0.48, location=(-3.30, 2.62, 1.25))
+pot = bpy.context.object
+pot.name = "TEAM4_Plant_Pot"
+pot.data.materials.append(pot_mat)
+for old_collection in list(pot.users_collection):
+    old_collection.objects.unlink(pot)
+collection.objects.link(pot)
+bpy.ops.mesh.primitive_cylinder_add(vertices=20, radius=0.055, depth=0.80, location=(-3.30, 2.62, 1.84))
+stem = bpy.context.object
+stem.name = "TEAM4_Plant_Stem"
+stem.data.materials.append(green_mat)
+for old_collection in list(stem.users_collection):
+    old_collection.objects.unlink(stem)
+collection.objects.link(stem)
+for i, (dx, dy, dz, sx, sy) in enumerate((
+    (-0.25,0.00,2.03,0.30,0.13), (0.24,0.03,2.08,0.30,0.13),
+    (-0.12,-0.04,2.28,0.27,0.12), (0.14,0.02,2.35,0.27,0.12),
+    (0.00,0.00,2.53,0.24,0.11),
+), 1):
+    bpy.ops.mesh.primitive_uv_sphere_add(segments=20, ring_count=12, location=(-3.30+dx, 2.62+dy, dz))
+    leaf = bpy.context.object
+    leaf.name = f"TEAM4_Plant_Leaf_{i}"
+    leaf.scale = (sx, sy, 0.10)
+    bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
+    leaf.data.materials.append(green_mat)
+    for old_collection in list(leaf.users_collection):
+        old_collection.objects.unlink(leaf)
+    collection.objects.link(leaf)
+
+# Interview props: laptop, folder, pen and water glasses.
+rounded_cube("TEAM4_Laptop_Base", (0.72, 0.08, 1.50), (0.34, 0.25, 0.025), frame_mat, 0.025)
+laptop_screen = rounded_cube("TEAM4_Laptop_Screen", (0.91, 0.08, 1.74), (0.025, 0.25, 0.23), screen_mat, 0.018)
+laptop_screen.rotation_euler.y = math.radians(-8)
+rounded_cube("TEAM4_Document_Folder", (-0.38, -0.08, 1.49), (0.28, 0.20, 0.018), paper_mat, 0.018)
+rounded_cube("TEAM4_Pen", (-0.36, -0.34, 1.51), (0.17, 0.018, 0.018), frame_mat, 0.012)
+for i, x in enumerate((-1.05, 1.25), 1):
+    bpy.ops.mesh.primitive_cylinder_add(vertices=32, radius=0.065, depth=0.18, location=(x, -0.30, 1.55))
+    glass_obj = bpy.context.object
+    glass_obj.name = f"TEAM4_Water_Glass_{i}"
+    glass_obj.data.materials.append(glass)
+    for old_collection in list(glass_obj.users_collection):
+        old_collection.objects.unlink(glass_obj)
+    collection.objects.link(glass_obj)
+
+# Soft warm ceiling lights.
+for i, x in enumerate((-1.55, 1.55), 1):
+    rounded_cube(f"TEAM4_Ceiling_Panel_{i}", (x, 0.20, 3.16), (0.72, 0.32, 0.025), ceiling_mat, 0.025)
+    light_data = bpy.data.lights.new(f"TEAM4_Soft_Light_{i}", type="AREA")
+    light_data.energy = 420
+    light_data.color = (1.0, 0.82, 0.66)
+    light_data.shape = "RECTANGLE"
+    light_data.size = 1.45
+    light_data.size_y = 0.64
+    light_obj = bpy.data.objects.new(f"TEAM4_Soft_Light_{i}", light_data)
+    collection.objects.link(light_obj)
+    light_obj.location = (x, 0.20, 3.08)
+    light_obj.rotation_euler = (0, 0, 0)
+
 bpy.ops.object.select_all(action="DESELECT")
 left.select_set(True)
 right.select_set(True)
 bpy.context.view_layer.objects.active = left
-bpy.context.scene["team4_last_command"] = "realistic_interview_furniture_v6_carpet"
+bpy.context.scene["team4_last_command"] = "complete_interview_room_v7"
 print("Team4: armchairs positioned at the table ends and turned toward the table.")
