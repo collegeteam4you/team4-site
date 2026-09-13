@@ -285,6 +285,133 @@ for i, x in enumerate((-1.55, 1.55), 1):
     light_obj.location = (x, 0.20, 3.08)
     light_obj.rotation_euler = (0, 0, 0)
 
+# Rebuild the interview room with a higher ceiling.
+remove_collection("TEAM4_INTERVIEW_ROOM")
+collection = bpy.data.collections.new("TEAM4_INTERVIEW_ROOM")
+bpy.context.scene.collection.children.link(collection)
+
+wall_mat = material("TEAM4_Wall_WarmWhite", (0.72, 0.70, 0.66), roughness=0.82)
+ceiling_mat = material("TEAM4_Ceiling", (0.88, 0.87, 0.83), roughness=0.88)
+panel_mat = material("TEAM4_Acoustic_Dark", (0.035, 0.045, 0.055), roughness=0.90)
+frame_mat = material("TEAM4_Frame_Black", (0.012, 0.014, 0.018), metallic=0.72, roughness=0.28)
+pot_mat = material("TEAM4_Pot_Matte", (0.075, 0.082, 0.088), roughness=0.72)
+green_mat = material("TEAM4_Plant_Green", (0.045, 0.18, 0.075), roughness=0.78)
+paper_mat = material("TEAM4_Paper", (0.82, 0.80, 0.72), roughness=0.82)
+screen_mat = material("TEAM4_Laptop_Screen", (0.018, 0.055, 0.085), metallic=0.10, roughness=0.22)
+
+# 4.2-metre-high room shell.
+rounded_cube("TEAM4_Back_Wall", (0, 3.38, 2.10), (4.18, 0.10, 2.10), wall_mat, 0.025)
+rounded_cube("TEAM4_Left_Wall", (-4.18, 0.20, 2.10), (0.10, 3.18, 2.10), wall_mat, 0.025)
+rounded_cube("TEAM4_Right_Wall_Back", (4.18, 1.65, 2.10), (0.10, 1.73, 2.10), wall_mat, 0.025)
+rounded_cube("TEAM4_Right_Wall_Front", (4.18, -2.55, 2.10), (0.10, 0.63, 2.10), wall_mat, 0.025)
+rounded_cube("TEAM4_Ceiling", (0, 0.20, 4.22), (4.18, 3.18, 0.08), ceiling_mat, 0.025)
+
+# Glass entrance.
+glass = bpy.data.materials.get("TEAM4_Glass") or bpy.data.materials.new("TEAM4_Glass")
+glass.use_nodes = True
+glass.diffuse_color = (0.15, 0.22, 0.26, 0.22)
+gbsdf = glass.node_tree.nodes.get("Principled BSDF")
+if gbsdf:
+    gbsdf.inputs["Base Color"].default_value = (0.12, 0.19, 0.23, 1.0)
+    gbsdf.inputs["Roughness"].default_value = 0.12
+    transmission = gbsdf.inputs.get("Transmission Weight") or gbsdf.inputs.get("Transmission")
+    if transmission:
+        transmission.default_value = 0.78
+    gbsdf.inputs["Alpha"].default_value = 0.28
+if hasattr(glass, "surface_render_method"):
+    glass.surface_render_method = "DITHERED"
+rounded_cube("TEAM4_Glass_Door", (4.05, -0.92, 1.18), (0.035, 0.73, 1.18), glass, 0.018)
+rounded_cube("TEAM4_Door_Frame_Top", (4.05, -0.92, 2.39), (0.055, 0.79, 0.045), frame_mat, 0.012)
+rounded_cube("TEAM4_Door_Frame_Left", (4.05, -1.69, 1.18), (0.055, 0.045, 1.18), frame_mat, 0.012)
+rounded_cube("TEAM4_Door_Frame_Right", (4.05, -0.15, 1.18), (0.055, 0.045, 1.18), frame_mat, 0.012)
+rounded_cube("TEAM4_Door_Handle", (3.96, -0.36, 1.12), (0.035, 0.16, 0.025), frame_mat, 0.018)
+
+# Acoustic panels around the central logo area.
+for i, x in enumerate((-2.75, -2.25, 2.25, 2.75), 1):
+    rounded_cube(f"TEAM4_Acoustic_Panel_{i}", (x, 3.245, 2.25), (0.18, 0.035, 0.72), panel_mat, 0.035)
+
+# TEAM4 logo image plane on the middle of the back wall.
+logo_path = bpy.path.abspath(str((__import__("pathlib").Path(__file__).parents[3] / "assets" / "team4-logo-hero.webp")))
+if __import__("pathlib").Path(logo_path).is_file():
+    mesh = bpy.data.meshes.new("TEAM4_Logo_Mesh")
+    mesh.from_pydata(
+        [(-1.25, 0, -0.72), (1.25, 0, -0.72), (1.25, 0, 0.72), (-1.25, 0, 0.72)],
+        [],
+        [(0, 1, 2, 3)],
+    )
+    mesh.update()
+    uv_layer = mesh.uv_layers.new(name="UVMap")
+    for loop, uv in zip(uv_layer.data, ((0,0), (1,0), (1,1), (0,1))):
+        loop.uv = uv
+    logo = bpy.data.objects.new("TEAM4_Wall_Logo", mesh)
+    logo.location = (0, 3.245, 2.45)
+    logo.rotation_euler.x = math.radians(90)
+    collection.objects.link(logo)
+    logo_mat = bpy.data.materials.get("TEAM4_Logo_Material") or bpy.data.materials.new("TEAM4_Logo_Material")
+    logo_mat.use_nodes = True
+    nodes = logo_mat.node_tree.nodes
+    links = logo_mat.node_tree.links
+    nodes.clear()
+    output = nodes.new("ShaderNodeOutputMaterial")
+    bsdf = nodes.new("ShaderNodeBsdfPrincipled")
+    tex = nodes.new("ShaderNodeTexImage")
+    tex.image = bpy.data.images.load(logo_path, check_existing=True)
+    links.new(tex.outputs["Color"], bsdf.inputs["Base Color"])
+    links.new(tex.outputs["Alpha"], bsdf.inputs["Alpha"])
+    links.new(bsdf.outputs["BSDF"], output.inputs["Surface"])
+    bsdf.inputs["Roughness"].default_value = 0.34
+    if hasattr(logo_mat, "surface_render_method"):
+        logo_mat.surface_render_method = "DITHERED"
+    logo.data.materials.append(logo_mat)
+
+# Sideboard and plant.
+rounded_cube("TEAM4_Sideboard", (-3.30, 2.64, 0.48), (0.62, 0.34, 0.46), frame_mat, 0.055)
+rounded_cube("TEAM4_Sideboard_Top", (-3.30, 2.64, 0.97), (0.66, 0.37, 0.045), wood, 0.025)
+bpy.ops.mesh.primitive_cylinder_add(vertices=32, radius=0.30, depth=0.48, location=(-3.30, 2.62, 1.25))
+pot = bpy.context.object
+pot.name = "TEAM4_Plant_Pot"
+pot.data.materials.append(pot_mat)
+for old_collection in list(pot.users_collection):
+    old_collection.objects.unlink(pot)
+collection.objects.link(pot)
+bpy.ops.mesh.primitive_cylinder_add(vertices=20, radius=0.055, depth=0.80, location=(-3.30, 2.62, 1.84))
+stem = bpy.context.object
+stem.name = "TEAM4_Plant_Stem"
+stem.data.materials.append(green_mat)
+for old_collection in list(stem.users_collection):
+    old_collection.objects.unlink(stem)
+collection.objects.link(stem)
+for i, (dx, dy, dz, sx, sy) in enumerate(((-0.25,0,2.03,.30,.13),(.24,.03,2.08,.30,.13),(-.12,-.04,2.28,.27,.12),(.14,.02,2.35,.27,.12),(0,0,2.53,.24,.11)), 1):
+    bpy.ops.mesh.primitive_uv_sphere_add(segments=20, ring_count=12, location=(-3.30+dx, 2.62+dy, dz))
+    leaf = bpy.context.object
+    leaf.name = f"TEAM4_Plant_Leaf_{i}"
+    leaf.scale = (sx, sy, .10)
+    bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
+    leaf.data.materials.append(green_mat)
+    for old_collection in list(leaf.users_collection):
+        old_collection.objects.unlink(leaf)
+    collection.objects.link(leaf)
+
+# Laptop moved to the left edge of the table, plus interview stationery.
+rounded_cube("TEAM4_Laptop_Base", (-1.12, 0.08, 1.50), (0.34, 0.25, 0.025), frame_mat, 0.025)
+laptop_screen = rounded_cube("TEAM4_Laptop_Screen", (-0.91, 0.08, 1.74), (0.025, 0.25, 0.23), screen_mat, 0.018)
+laptop_screen.rotation_euler.y = math.radians(-8)
+rounded_cube("TEAM4_Document_Folder", (-0.25, -0.08, 1.49), (0.28, 0.20, 0.018), paper_mat, 0.018)
+rounded_cube("TEAM4_Pen", (-0.20, -0.34, 1.51), (0.17, 0.018, 0.018), frame_mat, 0.012)
+
+# Higher ceiling lights.
+light_panel_mat = material("TEAM4_Light_Panel", (0.92, 0.88, 0.76), roughness=0.22)
+for i, x in enumerate((-1.55, 1.55), 1):
+    rounded_cube(f"TEAM4_Ceiling_Panel_{i}", (x, 0.15, 4.11), (0.62, 0.38, 0.025), light_panel_mat, 0.018)
+    data = bpy.data.lights.new(f"TEAM4_Area_Light_{i}", "AREA")
+    data.energy = 520
+    data.color = (1.0, 0.86, 0.68)
+    data.shape = "RECTANGLE"
+    data.size = 1.25
+    obj = bpy.data.objects.new(f"TEAM4_Area_Light_{i}", data)
+    obj.location = (x, 0.15, 4.02)
+    collection.objects.link(obj)
+
 bpy.ops.object.select_all(action="DESELECT")
 left.select_set(True)
 right.select_set(True)
