@@ -6006,7 +6006,7 @@ h(
 // 3D INTERVIEW ROOM — FIRST-PERSON EXPLORATION
 // ==========================================
 
-function Team4InterviewRoom3D({ isGeo, fullScreen, onInterviewStart }) {
+function Team4InterviewRoom3D({ isGeo, fullScreen, onInterviewStart, onSaveProgress }) {
   const mountRef = React.useRef(null);
   const inputRef = React.useRef({ forward: false, back: false, left: false, right: false });
   const [status, setStatus] = React.useState('loading');
@@ -6050,6 +6050,8 @@ function Team4InterviewRoom3D({ isGeo, fullScreen, onInterviewStart }) {
     let pointerY = 0;
     let roomCenter = null;
     let roomSize = null;
+    let savedRoomState = null;
+    try { savedRoomState = JSON.parse(localStorage.getItem('team4InterviewRoomState') || 'null'); } catch (error) { savedRoomState = null; }
     let THREE = null;
     let camera = null;
     const keys = inputRef.current;
@@ -6155,6 +6157,17 @@ function Team4InterviewRoom3D({ isGeo, fullScreen, onInterviewStart }) {
 
     mount.__team4Interact = interact;
 
+    function saveRoomState(showFeedback) {
+      if (!camera) return;
+      localStorage.setItem('team4InterviewRoomState', JSON.stringify({ x: camera.position.x, y: camera.position.y, z: camera.position.z, yaw, pitch, fov: camera.fov, doorOpen, seated: seatedNow, savedAt: Date.now() }));
+      if (typeof onSaveProgress === 'function') onSaveProgress();
+      if (showFeedback) setPrompt(isGeo ? '✓ თამაში შენახულია' : '✓ Game saved');
+    }
+    function changeZoom(amount) { if (!camera) return; camera.fov = Math.max(42, Math.min(92, camera.fov + amount)); camera.updateProjectionMatrix(); }
+    mount.__team4Save = function () { saveRoomState(true); };
+    mount.__team4ZoomIn = function () { changeZoom(-6); };
+    mount.__team4ZoomOut = function () { changeZoom(6); };
+
     Promise.all([
       import('https://cdn.jsdelivr.net/npm/three@0.185.1/build/three.module.min.js'),
       import('https://esm.sh/three@0.185.1/examples/jsm/loaders/GLTFLoader.js'),
@@ -6166,7 +6179,7 @@ function Team4InterviewRoom3D({ isGeo, fullScreen, onInterviewStart }) {
       scene.background = new THREE.Color(0x0c1117);
       scene.fog = new THREE.Fog(0x0c1117, 18, 48);
 
-      camera = new THREE.PerspectiveCamera(68, 16 / 9, 0.05, 150);
+      camera = new THREE.PerspectiveCamera(82, 16 / 9, 0.05, 150);
       renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
       renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.6));
       renderer.shadowMap.enabled = true;
@@ -6224,9 +6237,16 @@ function Team4InterviewRoom3D({ isGeo, fullScreen, onInterviewStart }) {
           const box = new THREE.Box3().setFromObject(room);
           roomCenter = box.getCenter(new THREE.Vector3());
           roomSize = box.getSize(new THREE.Vector3());
-          camera.position.set(roomCenter.x, 1.68, box.max.z - Math.max(roomSize.z * 0.13, 0.8));
+          camera.position.set(roomCenter.x, 1.68, box.max.z - Math.max(roomSize.z * 0.08, 0.45));
           yaw = 0;
           pitch = -0.04;
+          if (savedRoomState) {
+            if ([savedRoomState.x, savedRoomState.y, savedRoomState.z].every(Number.isFinite)) camera.position.set(savedRoomState.x, savedRoomState.y, savedRoomState.z);
+            if (Number.isFinite(savedRoomState.yaw)) yaw = savedRoomState.yaw;
+            if (Number.isFinite(savedRoomState.pitch)) pitch = savedRoomState.pitch;
+            if (Number.isFinite(savedRoomState.fov)) camera.fov = Math.max(42, Math.min(92, savedRoomState.fov));
+            camera.updateProjectionMatrix(); doorOpen = !!savedRoomState.doorOpen; doorTarget = doorOpen ? -Math.PI * 0.48 : 0; seatedNow = !!savedRoomState.seated; setSeated(seatedNow);
+          }
 
           if (!chairPoints.length) {
             chairPoints = [
@@ -6246,6 +6266,7 @@ function Team4InterviewRoom3D({ isGeo, fullScreen, onInterviewStart }) {
       window.addEventListener('keydown', onKeyDown, { passive: false });
       window.addEventListener('keyup', onKeyUp);
       mount.addEventListener('pointerdown', onPointerDown);
+      mount.addEventListener('wheel', function (event) { event.preventDefault(); changeZoom(event.deltaY > 0 ? 5 : -5); }, { passive: false });
       window.addEventListener('pointermove', onPointerMove);
       window.addEventListener('pointerup', onPointerUp);
 
@@ -6326,6 +6347,11 @@ function Team4InterviewRoom3D({ isGeo, fullScreen, onInterviewStart }) {
     fullScreen && status === 'ready' && h('div', {
       style: { position: 'absolute', top: '18px', left: '50%', transform: 'translateX(-50%)', zIndex: 6, padding: '10px 16px', borderRadius: '999px', background: 'rgba(0,0,0,.66)', color: '#fff', fontSize: '13px', fontWeight: '900', textAlign: 'center' },
     }, isGeo ? 'WASD / ისრები — მოძრაობა • მაუსით — გახედვა • E — მოქმედება' : 'WASD / arrows — move • mouse — look • E — interact'),
+    fullScreen && status === 'ready' && h('div', { style: { position: 'absolute', top: '18px', right: '18px', zIndex: 9, display: 'flex', gap: '8px' } },
+      h('button', { type: 'button', onClick: function () { mountRef.current && mountRef.current.__team4ZoomOut(); }, style: { width:'44px',height:'44px',borderRadius:'12px',border:'1px solid rgba(255,255,255,.35)',background:'rgba(0,0,0,.66)',color:'#fff',fontSize:'24px' } }, '−'),
+      h('button', { type: 'button', onClick: function () { mountRef.current && mountRef.current.__team4ZoomIn(); }, style: { width:'44px',height:'44px',borderRadius:'12px',border:'1px solid rgba(255,255,255,.35)',background:'rgba(0,0,0,.66)',color:'#fff',fontSize:'24px' } }, '+'),
+      h('button', { type: 'button', onClick: function () { mountRef.current && mountRef.current.__team4Save(); }, style: { height:'44px',padding:'0 15px',borderRadius:'12px',border:'1px solid rgba(255,255,255,.35)',background:'rgba(0,0,0,.72)',color:'#fff',fontWeight:'900' } }, isGeo ? 'შენახვა' : 'Save')
+    ),
     fullScreen && prompt && h('div', {
       style: { position: 'absolute', left: '50%', bottom: '105px', transform: 'translateX(-50%)', zIndex: 7, padding: '13px 20px', borderRadius: '14px', background: 'rgba(239,27,19,.9)', color: '#fff', fontWeight: '900', whiteSpace: 'nowrap' },
     }, prompt),
@@ -6350,7 +6376,8 @@ function Team4InterviewRoom3D({ isGeo, fullScreen, onInterviewStart }) {
 
 function Team4InterviewPage({ lang, setLang }) {
   const isGeo = lang === 'GEO';
-  const [roomExplored, setRoomExplored] = React.useState(false);
+  const savedInterviewProgress = React.useMemo(function () { try { return JSON.parse(localStorage.getItem('team4InterviewProgress') || 'null') || {}; } catch (error) { return {}; } }, []);
+  const [roomExplored, setRoomExplored] = React.useState(!!savedInterviewProgress.roomExplored);
     const interviewRetryVideos =
     window.Team4InterviewVideos || [];
 
@@ -6403,13 +6430,13 @@ const [hintText, setHintText] =
 // ==========================================
 
 const [selectedAnswer, setSelectedAnswer] =
-  React.useState(null);
+  React.useState(savedInterviewProgress.selectedAnswer || null);
 
 const [playerSpeech, setPlayerSpeech] =
-  React.useState('');
+  React.useState(savedInterviewProgress.playerSpeech || '');
 
 const [currentQuestion, setCurrentQuestion] =
-  React.useState(0);
+  React.useState(Number(savedInterviewProgress.currentQuestion) || 0);
 
 
   // ==========================================
@@ -6417,10 +6444,17 @@ const [currentQuestion, setCurrentQuestion] =
 // ==========================================
 
 const [correctAnswers, setCorrectAnswers] =
-  React.useState(0);
+  React.useState(Number(savedInterviewProgress.correctAnswers) || 0);
 
 const [interviewFinished, setInterviewFinished] =
-  React.useState(false);
+  React.useState(!!savedInterviewProgress.interviewFinished);
+
+function saveInterviewProgress() {
+  const progress = { roomExplored, selectedAnswer, playerSpeech, currentQuestion, correctAnswers, interviewFinished, savedAt: Date.now() };
+  localStorage.setItem('team4InterviewProgress', JSON.stringify(progress));
+  const data = {}; for (let i = 0; i < localStorage.length; i += 1) { const key = localStorage.key(i); if (key && key.startsWith('team4')) data[key]] = localStorage.getItem(key); }
+  localStorage.setItem('team4GameSave', JSON.stringify({ version: 1, savedAt: Date.now(), data }));
+}
   const [retryUntil, setRetryUntil] =
   React.useState(
     () =>
@@ -7750,7 +7784,8 @@ h(
   h(Team4InterviewRoom3D, {
     isGeo: isGeo,
     fullScreen: !roomExplored,
-    onInterviewStart: function () { setRoomExplored(true); },
+    onInterviewStart: function () { setRoomExplored(true); window.setTimeout(saveInterviewProgress, 0); },
+    onSaveProgress: saveInterviewProgress,
   }),
 
  // First-person mode uses the selected player's viewpoint.
