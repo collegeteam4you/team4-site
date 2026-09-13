@@ -112,8 +112,8 @@ collection = bpy.data.collections.new(COLLECTION_NAME)
 bpy.context.scene.collection.children.link(collection)
 
 # Positioned at opposite ends of the table, facing each other across it.
-left = create_armchair("TEAM4_Armchair_Left", -2.95, 0.10, 90)
-right = create_armchair("TEAM4_Armchair_Right", 2.95, 0.10, -90)
+left = create_armchair("TEAM4_Armchair_Left", -2.82, 0.10, 90)
+right = create_armchair("TEAM4_Armchair_Right", 2.82, 0.10, -90)
 
 # Replace the generated table on every run.
 remove_collection("TEAM4_REALISTIC_TABLE")
@@ -141,9 +141,45 @@ for index, (x, y) in enumerate(((-1.30,-0.46), (1.30,-0.46), (-1.30,0.66), (1.30
     )
     table_leg["team4_asset"] = "interview_table"
 
+# Add a room-size carpet while preserving the existing dark floor color.
+remove_collection("TEAM4_CARPET_FLOOR")
+collection = bpy.data.collections.new("TEAM4_CARPET_FLOOR")
+bpy.context.scene.collection.children.link(collection)
+
+carpet_mat = bpy.data.materials.get("TEAM4_Carpet_Charcoal") or bpy.data.materials.new("TEAM4_Carpet_Charcoal")
+carpet_mat.use_nodes = True
+nodes = carpet_mat.node_tree.nodes
+links = carpet_mat.node_tree.links
+for node in list(nodes):
+    nodes.remove(node)
+output = nodes.new("ShaderNodeOutputMaterial")
+bsdf = nodes.new("ShaderNodeBsdfPrincipled")
+noise = nodes.new("ShaderNodeTexNoise")
+bump = nodes.new("ShaderNodeBump")
+noise.inputs["Scale"].default_value = 145.0
+noise.inputs["Detail"].default_value = 3.0
+noise.inputs["Roughness"].default_value = 0.78
+bump.inputs["Strength"].default_value = 0.22
+bump.inputs["Distance"].default_value = 0.035
+bsdf.inputs["Base Color"].default_value = (0.055, 0.070, 0.082, 1.0)
+bsdf.inputs["Roughness"].default_value = 0.94
+links.new(noise.outputs["Fac"], bump.inputs["Height"])
+links.new(bump.outputs["Normal"], bsdf.inputs["Normal"])
+links.new(bsdf.outputs["BSDF"], output.inputs["Surface"])
+carpet_mat.diffuse_color = (0.055, 0.070, 0.082, 1.0)
+
+carpet = rounded_cube(
+    "TEAM4_Room_Carpet",
+    (0, 0.35, 0.035),
+    (4.05, 3.05, 0.035),
+    carpet_mat,
+    0.055,
+)
+carpet["team4_asset"] = "interview_room_carpet"
+
 bpy.ops.object.select_all(action="DESELECT")
 left.select_set(True)
 right.select_set(True)
 bpy.context.view_layer.objects.active = left
-bpy.context.scene["team4_last_command"] = "realistic_interview_furniture_v5"
+bpy.context.scene["team4_last_command"] = "realistic_interview_furniture_v6_carpet"
 print("Team4: armchairs positioned at the table ends and turned toward the table.")
