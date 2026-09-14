@@ -50,9 +50,7 @@
     const completionTracked = React.useRef(false);
 
     React.useEffect(() => {
-      trackCommerceEvent('sample_start', item, {
-        sample_pages: 2,
-      });
+      trackCommerceEvent('sample_start', item);
 
       const previousOverflow = document.body.style.overflow;
       document.body.style.overflow = 'hidden';
@@ -61,9 +59,7 @@
         (entries) => {
           if (!entries.some((entry) => entry.isIntersecting) || completionTracked.current) return;
           completionTracked.current = true;
-          trackCommerceEvent('sample_complete', item, {
-            sample_pages: 2,
-          });
+          trackCommerceEvent('sample_complete', item);
         },
         { threshold: 0.35 }
       );
@@ -85,7 +81,7 @@
         h(
           'header',
           { className: 'library-sample-header' },
-          h('div', null, h('span', null, 'უფასო ნაწყვეტი · 2 გვერდი'), h('strong', null, item.title)),
+          h('div', null, h('span', null, 'უფასო ნაწყვეტი'), h('strong', null, item.title)),
           h('button', { type: 'button', onClick: onClose, 'aria-label': 'დახურვა' }, '×')
         ),
         h(
@@ -641,7 +637,7 @@ selectedBookHasAccess
                     h(
                       'p',
                       { className: 'library-catalog-subtitle' },
-                      'ჯერ უფასოდ წაიკითხე პირველი ორი გვერდი. თუ საკუთარ თავს ამოიცნობ, შემდეგ გააგრძელე.'
+                      'აირჩიე წიგნი და წაიკითხე უფასო ნაწყვეტი. თუ საკუთარ თავს ამოიცნობ, შემდეგ გააგრძელე.'
                     ),
 
                     catalog.map((item) => {
@@ -776,7 +772,7 @@ selectedBookHasAccess
         h(
           'p',
           { className: 'library-catalog-subtitle' },
-          'ჯერ უფასოდ წაიკითხე პირველი ორი გვერდი. თუ საკუთარ თავს ამოიცნობ, შემდეგ გააგრძელე.'
+          'აირჩიე წიგნი და წაიკითხე უფასო ნაწყვეტი. თუ საკუთარ თავს ამოიცნობ, შემდეგ გააგრძელე.'
         ),
 
         catalog.map((item) =>
