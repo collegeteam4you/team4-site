@@ -4837,7 +4837,7 @@ body .library-book-body {
 
 @media (max-width: 680px) {
   .library-cabinet-shell .library-catalog-title {
-    font-size: 32px;
+    font-size: 24px;
   }
 }
 
@@ -4887,7 +4887,7 @@ body .library-book-body {
 
   .library-cabinet-shell .library-catalog-title {
     margin: 0 0 4px;
-    font-size: 28px;
+    font-size: 24px;
     line-height: 1.08;
   }
 
