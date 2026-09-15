@@ -186,7 +186,7 @@ const rowToOrder = (row) => ({
   approvedAt: row.approved_at ? new Date(row.approved_at).toISOString() : '',
   rejectedAt: row.rejected_at ? new Date(row.rejected_at).toISOString() : '',
   receiptUrl: row.receipt_data || row.receipt_url
-    ? `/api/admin/orders/receipt?orderCode=${encodeURIComponent(row.payment_code)}`
+    ? `/api/admin-receipt?orderCode=${encodeURIComponent(row.payment_code)}`
     : '',
 });
 
@@ -567,6 +567,10 @@ module.exports = async function handler(req, res) {
   try {
     const requestUrl = new URL(req.url, `https://${req.headers.host || 'localhost'}`);
     const pathname = requestUrl.pathname;
+    if (pathname === '/api/admin-receipt') {
+      await handleAdminApi(req, res, '/api/admin/orders/receipt');
+      return;
+    }
     if (pathname.startsWith('/api/admin/')) {
       await handleAdminApi(req, res, pathname);
       return;
