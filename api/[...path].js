@@ -186,7 +186,7 @@ const rowToOrder = (row) => ({
   approvedAt: row.approved_at ? new Date(row.approved_at).toISOString() : '',
   rejectedAt: row.rejected_at ? new Date(row.rejected_at).toISOString() : '',
   receiptUrl: row.receipt_data || row.receipt_url
-    ? `/api/admin/receipt?orderCode=${encodeURIComponent(row.payment_code)}`
+    ? `/api/admin/orders?receipt=1&orderCode=${encodeURIComponent(row.payment_code)}`
     : '',
 });
 
@@ -287,11 +287,16 @@ const handleAdminApi = async (req, res, pathname) => {
     return;
   }
 
-  if ((pathname === '/api/admin/receipt' || pathname === '/api/admin/orders/receipt') && req.method === 'GET') {
+  const adminRequestUrl = new URL(req.url, `https://${req.headers.host || 'localhost'}`);
+  const wantsReceipt =
+    pathname === '/api/admin/receipt' ||
+    pathname === '/api/admin/orders/receipt' ||
+    (pathname === '/api/admin/orders' && adminRequestUrl.searchParams.get('receipt') === '1');
+
+  if (wantsReceipt && req.method === 'GET') {
     if (!requireSession(req, res)) return;
     await ensureSchema();
-    const requestUrl = new URL(req.url, `https://${req.headers.host || 'localhost'}`);
-    const orderCode = String(requestUrl.searchParams.get('orderCode') || '').trim();
+    const orderCode = String(adminRequestUrl.searchParams.get('orderCode') || '').trim();
     const result = await sql`
       SELECT payment_code, receipt_data, receipt_url, receipt_mime_type, receipt_name
       FROM manual_orders
