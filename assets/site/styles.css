@@ -2545,7 +2545,32 @@ header button {
 .header-left-text,
 .brand-text,
 .logo-text {
-  flex: 0 0 260px !important;
+
+  
+/* ===== 2026-09-17 SAMPLE CTA MOBILE TUNING ===== */
+@media (max-width: 680px) {
+  .library-cabinet-shell .library-catalog-title {
+    font-size: 20px;
+    line-height: 1.12;
+  }
+
+  .library-cabinet-shell .library-book-card > div {
+    min-height: 0;
+    padding: 12px 14px 8px;
+  }
+
+  .library-cabinet-shell .library-book-card h2 {
+    margin-bottom: 6px;
+    font-size: 19px;
+    line-height: 1.15;
+  }
+
+  .library-cabinet-shell .library-book-card > .library-action {
+    width: calc(100% - 28px);
+    margin: 0 14px 14px;
+  }
+}
+flex: 0 0 260px !important;
   display: flex !important;
   flex-direction: column !important;
   justify-content: center !important;
