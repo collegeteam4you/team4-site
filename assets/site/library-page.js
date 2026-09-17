@@ -2,6 +2,15 @@
   const { createElement: h } = React;
 
   function trackCommerceEvent(eventName, item, extra) {
+    const eventData = {
+      content_ids: item?.id ? [item.id] : [],
+      content_name: item?.title || '',
+      content_type: 'product',
+      value: Number(item?.price || 0),
+      currency: 'GEL',
+      ...(extra || {}),
+    };
+
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
       event: eventName,
@@ -12,6 +21,24 @@
       currency: 'GEL',
       ...(extra || {}),
     });
+
+    if (typeof window.fbq !== 'function') return;
+
+    const metaEventNames = {
+      begin_checkout: 'InitiateCheckout',
+      email_submitted: 'Lead',
+      order_created: 'AddPaymentInfo',
+    };
+    const metaEventName = metaEventNames[eventName];
+
+    if (metaEventName) {
+      window.fbq('track', metaEventName, eventData);
+      return;
+    }
+
+    if (eventName === 'sample_start' || eventName === 'sample_complete') {
+      window.fbq('trackCustom', eventName, eventData);
+    }
   }
 
   function getBookBenefit(item) {
@@ -468,6 +495,15 @@
       content_ids: catalog.map((item) => item.id),
       content_type: 'product_group',
     });
+
+    if (typeof window.fbq === 'function') {
+      window.fbq('track', 'ViewContent', {
+        content_ids: catalog.map((item) => item.id),
+        content_name: 'Team4 Digital Library',
+        content_type: 'product_group',
+        currency: 'GEL',
+      });
+    }
   }, []);
 
 const selectedItem =
