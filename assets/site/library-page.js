@@ -637,7 +637,7 @@ selectedBookHasAccess
                     h(
                       'p',
                       { className: 'library-catalog-subtitle' },
-                      'აირჩიე წიგნი და წაიკითხე უფასო ნაწყვეტი. თუ საკუთარ თავს ამოიცნობ, შემდეგ გააგრძელე.'
+                      'ჯერ ნუ იყიდი — წაიკითხე 2 გვერდი და თავად გადაწყვიტე, ღირს თუ არა გაგრძელება.'
                     ),
 
                     catalog.map((item) => {
@@ -692,7 +692,7 @@ selectedBookHasAccess
                                   className: 'library-action library-action-primary',
                                   onClick: () => setSampleItemId(item.id),
                                 },
-                                'დაიწყე უფასოდ კითხვა'
+                                'წაიკითხე 2 გვერდი უფასოდ'
                               )
                             : h(
   'button',
@@ -772,7 +772,7 @@ selectedBookHasAccess
         h(
           'p',
           { className: 'library-catalog-subtitle' },
-          'აირჩიე წიგნი და წაიკითხე უფასო ნაწყვეტი. თუ საკუთარ თავს ამოიცნობ, შემდეგ გააგრძელე.'
+          'ჯერ ნუ იყიდი — წაიკითხე 2 გვერდი და თავად გადაწყვიტე, ღირს თუ არა გაგრძელება.'
         ),
 
         catalog.map((item) =>
@@ -811,7 +811,7 @@ selectedBookHasAccess
                     className: 'library-action library-action-primary',
                     onClick: () => setSampleItemId(item.id),
                   },
-                  'დაიწყე უფასოდ კითხვა'
+                  'წაიკითხე 2 გვერდი უფასოდ'
                 )
               : h(
                   'button',
