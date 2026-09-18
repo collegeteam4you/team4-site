@@ -3933,3 +3933,8 @@ button.site-cta:hover,
     flex-direction: column;
   }
 }
+/* library desktop clearance */
+@media (min-width:681px){
+ .library-cabinet-shell{padding-top:230px!important;}
+ .library-cabinet-shell>:first-child{margin-top:0!important;transform:none!important;}
+}
