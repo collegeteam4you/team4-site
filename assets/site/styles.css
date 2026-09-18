@@ -5293,3 +5293,10 @@ body:has(.library-cabinet-shell) .library-cabinet-shell{
     padding-top:22px!important;
   }
 }
+
+/* FIX actual library promo hero: clear sticky desktop header */
+@media (min-width:681px){
+  .library-cabinet-shell .library-catalog-promo{
+    margin-top:120px!important;
+  }
+}
