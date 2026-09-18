@@ -4032,3 +4032,14 @@ button.site-cta:hover,
     padding-right: 20px !important;
   }
 }
+
+/* Library desktop header clearance — keep the complete hero below nav */
+@media (min-width: 681px){
+  body:has(.library-cabinet-shell) .library-cabinet-shell{
+    padding-top: 132px !important;
+  }
+  body:has(.library-cabinet-shell) .library-cabinet-shell > :first-child{
+    margin-top: 0 !important;
+    transform: none !important;
+  }
+}
