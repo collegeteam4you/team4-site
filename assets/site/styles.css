@@ -5449,3 +5449,43 @@ body:has(.library-cabinet-shell) .library-cabinet-shell{
     font-size:19px!important;
   }
 }
+
+
+/* MOBILE CATALOG BUTTONS — target the REAL classes, remove legacy fake :after button */
+@media (max-width:899px){
+  .library-cabinet-shell .library-book-card:not(:last-of-type):after{
+    content:none!important;
+    display:none!important;
+  }
+
+  .library-cabinet-shell .library-card-actions{
+    position:static!important;
+    grid-column:1 / -1!important;
+    display:grid!important;
+    grid-template-columns:1fr 1fr!important;
+    gap:10px!important;
+    width:100%!important;
+    margin-top:16px!important;
+    align-self:end!important;
+  }
+
+  .library-cabinet-shell .library-card-actions .library-action{
+    position:static!important;
+    inset:auto!important;
+    transform:none!important;
+    width:100%!important;
+    min-width:0!important;
+    min-height:52px!important;
+    height:52px!important;
+    padding:8px 10px!important;
+    margin:0!important;
+    border-radius:8px!important;
+    font-size:12px!important;
+    line-height:1.25!important;
+    white-space:normal!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    text-align:center!important;
+  }
+}
