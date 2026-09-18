@@ -5323,3 +5323,16 @@ body:has(.library-cabinet-shell) .library-cabinet-shell{
     margin-top:0!important;
   }
 }
+
+
+/* FOOTER BENEFITS READABILITY FIX */
+@media (min-width:900px){
+  .library-cabinet-shell .library-books-panel:after{
+    font-size:13px!important;
+    line-height:1.5!important;
+    font-weight:700!important;
+    color:rgba(255,255,255,.78)!important;
+    word-spacing:3px!important;
+    bottom:12px!important;
+  }
+}
