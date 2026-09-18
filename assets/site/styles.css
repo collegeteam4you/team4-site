@@ -5144,3 +5144,43 @@ linear-gradient(100deg,#05070a 0%,#080b10 58%,#07111e 100%)!important}
  .library-cabinet-shell .library-catalog-title:before,.library-cabinet-shell .library-catalog-title:after{display:block!important;position:static!important;transform:none!important;overflow:visible!important}
  .library-cabinet-shell .library-catalog-subtitle{top:190px!important;transform:none!important}
 }
+/* ===== LIBRARY MOBILE HERO: FORCE FULL HEADLINE BELOW HEADER ===== */
+@media (max-width:680px){
+  .library-cabinet-shell .library-books-panel{
+    padding-top:430px!important;
+    margin-top:18px!important;
+    overflow:visible!important;
+  }
+  .library-cabinet-shell .library-books-panel:before{
+    top:0!important;height:410px!important;
+  }
+  .library-cabinet-shell .library-catalog-title{
+    position:absolute!important;
+    top:28px!important;
+    left:28px!important;
+    right:28px!important;
+    margin:0!important;
+    transform:none!important;
+    overflow:visible!important;
+    max-height:none!important;
+    line-height:1.08!important;
+    z-index:3!important;
+  }
+  .library-cabinet-shell .library-catalog-title:before,
+  .library-cabinet-shell .library-catalog-title:after{
+    position:static!important;
+    display:block!important;
+    transform:none!important;
+    margin:0!important;
+    max-height:none!important;
+    overflow:visible!important;
+  }
+  .library-cabinet-shell .library-catalog-subtitle{
+    position:absolute!important;
+    top:205px!important;
+    left:28px!important;
+    right:28px!important;
+    transform:none!important;
+    z-index:3!important;
+  }
+}
