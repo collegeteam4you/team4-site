@@ -5309,3 +5309,17 @@ body:has(.library-cabinet-shell) .library-cabinet-shell{
     margin-bottom:120px!important;
   }
 }
+
+
+/* FINAL REAL FIX — the hero is the ::before/title inside .library-books-panel */
+@media (min-width:900px){
+  body:has(.library-cabinet-shell) .library-page{
+    padding-top:110px!important;
+  }
+  .library-cabinet-shell{
+    padding-top:0!important;
+  }
+  .library-cabinet-shell .library-books-panel{
+    margin-top:0!important;
+  }
+}
