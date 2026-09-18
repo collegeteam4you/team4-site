@@ -5054,3 +5054,33 @@ body:has(.library-page){background:#020407!important}
 .library-cabinet-shell .library-books-panel:after{content:"⏱ მყისიერი წვდომა შეძენის შემდეგ     ◇ 100% უსაფრთხო გადახდა     ✉ წიგნი ელ. ფოსტაზე PDF ფორმატში     ∞ ცოდნა, რომელიც ცხოვრებას ცვლის";position:absolute;left:0;right:0;bottom:18px;color:rgba(255,255,255,.62);font-size:13px;font-weight:750;text-align:center;word-spacing:10px}
 @media(max-width:1050px){.library-cabinet-shell .library-books-panel{grid-template-columns:1fr!important;padding-top:330px!important}.library-cabinet-shell .library-catalog-title,.library-cabinet-shell .library-catalog-subtitle{right:24px!important;left:24px!important}.library-cabinet-shell .library-books-panel:before{height:305px}}
 @media(max-width:680px){.library-cabinet-shell .library-books-panel{padding:290px 12px 95px!important}.library-cabinet-shell .library-books-panel:before{height:270px;border-radius:0}.library-cabinet-shell .library-catalog-title{top:28px!important;left:22px!important;right:22px!important}.library-cabinet-shell .library-catalog-title:before,.library-cabinet-shell .library-catalog-title:after{font-size:32px!important}.library-cabinet-shell .library-catalog-subtitle{top:145px!important;left:22px!important;right:22px!important;font-size:13px!important}.library-cabinet-shell .library-catalog-subtitle:before{font-size:15px}.library-cabinet-shell .library-catalog-subtitle:after{font-size:10px;line-height:1.7;word-spacing:2px}.library-cabinet-shell .library-book-card{grid-template-columns:120px 1fr!important;min-height:290px!important}.library-cabinet-shell .library-book-cover{width:105px!important;height:170px!important;margin:22px 0 0 12px!important}.library-cabinet-shell .library-book-card>div{padding:25px 14px 8px!important}.library-cabinet-shell .library-book-card h2{font-size:21px!important}.library-cabinet-shell .library-books-panel:after{padding:0 22px;font-size:10px;line-height:1.8;word-spacing:2px}}
+
+/* ===== LIBRARY 2026 REFERENCE MATCH ===== */
+@media (min-width:1051px){
+.library-page{max-width:1600px!important;padding-top:0!important}
+.library-cabinet-shell{max-width:1500px!important}
+.library-cabinet-shell .library-books-panel{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:16px!important;padding:355px 0 88px!important}
+.library-cabinet-shell .library-books-panel:before{height:330px!important;border-radius:0!important;background:
+linear-gradient(90deg,rgba(2,4,7,.12),rgba(2,4,7,.15)),
+url('/assets/lasha-hero-personal.webp') 76% 42%/430px auto no-repeat,
+radial-gradient(circle at 28% 30%,rgba(225,6,0,.17),transparent 32%),
+linear-gradient(100deg,#05070a 0%,#080b10 58%,#07111e 100%)!important}
+.library-cabinet-shell .library-catalog-title{top:42px!important;left:28px!important;max-width:780px!important}
+.library-cabinet-shell .library-catalog-title:before,.library-cabinet-shell .library-catalog-title:after{font-size:clamp(38px,3.4vw,58px)!important}
+.library-cabinet-shell .library-catalog-subtitle{top:180px!important;left:30px!important;max-width:780px!important}
+.library-cabinet-shell .library-catalog-subtitle:before{font-size:19px!important}
+.library-cabinet-shell .library-catalog-subtitle:after{margin-top:22px!important;font-size:13px!important;word-spacing:5px!important}
+.library-cabinet-shell .library-book-card{grid-template-columns:185px minmax(0,1fr)!important;min-height:385px!important}
+.library-cabinet-shell .library-book-cover{width:155px!important;height:235px!important;margin:28px 0 0 22px!important}
+.library-cabinet-shell .library-book-card>div{padding:30px 22px 78px!important}
+.library-cabinet-shell .library-book-card h2{font-size:27px!important}
+.library-cabinet-shell .library-book-card p{font-size:14px!important}
+.library-cabinet-shell .library-book-card:not(:last-of-type)>div:after{content:"14.90 ₾";position:absolute;bottom:72px;left:205px;color:#ff2a23;font-size:23px;font-weight:950}
+.library-cabinet-shell .library-book-card>.library-action{position:absolute!important;left:18px!important;right:18px!important;bottom:16px!important;width:auto!important;margin:0!important}
+.library-cabinet-shell .library-book-card:not(:last-of-type)>.library-action{left:50%!important}
+.library-cabinet-shell .library-book-card:not(:last-of-type):after{content:"წაიკითხე 2 გვერდი\Aუფასოდ";white-space:pre;position:absolute;left:18px;bottom:16px;width:calc(50% - 27px);min-height:52px;display:grid;place-items:center;border:1px solid rgba(255,255,255,.8);border-radius:7px;color:#fff;font-size:13px;font-weight:900;text-align:center;pointer-events:none}
+.library-cabinet-shell .library-book-card:last-of-type>div:before{content:"29.80 ₾";display:inline-block;margin:18px 12px 0 0;color:rgba(255,255,255,.45);font-size:19px;font-weight:850;text-decoration:line-through}
+.library-cabinet-shell .library-book-card:last-of-type>div strong{display:inline-block!important;margin-top:18px!important}
+.library-cabinet-shell .library-book-card:last-of-type>div:after{content:"−16%";display:inline-block;margin-left:12px;padding:5px 10px;border-radius:18px;background:#ef1710;color:#fff;font-size:14px;font-weight:950}
+.library-cabinet-shell .library-books-panel:after{content:"⏱  მყისიერი წვდომა შეძენის შემდეგ      ◇  100% უსაფრთხო გადახდა      ✉  მიიღე ელ. ფოსტაზე PDF ფორმატში      ▣  კითხვა შეგიძლია ყველა მოწყობილობაზე      ∞  ცოდნა, რომელიც ცხოვრებას შენთან რჩება"!important;font-size:12px!important;word-spacing:2px!important}
+}
