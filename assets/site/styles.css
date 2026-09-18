@@ -5268,3 +5268,28 @@ linear-gradient(100deg,#05070a 0%,#080b10 58%,#07111e 100%)!important}
     padding-bottom:14px!important;
   }
 }
+
+/* ===== FIX: library hero must never hide under sticky header ===== */
+body:has(.library-cabinet-shell) main,
+body:has(.library-cabinet-shell) .library-cabinet-shell{
+  overflow:visible!important;
+}
+.library-cabinet-shell{
+  padding-top:28px!important;
+}
+.library-cabinet-shell .library-hero,
+.library-cabinet-shell .library-cabinet-hero{
+  margin-top:0!important;
+  transform:none!important;
+  top:auto!important;
+}
+@media(min-width:681px){
+  .library-cabinet-shell{
+    padding-top:34px!important;
+  }
+}
+@media(max-width:680px){
+  .library-cabinet-shell{
+    padding-top:22px!important;
+  }
+}
