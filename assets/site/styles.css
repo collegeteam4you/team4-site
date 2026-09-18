@@ -5300,3 +5300,12 @@ body:has(.library-cabinet-shell) .library-cabinet-shell{
     margin-top:120px!important;
   }
 }
+
+
+/* definitive desktop hero clearance */
+@media (min-width:681px){
+  .library-cabinet-shell .library-catalog-promo{
+    transform:translateY(120px)!important;
+    margin-bottom:120px!important;
+  }
+}
