@@ -5136,3 +5136,11 @@ linear-gradient(100deg,#05070a 0%,#080b10 58%,#07111e 100%)!important}
  .library-cabinet-shell .library-catalog-subtitle:before{font-size:13px!important;line-height:1.35!important;margin-bottom:8px!important}
  .library-cabinet-shell .library-catalog-subtitle:after{margin-top:14px!important;font-size:8px!important;line-height:1.5!important}
 }
+/* ===== LIBRARY MOBILE HERO CLIP FIX 2 ===== */
+@media (max-width:680px){
+ .library-cabinet-shell .library-books-panel{padding-top:390px!important;overflow:visible!important}
+ .library-cabinet-shell .library-books-panel:before{height:370px!important;top:0!important}
+ .library-cabinet-shell .library-catalog-title{top:58px!important;transform:none!important;overflow:visible!important}
+ .library-cabinet-shell .library-catalog-title:before,.library-cabinet-shell .library-catalog-title:after{display:block!important;position:static!important;transform:none!important;overflow:visible!important}
+ .library-cabinet-shell .library-catalog-subtitle{top:190px!important;transform:none!important}
+}
