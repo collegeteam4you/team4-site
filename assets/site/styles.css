@@ -1997,8 +1997,7 @@ header button {
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 16px;
   background:
-    radial-gradient(circle at 18% 10%, rgba(225, 6, 0, 0.18), transparent 34%),
-    linear-gradient(180deg, rgba(12, 12, 16, 0.98), rgba(3, 3, 5, 0.98));
+    radial-gradient(circle at 18% 10%, rgba(225, 6, 0, 0.18), transparent 34%),    linear-gradient(180deg, rgba(12, 12, 16, 0.98), rgba(3, 3, 5, 0.98));
   padding: 18px;
   color: #fff;
   box-shadow:
@@ -3997,8 +3996,7 @@ body .library-book-body {
   .library-book-body p {
     width: 100% !important;
     max-width: 100% !important;
-    min-width: 0 !important;
-    overflow-wrap: anywhere !important;
+    min-width: 0 !important;    overflow-wrap: anywhere !important;
     word-break: break-word !important;
     white-space: normal !important;
   }
@@ -5127,4 +5125,14 @@ linear-gradient(100deg,#05070a 0%,#080b10 58%,#07111e 100%)!important}
   .library-cabinet-shell .library-book-card:not(:last-of-type):after{content:"წაიკითხე 2 გვერდი\Aუფასოდ";white-space:pre;position:absolute;left:10px;bottom:10px;width:calc(50% - 15px);min-height:40px;display:grid;place-items:center;border:1px solid rgba(255,255,255,.8);border-radius:7px;color:#fff;font-size:10px;font-weight:900;text-align:center;pointer-events:none}
   .library-cabinet-shell .library-book-card:last-of-type:before{top:8px!important;right:8px!important;padding:5px 7px!important;font-size:8px!important}
   .library-cabinet-shell .library-books-panel:after{bottom:14px!important;padding:0 14px!important;font-size:9px!important;line-height:1.55!important;word-spacing:1px!important}
+}
+/* ===== LIBRARY MOBILE HERO FINAL FIX ===== */
+@media (max-width:680px){
+ .library-cabinet-shell .library-books-panel{padding-top:330px!important}
+ .library-cabinet-shell .library-books-panel:before{height:310px!important}
+ .library-cabinet-shell .library-catalog-title{top:24px!important;left:18px!important;right:18px!important}
+ .library-cabinet-shell .library-catalog-title:before,.library-cabinet-shell .library-catalog-title:after{font-size:27px!important;line-height:1.05!important}
+ .library-cabinet-shell .library-catalog-subtitle{top:145px!important;left:18px!important;right:18px!important;font-size:11px!important;line-height:1.4!important}
+ .library-cabinet-shell .library-catalog-subtitle:before{font-size:13px!important;line-height:1.35!important;margin-bottom:8px!important}
+ .library-cabinet-shell .library-catalog-subtitle:after{margin-top:14px!important;font-size:8px!important;line-height:1.5!important}
 }
