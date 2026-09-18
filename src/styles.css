@@ -4043,3 +4043,10 @@ button.site-cta:hover,
     transform: none !important;
   }
 }
+
+/* FINAL desktop library vertical offset */
+@media (min-width: 681px){
+  body:has(.library-cabinet-shell) .library-cabinet-shell{
+    padding-top: 230px !important;
+  }
+}
