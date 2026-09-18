@@ -5336,3 +5336,30 @@ body:has(.library-cabinet-shell) .library-cabinet-shell{
     bottom:12px!important;
   }
 }
+
+
+/* MOBILE LIBRARY — spacing, no clipping, readable benefits */
+@media (max-width:899px){
+  body:has(.library-cabinet-shell) .library-page{
+    padding-top:24px!important;
+  }
+  .library-cabinet-shell{
+    padding-top:0!important;
+  }
+  .library-cabinet-shell .library-books-panel{
+    margin-top:0!important;
+    overflow:visible!important;
+  }
+  .library-cabinet-shell .library-books-panel:after{
+    font-size:12px!important;
+    line-height:1.65!important;
+    font-weight:700!important;
+    color:rgba(255,255,255,.82)!important;
+    white-space:normal!important;
+    height:auto!important;
+    overflow:visible!important;
+    display:block!important;
+    margin-top:18px!important;
+    padding:0 12px 18px!important;
+  }
+}
