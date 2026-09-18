@@ -5027,3 +5027,30 @@ body .library-book-body {
     line-height: 1.4;
   }
 }
+
+
+/* ===== LIBRARY 2026 SALES REDESIGN ===== */
+body:has(.library-page){background:#020407!important}
+.library-page{max-width:1540px!important}
+.library-cabinet-shell{max-width:1480px!important;margin:0 auto!important}
+.library-cabinet-shell .library-books-panel{position:relative!important;display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:16px!important;padding:310px 0 74px!important;border:0!important;background:transparent!important}
+.library-cabinet-shell .library-books-panel:before{content:"";position:absolute;inset:0 0 auto;height:285px;border:1px solid rgba(255,255,255,.08);border-radius:18px;background:radial-gradient(circle at 70% 35%,rgba(225,6,0,.18),transparent 28%),linear-gradient(100deg,#05070a 0%,#080b10 58%,#07111e 100%);box-shadow:0 25px 80px rgba(0,0,0,.35)}
+.library-cabinet-shell .library-catalog-title{position:absolute!important;z-index:2!important;top:45px!important;left:34px!important;max-width:920px!important;margin:0!important;font-family:inherit!important;font-size:clamp(36px,3.6vw,62px)!important;font-weight:950!important;line-height:1.02!important;letter-spacing:-.035em!important}
+.library-cabinet-shell .library-catalog-title:before{content:"დღეს ისევ თეთრებს ითვლი?";display:block;margin-bottom:8px;color:#fff}
+.library-cabinet-shell .library-catalog-title{font-size:0!important;color:#ef1710!important}
+.library-cabinet-shell .library-catalog-title:after{content:"ეს ცხოვრება შენი არაა.";display:block;color:#ed1711;font-size:clamp(36px,3.6vw,62px);line-height:1.02}
+.library-cabinet-shell .library-catalog-title:before{font-size:clamp(36px,3.6vw,62px)}
+.library-cabinet-shell .library-catalog-subtitle{position:absolute!important;z-index:2!important;top:190px!important;left:36px!important;max-width:840px!important;margin:0!important;color:rgba(255,255,255,.75)!important;font-size:16px!important}
+.library-cabinet-shell .library-catalog-subtitle:before{content:"შენ არ გაკლია ნიჭი. შენ გაკლია სწორი ცოდნა და მოქმედება.";display:block;margin-bottom:10px;color:#fff;font-size:19px;font-weight:850}
+.library-cabinet-shell .library-catalog-subtitle:after{content:"🧠 შეცვალე აზროვნება   ◎ იპოვე მიმართულება   📈 გაზარდე შემოსავალი   ◯ შეცვალე ყოველდღიურობა";display:block;margin-top:18px;color:rgba(255,255,255,.72);font-size:13px;font-weight:800;word-spacing:8px}
+.library-cabinet-shell .library-book-card{display:grid!important;grid-template-columns:155px minmax(0,1fr)!important;grid-template-rows:1fr auto!important;min-height:330px!important;overflow:hidden!important;border:1px solid rgba(255,255,255,.13)!important;border-radius:14px!important;background:linear-gradient(145deg,#090c11,#040609)!important;box-shadow:0 18px 55px rgba(0,0,0,.32)!important}
+.library-cabinet-shell .library-book-cover{grid-row:1!important;width:135px!important;height:205px!important;margin:26px 0 0 20px!important;object-fit:contain!important}
+.library-cabinet-shell .library-book-card>div{grid-column:2!important;grid-row:1!important;min-height:0!important;padding:30px 22px 12px!important}
+.library-cabinet-shell .library-book-card h2{margin:0 0 8px!important;font-size:25px!important;line-height:1.1!important}
+.library-cabinet-shell .library-book-card p{display:block!important;margin:0!important;color:rgba(255,255,255,.64)!important;font-size:14px!important;line-height:1.55!important}
+.library-cabinet-shell .library-book-card strong{display:block;margin-top:18px;color:#ff2a23!important;font-size:24px!important}
+.library-cabinet-shell .library-book-card>.library-action{position:static!important;grid-column:1/-1!important;grid-row:2!important;width:auto!important;min-height:54px!important;margin:0 18px 18px!important;border:1px solid #f01a13!important;border-radius:7px!important;background:#ef1710!important;color:#fff!important;font-size:14px!important;font-weight:950!important}
+.library-cabinet-shell .library-book-card:last-of-type:before{content:"საუკეთესო არჩევანი • დაზოგე 4.90 ₾"!important;top:12px!important;left:auto!important;right:12px!important;background:#f0b900!important}
+.library-cabinet-shell .library-books-panel:after{content:"⏱ მყისიერი წვდომა შეძენის შემდეგ     ◇ 100% უსაფრთხო გადახდა     ✉ წიგნი ელ. ფოსტაზე PDF ფორმატში     ∞ ცოდნა, რომელიც ცხოვრებას ცვლის";position:absolute;left:0;right:0;bottom:18px;color:rgba(255,255,255,.62);font-size:13px;font-weight:750;text-align:center;word-spacing:10px}
+@media(max-width:1050px){.library-cabinet-shell .library-books-panel{grid-template-columns:1fr!important;padding-top:330px!important}.library-cabinet-shell .library-catalog-title,.library-cabinet-shell .library-catalog-subtitle{right:24px!important;left:24px!important}.library-cabinet-shell .library-books-panel:before{height:305px}}
+@media(max-width:680px){.library-cabinet-shell .library-books-panel{padding:290px 12px 95px!important}.library-cabinet-shell .library-books-panel:before{height:270px;border-radius:0}.library-cabinet-shell .library-catalog-title{top:28px!important;left:22px!important;right:22px!important}.library-cabinet-shell .library-catalog-title:before,.library-cabinet-shell .library-catalog-title:after{font-size:32px!important}.library-cabinet-shell .library-catalog-subtitle{top:145px!important;left:22px!important;right:22px!important;font-size:13px!important}.library-cabinet-shell .library-catalog-subtitle:before{font-size:15px}.library-cabinet-shell .library-catalog-subtitle:after{font-size:10px;line-height:1.7;word-spacing:2px}.library-cabinet-shell .library-book-card{grid-template-columns:120px 1fr!important;min-height:290px!important}.library-cabinet-shell .library-book-cover{width:105px!important;height:170px!important;margin:22px 0 0 12px!important}.library-cabinet-shell .library-book-card>div{padding:25px 14px 8px!important}.library-cabinet-shell .library-book-card h2{font-size:21px!important}.library-cabinet-shell .library-books-panel:after{padding:0 22px;font-size:10px;line-height:1.8;word-spacing:2px}}
