@@ -722,13 +722,10 @@ selectedBookHasAccess
                             )
                           : item.type === 'book'
                             ? h(
-                                'button',
-                                {
-                                  type: 'button',
-                                  className: 'library-action library-action-primary',
-                                  onClick: () => setSampleItemId(item.id),
-                                },
-                                'წაიკითხე 2 გვერდი უფასოდ'
+                                'div',
+                                { className: 'library-card-actions' },
+                                h('button', { type: 'button', className: 'library-action library-action-preview', onClick: () => setSampleItemId(item.id) }, 'წაიკითხე 2 გვერდი უფასოდ'),
+                                h('button', { type: 'button', className: 'library-action library-action-primary', onClick: () => beginPurchase(item) }, `შეიძინე — ${item.price.toFixed(2)} ₾`)
                               )
                             : h(
   'button',
@@ -841,13 +838,10 @@ selectedBookHasAccess
 
             item.type === 'book'
               ? h(
-                  'button',
-                  {
-                    type: 'button',
-                    className: 'library-action library-action-primary',
-                    onClick: () => setSampleItemId(item.id),
-                  },
-                  'წაიკითხე 2 გვერდი უფასოდ'
+                  'div',
+                  { className: 'library-card-actions' },
+                  h('button', { type: 'button', className: 'library-action library-action-preview', onClick: () => setSampleItemId(item.id) }, 'წაიკითხე 2 გვერდი უფასოდ'),
+                  h('button', { type: 'button', className: 'library-action library-action-primary', onClick: () => beginPurchase(item) }, `შეიძინე — ${item.price.toFixed(2)} ₾`)
                 )
               : h(
                   'button',
