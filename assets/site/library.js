@@ -56,7 +56,7 @@
       titleEng: 'Both Books Bundle',
       description: 'მე ვარ პასუხი + რატომ მდიდრდებიან სხვები',
       cover: '/assets/bundle.jpg',
-      price: 24.9,
+      price: 16.9,
       itemIds: ['i-am-the-answer', 'why-others-get-rich'],
       blocks: [],
       body: '',
