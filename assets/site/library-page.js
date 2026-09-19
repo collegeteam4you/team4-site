@@ -220,7 +220,6 @@
     });
     const [createdOrder, setCreatedOrder] = React.useState(null);
     const [bankDetails, setBankDetails] = React.useState(null);
-    const [receiptFile, setReceiptFile] = React.useState(null);
     const [status, setStatus] = React.useState(null);
     const [isSubmitting, setIsSubmitting] = React.useState(false);
     const [selectedBank, setSelectedBank] = React.useState('bog');
@@ -267,23 +266,6 @@
       }
     };
 
-    const uploadReceipt = async (event) => {
-      event.preventDefault();
-      if (!activeOrder?.paymentCode) return;
-      setIsSubmitting(true);
-      setStatus(null);
-      try {
-        await window.Team4Library.uploadReceipt(activeOrder.paymentCode, receiptFile);
-        setReceiptFile(null);
-        setStatus({ type: 'success', text: 'ქვითარი აიტვირთა. ადმინისტრატორი გადახდას შეამოწმებს და დაგიდასტურებთ.' });
-        onChanged();
-      } catch (error) {
-        setStatus({ type: 'error', text: error.message || 'ქვითარი ვერ აიტვირთა.' });
-      } finally {
-        setIsSubmitting(false);
-      }
-    };
-
     return h(
       'section',
       { className: 'library-order-panel library-checkout-panel' },
@@ -306,7 +288,7 @@
         h('div', null, h('p', { className: 'library-kicker' }, 'შენი შეკვეთა'), h('h2', null, item.title), h('span', null, item.type === 'bundle' ? 'ორი ციფრული წიგნი' : 'ციფრული წიგნი')),
         h('strong', null, `${item.price.toFixed(2)} ₾`)
       ),
-      h('p', { className: 'library-muted library-checkout-intro' }, activeOrder ? 'აირჩიე ბანკი, დააკოპირე რეკვიზიტები და გადახდის შემდეგ ატვირთე ქვითარი.' : 'დაადასტურე ელფოსტა და შემდეგ გამოჩნდება საბანკო რეკვიზიტები და უნიკალური გადახდის კოდი.'),
+      h('p', { className: 'library-muted library-checkout-intro' }, activeOrder ? 'აირჩიე ბანკი, დააკოპირე რეკვიზიტები და გადარიცხვის დანიშნულებაში აუცილებლად მიუთითე შეკვეთის კოდი.' : 'დაადასტურე ელფოსტა და შემდეგ გამოჩნდება საბანკო რეკვიზიტები და უნიკალური გადახდის კოდი.'),
       activeOrder &&
         h(
           'div',
@@ -375,13 +357,6 @@
             )
           ),
           h('div', { className: 'library-payment-notice' }, h('strong', null, 'მნიშვნელოვანია: '), 'გადარიცხვის დანიშნულებაში აუცილებლად მიუთითე შეკვეთის კოდი.')
-        ),
-      activeOrder &&
-        h(
-          'form',
-          { className: 'library-order-form', onSubmit: uploadReceipt },
-          h('label', { className: 'library-file-label' }, 'ქვითრის ფაილი', h('input', { type: 'file', accept: 'image/png,image/jpeg,image/webp,application/pdf', onChange: (event) => setReceiptFile(event.target.files?.[0] || null), required: true })),
-          h('button', { className: 'library-action library-action-primary library-receipt-button', disabled: isSubmitting, type: 'submit' }, isSubmitting ? 'იტვირთება...' : 'გადავიხადე — ქვითრის გაგზავნა')
         ),
       status && h('p', { className: status.type === 'error' ? 'library-error' : 'library-success' }, status.text)
     );
