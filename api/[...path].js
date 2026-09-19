@@ -12,7 +12,7 @@ const PRODUCTS = {
     id: 'i-am-the-answer',
     title: 'მე ვარ პასუხი',
     type: 'book',
-    amount: 14.9,
+    amount: 10,
   },
 
   'why-others-get-rich': {
