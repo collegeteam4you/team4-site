@@ -26,7 +26,7 @@ const PRODUCTS = {
     id: 'book-bundle',
     title: 'ორივე წიგნი ერთად',
     type: 'bundle',
-    amount: 24.9,
+    amount: 16.9,
     itemIds: ['i-am-the-answer', 'why-others-get-rich'],
   },
 };
