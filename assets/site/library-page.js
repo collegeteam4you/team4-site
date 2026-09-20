@@ -61,7 +61,7 @@
     if (!item || item.type !== 'book' || !Array.isArray(item.blocks)) return [];
 
     if (item.id === 'i-am-the-answer') {
-      return item.blocks.slice(12, 26);
+      return item.blocks.slice(341, 349);
     }
 
     if (item.id === 'why-others-get-rich') {
