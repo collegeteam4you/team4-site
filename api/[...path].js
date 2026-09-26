@@ -7,6 +7,9 @@ const adminEmail = process.env.ADMIN_EMAIL || 'collegeteam4you@gmail.com';
 const sessionSecret = process.env.SESSION_SECRET || 'team4-local-session-secret-change-me';
 const bookPriceGel = Number(process.env.BOOK_PRICE_GEL || 14.9);
 
+const SEVEN_GEL_PROMO_END = new Date('2026-10-10T14:24:00+04:00').getTime();
+const currentIndividualBookAmount = () => Date.now() < SEVEN_GEL_PROMO_END ? 7 : 10;
+
 const PRODUCTS = {
   'i-am-the-answer': {
     id: 'i-am-the-answer',
