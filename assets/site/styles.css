@@ -5542,3 +5542,25 @@ body:has(.library-cabinet-shell) .library-cabinet-shell{
     line-height:1.2!important;
   }
 }
+
+
+/* 2026-09-26 — single library hero: remove legacy pseudo-hero reservation */
+.library-cabinet-shell .library-books-panel{
+  padding-top:0!important;
+}
+.library-cabinet-shell .library-books-panel:before{
+  display:none!important;
+  content:none!important;
+}
+@media (max-width:899px){
+  body:has(.library-cabinet-shell) .library-page{padding-top:12px!important}
+  .library-cabinet-shell{padding-top:0!important}
+  .library-cabinet-shell .library-books-panel{
+    padding-top:0!important;
+    margin-top:0!important;
+  }
+}
+@media (min-width:900px){
+  body:has(.library-cabinet-shell) .library-page{padding-top:24px!important}
+  .library-cabinet-shell .library-books-panel{padding-top:0!important}
+}
