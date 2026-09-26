@@ -8,6 +8,7 @@
 
   const hasCoachOffer =
     localStorage.getItem('team4CoachCompleted') === 'true';
+  const sevenGelPromoActive = Date.now() < new Date('2026-10-10T14:24:00+04:00').getTime();
 
   const catalog = [
     {
