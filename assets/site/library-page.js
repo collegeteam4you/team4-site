@@ -616,6 +616,8 @@ const hasAccess = (itemId) =>
           .library-conversion-copy{text-align:left}
           .library-conversion-kicker{font-size:11px;margin-bottom:8px}
           .library-conversion-title{font-size:38px;line-height:1.02}
+          .library-conversion-hero{scroll-margin-top:145px}
+          .library-conversion-copy{padding-top:14px}
           .library-conversion-subtitle{font-size:15px;line-height:1.45;margin:12px 0 15px}
           .library-conversion-cta{width:100%;min-height:54px;font-size:17px}
           .library-conversion-note{text-align:center;font-size:11px}
