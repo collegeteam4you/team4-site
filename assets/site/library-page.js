@@ -707,7 +707,7 @@ selectedBookHasAccess
                     'div',
                     { className: 'library-books-panel' },
 
-                    catalog.map((item) => {
+                    catalog.filter((item) => item.id !== 'i-am-the-answer').map((item) => {
                       const itemHasAccess =
                         item.type === 'book' &&
                         hasAccess(item.id);
@@ -828,7 +828,7 @@ selectedBookHasAccess
         'div',
         { className: 'library-books-panel' },
 
-        catalog.map((item) =>
+        catalog.filter((item) => item.id !== 'i-am-the-answer').map((item) =>
           h(
             'article',
             {
