@@ -18,7 +18,7 @@
       titleEng: 'I Am The Answer',
       description: 'დაცული ონლაინ წიგნი Team4-ის მყიდველებისთვის.',
       cover: '/assets/book-gallery-01.webp',
-      price: 10,
+      price: sevenGelPromoActive ? 7 : 10,
       blocks: window.Team4BookContent?.blocks || [],
       body: '',
     },
@@ -37,12 +37,10 @@
         window.Team4WhyOthersGetRichContent?.cover ||
         '/assets/ყდა.jpg',
 
-      price: hasCoachOffer ? 10 : 14.9,
-      originalPrice: hasCoachOffer ? 14.9 : null,
-      offerCode: hasCoachOffer ? 'coach10' : null,
-      offerLabel: hasCoachOffer
-        ? 'Team4 Coach-ის სპეციალური ფასი'
-        : null,
+      price: sevenGelPromoActive ? 7 : 10,
+      originalPrice: null,
+      offerCode: null,
+      offerLabel: null,
 
       blocks:
         window.Team4WhyOthersGetRichContent?.blocks || [],
