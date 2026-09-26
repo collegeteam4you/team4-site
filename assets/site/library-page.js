@@ -607,6 +607,8 @@ const hasAccess = (itemId) =>
         .library-conversion-benefits{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:28px;padding-top:20px;border-top:1px solid rgba(255,255,255,.08)}
         .library-conversion-benefit{display:flex;gap:9px;align-items:center;color:#eee;font-size:13px;font-weight:700}
         .library-conversion-benefit b{display:grid;place-items:center;flex:0 0 32px;height:32px;border-radius:50%;background:#e21c26;color:#fff;font-size:15px}
+        .library-featured-stack{display:grid;gap:22px;max-width:1180px;margin:0 auto 30px}
+        .library-featured-stack .library-conversion-hero{margin:0;width:100%;box-sizing:border-box}
         @media(max-width:700px){
           .library-page{padding-top:12px!important}
           .library-conversion-hero{margin:0 10px 22px;padding:22px 18px 18px;border-radius:22px}
@@ -622,9 +624,14 @@ const hasAccess = (itemId) =>
           .library-conversion-benefits{grid-template-columns:1fr 1fr;gap:12px 8px;margin-top:8px;padding-top:15px}
           .library-conversion-benefit{font-size:11px}
           .library-conversion-benefit b{flex-basis:27px;height:27px;font-size:12px}
+          .library-featured-stack{gap:16px;margin:0 10px 22px}
+          .library-featured-stack .library-conversion-hero{margin:0}
         }
         `
       ),
+      h(
+        'div',
+        { className: 'library-featured-stack' },
       h(
         'section',
         { className: 'library-conversion-hero', 'aria-label': 'მე ვარ პასუხი — უფასო ნაწყვეტი' },
@@ -654,6 +661,37 @@ const hasAccess = (itemId) =>
           h('div', { className: 'library-conversion-benefit' }, h('b', null, '★'), h('span', null, 'აზროვნების ცვლილება')),
           h('div', { className: 'library-conversion-benefit' }, h('b', null, '₾'), h('span', null, 'ფინანსური თავისუფლება'))
         )
+      ),
+      h(
+        'section',
+        { className: 'library-conversion-hero', 'aria-label': 'რატომ მდიდრდებიან სხვები — უფასო ნაწყვეტი' },
+        h(
+          'div',
+          { className: 'library-conversion-grid' },
+          h(
+            'div',
+            { className: 'library-conversion-copy' },
+            h('p', { className: 'library-conversion-kicker' }, 'Team4 · ციფრული ბიბლიოთეკა'),
+            h('h1', { className: 'library-conversion-title' }, 'რატომ მდიდრდებიან', h('em', null, 'სხვები?')),
+            h('p', { className: 'library-conversion-subtitle' }, 'შეცვალე ფულზე აზროვნება და დაინახე ახალი შესაძლებლობები. დაიწყე პირველი 2 გვერდით.'),
+            h('button', { type: 'button', className: 'library-conversion-cta', onClick: () => setSampleItemId('why-others-get-rich') }, 'წაიკითხე უფასოდ'),
+            h('p', { className: 'library-conversion-note' }, 'რეგისტრაცია არ არის საჭირო · 2 გვერდი უფასოდ')
+          ),
+          h(
+            'div',
+            { className: 'library-conversion-cover-wrap' },
+            h('img', { className: 'library-conversion-cover', src: catalog.find((item) => item.id === 'why-others-get-rich')?.cover || '', alt: 'რატომ მდიდრდებიან სხვები' })
+          )
+        ),
+        h(
+          'div',
+          { className: 'library-conversion-benefits' },
+          h('div', { className: 'library-conversion-benefit' }, h('b', null, '✓'), h('span', null, 'ფულზე ახალი ხედვა')),
+          h('div', { className: 'library-conversion-benefit' }, h('b', null, '↗'), h('span', null, 'პრაქტიკული ნაბიჯები')),
+          h('div', { className: 'library-conversion-benefit' }, h('b', null, '★'), h('span', null, 'აზროვნების ცვლილება')),
+          h('div', { className: 'library-conversion-benefit' }, h('b', null, '₾'), h('span', null, 'შემოსავლის ზრდა'))
+        )
+      )
       ),
       user
         ? h(
@@ -707,7 +745,7 @@ selectedBookHasAccess
                     'div',
                     { className: 'library-books-panel' },
 
-                    catalog.filter((item) => item.id !== 'i-am-the-answer').map((item) => {
+                    catalog.filter((item) => !['i-am-the-answer','why-others-get-rich'].includes(item.id)).map((item) => {
                       const itemHasAccess =
                         item.type === 'book' &&
                         hasAccess(item.id);
@@ -828,7 +866,7 @@ selectedBookHasAccess
         'div',
         { className: 'library-books-panel' },
 
-        catalog.filter((item) => item.id !== 'i-am-the-answer').map((item) =>
+        catalog.filter((item) => !['i-am-the-answer','why-others-get-rich'].includes(item.id)).map((item) =>
           h(
             'article',
             {
