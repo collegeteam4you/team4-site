@@ -65,7 +65,7 @@
     }
 
     if (item.id === 'why-others-get-rich') {
-      return item.blocks.slice(0, 27);
+      return item.blocks.slice(0, 55);
     }
 
     return item.blocks.slice(0, 18);
