@@ -588,6 +588,73 @@ const hasAccess = (itemId) =>
     h(
       'main',
       { className: 'library-page' },
+      h(
+        'style',
+        null,
+        `
+        .library-conversion-hero{max-width:1180px;margin:0 auto 30px;padding:34px 22px 22px;position:relative;overflow:hidden;border-radius:28px;background:radial-gradient(circle at 72% 34%,rgba(218,38,38,.20),transparent 34%),linear-gradient(145deg,#17191d 0%,#090a0c 72%);border:1px solid rgba(255,255,255,.08);box-shadow:0 28px 80px rgba(0,0,0,.34)}
+        .library-conversion-grid{display:grid;grid-template-columns:1.08fr .92fr;gap:28px;align-items:center}
+        .library-conversion-copy{position:relative;z-index:2}
+        .library-conversion-kicker{margin:0 0 12px;color:#ff3b30;font-size:14px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+        .library-conversion-title{margin:0;color:#fff;font-size:clamp(36px,5vw,70px);line-height:1.03;font-weight:900;letter-spacing:-.04em}
+        .library-conversion-title em{display:block;color:#ff2d2d;font-style:normal}
+        .library-conversion-subtitle{max-width:650px;margin:18px 0 22px;color:#d7d7da;font-size:19px;line-height:1.55}
+        .library-conversion-cta{display:inline-flex;align-items:center;justify-content:center;min-height:58px;padding:0 28px;border:0;border-radius:14px;background:linear-gradient(135deg,#ff3131,#d60f19);color:#fff;font-size:18px;font-weight:900;box-shadow:0 14px 36px rgba(225,20,30,.28);cursor:pointer}
+        .library-conversion-note{margin:11px 0 0;color:#96989d;font-size:13px}
+        .library-conversion-cover-wrap{min-height:360px;display:flex;align-items:center;justify-content:center;position:relative}
+        .library-conversion-cover-wrap:before{content:'';position:absolute;width:260px;height:260px;border-radius:50%;background:rgba(224,26,34,.18);filter:blur(55px)}
+        .library-conversion-cover{position:relative;z-index:1;width:min(280px,78%);max-height:390px;object-fit:contain;filter:drop-shadow(0 24px 28px rgba(0,0,0,.58));transform:perspective(900px) rotateY(-8deg) rotateZ(1deg)}
+        .library-conversion-benefits{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:28px;padding-top:20px;border-top:1px solid rgba(255,255,255,.08)}
+        .library-conversion-benefit{display:flex;gap:9px;align-items:center;color:#eee;font-size:13px;font-weight:700}
+        .library-conversion-benefit b{display:grid;place-items:center;flex:0 0 32px;height:32px;border-radius:50%;background:#e21c26;color:#fff;font-size:15px}
+        @media(max-width:700px){
+          .library-page{padding-top:12px!important}
+          .library-conversion-hero{margin:0 10px 22px;padding:22px 18px 18px;border-radius:22px}
+          .library-conversion-grid{grid-template-columns:1fr;gap:4px}
+          .library-conversion-copy{text-align:left}
+          .library-conversion-kicker{font-size:11px;margin-bottom:8px}
+          .library-conversion-title{font-size:38px;line-height:1.02}
+          .library-conversion-subtitle{font-size:15px;line-height:1.45;margin:12px 0 15px}
+          .library-conversion-cta{width:100%;min-height:54px;font-size:17px}
+          .library-conversion-note{text-align:center;font-size:11px}
+          .library-conversion-cover-wrap{min-height:220px;margin-top:4px}
+          .library-conversion-cover{width:170px;max-height:225px}
+          .library-conversion-benefits{grid-template-columns:1fr 1fr;gap:12px 8px;margin-top:8px;padding-top:15px}
+          .library-conversion-benefit{font-size:11px}
+          .library-conversion-benefit b{flex-basis:27px;height:27px;font-size:12px}
+        }
+        `
+      ),
+      h(
+        'section',
+        { className: 'library-conversion-hero', 'aria-label': 'მე ვარ პასუხი — უფასო ნაწყვეტი' },
+        h(
+          'div',
+          { className: 'library-conversion-grid' },
+          h(
+            'div',
+            { className: 'library-conversion-copy' },
+            h('p', { className: 'library-conversion-kicker' }, 'Team4 · ციფრული ბიბლიოთეკა'),
+            h('h1', { className: 'library-conversion-title' }, 'შენი ცხოვრება', h('em', null, 'შენს ხელშია.')),
+            h('p', { className: 'library-conversion-subtitle' }, '„მე ვარ პასუხი“ — რეალური გამოცდილება, პრაქტიკული გაკვეთილები და გზა ცვლილებისკენ. დაიწყე პირველი 2 გვერდით.'),
+            h('button', { type: 'button', className: 'library-conversion-cta', onClick: () => setSampleItemId('i-am-the-answer') }, 'წაიკითხე უფასოდ'),
+            h('p', { className: 'library-conversion-note' }, 'რეგისტრაცია არ არის საჭირო · 2 გვერდი უფასოდ')
+          ),
+          h(
+            'div',
+            { className: 'library-conversion-cover-wrap' },
+            h('img', { className: 'library-conversion-cover', src: catalog.find((item) => item.id === 'i-am-the-answer')?.cover || '', alt: 'მე ვარ პასუხი' })
+          )
+        ),
+        h(
+          'div',
+          { className: 'library-conversion-benefits' },
+          h('div', { className: 'library-conversion-benefit' }, h('b', null, '✓'), h('span', null, 'რეალური გამოცდილება')),
+          h('div', { className: 'library-conversion-benefit' }, h('b', null, '↗'), h('span', null, 'პრაქტიკული ნაბიჯები')),
+          h('div', { className: 'library-conversion-benefit' }, h('b', null, '★'), h('span', null, 'აზროვნების ცვლილება')),
+          h('div', { className: 'library-conversion-benefit' }, h('b', null, '₾'), h('span', null, 'ფინანსური თავისუფლება'))
+        )
+      ),
       user
         ? h(
             React.Fragment,
