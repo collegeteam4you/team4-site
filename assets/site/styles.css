@@ -5564,3 +5564,18 @@ body:has(.library-cabinet-shell) .library-cabinet-shell{
   body:has(.library-cabinet-shell) .library-page{padding-top:24px!important}
   .library-cabinet-shell .library-books-panel{padding-top:0!important}
 }
+
+
+/* 2026-09-26 — mobile sticky-header clearance for the new featured heroes */
+@media (max-width:700px){
+  body:has(.library-cabinet-shell) .library-page{
+    padding-top:118px!important;
+  }
+  .library-featured-stack{
+    position:relative!important;
+    z-index:1!important;
+  }
+  .library-featured-stack .library-conversion-hero:first-child{
+    margin-top:0!important;
+  }
+}
