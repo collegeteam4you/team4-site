@@ -707,17 +707,6 @@ selectedBookHasAccess
                     'div',
                     { className: 'library-books-panel' },
 
-                    h(
-                      'h1',
-                      { className: 'library-catalog-title' },
-                      'თუ ყოველ თვე ერთსა და იმავე თანხას ელოდები და იმავე პრობლემებს აგვარებ, კიდევ რამდენი წელი უნდა გავიდეს, სანამ რამეს შეცვლი?'
-                    ),
-                    h(
-                      'p',
-                      { className: 'library-catalog-subtitle' },
-                      'მე არ გთხოვ, უბრალოდ დამიჯერო. წაიკითხე 2 გვერდი უფასოდ. თუ საკუთარ თავს ამ სიტყვებში ვერ დაინახავ — ნუ იყიდი.'
-                    ),
-
                     catalog.map((item) => {
                       const itemHasAccess =
                         item.type === 'book' &&
@@ -838,17 +827,6 @@ selectedBookHasAccess
       h(
         'div',
         { className: 'library-books-panel' },
-
-        h(
-          'h1',
-          { className: 'library-catalog-title' },
-          'თუ ყოველ თვე ერთსა და იმავე თანხას ელოდები და იმავე პრობლემებს აგვარებ, კიდევ რამდენი წელი უნდა გავიდეს, სანამ რამეს შეცვლი?'
-        ),
-        h(
-          'p',
-          { className: 'library-catalog-subtitle' },
-          'მე არ გთხოვ, უბრალოდ დამიჯერო. წაიკითხე 2 გვერდი უფასოდ. თუ საკუთარ თავს ამ სიტყვებში ვერ დაინახავ — ნუ იყიდი.'
-        ),
 
         catalog.map((item) =>
           h(
